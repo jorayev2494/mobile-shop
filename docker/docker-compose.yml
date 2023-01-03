@@ -1,0 +1,129 @@
+version: '3.9'
+
+x-php-cli: &php-cli
+    build:
+        context: ./php_cli
+        dockerfile: Dockerfile
+    # restart: unless-stopped
+    working_dir: /var/project
+    volumes:
+        - ../:/var/project
+
+services:
+  # Nginx Service
+  nginx:
+      build:
+          context: ./nginx
+          dockerfile: Dockerfile
+      container_name: ${COMPOSE_PROJECT_NAME}-ngx
+      restart: unless-stopped
+      tty: true
+      ports:
+          - ${NGINX_PORT}:80
+      volumes:
+          - ../:/var/project:rw
+      depends_on:
+          - php-fpm
+      links:
+          - php-fpm
+      networks:
+          - shop-network
+
+  # PHP FPM Service
+  php-fpm:
+      build:
+          context: ./php
+          dockerfile: Dockerfile
+      container_name: ${COMPOSE_PROJECT_NAME}-php
+      restart: unless-stopped
+      extra_hosts:
+          - "host.docker.internal:host-gateway"       # for Xdebug
+      tty: true
+      environment:
+          # PHP_IDE_CONFIG: "serverName=${COMPOSE_PROJECT_NAME}-php-fpm"    # for Xdebug
+          XDEBUG_MODE: debug
+          XDEBUG_CONFIG: client_host=host.docker.internal client_port=9003 remote_enable=1
+      expose:
+          - 9000
+      depends_on:
+          - postgres
+          - test-postgres
+      volumes:
+          - ../:/var/project
+          # - ./php/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+          # - ./php/xdebug/error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini:ro
+          # - ./php/xdebug/logs/xdebug.log:/tmp/xdebug.log
+      networks:
+          - shop-network
+          - test-shop-network
+  
+  # PHP CLI Service
+  php-cli:
+      <<: *php-cli
+      container_name: ${COMPOSE_PROJECT_NAME}-php-cli
+      restart: 'no'
+    #   depends_on:
+    #       - php-fpm
+      networks:
+          - shop-network
+          - test-shop-network
+
+  # Postgres Service
+  postgres:
+      image: postgres:12
+      container_name: ${COMPOSE_PROJECT_NAME}-postgres
+      restart: unless-stopped
+      volumes:
+          - ./postgres/data/:/var/lib/postgresql/data
+      environment:
+          POSTGRES_DB: devdb
+          POSTGRES_USER: devuser
+          POSTGRES_PASSWORD: devsecret
+          PGDATA: /var/lib/postgresql/data/pgdata
+      # expose:
+      #     - 9000
+      ports:
+          - ${POSTGRES_PORT}:5432
+      networks:
+          - shop-network
+
+  # Postgres Service
+  test-postgres:
+      image: postgres:12
+      container_name: ${COMPOSE_PROJECT_NAME}-test-postgres
+      restart: unless-stopped
+      # volumes:
+          # - ./postgres/data/:/var/lib/postgresql/data
+      environment:
+          POSTGRES_DB: testdb
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testsecret
+          PGDATA: /var/lib/postgresql/data/pgdata
+      ports:
+          - ${TEST_POSTGRES_PORT}:5432
+      networks:
+          - test-shop-network
+
+  # Swager Service
+  swagger-ui:
+      image: swaggerapi/swagger-ui
+      container_name: ${COMPOSE_PROJECT_NAME}-swagger-ui
+      ports:
+          - ${SWAGGER_PORT}:8080
+      volumes:
+          - ../docs:/usr/share/nginx/html/doc
+      environment:
+          API_URL: doc/api-docs.yaml
+          URLS_PRIMARY_NAME: "CheckServer"
+          URLS: "[
+                      { url: 'doc/admin-api-docs.yaml', name: 'Admin'},
+                      { url: 'doc/client-api-docs.yaml', name: 'Client'},
+                  ]"
+      networks:
+          - shop-network
+
+networks:
+    shop-network:
+        driver: bridge
+    test-shop-network:
+        driver: bridge

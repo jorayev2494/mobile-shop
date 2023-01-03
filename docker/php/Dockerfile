@@ -1,0 +1,32 @@
+FROM php:8.2-fpm
+
+# create user
+RUN groupadd -g 1000 laravel
+RUN useradd -u 1000 -ms /bin/bash -g laravel laravel
+
+WORKDIR /var/project
+
+RUN apt-get update \
+    && apt-get install -y libpq-dev \
+    && apt-get install -y zip \
+    && apt-get install -y unzip \
+    && apt-get install -y git \
+    && apt-get install -y curl \
+    && apt-get install -y nano \
+    # Extensions
+    && docker-php-ext-install pdo_pgsql \
+    && docker-php-ext-install pgsql \
+    && docker-php-ext-install zip \
+    # Enable extensions
+    && docker-php-ext-enable pdo_pgsql \
+    && docker-php-ext-enable pgsql \
+    # install
+    && apt-get -y install imagemagick php8.1-imagick php8.1-pcntl php8.1-gd php8.1-pgsql php8.1-sqlite nano php8.1-redis php-bcmath php8.1-zmq, pdo_pgsql pdo \
+    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+
+
+# RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+COPY ./php.ini $PHP_INI_DIR/php.ini
+# Use the default production configuration
