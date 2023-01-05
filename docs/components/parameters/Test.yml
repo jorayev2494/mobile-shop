@@ -1,0 +1,5 @@
+in: query
+name: test
+schema: 
+  type: string
+  example: 'test-value'

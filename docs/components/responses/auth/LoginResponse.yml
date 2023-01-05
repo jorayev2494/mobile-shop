@@ -1,0 +1,9 @@
+description: 'Success response'
+content:
+  application/json:
+    schema: 
+      type: object
+      properties:
+        access_token:
+          type: string
+          example: 'There JWT Token'

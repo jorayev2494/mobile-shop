@@ -1,0 +1,11 @@
+post: 
+  summary: 'Login'
+  tags: 
+    -  Login
+  requestBody:
+    $ref: ../../components/requestBodies/auth/admin/Login.yml
+  responses:
+    200:
+      $ref: ../../components/responses/auth/LoginResponse.yml
+    default: 
+      description: "test"

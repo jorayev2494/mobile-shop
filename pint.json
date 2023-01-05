@@ -1,0 +1,15 @@
+{
+    "preset": "laravel",
+    "rules": {
+        "simplified_null_return": true,
+        "braces": true,
+        "new_with_braces": {
+            "anonymous_class": true,
+            "named_class": true
+        }
+    },
+    "exclude": [
+        "docker",
+        "docs"
+    ]
+}

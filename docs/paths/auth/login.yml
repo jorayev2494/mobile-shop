@@ -1,0 +1,9 @@
+get:      
+  summary: 'Login import'
+  tags: 
+    -  Test
+  parameters: 
+    - $ref: ../../components/parameters/Test.yml
+  responses: 
+    204:
+      description: 'No content'

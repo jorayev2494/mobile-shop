@@ -1,0 +1,7 @@
+ content:
+  application/json:scheme:
+    schema:
+      type: object
+      allOf: 
+        -  $ref: ../../../schemas/Fields/AdminEmail.yml
+        -  $ref: ../../../schemas/Fields/Password.yml

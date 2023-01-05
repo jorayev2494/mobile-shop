@@ -1,0 +1,51 @@
+pipeline {
+    agent any
+    stages {
+        stage('Init project') {
+            steps {
+                sh 'echo building started!'
+                sh 'make ps'
+                sh 'make init-docker'
+                sh 'make init-project'
+                sh 'make build-no-cache'
+                sh 'make ps'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'make up'
+                sh 'make ps'
+                sh 'make composer-install'
+            }
+        }
+        stage('Run pint') {
+            steps {
+                sh 'echo Testing started'
+                sh 'make ps'
+                sh 'make pint-check'
+            }
+        }
+        stage('Run tests') {
+            steps {
+                sh 'echo Testing started'
+                sh 'make ps'
+                sh 'make test'
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'echo Post always'
+            sh 'make down'
+            sh 'echo End Post always'
+        }
+        success {
+            sh 'echo Post success'
+        }
+        failure {
+            sh 'echo Post failure'
+        }
+    }
+
+}
