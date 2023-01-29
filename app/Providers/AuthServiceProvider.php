@@ -3,7 +3,12 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App;
+use App\Models\Admin;
+use App\Models\Enums\AppGuardType;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Tymon\JWTAuth\JWTGuard;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -24,6 +29,12 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
+
+        // https://code.tutsplus.com/tutorials/how-to-create-a-custom-authentication-guard-in-laravel--cms-29667
+        JWTGuard::macro(
+            'admin',
+            fn (): ?Admin => App::make('auth')->guard(AppGuardType::ADMIN)->user()
+        );
 
         //
     }

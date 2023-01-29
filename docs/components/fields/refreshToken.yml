@@ -1,0 +1,5 @@
+type: object
+properties:
+  refresh_token:
+    type: string
+    example: '64dbe0ec84e0f10593150a6737686565'

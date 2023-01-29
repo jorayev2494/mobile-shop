@@ -1,0 +1,11 @@
+post: 
+  summary: 'Logout'
+  tags: 
+    -  Authentication
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/deviceId.yml
+  responses: 
+    204:
+      description: 'No content'

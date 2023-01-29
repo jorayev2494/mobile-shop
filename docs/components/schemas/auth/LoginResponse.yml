@@ -1,0 +1,14 @@
+type: object
+properties:
+  access_token:
+    type: string
+    example: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwODQvYXBpL2FkbWluL2F1dGgvbG9naW4iLCJpYXQiOjE2NzM2NTU0NTAsImV4cCI6MTY3MzY1NjM1MCwibmJmIjoxNjczNjU1NDUwLCJqdGkiOiJoMFdGaXdGRFQwcXczUEQzIiwic3ViIjoiMSIsInBydiI6ImRmODgzZGI5N2JkMDVlZjhmZjg1MDgyZDY4NmM0NWU4MzJlNTkzYTkiLCJ0ZXN0S2V5IjoidGVzdFZhbHVlIiwibW9kZWwiOiJBcHBcXE1vZGVsc1xcQWRtaW4iLCJyb2xlIjp7ImlkIjoyLCJ2YWx1ZSI6Im1vZGVyYXRvciIsInBlcm1pc3Npb25zIjpbXSwiaXNfYWN0aXZlIjp0cnVlLCJjcmVhdGVkX2F0IjoxNjczMTg1MjU3LCJ1cGRhdGVkX2F0IjoxNjczMTg1MjU3fX0.7B4Q5RG0D-r2-73R_v6EWiftFaTRm2iexMn5ZkkFp-s'
+  refresh_token:
+    type: stirng
+    example: '39bb61f35019f8be79fdc0b54e8672e6'
+  token_type:
+    type: string
+    example: 'bearer'
+  # auth_data:
+  #   type: object
+  #   properties:

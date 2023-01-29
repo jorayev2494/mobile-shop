@@ -1,0 +1,6 @@
+name: x-device-id
+in: header
+required: true
+schema:
+  type: string
+  example: 'here-is-your-device-id-0NX-xUqHAZ2lOekzOdE'

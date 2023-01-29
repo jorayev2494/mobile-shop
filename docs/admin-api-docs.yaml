@@ -45,11 +45,31 @@ externalDocs:
 #   - name: Tag
 #     description: This is a tag description.
 servers:
-  - url: 'http://example.com/api/v1'
+  - url: 'http://127.0.0.1:8084/api/admin'
   - url: 'https://example.com/api/v1'
 paths:
-  /auth/admin/login:
-    $ref: paths/admin/login.yml
+  # Authentication
+  /auth/register:
+    $ref: paths/admin/auth/register.yml
+
+  /auth/login:
+    $ref: paths/admin/auth/login.yml
+
+  /auth/refresh-token:
+    $ref: paths/admin/auth/refreshToken.yml
+
+  /auth/logout:
+    $ref: paths/admin/auth/logout.yml
+  # End Authentication
+
+  /auth/restore-password/link:
+    $ref: paths/admin/auth/restore-password/link.yml
+
+  /auth/restore-password/restore:
+    $ref: paths/admin/auth/restore-password/restore.yml
+
+  /profile/get:
+    $ref: paths/admin/profile/get.yml
 
 components:
   securitySchemes:
