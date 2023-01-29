@@ -1,0 +1,5 @@
+type: object
+properties:
+  token:
+    type: string
+    example: 'e42855ebbd8f00915ef18a36706ca524'

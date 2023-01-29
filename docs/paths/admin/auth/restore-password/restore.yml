@@ -1,0 +1,10 @@
+put:
+  summary: Restore
+  tags: 
+    -  Restore password
+  requestBody: 
+    $ref: ../../../../components/requestBodies/admin/auth/restore-password/restore.yml
+  responses:
+    204:
+      description: 'No content'
+  

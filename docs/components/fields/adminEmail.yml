@@ -1,0 +1,6 @@
+type: object
+properties:
+  email:
+    type: string
+    example: 'admin@gmail.com'
+    uniqueItems: true

@@ -1,0 +1,12 @@
+post:
+  summary: 'Admin register'
+  tags: 
+    - Authentication
+  parameters: 
+    - $ref: ../../../components/parameters/deviceId.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/auth/Register.yml
+  responses: 
+    default: 
+      description: 'Test'
+    

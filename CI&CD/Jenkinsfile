@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Run pint') {
             steps {
-                sh 'echo Testing started'
+                sh 'echo Pint started'
                 sh 'make ps'
                 sh 'make pint-check'
             }

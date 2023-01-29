@@ -1,0 +1,5 @@
+type: object
+properties:
+  last_name:
+    type: string
+    example: 'Petrov'

@@ -1,0 +1,10 @@
+description: 'Get profile response'
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/id.yml
+        -  $ref: ../../../fields/firstNameAndLastName.yml
+      # properties: 
+      #   - $ref: ../../../fields/id.yml
