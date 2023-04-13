@@ -21,8 +21,12 @@ RUN apt-get update \
     && docker-php-ext-enable pdo_pgsql \
     && docker-php-ext-enable pgsql \
     # install
-    && apt-get -y install imagemagick php8.1-imagick php8.1-pcntl php8.1-gd php8.1-pgsql php8.1-sqlite nano php8.1-redis php-bcmath php8.1-zmq, pdo_pgsql pdo \
+    && apt-get -y install imagemagick php8.2-imagick php8.2-pcntl php8.2-gd php8.2-pgsql php8.2-sqlite nano php8.2-redis php-bcmath php8.2-zmq, pdo_pgsql pdo \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+# Xdebug
+RUN pecl install xdebug
+RUN docker-php-ext-enable xdebug
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 

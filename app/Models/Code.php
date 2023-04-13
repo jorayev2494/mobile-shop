@@ -10,13 +10,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * App\Models\Code
  *
  * @property-read Model|AuthModel|\Eloquent $codeAble
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Code newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Code newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Code query()
- *
  * @mixin \Eloquent
- *
  * @property int $id
  * @property int $code_able_id
  * @property string $code_able_type
@@ -27,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $expired_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereCodeAbleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereCodeAbleType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereCreatedAt($value)

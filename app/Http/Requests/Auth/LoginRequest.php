@@ -23,8 +23,8 @@ class LoginRequest extends FormRequest
     {
         return [
             'x-device-id' => ['required', 'string'],
-            'email' => ['email'],
-            'password' => ['string', 'min:6'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'string', 'min:6'],
         ];
     }
 }

@@ -10,7 +10,6 @@ namespace App\Models\Auth;
  * @method static \Illuminate\Database\Eloquent\Builder|Authenticatable newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Authenticatable newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Authenticatable query()
- *
  * @mixin \Eloquent
  */
 class Authenticatable extends \Illuminate\Foundation\Auth\User

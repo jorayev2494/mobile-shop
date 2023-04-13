@@ -19,19 +19,35 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthService implements ContractsAuthService
 {
+
+    private readonly AuthModel $authModel;
+
+    public function __construct(
+        private readonly AppGuardType $guard,
+    ) {
+        $this->authModel = $this->authModelFactory();
+    }
+
+    private function authModelFactory(): AuthModel
+    {
+        return resolve(auth()->guard($this->guard->value)->getProvider()->getModel());
+    }
+
     public function register(RegisterData $registerData): void
     {
-        $createdAdmin = Admin::query()->create([
+        $createdAdmin = $this->authModel::query()->create([
+            'first_name' => $registerData->first_name,
+            'last_name' => $registerData->last_name,
             'email' => $registerData->email,
             'password' => $registerData->password,
             'role_id' => 1,
         ]);
     }
 
-    public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::API): array
+    public function login(AuthCredentialsData $credentialsData): array
     {
         /** @var string|bool $token */
-        if (! ($token = Auth::guard($guard->value)->attempt($credentialsData->except('device_id')->toArray()))) {
+        if (! ($token = Auth::guard($this->guard->value)->attempt($credentialsData->except('device_id')->toArray()))) {
             throw new BadRequestException('Invalid credentials!');
         }
 
@@ -42,7 +58,7 @@ class AuthService implements ContractsAuthService
         );
     }
 
-    public function refreshToken(RefreshTokenData $data, AppGuardType $guard = AppGuardType::API): array
+    public function refreshToken(RefreshTokenData $data, AppGuardType $guard = AppGuardType::CLIENT): array
     {
         /** @var Device $device */
         $device = app()->call(DeviceRepository::class.'@refreshToken', ['deviceId' => $data->device_id, 'refreshToken' => $data->refresh_token]);

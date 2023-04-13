@@ -11,11 +11,12 @@ trait DeviceTrait
 {
     public function devices(): MorphMany
     {
-        return $this->morphMany(Device::class, 'device_able', 'device_able_type', 'device_able_id');
+        return $this->morphMany(Device::class, 'device_able', 'device_able_type', 'device_able_uuid');
     }
 
     public function addDevice(string $deviceId): Device
     {
+        // dd($deviceId);
         return $this->devices()->updateOrCreate([
             'device_id' => $deviceId,
         ],

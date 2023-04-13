@@ -2,7 +2,19 @@
 
 namespace App\Providers;
 
-use App\Http\Controllers\Api\Admin\Auth\AuthController;
+use App\Models\Enums\AppGuardType;
+use App\Repositories\CategoryRepository;
+use App\Repositories\Contracts\CategoryRepositoryInterface;
+use App\Repositories\Contracts\ProductRepositoryInterface;
+use App\Repositories\Contracts\RoleRepositoryInterface;
+use App\Repositories\ProductRepository;
+use App\Repositories\RoleRepository;
+use App\Services\Api\Admin\CategoryService;
+use App\Services\Api\Admin\Contracts\CategoryServiceInterface;
+use App\Services\Api\Admin\Contracts\ProductServiceInterface;
+use App\Services\Api\Admin\Contracts\RoleServiceInterface;
+use App\Services\Api\Admin\ProductService;
+use App\Services\Api\Admin\RoleService;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Contracts\AuthService as ContractAuthService;
 use Illuminate\Support\ServiceProvider;
@@ -11,14 +23,28 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->app->when(AuthController::class)
+        $this->app->when(\App\Http\Controllers\Api\Admin\Auth\AuthController::class)
                     ->needs(ContractAuthService::class)
-                    ->give(static fn (): AuthService => resolve(AuthService::class));
+                    ->give(static fn (): AuthService => resolve(AuthService::class, ['guard' => AppGuardType::ADMIN]));
 
-        $this->app->bind(
-            \App\Services\Api\Contracts\ProfileService::class,
-            static fn (): \App\Services\Api\ProfileService => new \App\Services\Api\ProfileService()
+        $this->app->when(\App\Http\Controllers\Api\Client\Auth\AuthController::class)
+                    ->needs(ContractAuthService::class)
+                    ->give(static fn (): AuthService => resolve(AuthService::class, ['guard' => AppGuardType::CLIENT]));
+
+        $this->app->bind(ContractAuthService::class, AuthService::class);
+
+        $this->app->bind(\App\Services\Api\Contracts\ProfileService::class, \App\Services\Api\ProfileService::class
         );
+
+        // Services
+        $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
+        $this->app->bind(ProductServiceInterface::class, ProductService::class);
+
+        // Repositories
+        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     public function boot(): void

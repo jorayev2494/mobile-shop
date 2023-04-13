@@ -29,7 +29,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        \Tymon\JWTAuth\Exceptions\JWTException::class,
     ];
 
     /**

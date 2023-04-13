@@ -35,7 +35,8 @@ class ProfileController extends Controller
         $data = AdminData::makeFromFormRequest($request);
 
         return response()->json(
-            $this->service->update($this->authModel, $data)
+            $this->service->update($this->authModel, $data),
+            Response::HTTP_ACCEPTED
         );
     }
 
