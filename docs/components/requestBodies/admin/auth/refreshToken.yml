@@ -1,0 +1,10 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      required: 
+        -  token
+        -  password
+        -  password_confirmation
+      allOf: 
+        -  $ref: ../../../fields/refreshToken.yml

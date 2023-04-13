@@ -78,15 +78,15 @@ migrate-reset:
 migrate-rollback:		## Run migrate rollback
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:rollback
 
+migrate-fresh-seed:			## Run migrate fresh and seed
+	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:fresh --seed
+
 migrate-refresh-seed:	## Run migrate refresh & seed
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:refresh --seed
 
 migrate-rollback-seed:	## Run migrate rollback & seed
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:rollback
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan db:seed
-
-migrate-fresh-seed:		## Run migrate fresh & seed
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:fresh --seed
 
 cc:						## Clear chash
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan optimize:clear
@@ -118,6 +118,12 @@ composer-remove:			## Compouser remove
 
 composer-remove-dev:			## Compouser remove dev
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer remove --dev $(package) --ignore-platform-reqs
+
+seed:							## Run Seeder
+	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artian db:seed --class=$(class)
+
+seed-class:						## Run Class Seeder
+	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan db:seed --class=$(class)
 
 .PHONY: help
 help:				## Show Project commands

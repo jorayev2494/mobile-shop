@@ -1,0 +1,11 @@
+content:
+  application/json:
+    schema:
+      type: object
+      required: 
+        -  email
+        -  password
+        -  password_confirmation
+      allOf: 
+        -  $ref: ../../../fields/adminEmail.yml
+        -  $ref: ../../../fields/passwordConfirmation.yml

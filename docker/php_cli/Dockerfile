@@ -14,7 +14,7 @@ RUN apt-get update \
     && docker-php-ext-enable pdo_pgsql \
     && docker-php-ext-enable pgsql \
     # Install
-    && apt-get -y --no-install-recommends install imagemagick php8.1-imagick php8.1-pgsql pdo_pgsql pdo nano php8.1-gd php8.1-redis php8.1-bcmath php8.1-zmq \
+    && apt-get -y --no-install-recommends install imagemagick php8.2-imagick php8.2-pgsql pdo_pgsql pdo nano php8.2-gd php8.2-redis php8.2-bcmath php8.2-zmq \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 #region Postgres Extensions

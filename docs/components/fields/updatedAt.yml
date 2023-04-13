@@ -1,0 +1,5 @@
+type: object
+properties:
+  updated_at:
+    type: integer
+    example: 1234345454

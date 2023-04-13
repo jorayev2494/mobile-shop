@@ -194,7 +194,21 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
 
+        // Infrastructure ServiceProviders
+        Project\Infrastructure\InfrastructureServiceProvider::class,
+        Project\Utils\UtilsServiceProvider::class,
+
+        // Domain ServiceProviders
+        Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
+        Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
+        Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
+
+        // Clients
+        Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,
+        Project\Domains\Client\Order\Infrastructure\OrderServiceProvider::class,
+        Project\Domains\Client\Favorite\Infrastructure\FavoriteServiceProvider::class,
     ],
 
     /*
@@ -210,6 +224,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
+        'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
     ])->toArray(),
 
 ];
