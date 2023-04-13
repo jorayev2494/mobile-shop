@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /docker/postgres/data
+/docker/postgres-learn/data
 /storage/*.key
 /vendor
 .env
