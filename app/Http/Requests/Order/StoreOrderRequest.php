@@ -20,8 +20,6 @@ class StoreOrderRequest extends FormRequest
         return [
             'email' => ['nullable', 'email'],
             'phone'  => ['nullable', 'string'],
-            'country_uuid'  => ['nullable', 'string', 'uuid'],
-            'street'  => ['required', 'string'],
             'description'  => ['nullable', 'string'],
 
             'products'  => ['required', 'array'],

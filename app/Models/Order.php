@@ -49,6 +49,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereQuality($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereSum($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
  */
 class Order extends Model
 {
@@ -62,9 +64,7 @@ class Order extends Model
         'client_uuid',
         'email',
         'phone',
-        'country_uuid',
         'client_uuid',
-        'street',
         'description',
         'status',
         'quality',

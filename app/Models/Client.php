@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Auth\AuthModel;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\User
@@ -45,6 +46,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $country_uuid
  * @property-read \App\Models\Country $country
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereCountryUuid($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $favorites
+ * @property-read int|null $favorites_count
  */
 class Client extends AuthModel
 {
@@ -84,5 +87,10 @@ class Client extends AuthModel
     public function favorites(): BelongsToMany
     {
         return $this->belongsToMany(Product::class, FavoriteClient::class, 'client_uuid', 'product_uuid');
+    }
+
+    public function addresses(): HasMany
+    {
+        return $this->hasMany(Address::class, 'client_uuid', 'uuid');
     }
 }

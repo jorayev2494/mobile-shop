@@ -12,42 +12,50 @@ use Illuminate\Support\Collection;
 
 class OrderSeeder extends Seeder
 {
+    /**
+     * @var Collection<TKey, Client> $clients
+     */
     private readonly Collection $clients;
-    private readonly Collection $countries;
+
+    /**
+     * @var Collection<TKey, Product> $products
+     */
     private readonly Collection $products;
 
     public function __construct()
     {
         $this->clients = Client::query()->get();
-        $this->countries = Country::query()->get();
         $this->products = Product::query()->get();
     }
 
     public function run(): void
     {
         for ($i = 0; $i < 50; $i++) {
+
+            $client = $this->clients->random(1)->first();
+
             /** @var Order $order */
             $order = Order::factory()->create([
-                'client_uuid' => $this->clients->random(1)->first()->uuid,
-                'country_uuid' => $this->countries->random(1)->first()->uuid,
+                'client_uuid' => $client->uuid,
+                'address_uuid' => $client->addresses->random(1)->first()->uuid,
                 'status' => OrderStatus::PAID,
                 'quality' => 0,
                 'sum' => 0,
                 'discard_sum' => 0,
             ]);
 
-            $order->update($this->itemsGenerate($order));
+            $order->update($this->productsGenerate($order));
         }
     }
 
-    private function itemsGenerate(Order $order, int $min = 2, int $max = 2): array
+    private function productsGenerate(Order $order, int $min = 2, int $max = 2): array
     {
         $quality = $sum = $discard_sum = 0;
 
         for ($j = 0; $j < random_int($min, $max); $j++) {
             $q = 0;
 
-            $order->items()->syncWithPivotValues(
+            $order->products()->syncWithPivotValues(
                 /** @var Collection<int, Product> $randomProducts */
                 $randomProducts = $this->products->random(1),
                 [

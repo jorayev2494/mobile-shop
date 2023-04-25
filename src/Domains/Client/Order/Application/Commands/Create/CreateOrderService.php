@@ -10,11 +10,9 @@ use Project\Domains\Client\Order\Domain\Order;
 use Project\Domains\Client\Order\Domain\OrderProductRepositoryInterface;
 use Project\Domains\Client\Order\Domain\OrderRepositoryInterface;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderClientUUID;
-use Project\Domains\Client\Order\Domain\ValueObjects\OrderCountryUUID;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderDescription;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderEmail;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderPhone;
-use Project\Domains\Client\Order\Domain\ValueObjects\OrderStreet;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderUUID;
 use Project\Shared\Domain\ValueObject\UuidValueObject;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
@@ -43,8 +41,6 @@ final class CreateOrderService
             OrderClientUUID::fromValue($this->client->uuid),
             OrderEmail::fromValue($command->email ?? $this->client->email),
             OrderPhone::fromValue($command->phone ?? $this->client->phone ?? '55'),
-            OrderCountryUUID::fromValue($command->country_uuid ?? $this->client->country_uuid),
-            OrderStreet::fromValue($command->street),
             OrderDescription::fromValue($command->description),
             'created',
             $command->quality,

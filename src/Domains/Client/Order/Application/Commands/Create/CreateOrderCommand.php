@@ -11,8 +11,6 @@ final class CreateOrderCommand extends Command
     public function __construct(
         public readonly ?string $email,
         public readonly ?string $phone,
-        public readonly ?string $country_uuid,
-        public readonly string $street,
         public readonly string $description,
 
         public readonly iterable $products,

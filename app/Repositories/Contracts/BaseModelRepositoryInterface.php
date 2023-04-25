@@ -16,9 +16,9 @@ interface BaseModelRepositoryInterface extends PaginateInterface
 
     public function findOrNull(string|int $value, string $field = null, array $columns = ['*']): ?Model;
 
-    public function findOrFail(string|int $value, string $field = 'id', array $columns = ['*']): Model;
+    public function findOrFail(string|int $value, string $field = null, array $columns = ['*']): Model;
 
-    public function findMany(iterable $values, string $field = 'id', array $columns = ['*']): Collection;
+    public function findMany(iterable $values, string $field = null, array $columns = ['*']): Collection;
 
     public function create(array $attributes = []): Model;
 

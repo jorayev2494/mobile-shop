@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\City
@@ -19,8 +21,28 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|City whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|City whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Country $country
  */
 class City extends Model
 {
     use HasFactory;
+    use HasUuids;
+
+    protected $primaryKey = 'uuid';
+
+    protected $fillable = [
+        'value',
+        'country_uuid',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class, 'country_uuid', 'uuid');
+    }
 }
