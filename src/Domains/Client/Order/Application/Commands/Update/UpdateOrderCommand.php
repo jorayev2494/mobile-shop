@@ -12,8 +12,6 @@ final class UpdateOrderCommand extends Command
         public readonly string $uuid,
         public readonly ?string $email,
         public readonly ?string $phone,
-        public readonly ?string $country_uuid,
-        public readonly string $street,
         public readonly string $description,
 
         public readonly iterable $products,

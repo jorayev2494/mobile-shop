@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Country
@@ -26,6 +27,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Country whereValue($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
+ * @property-read int|null $cities_count
  */
 class Country extends Model
 {
@@ -38,5 +41,10 @@ class Country extends Model
         'created_at' => 'timestamp',
         'updated_at' => 'timestamp',
     ];
+
+    public function cities(): HasMany
+    {
+        return $this->hasMany(City::class, 'country_uuid', 'uuid');
+    }
 
 }

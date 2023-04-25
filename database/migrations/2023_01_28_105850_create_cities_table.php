@@ -6,25 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
+    public function up(): void
     {
-        Schema::create('cities', function (Blueprint $table) {
-            $table->id();
+        Schema::create('cities', static function (Blueprint $table): void {
+            $table->uuid()->primary();
+
+            $table->string('value');
+            $table->foreignUuid('country_uuid')->references('uuid')->on('countries');
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('cities');
     }

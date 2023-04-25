@@ -22,7 +22,7 @@ Route::prefix('auth')->name('auth.')->group(static function (Router $router): vo
 });
 
 Route::group([
-    // 'middleware' => 'auth:admin'
+    'middleware' => 'auth:admin'
 ], static function (Router $router): void {
     $router->group(['prefix' => 'profile', 'controller' => ProfileController::class, 'as' => 'profile.'], static function (Router $router): void {
         $router->get('/', 'show')->name('show');

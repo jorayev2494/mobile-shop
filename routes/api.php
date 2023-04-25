@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Client\AddressController;
 use App\Http\Controllers\Api\Client\Auth\AuthController;
 use App\Http\Controllers\Api\Client\Auth\Restore\RestorePasswordController;
 use App\Http\Controllers\Api\Client\FavoriteController;
@@ -26,8 +27,8 @@ Route::group(['as' => 'products'], static function (Router $router): void {
 });
 
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
-    // Addresses
     // Cards
+    $router->apiResource('/addresses', AddressController::class);
     $router->apiResource('/orders', OrderController::class);
     $router->group(['prefix' => 'favorites', 'controller' => FavoriteController::class], static function (Router $router): void {
         $router->get('/', 'index');

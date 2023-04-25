@@ -9,15 +9,12 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class CityFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'value' => $this->faker->city(),
+            'country_uuid' => null,
+            // 'is_active' => $this->faker->boolean,
         ];
     }
 }

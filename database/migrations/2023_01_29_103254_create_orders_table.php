@@ -17,9 +17,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
 
             // $table->uuid('country_uuid');
-            $table->foreignUuid('country_uuid')->references('uuid')->on('countries');
+            $table->foreignUuid('address_uuid')->references('uuid')->on('addresses');
 
-            $table->string('street');
             $table->text('description')->nullable();
             $table->string('status');
 
