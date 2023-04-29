@@ -12,6 +12,8 @@ final class CreateOrderCommand extends Command
         public readonly ?string $email,
         public readonly ?string $phone,
         public readonly string $description,
+        public readonly string $card_uuid,
+        public readonly string $address_uuid,
 
         public readonly iterable $products,
 

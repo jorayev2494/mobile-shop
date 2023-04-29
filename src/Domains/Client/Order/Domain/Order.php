@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Domain;
 
+use Project\Domains\Client\Order\Domain\ValueObjects\OrderAddressUUID;
+use Project\Domains\Client\Order\Domain\ValueObjects\OrderCardUUID;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderClientUUID;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderDescription;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderEmail;
@@ -19,6 +21,8 @@ final class Order extends AggregateRoot
         public readonly OrderEmail $email,
         public readonly OrderPhone $phone,
         public readonly OrderDescription $description,
+        public readonly OrderCardUUID $cardUUID,
+        public readonly OrderAddressUUID $addressUUID,
         public readonly string $status,
         public readonly int $quality,
         public readonly float $sum,
@@ -35,13 +39,15 @@ final class Order extends AggregateRoot
         OrderEmail $email,
         OrderPhone $phone,
         OrderDescription $description,
+        OrderCardUUID $cardUUID,
+        OrderAddressUUID $addressUUID,
         string $status,
         int $quality,
         float $sum,
         float $discardSum,
     ): self
     {
-        return new self($uuid, $orderClientUUID, $email, $phone, $description, $status, $quality, $sum, $discardSum, true);
+        return new self($uuid, $orderClientUUID, $email, $phone, $description, $cardUUID, $addressUUID, $status, $quality, $sum, $discardSum, true);
     }
 
     // public static function fromPrimitives(
@@ -85,6 +91,8 @@ final class Order extends AggregateRoot
             'email' => $this->email->value,
             'phone' => $this->phone->value,
             'description' => $this->description->value,
+            'card_uuid' => $this->cardUUID->value,
+            'address_uuid' => $this->addressUUID->value,
             'status' => $this->status,
             'quality' => $this->quality,
             'sum' => $this->sum,

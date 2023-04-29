@@ -3,8 +3,9 @@
 use App\Http\Controllers\Api\Client\AddressController;
 use App\Http\Controllers\Api\Client\Auth\AuthController;
 use App\Http\Controllers\Api\Client\Auth\Restore\RestorePasswordController;
+use App\Http\Controllers\Api\Client\CardController;
 use App\Http\Controllers\Api\Client\FavoriteController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Api\Client\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::group(['as' => 'products'], static function (Router $router): void {
 });
 
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
-    // Cards
+    $router->apiResource('/cards', CardController::class);
     $router->apiResource('/addresses', AddressController::class);
     $router->apiResource('/orders', OrderController::class);
     $router->group(['prefix' => 'favorites', 'controller' => FavoriteController::class], static function (Router $router): void {

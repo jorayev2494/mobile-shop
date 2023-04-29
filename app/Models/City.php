@@ -22,6 +22,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|City whereUpdatedAt($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Country $country
+ * @property string $uuid
+ * @property string $value
+ * @property string $country_uuid
+ * @property bool $is_active
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereCountryUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereIsActive($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|City whereValue($value)
  */
 class City extends Model
 {
