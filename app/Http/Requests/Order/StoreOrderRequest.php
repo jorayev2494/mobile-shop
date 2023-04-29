@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Order;
 
+use App\Models\Address;
 use App\Models\Auth\AppAuth;
+use App\Models\Card;
 use App\Models\Enums\AppGuardType;
 use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
@@ -21,6 +23,8 @@ class StoreOrderRequest extends FormRequest
             'email' => ['nullable', 'email'],
             'phone'  => ['nullable', 'string'],
             'description'  => ['nullable', 'string'],
+            'card_uuid'  => ['required', 'string', Rule::exists(Card::class, 'uuid')],
+            'address_uuid'  => ['required', 'string', Rule::exists(Address::class, 'uuid')],
 
             'products'  => ['required', 'array'],
             'products.*' => Rule::forEach(

@@ -210,6 +210,7 @@ return [
         Project\Domains\Client\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Client\Favorite\Infrastructure\FavoriteServiceProvider::class,
         Project\Domains\Client\Address\Infrastructure\AddressServiceProvider::class,
+        Project\Domains\Client\Card\Infrastructure\CardServiceProvider::class,
     ],
 
     /*

@@ -48,6 +48,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Client whereCountryUuid($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $favorites
  * @property-read int|null $favorites_count
+ * @property string $phone
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Address[] $addresses
+ * @property-read int|null $addresses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Card[] $cards
+ * @property-read int|null $cards_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Client wherePhone($value)
  */
 class Client extends AuthModel
 {
@@ -92,5 +98,10 @@ class Client extends AuthModel
     public function addresses(): HasMany
     {
         return $this->hasMany(Address::class, 'client_uuid', 'uuid');
+    }
+
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class, 'client_uuid', 'uuid');
     }
 }

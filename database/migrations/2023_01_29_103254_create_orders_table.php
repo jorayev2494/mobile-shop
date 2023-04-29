@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
 
-            // $table->uuid('country_uuid');
+            $table->foreignUuid('card_uuid')->references('uuid')->on('cards');
             $table->foreignUuid('address_uuid')->references('uuid')->on('addresses');
 
             $table->text('description')->nullable();

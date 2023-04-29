@@ -15,6 +15,7 @@ class OrderFactory extends Factory
             'client_uuid' => null,
             'email' => $this->faker->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
+            'card_uuid' => null,
             'address_uuid' => null,
             'description' => $this->faker->boolean ? $this->faker->realText() : null,
             'status' => 'created',
