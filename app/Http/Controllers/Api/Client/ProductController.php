@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\Client;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\Collection\ProductCollectionResource;
 use App\Http\Resources\ProductResource;
-use App\Models\Product;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

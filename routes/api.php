@@ -1,15 +1,20 @@
 <?php
 
-use App\Http\Controllers\Api\Client\AddressController;
 use App\Http\Controllers\Api\Client\Auth\AuthController;
 use App\Http\Controllers\Api\Client\Auth\Restore\RestorePasswordController;
-use App\Http\Controllers\Api\Client\CardController;
-use App\Http\Controllers\Api\Client\FavoriteController;
-use App\Http\Controllers\Api\Client\OrderController;
-use App\Http\Controllers\ProductController;
+
+use App\Http\Controllers\Api\Client\{
+    AddressController,
+    CardController,
+    FavoriteController,
+    OrderController,
+    ProductController,
+};
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 
+// /** @var Illuminate\Routing\Router $router */
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
     $router->post('/register', [AuthController::class, 'register'])->name('register');
     $router->post('/login', [AuthController::class, 'login'])->name('login');

@@ -10,7 +10,9 @@
         "laravel/framework": "^9.47.0",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "php-amqplib/php-amqplib": "^2.0",
         "spatie/laravel-data": "^2.2",
+        "symfony/messenger": "^6.2",
         "tymon/jwt-auth": "*"
     },
     "require-dev": {

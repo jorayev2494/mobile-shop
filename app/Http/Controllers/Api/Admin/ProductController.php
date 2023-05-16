@@ -26,13 +26,11 @@ use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductComma
 class ProductController extends Controller
 {
 
-    private readonly ?AuthModel $authModel;
-
     public function __construct(
         private readonly ResponseFactory $response,
     )
     {
-        $this->authModel = AppAuth::model(AppGuardType::ADMIN) ?? Admin::factory()->create();
+        
     }
 
     public function index(Request $request, GetProductsQueryHandler $handler): JsonResponse
@@ -51,6 +49,7 @@ class ProductController extends Controller
             $request->get('currency_uuid'),
             $request->get('price'),
             $request->get('discount_presence'),
+            $request->file('medias'),
             $request->get('description'),
             $request->get('is_active'),
         );
