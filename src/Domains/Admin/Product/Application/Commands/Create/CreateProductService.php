@@ -7,11 +7,13 @@ namespace Project\Domains\Admin\Product\Application\Commands\Create;
 use Illuminate\Http\UploadedFile;
 use Project\Domains\Admin\Product\Domain\Product;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 
 final class CreateProductService
 {
     public function __construct(
         private readonly ProductRepositoryInterface $repository,
+        private readonly EventBusInterface $eventBus,
     )
     {
 
@@ -25,5 +27,6 @@ final class CreateProductService
         }
 
         $this->repository->save($product);
+        $this->eventBus->publish(...$product->pullDomainEvents());
     }
 }

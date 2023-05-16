@@ -2,11 +2,11 @@
 
 namespace Project\Shared\Domain\Bus\Event;
 
-interface EventBus
+interface EventBusInterface
 {
-    public function dispatch(Event ...$events): void;
+    // public function dispatch(Event ...$events): void;
 
-    // public function publish(DomainEvent ...$events): void;
+    public function publish(DomainEvent ...$events): void;
 
     // public function subscribe(DomainEventSubscriber $subscriber): void;
 
