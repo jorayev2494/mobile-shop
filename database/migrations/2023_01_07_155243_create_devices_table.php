@@ -11,7 +11,7 @@ return new class() extends Migration
         Schema::create('devices', static function (Blueprint $table): void {
             $table->bigIncrements('id');
 
-            $table->unsignedBigInteger('device_able_id');
+            $table->uuid('device_able_uuid');
             $table->string('device_able_type');
 
             $table->string('refresh_token')->unique();

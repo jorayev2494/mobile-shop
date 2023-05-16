@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 enum AppGuardType: string
 {
-    case API = 'api';
+    case CLIENT = 'client';
     case ADMIN = 'admin';
 
     public static function guard(): ?string
     {
         return match (true) {
-            Auth::guard(static::API->value)->check() => static::API->value,
+            Auth::guard(static::CLIENT->value)->check() => static::CLIENT->value,
             Auth::guard(static::ADMIN->value)->check() => static::ADMIN->value,
             default => null
         };

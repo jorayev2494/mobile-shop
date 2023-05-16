@@ -13,15 +13,17 @@ use App\Http\Requests\Auth\RegisterRequest;
 use App\Models\Auth\AppAuth;
 use App\Models\Enums\AppGuardType;
 use App\Services\Api\Contracts\AuthService;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
 class AuthController extends Controller
 {
     public function __construct(
+        private readonly ResponseFactory $response,
         private readonly AuthService $service,
     ) {
-        parent::middleware('guest')->except('logout');
+        // parent::middleware('guest')->except('logout');
     }
 
     public function register(RegisterRequest $request): Response
@@ -29,7 +31,7 @@ class AuthController extends Controller
         $registerData = RegisterData::makeFromFormRequest($request);
         $this->service->register($registerData);
 
-        return response()->noContent(Response::HTTP_ACCEPTED);
+        return $this->response->noContent(Response::HTTP_ACCEPTED);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -37,7 +39,7 @@ class AuthController extends Controller
         $data = AuthCredentialsData::makeFromFormRequest($request);
         $result = $this->service->login($data, AppGuardType::ADMIN);
 
-        return response()->json($result);
+        return $this->response->json($result);
     }
 
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
@@ -45,13 +47,13 @@ class AuthController extends Controller
         $data = RefreshTokenData::makeFromFormRequest($request);
         $result = $this->service->refreshToken($data);
 
-        return response()->json($result, Response::HTTP_ACCEPTED);
+        return $this->response->json($result, Response::HTTP_ACCEPTED);
     }
 
     public function logout(LogoutRequest $request): Response
     {
         $this->service->logout(AppAuth::model(), $request->headers->get('x-device-id'));
 
-        return response()->noContent();
+        return $this->response->noContent();
     }
 }

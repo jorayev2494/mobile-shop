@@ -119,6 +119,12 @@ composer-remove:			## Compouser remove
 composer-remove-dev:			## Compouser remove dev
 	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer remove --dev $(package) --ignore-platform-reqs
 
+seed:							## Run Seeder
+	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artian db:seed --class=$(class)
+
+seed-class:						## Run Class Seeder
+	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan db:seed --class=$(class)
+
 .PHONY: help
 help:				## Show Project commands
 	@#echo ${Cyan}"\t\t This project 'job' REST API Server!"

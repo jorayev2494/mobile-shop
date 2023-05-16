@@ -21,9 +21,9 @@ class AppAuth
         return Auth::admin();
     }
 
-    public static function user(): ?User
+    public static function client(): ?User
     {
-        return Auth::user();
+        return Auth::client();
     }
 
     public static function check(AppGuardType $guard = null): bool

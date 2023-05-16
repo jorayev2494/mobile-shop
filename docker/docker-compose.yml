@@ -87,6 +87,24 @@ services:
     networks:
         - shop-network
 
+  postgres-learn:
+    image: postgres:12
+    container_name: ${COMPOSE_PROJECT_NAME}-postgres-learn
+    restart: unless-stopped
+    volumes:
+        - ./postgres-learn/data/:/var/lib/postgresql/data
+    environment:
+        POSTGRES_DB: devdb
+        POSTGRES_USER: devuser
+        POSTGRES_PASSWORD: devsecret
+        PGDATA: /var/lib/postgresql/data/pgdata
+    # expose:
+    #     - 9000
+    ports:
+        - 5430:5432
+    networks:
+        - shop-network
+
   # Postgres Service
   test-postgres:
     image: postgres:12
@@ -104,33 +122,33 @@ services:
     networks:
         - test-shop-network
     # Mailhog Service
-  mailhog:
-    image: mailhog/mailhog:latest
-    container_name: ${COMPOSE_PROJECT_NAME}-mailhog
-    restart: unless-stopped
-    depends_on:
-        - php-fpm
-    ports:
-        - ${MAILHOG_INTERFACE_PORT}:8025
-        # - ${MAILHOG_PORT}:1025
-    networks:
-        - test-shop-network
+#   mailhog:
+#     image: mailhog/mailhog:latest
+#     container_name: ${COMPOSE_PROJECT_NAME}-mailhog
+#     restart: unless-stopped
+#     depends_on:
+#         - php-fpm
+#     ports:
+#         - ${MAILHOG_INTERFACE_PORT}:8025
+#         # - ${MAILHOG_PORT}:1025
+#     networks:
+#         - test-shop-network
 
   # RabbitMQ Service
-  rebbitmq:
-    image: rabbitmq:3.9.1-management
-    container_name: ${COMPOSE_PROJECT_NAME}-rabbitmq
-    restart: unless-stopped
-    ports:
-      - ${RABBIT_MQ_MANAGEMENT}:15672
-      - ${RABBIT_MQ_PORT}:5672
-    # environment:
-        # RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-        # RABBITMQ_DEFAULT_USER: guest # default: guest
-        # RABBITMQ_DEFAULT_PASS: guest # default: guest
-        # RABBITMQ_DEFAULT_VHOST: /
-    networks:
-        - test-shop-network
+#   rebbitmq:
+#     image: rabbitmq:3.9.1-management
+#     container_name: ${COMPOSE_PROJECT_NAME}-rabbitmq
+#     restart: unless-stopped
+#     ports:
+#       - ${RABBIT_MQ_MANAGEMENT}:15672
+#       - ${RABBIT_MQ_PORT}:5672
+#     # environment:
+#         # RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+#         # RABBITMQ_DEFAULT_USER: guest # default: guest
+#         # RABBITMQ_DEFAULT_PASS: guest # default: guest
+#         # RABBITMQ_DEFAULT_VHOST: /
+#     networks:
+#         - test-shop-network
 
   # Swager Service
   swagger-ui:
@@ -149,6 +167,16 @@ services:
                 ]"
     networks:
         - shop-network
+
+#   adminer:
+#     image: adminer
+#     restart: unless-stopped
+#     ports:
+#       - 8000:8080
+#     environment:
+#       - ADMINER_DEFAULT_SERVER=postgres-learn
+#     networks:
+#         - shop-network
 
 networks:
   shop-network:

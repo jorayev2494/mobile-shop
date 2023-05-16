@@ -4,10 +4,18 @@ declare(strict_types=1);
 
 namespace App\Repositories\Base;
 
+use App\Data\Requests\IndexRequestDTO;
+use App\Repositories\Contracts\BaseModelRepositoryInterface;
+use App\Repositories\Pipelines\Filters\RelationFilter;
+use App\Repositories\Pipelines\Filters\StringFilter;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pipeline\Pipeline;
+use Project\Shared\Application\Query\BaseQuery;
 
-abstract class BaseModelRepository
+abstract class BaseModelRepository implements BaseModelRepositoryInterface
 {
     protected Model $model;
 
@@ -30,26 +38,26 @@ abstract class BaseModelRepository
         return $this->getModelClone()->newQuery()->get($columns);
     }
 
-    public function findOrNull(string|int $value, string $field = 'id', array $columns = ['*']): ?Model
+    public function findOrNull(string|int $value, string $field = null, array $columns = ['*']): ?Model
     {
         return $this->getModelClone()->newQuery()
-                                    ->where($field, $value)
+                                    ->where($field ?? $this->getModelClone()->getKeyName(), $value)
                                     // ->with($this->getWith())
                                     ->first($columns);
     }
 
-    public function findOrFail(string|int $value, string $field = 'id', array $columns = ['*']): Model
+    public function findOrFail(string|int $value, string $field = null, array $columns = ['*']): Model
     {
         return $this->getModelClone()->newQuery()
-                                    ->where($field, $value)
+                                    ->where($field ?? $this->getModelClone()->getKeyName(), $value)
                                     // ->with($this->getWith())
                                     ->firstOrFail($columns);
     }
 
-    public function findMany(iterable $values, string $field = 'id', array $columns = ['*']): Collection
+    public function findMany(iterable $values, string $field = null, array $columns = ['*']): Collection
     {
         return $this->getModelClone()->newQuery()
-                                    ->whereIn($field, $values)
+                                    ->whereIn($field ?? $this->getModelClone()->getKeyName(), $values)
                                     // ->with($this->getWith())
                                     ->get($columns);
     }
@@ -64,6 +72,59 @@ abstract class BaseModelRepository
             ->fresh(
                 // $this->getWith()
             );
+    }
+
+    public function paginate(BaseQuery $queryData, iterable $columns = ['+']): LengthAwarePaginator
+    {
+        /** @var Builder $build */
+        $query = $this->getModelClone()->newQuery();
+
+        $this->search($queryData, $query)
+            ->sort($queryData, $query)
+            ->filters($queryData, $query);
+
+        return $query->paginate($queryData->per_page);
+    }
+
+    protected function search(BaseQuery $dataDTO, Builder $query = null): self
+    {
+        $query ??= $this->getModelClone();
+
+        if (! is_null($dataDTO->search_by) && ! is_null($dataDTO->search)) {
+            $query->where($dataDTO->search_by, 'LIKE', "%{$dataDTO->search}%");
+        }
+
+        return $this;
+    }
+
+    protected function sort(BaseQuery $dataDTO, Builder $query = null): self
+    {
+        $query ??= $this->getModelClone();
+
+        if (! is_null($dataDTO->sort_by)) {
+            $query->orderBy($dataDTO->sort_by, $dataDTO->is_sort_desc ? 'DESC' : 'ASC');
+        }
+
+        return $this;
+    }
+
+    public function filters(BaseQuery $dataDTO, Builder $query): self
+    {
+        $query ??= $this->getModelClone();
+
+        /** @var Pipeline $pipeline */
+        $pipeline = resolve(Pipeline::class);
+    
+        foreach ($dataDTO->filters as $key => ['type' => $type, 'value' => $value]) {
+            $pipeline->send(compact('query', 'type', 'key', 'value'))
+                ->through([
+                    RelationFilter::class,
+                    StringFilter::class,
+                ])
+                ->thenReturn();
+        }
+
+        return $this;
     }
 
     protected function getModelClone(): Model

@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App;
 use App\Models\Admin;
+use App\Models\Client;
 use App\Models\Enums\AppGuardType;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Tymon\JWTAuth\JWTGuard;
@@ -34,6 +35,11 @@ class AuthServiceProvider extends ServiceProvider
         JWTGuard::macro(
             'admin',
             fn (): ?Admin => App::make('auth')->guard(AppGuardType::ADMIN)->user()
+        );
+
+        JWTGuard::macro(
+            'client',
+            fn (): ?Client => App::make('auth')->guard(AppGuardType::CLIENT)->user()
         );
 
         //

@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property bool $is_active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Database\Factories\PermissionFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newQuery()
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereModel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereValue($value)
- *
  * @mixin \Eloquent
  */
 class Permission extends Model

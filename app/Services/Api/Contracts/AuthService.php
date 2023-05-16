@@ -12,7 +12,7 @@ interface AuthService
 {
     public function register(RegisterData $registerData): void;
 
-    public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::API): array;
+    public function login(AuthCredentialsData $credentialsData): array;
 
     public function refreshToken(RefreshTokenData $data): array;
 

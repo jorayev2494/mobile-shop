@@ -2,29 +2,23 @@
 
 namespace App\Http\Requests\Admin\Profile;
 
+use App\Models\Admin;
+use App\Models\Auth\AppAuth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileUpdateRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return AppAuth::check();
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'first_name' => ['string', 'min:2', 'max:255'],
+            'last_name' => ['string', 'min:2', 'max:255'],
+            'email' => ['email', 'unique:' . Admin::class . ',email', 'max:255'],
         ];
     }
 }

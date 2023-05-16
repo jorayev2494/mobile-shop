@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $expired_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Device newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Device newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Device query()
@@ -43,15 +42,17 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Device whereRefreshToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Device whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Device whereUserAgent($value)
- *
  * @mixin \Eloquent
+ * @property-read Model|\Eloquent $deviceAble
+ * @property string $device_able_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Device whereDeviceAbleUuid($value)
  */
 class Device extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'device_able_id',
+        'device_able_uuid',
         'device_able_type',
         'refresh_token',
         'device_id',

@@ -9,6 +9,7 @@ use App\Models\Traits\CodeTrait;
 use App\Models\Traits\DeviceTrait;
 use App\Models\Traits\RestorePasswordTrait;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -18,11 +19,13 @@ abstract class AuthModel extends JWTAuth implements Device
     use HasFactory;
 
     // use MustVerifyEmail;
-    // use HasUuids;
+    use HasUuids;
     use Notifiable;
     use DeviceTrait;
     use CodeTrait;
     use RestorePasswordTrait;
+
+    protected $primaryKey = 'uuid';
 
     public function password(): Attribute
     {
