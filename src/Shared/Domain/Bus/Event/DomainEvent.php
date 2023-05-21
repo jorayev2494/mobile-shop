@@ -4,31 +4,44 @@ declare(strict_types=1);
 
 namespace Project\Shared\Domain\Bus\Event;
 
+use Project\Shared\Domain\ValueObject\UuidValueObject;
+
 abstract class DomainEvent implements Event
 {
-    public const TYPE = 'event';
+    private string $aggregateId;
+    private string $eventId;
+    private string $occurredOn;
 
-    protected readonly EventUUID $eventUUID;
-    
-    protected readonly string $firedAt;
-
-    public function __construct()
+    public function __construct(string $aggregateId, string $eventId = null, string $occurredOn = null)
     {
-        $this->eventUUID = new EventUUID();
-        $this->firedAt = date('Y-m-d H:i:s');
+        $this->aggregateId = $aggregateId;
+        $this->eventId = $eventId ?: UuidValueObject::generate()->value;
+        $this->occurredOn = $occurredOn ?: (new \DateTimeImmutable())->format('Y-m-d H:i:s.u T');
     }
 
-    public function getType(): string
+    abstract public static function fromPrimitives(
+        string $aggregateId,
+        array $body,
+        string $eventId,
+        string $occurredOn,
+    ): self;
+
+    abstract public static function eventName(): string;
+
+    // abstract public function toPrimitives(): array;
+
+    public function aggregateId(): string
     {
-        return static::TYPE;
+        return $this->aggregateId;
     }
 
-    public function jsonSerialize() : array
+    public function eventId(): string
     {
-        return [
-            'type'      => $this->getType(),
-            'event_id'  => (string) $this->eventUUID,
-            'fired_at'  => $this->firedAt,
-        ];
+        return $this->eventId;
+    }
+
+    public function occurredOn(): string
+    {
+        return $this->occurredOn;
     }
 }

@@ -3,8 +3,9 @@
 namespace Project\Shared\Domain\Bus\Event;
 
 use Illuminate\Contracts\Support\Arrayable;
+use JsonSerializable;
 
-interface Event extends \JsonSerializable, Arrayable
+interface Event extends Arrayable
 {
-    public function getType(): string;
+    
 }

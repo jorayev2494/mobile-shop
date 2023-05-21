@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Shared\Domain\Bus\Query;
 
 /**
- * Interface QueryHandler
+ * Interface Query
  *
  * @package Project\Shared\Domain\Bus\Query
  */
-interface QueryHandler
+interface QueryInterface
 {
 
 }

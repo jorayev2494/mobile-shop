@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Product\Domain;
 
 use Project\Domains\Admin\Product\Domain\Events\ProductCreatedEvent;
+use Project\Domains\Admin\Product\Domain\Events\ProductWasCreated;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCategoryUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCurrencyUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductDiscountPercentage;
@@ -59,7 +60,7 @@ class Product extends AggregateRoot
     ): self
     {
         $product = new self($uuid, $title, $categoryUUID, $currencyUUID, $price, $discountPercentage, $medias, 0, $description, $isActive);
-        $product->record(new ProductCreatedEvent($product));
+        $product->record(new ProductWasCreated($product->uuid->value, $product));
 
         return $product;
     }

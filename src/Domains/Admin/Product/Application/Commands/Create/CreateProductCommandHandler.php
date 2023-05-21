@@ -10,8 +10,9 @@ use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCategoryUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCurrencyUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductDiscountPercentage;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductPrice;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class CreateProductCommandHandler
+final class CreateProductCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CreateProductService $service,
@@ -20,12 +21,10 @@ final class CreateProductCommandHandler
 
     }
 
-    public function __invoke(CreateProductCommand $command): array
+    public function __invoke(CreateProductCommand $command): void
     {
-        $productUUID = ProductUUID::generate();
-
         $product = Product::create(
-            $productUUID,
+            ProductUUID::fromValue($command->uuid),
             $command->title,
             ProductCategoryUUID::fromValue($command->categoryUUID),
             ProductCurrencyUUID::fromValue($command->currencyUUID),
@@ -37,7 +36,5 @@ final class CreateProductCommandHandler
         );
 
         $this->service->execute($product);
-
-        return ['uuid' => $productUUID->value];
     }
 }
