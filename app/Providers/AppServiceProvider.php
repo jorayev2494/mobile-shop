@@ -18,11 +18,19 @@ use App\Services\Api\Admin\RoleService;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Contracts\AuthService as ContractAuthService;
 use Illuminate\Support\ServiceProvider;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
+use Project\Shared\Domain\Bus\Query\QueryBusInterface;
+use Project\Shared\Infrastructure\Bus\Messenger\MessengerEventBus;
+use Project\Shared\Infrastructure\Bus\Messenger\MessengerQueryBus;
+use Project\Shared\Infrastructure\Bus\Messenger\MessengerCommandBus;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->registerBuses();
+
         $this->app->when(\App\Http\Controllers\Api\Admin\Auth\AuthController::class)
                     ->needs(ContractAuthService::class)
                     ->give(static fn (): AuthService => resolve(AuthService::class, ['guard' => AppGuardType::ADMIN]));
@@ -50,5 +58,23 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+    }
+
+    private function registerBuses(): void
+    {
+        $this->app->bind(
+            EventBusInterface::class,
+            static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerEventBus => new MessengerEventBus($app->tagged('domain_event_subscriber'))
+        );
+
+        $this->app->bind(
+            QueryBusInterface::class,
+            static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerQueryBus => new MessengerQueryBus($app->tagged('query_handler'))
+        );
+
+        $this->app->bind(
+            CommandBusInterface::class,
+            static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerCommandBus => new MessengerCommandBus($app->tagged('command_handler'))
+        );
     }
 }

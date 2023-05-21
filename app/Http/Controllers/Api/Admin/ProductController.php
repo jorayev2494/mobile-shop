@@ -22,12 +22,16 @@ use Project\Domains\Admin\Product\Application\Commands\Delete\DeleteProductComma
 use Project\Domains\Admin\Product\Application\Commands\Delete\DeleteProductCommandHandler;
 use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductCommand;
 use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductCommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use Project\Shared\Domain\UuidGeneratorInterface;
 
 class ProductController extends Controller
 {
 
     public function __construct(
         private readonly ResponseFactory $response,
+        private readonly CommandBusInterface $commandBus,
+        private readonly UuidGeneratorInterface $uuidGenerator,
     )
     {
         
@@ -41,9 +45,12 @@ class ProductController extends Controller
         return $this->response->json($result);
     }
 
-    public function store(Request $request, CreateProductCommandHandler $handler): JsonResponse
+    public function store(Request $request): JsonResponse
     {
+        $uuid = $request->get('uuid', $this->uuidGenerator->generate());
+
         $commandData = new CreateProductCommand(
+            $uuid,
             $request->get('title'),
             $request->get('category_uuid'),
             $request->get('currency_uuid'),
@@ -51,12 +58,12 @@ class ProductController extends Controller
             $request->get('discount_presence'),
             $request->file('medias'),
             $request->get('description'),
-            $request->get('is_active'),
+            $request->get('is_active', true),
         );
 
-        $result = $handler($commandData);
+        $this->commandBus->dispatch($commandData);
 
-        return $this->response->json($result, Response::HTTP_CREATED);
+        return $this->response->json(['uuid' => $uuid], Response::HTTP_CREATED);
     }
 
     public function show(FindProductQueryHandler $handler, string $uuid): JsonResponse
