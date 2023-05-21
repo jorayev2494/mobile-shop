@@ -195,6 +195,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        // Doctrine
+        LaravelDoctrine\ORM\DoctrineServiceProvider::class,
+        // LaravelDoctrine\Migrations\MigrationsServiceProvider::class,
 
         // Infrastructure ServiceProviders
         Project\Infrastructure\InfrastructureServiceProvider::class,
@@ -228,6 +231,10 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,
         'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,
+
+        'EntityManager' => LaravelDoctrine\ORM\Facades\EntityManager::class,
+        'Registry'      => LaravelDoctrine\ORM\Facades\Registry::class,
+        'Doctrine'      => LaravelDoctrine\ORM\Facades\Doctrine::class,
     ])->toArray(),
 
 ];

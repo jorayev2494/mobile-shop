@@ -87,23 +87,23 @@ services:
     networks:
         - shop-network
 
-  postgres-learn:
-    image: postgres:12
-    container_name: ${COMPOSE_PROJECT_NAME}-postgres-learn
-    restart: unless-stopped
-    volumes:
-        - ./postgres-learn/data/:/var/lib/postgresql/data
-    environment:
-        POSTGRES_DB: devdb
-        POSTGRES_USER: devuser
-        POSTGRES_PASSWORD: devsecret
-        PGDATA: /var/lib/postgresql/data/pgdata
-    # expose:
-    #     - 9000
-    ports:
-        - 5430:5432
-    networks:
-        - shop-network
+#   postgres-learn:
+#     image: postgres:12
+#     container_name: ${COMPOSE_PROJECT_NAME}-postgres-learn
+#     restart: unless-stopped
+#     volumes:
+#         - ./postgres-learn/data/:/var/lib/postgresql/data
+#     environment:
+#         POSTGRES_DB: devdb
+#         POSTGRES_USER: devuser
+#         POSTGRES_PASSWORD: devsecret
+#         PGDATA: /var/lib/postgresql/data/pgdata
+#     # expose:
+#     #     - 9000
+#     ports:
+#         - 5430:5432
+#     networks:
+#         - shop-network
 
   # Postgres Service
   test-postgres:
