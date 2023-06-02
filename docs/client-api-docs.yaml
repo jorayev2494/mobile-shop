@@ -10,7 +10,8 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
-    url: 'https://redocly.github.io/openapi-template/logo.png'
+    url: 'https://cdni.iconscout.com/illustration/premium/thumb/programmers-building-mobile-application-2890186-2406689.png?f=webp'
+    altText: Mobile App API
   description: |
     This is an **example** API to demonstrate features of the OpenAPI
     specification.
@@ -47,6 +48,9 @@ externalDocs:
 servers:
   - url: 'http://example.com/api/v1'
   - url: 'https://example.com/api/v1'
+
+security: 
+  - bearerAuth: []
 paths:
   # /auth/login:
   #   get:      

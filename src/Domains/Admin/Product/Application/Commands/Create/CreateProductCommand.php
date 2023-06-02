@@ -15,7 +15,7 @@ final class CreateProductCommand extends Command implements CommandInterface
         public readonly string $categoryUUID,
         public readonly string $currencyUUID,
         public readonly string $price,
-        public readonly int $discountPercentage,
+        public readonly string $discountPercentage,
         public readonly iterable $medias,
         public readonly string $description,
         public readonly bool $isActive,

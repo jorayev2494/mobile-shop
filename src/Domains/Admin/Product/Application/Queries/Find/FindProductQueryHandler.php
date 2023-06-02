@@ -7,9 +7,9 @@ namespace Project\Domains\Admin\Product\Application\Queries\Find;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Admin\Product\Application\Queries\Find\FindProductQuery;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class FindProductQueryHandler implements QueryHandler
+final class FindProductQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         public readonly ProductRepositoryInterface $repository,

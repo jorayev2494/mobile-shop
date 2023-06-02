@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Product\Domain;
 
 use Project\Domains\Admin\Product\Domain\Events\ProductCreatedEvent;
-use Project\Domains\Admin\Product\Domain\Events\ProductWasCreated;
+use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedEvent;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCategoryUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCurrencyUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductDiscountPercentage;
@@ -31,7 +31,7 @@ class Product extends AggregateRoot
 
     }
 
-    public static function fromPrimitives(string $uuid, string $title, string $categoryUUID, string $currencyUUID, string $price, int $discountPercentage, iterable $medias, int $viewedCount, string $description, bool $isActive): self
+    public static function fromPrimitives(string $uuid, string $title, string $categoryUUID, string $currencyUUID, string $price, string $discountPercentage, iterable $medias, int $viewedCount, string $description, bool $isActive): self
     {
         return new self(
             ProductUUID::fromValue($uuid),
@@ -60,7 +60,7 @@ class Product extends AggregateRoot
     ): self
     {
         $product = new self($uuid, $title, $categoryUUID, $currencyUUID, $price, $discountPercentage, $medias, 0, $description, $isActive);
-        $product->record(new ProductWasCreated($product->uuid->value, $product));
+        $product->record(new ProductWasCreatedEvent($product->uuid->value, $product->toArray()));
 
         return $product;
     }

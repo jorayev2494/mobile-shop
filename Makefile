@@ -44,7 +44,10 @@ restart:					## Restart project
 	@docker-compose --file $(COMPOSE_FILE_PATH) restart node
 
 bash:						## Project bash terminal
-	@docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli sh
+	@docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli bash
+
+fpm-bash:						## Project bash terminal
+	@docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-fpm bash
 
 ps:							## Show project process
 	docker-compose --file $(COMPOSE_FILE_PATH) ps

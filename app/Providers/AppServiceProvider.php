@@ -18,12 +18,14 @@ use App\Services\Api\Admin\RoleService;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Contracts\AuthService as ContractAuthService;
 use Illuminate\Support\ServiceProvider;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
-use Project\Shared\Infrastructure\Bus\Messenger\MessengerEventBus;
+use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerQueryBus;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerCommandBus;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMQEventBus;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -57,15 +59,30 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        //
+        $this->app->singleton(
+            AMQPStreamConnection::class,
+            static fn (): AMQPStreamConnection => new AMQPStreamConnection(
+                getenv('RABBIT_MQ_HOST'),
+                getenv('RABBIT_MQ_PORT'),
+                getenv('RABBIT_MQ_USERNAME'),
+                getenv('RABBIT_MQ_PASSWORD'),
+            )
+        );
     }
 
     private function registerBuses(): void
     {
         $this->app->bind(
-            EventBusInterface::class,
-            static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerEventBus => new MessengerEventBus($app->tagged('domain_event_subscriber'))
+            DomainEventSubscriberLocator::class,
+            static fn (\Illuminate\Contracts\Foundation\Application $app): DomainEventSubscriberLocator => new DomainEventSubscriberLocator($app->tagged('domain_event_subscriber'))
         );
+
+        // $this->app->bind(
+        //     EventBusInterface::class,
+        //     static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerEventBus => new MessengerEventBus($app->tagged('domain_event_subscriber'))
+        // );
+
+        $this->app->bind(EventBusInterface::class, RabbitMQEventBus::class);
 
         $this->app->bind(
             QueryBusInterface::class,

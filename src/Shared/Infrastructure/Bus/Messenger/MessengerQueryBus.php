@@ -28,7 +28,7 @@ final class MessengerQueryBus implements QueryBusInterface
         ]);
     }
 
-    public function ask(QueryInterface $query): ?ResponseInterface
+    public function ask(QueryInterface $query): ?object
     {
         try {
             /** @var HandledStamp $stamp */

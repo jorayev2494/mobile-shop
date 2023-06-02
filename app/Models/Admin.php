@@ -51,7 +51,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Admin extends AuthModel
 {
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'role_id',
@@ -63,13 +64,14 @@ class Admin extends AuthModel
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'timestamp',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
 
     public function getJWTCustomClaims(): array
     {
         return [
-            'testKey' => 'testValue',
             'model' => self::class,
             'role' => RoleResource::make($this->role()->with('permissions')->first()),
         ];

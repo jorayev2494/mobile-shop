@@ -6,9 +6,9 @@ namespace Project\Domains\Admin\Product\Application\Queries\Get;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-class GetProductsQueryHandler implements QueryHandler
+class GetProductsQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly ProductRepositoryInterface $repository,

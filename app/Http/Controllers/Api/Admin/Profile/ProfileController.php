@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api\Admin\Profile;
 
 use App\Data\Models\AdminData;
 use App\Data\Profile\ChangePasswordData;
@@ -10,6 +10,7 @@ use App\Http\Requests\Admin\Profile\ProfileUpdateRequest;
 use App\Models\Auth\AppAuth;
 use App\Models\Auth\AuthModel;
 use App\Services\Api\Contracts\ProfileService;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -18,6 +19,7 @@ class ProfileController extends Controller
     private readonly ?AuthModel $authModel;
 
     public function __construct(
+        private readonly ResponseFactory $response,
         private readonly ProfileService $service,
     ) {
         $this->authModel = AppAuth::model();
@@ -25,7 +27,7 @@ class ProfileController extends Controller
 
     public function show(): JsonResponse
     {
-        return response()->json(
+        return $this->response->json(
             $this->service->show($this->authModel)
         );
     }
@@ -34,7 +36,7 @@ class ProfileController extends Controller
     {
         $data = AdminData::makeFromFormRequest($request);
 
-        return response()->json(
+        return $this->response->json(
             $this->service->update($this->authModel, $data),
             Response::HTTP_ACCEPTED
         );
@@ -45,6 +47,6 @@ class ProfileController extends Controller
         $data = ChangePasswordData::makeFromFormRequest($request);
         $this->service->changePassword($this->authModel, $data);
 
-        return response()->noContent(Response::HTTP_ACCEPTED);
+        return $this->response->noContent(Response::HTTP_ACCEPTED);
     }
 }

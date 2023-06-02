@@ -3,9 +3,9 @@
 namespace Project\Domains\Admin\Product\Application\Commands\Update;
 
 use Project\Domains\Admin\Product\Domain\Product;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class UpdateProductCommandHandler implements CommandHandler
+final class UpdateProductCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly UpdateProductService $service,
@@ -23,6 +23,7 @@ final class UpdateProductCommandHandler implements CommandHandler
             $command->currencyUUID,
             $command->price,
             $command->discountPercentage,
+            $command->medias,
             0,
             $command->description,
             $command->isActive,
