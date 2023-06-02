@@ -1,7 +1,10 @@
  content:
-  application/json:scheme:
+  application/json:
     schema:
       type: object
+      required: 
+        -  email
+        -  password
       allOf: 
         -  $ref: ../../../fields/adminEmail.yml
         -  $ref: ../../../fields/password.yml

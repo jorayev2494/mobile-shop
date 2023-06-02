@@ -16,9 +16,9 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => ['string', 'min:2', 'max:255'],
-            'last_name' => ['string', 'min:2', 'max:255'],
-            'email' => ['email', 'unique:' . Admin::class . ',email', 'max:255'],
+            'first_name' => ['required', 'string', 'min:2', 'max:255'],
+            'last_name' => ['required', 'string', 'min:2', 'max:255'],
+            'email' => ['required', 'email', 'unique:' . Admin::class . ',email,' . AppAuth::id(), 'max:255'],
         ];
     }
 }

@@ -17,7 +17,9 @@ class SendRestoreLinkEmail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(
+        private readonly array $data,
+    )
     {
         //
     }
@@ -30,7 +32,7 @@ class SendRestoreLinkEmail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Send Restore Link Email',
+            subject: 'Send Restore Link Email: ' . $this->data['id'],
         );
     }
 
@@ -42,7 +44,8 @@ class SendRestoreLinkEmail extends Mailable
     public function content()
     {
         return new Content(
-            view: 'view.name',
+            view: 'welcome',
+            with: ['pData' => $this->data],
         );
     }
 

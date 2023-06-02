@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\ProfileController;
+use Illuminate\Routing\Router;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Admin\Profile\ProfileController;
 use App\Http\Controllers\Api\Admin\CategoryController;
-use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
-use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
     $router->post('/register', [AuthController::class, 'register'])->name('register');
@@ -21,9 +21,7 @@ Route::prefix('auth')->name('auth.')->group(static function (Router $router): vo
     });
 });
 
-Route::group([
-    'middleware' => 'auth:admin'
-], static function (Router $router): void {
+Route::group(['middleware' => 'auth:admin'], static function (Router $router): void {
     $router->group(['prefix' => 'profile', 'controller' => ProfileController::class, 'as' => 'profile.'], static function (Router $router): void {
         $router->get('/', 'show')->name('show');
         $router->post('/', 'update')->name('update');
@@ -32,7 +30,14 @@ Route::group([
 
     $router->apiResource('/roles', RoleController::class);
     $router->apiResource('/categories', CategoryController::class);
-    $router->apiResource('/products', ProductController::class);
+
+    $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
+        $router->get('/', GetProductController::class);
+        $router->post('/', CreateProductController::class);
+        $router->get('/{uuid}', ShowProductController::class);
+        $router->post('/{uuid}', UpdateProductController::class);
+        $router->delete('/{uuid}', DeleteProductController::class);
+    });
 });
 
 Route::get('/ping', static fn (): array => ['message' => 'pong'])->name('ping');

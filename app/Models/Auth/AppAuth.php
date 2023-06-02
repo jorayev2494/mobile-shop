@@ -36,7 +36,7 @@ class AppAuth
         return Auth::guard($guard ? $guard->value : AppGuardType::guard())->guest();
     }
 
-    public static function id(): ?int
+    public static function id(): ?string
     {
         return Auth::guard(AppGuardType::guard())->id();
     }

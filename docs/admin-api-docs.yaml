@@ -1,16 +1,17 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Example.com
-  termsOfService: 'https://example.com/terms/'
+  title: Mobile App Admin API
   contact:
-    email: contact@example.com
-    url: 'http://example.com/contact'
+    email: jorayev2494@gmail.com
+    url: 'http://127.0.0.1:8084/contact'
+  termsOfService: 'https://example.com/terms/'
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
-    url: 'https://redocly.github.io/openapi-template/logo.png'
+    url: 'https://cdni.iconscout.com/illustration/premium/thumb/mobile-application-development-2726415-2261413.png'
+    altText: Mobile App Admin API
   description: |
     This is an **example** API to demonstrate features of the OpenAPI
     specification.
@@ -45,8 +46,14 @@ externalDocs:
 #   - name: Tag
 #     description: This is a tag description.
 servers:
-  - url: 'http://127.0.0.1:8084/api/admin'
-  - url: 'https://example.com/api/v1'
+  - description: 'Local server'
+    url: 'http://127.0.0.1:8084/api/admin'
+
+  - description: 'Global server'
+    url: 'https://example.com/api/v1'
+
+security: 
+  - bearerAuth: []
 paths:
   # Authentication
   /auth/register:

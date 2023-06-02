@@ -4,40 +4,41 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Domain\Events;
 
-use Project\Domains\Admin\Product\Domain\Product;
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 
-class ProductWasCreated extends DomainEvent
+class ProductWasCreatedEvent extends DomainEvent
 {
     public function __construct(
-        public readonly string $uuid,
-        public readonly Product $product,
+        public readonly string $aggregateId,
+        public readonly array $data,
         string $eventId = null,
         string $occurredOn = null,
     )
     {
-        parent::__construct($uuid, $eventId, $occurredOn);
+        parent::__construct($aggregateId, $eventId, $occurredOn);
     }
 
     public static function fromPrimitives(
         string $aggregateId,
-        array $body,
+        array $data,
         string $eventId,
         string $occurredOn
     ): DomainEvent {
-        return new self($aggregateId, $body['name'], $eventId, $occurredOn);
+        return new self($aggregateId, $data, $eventId, $occurredOn);
     }
 
     public static function eventName(): string
     {
-        return 'admin.product.was_created';
+        return 'product.was.created';
     }
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
-            'product' => $this->product->toArray(),
+            'id' => $this->aggregateId(),
+            'data' => $this->data,
+            'event_id' => $this->eventId(),
+            'occurred_on' => $this->occurredOn(),
         ];
     }
 }

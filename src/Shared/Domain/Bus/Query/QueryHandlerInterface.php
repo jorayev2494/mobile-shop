@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Project\Shared\Domain\Bus\Query;
 
 /**
- * Interface QueryHandler
+ * Interface QueryHandlerInterface
  *
  * @package Project\Shared\Domain\Bus\Query
  */

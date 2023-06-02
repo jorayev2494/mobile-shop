@@ -5,9 +5,10 @@ namespace Project\Shared\Application\Query;
 use App\Data\Contracts\MakeFromRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Project\Shared\Domain\Bus\Query\QueryInterface;
 use Spatie\LaravelData\Data;
 
-abstract class BaseQuery extends Data implements MakeFromRequest
+abstract class BaseQuery extends Data implements QueryInterface, MakeFromRequest
 {
 
     private function __construct(
