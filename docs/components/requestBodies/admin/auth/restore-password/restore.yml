@@ -2,6 +2,8 @@ content:
   application/json:
     schema: 
       type: object
-      allOf: 
-        -  $ref: ../../../../fields/token.yml
+      required: 
+        -  password
+        -  password_confirmation
+      allOf:
         -  $ref: ../../../../fields/passwordConfirmation.yml

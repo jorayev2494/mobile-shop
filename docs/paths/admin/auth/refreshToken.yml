@@ -7,5 +7,5 @@ post:
   requestBody: 
     $ref: ../../../components/requestBodies/admin/auth/refreshToken.yml
   responses: 
-    204:
-      $ref: ../../../components/responses/admin/auth/login.yml
+    202:
+      $ref: ../../../components/responses/admin/auth/RefreshToken.yml

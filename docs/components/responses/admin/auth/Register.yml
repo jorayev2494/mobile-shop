@@ -1,0 +1,5 @@
+description: 'Registered'
+content:
+  application/json:
+    schema:
+      type: object

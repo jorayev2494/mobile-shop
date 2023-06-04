@@ -6,11 +6,12 @@ use App\Data\Auth\AuthCredentialsData;
 use App\Data\Auth\RefreshTokenData;
 use App\Data\Auth\RegisterData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Http\Requests\Auth\LogoutRequest;
-use App\Http\Requests\Auth\RefreshTokenRequest;
-use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Requests\Client\Auth\LoginRequest;
+use App\Http\Requests\Client\Auth\LogoutRequest;
+use App\Http\Requests\Client\Auth\RefreshTokenRequest;
+use App\Http\Requests\Client\Auth\RegisterRequest;
 use App\Models\Auth\AppAuth;
+use App\Models\Enums\AppGuardType;
 use App\Services\Api\Contracts\AuthService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -28,7 +29,7 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): Response
     {
         $registerData = RegisterData::makeFromFormRequest($request);
-        $this->service->register($registerData);
+        $this->service->register($registerData, AppGuardType::CLIENT);
 
         return $this->response->noContent(Response::HTTP_ACCEPTED);
     }
@@ -36,7 +37,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         $data = AuthCredentialsData::makeFromFormRequest($request);
-        $result = $this->service->login($data);
+        $result = $this->service->login($data, AppGuardType::CLIENT);
 
         return $this->response->json($result);
     }
@@ -44,14 +45,14 @@ class AuthController extends Controller
     public function refreshToken(RefreshTokenRequest $request): JsonResponse
     {
         $data = RefreshTokenData::makeFromFormRequest($request);
-        $result = $this->service->refreshToken($data);
+        $result = $this->service->refreshToken($data, AppGuardType::CLIENT);
 
         return $this->response->json($result, Response::HTTP_ACCEPTED);
     }
 
     public function logout(LogoutRequest $request): Response
     {
-        $this->service->logout(AppAuth::model(), $request->headers->get('x-device-id'));
+        $this->service->logout(AppAuth::model(), $request->headers->get('x-device-id'), AppGuardType::CLIENT);
 
         return $this->response->noContent();
     }

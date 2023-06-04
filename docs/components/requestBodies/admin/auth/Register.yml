@@ -2,10 +2,13 @@ content:
   application/json:
     schema:
       type: object
-      required: 
+      required:
+        -  first_name
+        -  last_name
         -  email
         -  password
         -  password_confirmation
-      allOf: 
+      allOf:
+        -  $ref: ../../../fields/firstNameAndLastName.yml
         -  $ref: ../../../fields/adminEmail.yml
         -  $ref: ../../../fields/passwordConfirmation.yml

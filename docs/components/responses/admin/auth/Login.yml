@@ -12,8 +12,10 @@ content:
             auth_data:
               type: object
               allOf:
-                -  $ref: ../../../fields/id.yml
+                -  $ref: ../../../fields/uuid.yml
                 -  $ref: ../../../fields/firstNameAndLastName.yml
                 -  $ref: ../../../fields/adminEmail.yml
+                -  $ref: ../../../fields/avatar.yml
+                -  $ref: ../../../fields/emailVerifiedAt.yml
                 -  $ref: ../../../fields/roleId.yml
                 -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

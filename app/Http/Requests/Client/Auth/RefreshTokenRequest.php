@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Client\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class LogoutRequest extends FormRequest
+class RefreshTokenRequest extends FormRequest
 {
     public function authorize(): bool
     {
         return true;
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'x-device-id' => $this->headers->get('x-device-id'),
@@ -22,6 +22,7 @@ class LogoutRequest extends FormRequest
     {
         return [
             'x-device-id' => ['required', 'string'],
+            'refresh_token' => ['required', 'string', 'exists:devices,refresh_token'],
         ];
     }
 }

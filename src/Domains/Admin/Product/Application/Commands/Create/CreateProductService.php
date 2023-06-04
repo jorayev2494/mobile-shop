@@ -21,12 +21,16 @@ final class CreateProductService
 
     public function execute(Product $product): void
     {
+        $this->uploadMedias($product);
+        $this->repository->save($product);
+        $this->eventBus->publish(...$product->pullDomainEvents());
+    }
+
+    private function uploadMedias(Product $product): void
+    {
         /** @var UploadedFile $media */
         foreach ($product->medias as $key => $media) {
             
         }
-
-        $this->repository->save($product);
-        $this->eventBus->publish(...$product->pullDomainEvents());
     }
 }

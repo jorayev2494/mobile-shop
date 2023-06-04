@@ -151,23 +151,36 @@ services:
     networks:
         - test-shop-network
 
-  # Swager Service
-  swagger-ui:
-    image: swaggerapi/swagger-ui
-    container_name: ${COMPOSE_PROJECT_NAME}-swagger-ui
-    ports:
-        - ${SWAGGER_PORT}:8080
+  redoc-ui:
+    image: redocly/redoc
+    restart: unless-stopped
     volumes:
-        - ../docs:/usr/share/nginx/html/doc
+        - ../docs:/usr/share/nginx/html/swagger
+    ports:
+      - ${REDOC_PORT}:80
     environment:
-        API_URL: doc/api-docs.yaml
-        URLS_PRIMARY_NAME: "CheckServer"
-        URLS: "[
-                    { url: 'doc/admin-api-docs.yaml', name: 'Admin'},
-                    { url: 'doc/client-api-docs.yaml', name: 'Client'},
-                ]"
-    networks:
-        - shop-network
+      SPEC_URL: 'swagger/admin-api-docs.yaml'
+    #   PAGE_TITLE: 'Test API'
+    #   PAGE_FAVICON: 'https://example.com/static/images/favicon.ico'
+    #   REDOC_OPTIONS: 'disable-search hide-download-button theme={"typography":{"fontSize": "16px"}}'
+
+  # Swager Service
+#   swagger-ui:
+#     image: swaggerapi/swagger-ui
+#     container_name: ${COMPOSE_PROJECT_NAME}-swagger-ui
+#     ports:
+#         - ${SWAGGER_PORT}:8080
+#     volumes:
+#         - ../docs:/usr/share/nginx/html/doc
+#     environment:
+#         API_URL: doc/api-docs.yaml
+#         URLS_PRIMARY_NAME: "CheckServer"
+#         URLS: "[
+#                     { url: 'doc/admin-api-docs.yaml', name: 'Admin'},
+#                     { url: 'doc/client-api-docs.yaml', name: 'Client'},
+#                 ]"
+#     networks:
+#         - shop-network
 
 #   adminer:
 #     image: adminer

@@ -14,7 +14,9 @@ class RegisterData extends Data implements MakeFromFormRequest
         public readonly string $first_name,
         public readonly string $last_name,
         public readonly string $email,
+        public readonly ?string $phone,
         public readonly string $password,
+        public readonly ?string $country_uuid,
     ) {
     }
 

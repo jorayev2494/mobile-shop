@@ -14,6 +14,7 @@ final class ModelRepositoryFactory
         \App\Models\Role::class => \App\Repositories\RoleRepository::class,
         \App\Models\Admin::class => \App\Repositories\AdminRepository::class,
         \App\Models\User::class => \App\Repositories\UserRepository::class,
+        \App\Models\Client::class => \App\Repositories\ClientRepository::class,
     ];
 
     public static function make(string $model): BaseModelRepository

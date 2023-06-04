@@ -1,18 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Admin\Auth;
 
-use App\Models\Auth\AppAuth;
 use Illuminate\Foundation\Http\FormRequest;
 
-class LoginRequest extends FormRequest
+class LogoutRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return AppAuth::guest();
+        return true;
     }
 
-    protected function prepareForValidation(): void
+    protected function prepareForValidation()
     {
         $this->merge([
             'x-device-id' => $this->headers->get('x-device-id'),
@@ -23,8 +22,6 @@ class LoginRequest extends FormRequest
     {
         return [
             'x-device-id' => ['required', 'string'],
-            'email' => ['required', 'email'],
-            'password' => ['required', 'string', 'min:6'],
         ];
     }
 }

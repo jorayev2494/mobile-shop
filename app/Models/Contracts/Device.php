@@ -13,4 +13,6 @@ interface Device
     public function addDevice(string $deviceId): \App\Models\Device;
 
     public function removeDevice(string $deviceId): bool;
+
+    public function resetDevices(): void;
 }

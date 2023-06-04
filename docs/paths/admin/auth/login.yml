@@ -9,5 +9,3 @@ post:
   responses:
     200:
       $ref: ../../../components/responses/auth/LoginResponse.yml
-    default: 
-      description: 'test'

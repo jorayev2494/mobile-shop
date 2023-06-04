@@ -11,7 +11,7 @@ return new class() extends Migration
         Schema::create('codes', static function (Blueprint $table): void {
             $table->id();
 
-            $table->integer('code_able_id');
+            $table->string('code_able_uuid');
             $table->string('code_able_type');
 
             $table->string('type')->nullable();

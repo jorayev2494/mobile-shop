@@ -33,18 +33,21 @@ class AuthService implements ContractsAuthService
         return resolve(auth()->guard($this->guard->value)->getProvider()->getModel());
     }
 
-    public function register(RegisterData $registerData): void
+    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): void
     {
-        $createdAdmin = $this->authModel::query()->create([
-            'first_name' => $registerData->first_name,
-            'last_name' => $registerData->last_name,
-            'email' => $registerData->email,
-            'password' => $registerData->password,
-            'role_id' => 1,
-        ]);
+        $data = [];
+
+        if ($guard === AppGuardType::ADMIN) {
+            $data = ['role_id' => 1,];
+            $data = $registerData->toArray() + $data;
+        } else if ($guard === AppGuardType::CLIENT) {
+            $data = $registerData->toArray();
+        }
+
+        $this->authModel::query()->create($data);
     }
 
-    public function login(AuthCredentialsData $credentialsData): array
+    public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::ADMIN): array
     {
         /** @var string|bool $token */
         if (! ($token = Auth::guard($this->guard->value)->attempt($credentialsData->except('device_id')->toArray()))) {
@@ -58,7 +61,7 @@ class AuthService implements ContractsAuthService
         );
     }
 
-    public function refreshToken(RefreshTokenData $data, AppGuardType $guard = AppGuardType::CLIENT): array
+    public function refreshToken(RefreshTokenData $data, AppGuardType $guard = AppGuardType::ADMIN): array
     {
         /** @var Device $device */
         $device = app()->call(DeviceRepository::class.'@refreshToken', ['deviceId' => $data->device_id, 'refreshToken' => $data->refresh_token]);
@@ -71,7 +74,7 @@ class AuthService implements ContractsAuthService
         return $this->authToken($token, $device->deviceAble, $device);
     }
 
-    public function logout(?AuthModel $authModel, string $deviceId): void
+    public function logout(?AuthModel $authModel, string $deviceId, AppGuardType $guard = AppGuardType::ADMIN): void
     {
         if (is_null($authModel)) {
             return;
