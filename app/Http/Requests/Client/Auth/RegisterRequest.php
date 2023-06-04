@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Client\Auth;
 
 use App\Models\Auth\AppAuth;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,8 +17,10 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
-            'email' => ['required', 'email', 'unique:admins,email'],
+            'email' => ['required', 'email', 'unique:clients,email'],
+            'phone' => ['required', 'string', 'unique:clients,phone'],
             'password' => ['required', 'string', 'confirmed', 'min:6'],
+            'country_uuid' => ['required', 'string', 'exists:countries,uuid'],
         ];
     }
 }

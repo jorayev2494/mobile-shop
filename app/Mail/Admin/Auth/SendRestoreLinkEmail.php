@@ -2,7 +2,6 @@
 
 namespace App\Mail\Admin\Auth;
 
-use App\Jobs\Enums\QueueType;
 use App\Models\Admin;
 use App\Models\Auth\AuthModel;
 use App\Models\Code;
@@ -22,7 +21,7 @@ class SendRestoreLinkEmail extends Mailable implements ShouldQueue
     public string $restoreLink;
 
     public function __construct(
-        private readonly AuthModel&Admin $authModel,
+        private readonly AuthModel $authModel,
         private readonly Code $code,
     ) {
         $this->restoreLink = config('admin_dashboard.page_routers.reset_password').'?'.http_build_query(['token' => $code->token, 'restored-type' => $this->authModel->getTable()]);

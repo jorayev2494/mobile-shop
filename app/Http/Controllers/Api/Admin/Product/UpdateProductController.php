@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Admin\Product;
 
+use App\Http\Requests\Admin\Product\UpdateProductRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
@@ -20,7 +20,7 @@ final class UpdateProductController
         
     }
 
-    public function __invoke(Request $request, string $uuid): Response
+    public function __invoke(UpdateProductRequest $request, string $uuid): Response
     {
         $command = new UpdateProductCommand(
             $uuid,

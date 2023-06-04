@@ -71,6 +71,6 @@ class Device extends Model
      */
     public function deviceAble(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo(__FUNCTION__, 'device_able_type', 'device_able_uuid');
     }
 }

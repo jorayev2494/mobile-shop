@@ -16,10 +16,10 @@ trait DeviceTrait
 
     public function addDevice(string $deviceId): Device
     {
-        // dd($deviceId);
-        return $this->devices()->updateOrCreate([
-            'device_id' => $deviceId,
-        ],
+        return $this->devices()->updateOrCreate(
+            [
+                'device_id' => $deviceId,
+            ],
             [
                 'refresh_token' => md5((string) microtime()),
                 'device_id' => $deviceId,
@@ -38,5 +38,10 @@ trait DeviceTrait
     public function removeDevice(string $deviceId): bool
     {
         return (bool) $this->devices()->where('device_id', $deviceId)?->delete();
+    }
+
+    public function resetDevices(): void
+    {
+        $this->devices()->delete();
     }
 }

@@ -10,11 +10,11 @@ use App\Models\Enums\AppGuardType;
 
 interface AuthService
 {
-    public function register(RegisterData $registerData): void;
+    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): void;
 
-    public function login(AuthCredentialsData $credentialsData): array;
+    public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::ADMIN): array;
 
-    public function refreshToken(RefreshTokenData $data): array;
+    public function refreshToken(RefreshTokenData $data, AppGuardType $guard = AppGuardType::ADMIN): array;
 
-    public function logout(?AuthModel $authModel, string $deviceId): void;
+    public function logout(?AuthModel $authModel, string $deviceId, AppGuardType $guard = AppGuardType::ADMIN): void;
 }

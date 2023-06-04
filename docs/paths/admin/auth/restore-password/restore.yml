@@ -1,10 +1,12 @@
 put:
-  summary: Restore
+  summary: Restore password
   tags: 
     -  Restore password
-  requestBody: 
+  parameters:
+    -  $ref: ../../../../components/parameters/Token.yml
+  requestBody:
     $ref: ../../../../components/requestBodies/admin/auth/restore-password/restore.yml
-  responses:
-    204:
-      description: 'No content'
+  responces:
+    202:
+      $ref: ../../../../components/responses/2xx/NoContent.yml
   

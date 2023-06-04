@@ -38,13 +38,27 @@ info:
 externalDocs:
   description: Find out how to create a GitHub repo for your OpenAPI definition.
   url: 'https://github.com/Rebilly/generator-openapi-repo'
-# tags:
-#   - name: Echo
-#     description: Example echo operations.
-#   - name: User
-#     description: Operations about users.
-#   - name: Tag
-#     description: This is a tag description.
+
+tags:
+  - name: Authentication
+    description: Example echo operations.
+
+  - name: Restore password
+    description: Operations about users.
+
+  - name: Profile
+    description: This is a tag description.
+
+x-tagGroups: 
+  - name: Authentication
+    tags: 
+      - Authentication
+      - Restore password
+
+  - name: Profile
+    tags: 
+      -  Profile
+
 servers:
   - description: 'Local server'
     url: 'http://127.0.0.1:8084/api/admin'
@@ -52,30 +66,30 @@ servers:
   - description: 'Global server'
     url: 'https://example.com/api/v1'
 
-security: 
+security:
   - bearerAuth: []
 paths:
   # Authentication
-  /auth/register:
+  /admin/auth/register:
     $ref: paths/admin/auth/register.yml
 
-  /auth/login:
+  /admin/auth/login:
     $ref: paths/admin/auth/login.yml
 
-  /auth/refresh-token:
+  /admin/auth/refresh-token:
     $ref: paths/admin/auth/refreshToken.yml
 
-  /auth/logout:
+  /admin/auth/logout:
     $ref: paths/admin/auth/logout.yml
   # End Authentication
 
-  /auth/restore-password/link:
+  /admin/auth/restore-password/link:
     $ref: paths/admin/auth/restore-password/link.yml
 
-  /auth/restore-password/restore:
+  /admin/auth/restore-password/restore:
     $ref: paths/admin/auth/restore-password/restore.yml
 
-  /profile/get:
+  /admin/profile/get:
     $ref: paths/admin/profile/get.yml
 
 components:

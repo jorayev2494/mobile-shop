@@ -1,5 +1,5 @@
 post:
-  summary: 'Admin register'
+  summary: 'Register'
   tags: 
     - Authentication
   parameters: 
@@ -7,6 +7,6 @@ post:
   requestBody: 
     $ref: ../../../components/requestBodies/admin/auth/Register.yml
   responses: 
-    default: 
-      description: 'Test'
+    202:
+      $ref: ../../../components/responses/admin/auth/Register.yml
     

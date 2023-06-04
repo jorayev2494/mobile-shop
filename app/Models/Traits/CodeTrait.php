@@ -13,7 +13,7 @@ trait CodeTrait
 {
     public function codes(): MorphMany
     {
-        return $this->morphMany(Code::class, 'code_able', 'code_able_type', 'code_able_id');
+        return $this->morphMany(Code::class, 'code_able', 'code_able_type', 'code_able_uuid');
     }
 
     public function generateToken(CodeType $type, AppGuardType $guard = null): Code
@@ -32,9 +32,10 @@ trait CodeTrait
 
     private function generateTokenOrCode(CodeType $type, string $value, string $tokenOrCodeKey = 'token', AppGuardType $guard = null): Code
     {
-        return $this->codes()->updateOrCreate([
-            'type' => $type,
-        ],
+        return $this->codes()->updateOrCreate(
+            [
+                'type' => $type,
+            ],
             [
                 'type' => $type,
                 'expired_at' => now()->addHour(),

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Auth\Restore;
+namespace App\Http\Requests\Admin\Auth\Restore;
 
 use App\Models\Auth\AppAuth;
 use Illuminate\Foundation\Http\FormRequest;

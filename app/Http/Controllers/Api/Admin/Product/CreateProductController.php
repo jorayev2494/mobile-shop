@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Admin\Product;
 
+use App\Http\Requests\Admin\Product\CreateProductRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Admin\Product\Application\Commands\Create\CreateProductCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
@@ -23,7 +23,7 @@ final class CreateProductController
         
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(CreateProductRequest $request): JsonResponse
     {
         $uuid = $request->get('uuid', $this->uuidGenerator->generate());
 
