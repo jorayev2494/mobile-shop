@@ -39,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $number
  * @method static \Illuminate\Database\Eloquent\Builder|Card whereHolderName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Card whereNumber($value)
+ * @property-read \App\Models\Client $client
  */
 class Card extends Model
 {

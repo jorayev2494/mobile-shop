@@ -1,0 +1,5 @@
+type: object
+properties:
+  discount_percentage:
+    type: string
+    example: "21"

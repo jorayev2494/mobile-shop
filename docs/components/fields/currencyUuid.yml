@@ -1,0 +1,6 @@
+type: object
+properties:
+  currency_uuid:
+    type: string
+    example: "995762a5-5eee-4982-943f-248f187ec83c"
+    uniqueItems: true

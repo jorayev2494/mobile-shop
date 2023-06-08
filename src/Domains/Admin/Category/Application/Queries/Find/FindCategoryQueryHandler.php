@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Category\Application\Queries\Find;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Project\Domains\Category\Domain\CategoryRepositoryInterface;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Domains\Admin\Category\Domain\CategoryRepositoryInterface;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class FindCategoryQueryHandler implements QueryHandler
+final class FindCategoryQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository,

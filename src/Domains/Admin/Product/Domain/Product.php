@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Domain;
 
-use Project\Domains\Admin\Product\Domain\Events\ProductCreatedEvent;
-use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedEvent;
+use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Events\ProductWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCategoryUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCurrencyUUID;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductDiscountPercentage;
@@ -15,6 +15,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 class Product extends AggregateRoot
 {
+    public const MEDIA_PATH = '/products/medias';
     private function __construct(
         public readonly ProductUUID $uuid,
         public readonly string $title,
@@ -22,7 +23,7 @@ class Product extends AggregateRoot
         public readonly ProductCurrencyUUID $currencyUUID,
         public readonly ProductPrice $price,
         public readonly ProductDiscountPercentage $discountPercentage,
-        public readonly iterable $medias,
+        public iterable $medias,
         public readonly int $viewedCount,
         public readonly string $description,
         public readonly bool $isActive,
@@ -60,9 +61,19 @@ class Product extends AggregateRoot
     ): self
     {
         $product = new self($uuid, $title, $categoryUUID, $currencyUUID, $price, $discountPercentage, $medias, 0, $description, $isActive);
-        $product->record(new ProductWasCreatedEvent($product->uuid->value, $product->toArray()));
+        $product->record(new ProductWasCreatedDomainEvent($product->uuid->value, $product->toArray()));
 
         return $product;
+    }
+
+    public function delete(): void
+    {
+        $this->record(new ProductWasDeletedDomainEvent($this->uuid->value));
+    }
+
+    public function setMedias(iterable $medias): void
+    {
+        $this->medias = $medias;
     }
 
     public function toArray(): array

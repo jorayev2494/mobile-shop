@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereValue($value)
+ * @property string $code_able_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Code whereCodeAbleUuid($value)
  */
 class Code extends Model
 {

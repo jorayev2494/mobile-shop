@@ -49,6 +49,12 @@ tags:
   - name: Profile
     description: This is a tag description.
 
+  - name: Categories
+    description: Categories description
+  
+  - name: Products
+    description: Products description
+
 x-tagGroups: 
   - name: Authentication
     tags: 
@@ -58,6 +64,14 @@ x-tagGroups:
   - name: Profile
     tags: 
       -  Profile
+
+  - name: Categories
+    tags: 
+      -  Categories
+  
+  - name: Products
+    tags: 
+      -  Products
 
 servers:
   - description: 'Local server'
@@ -91,6 +105,20 @@ paths:
 
   /admin/profile/get:
     $ref: paths/admin/profile/get.yml
+
+  # Categories
+  /admin/categories:
+    $ref: paths/admin/categories/GetCategory.yml
+  
+  /admin/categories/{uuid}:
+    $ref: paths/admin/categories/Category.yml
+
+  # Products
+  /admin/products:
+    $ref: paths/admin/products/getProducts.yml
+
+  /admin/products/{uuid}:
+    $ref: paths/admin/products/Product.yml
 
 components:
   securitySchemes:

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Application\Subscribers;
 
-use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedEvent;
+use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Domain\LoggerInterface;
 use Project\Shared\Domain\MailerInterface;
 
-final class ProductWasCreatedEventHandler implements DomainEventSubscriberInterface
+final class ProductWasCreatedDomainEventHandler implements DomainEventSubscriberInterface
 {
 
     public function __construct(
@@ -22,10 +22,10 @@ final class ProductWasCreatedEventHandler implements DomainEventSubscriberInterf
 
     public static function subscribedTo(): array
     {
-        return [ProductWasCreatedEvent::class];
+        return [ProductWasCreatedDomainEvent::class];
     }
 
-    public function __invoke(ProductWasCreatedEvent $event): void
+    public function __invoke(ProductWasCreatedDomainEvent $event): void
     {
         // dd('event', $event->data);
         $this->logger->info('ProductWasCreatedHandler', $event->toArray());

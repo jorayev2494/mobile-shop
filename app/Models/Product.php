@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * App\Models\Product
@@ -47,6 +48,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $discount_percentage
  * @property-read \App\Models\Category $category
  * @property-read \App\Models\Currency $currency
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $medias
+ * @property-read int|null $medias_count
  */
 class Product extends Model
 {
@@ -92,6 +95,11 @@ class Product extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class, 'currency_uuid', 'uuid');
+    }
+
+    public function medias(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable', 'fileable_type', 'fileable_uuid', 'uuid');
     }
 
 }

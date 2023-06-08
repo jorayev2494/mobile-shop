@@ -1,0 +1,6 @@
+name: uuid
+in: path
+required: true
+schema:
+  type: string
+  example: 'dba36f98-e041-4e2a-b52f-c614e4b405e6'

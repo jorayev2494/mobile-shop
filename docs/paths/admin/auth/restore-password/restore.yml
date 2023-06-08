@@ -6,7 +6,7 @@ put:
     -  $ref: ../../../../components/parameters/Token.yml
   requestBody:
     $ref: ../../../../components/requestBodies/admin/auth/restore-password/restore.yml
-  responces:
+  responses:
     202:
       $ref: ../../../../components/responses/2xx/NoContent.yml
   

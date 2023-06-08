@@ -6,7 +6,7 @@ namespace Project\Domains\Admin\Product\Domain\Events;
 
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 
-class ProductWasCreatedEvent extends DomainEvent
+class ProductWasCreatedDomainEvent extends DomainEvent
 {
     public function __construct(
         public readonly string $aggregateId,
@@ -36,7 +36,7 @@ class ProductWasCreatedEvent extends DomainEvent
     {
         return [
             'id' => $this->aggregateId(),
-            'data' => $this->data,
+            'body' => $this->data,
             'event_id' => $this->eventId(),
             'occurred_on' => $this->occurredOn(),
         ];

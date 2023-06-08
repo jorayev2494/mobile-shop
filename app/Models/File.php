@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\File
@@ -57,8 +59,53 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|File whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|File whereWidth($value)
  * @mixin \Eloquent
+ * @property string|null $fileable_uuid
+ * @property-read Model|\Eloquent $fileable
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereFileableUuid($value)
  */
 class File extends Model
 {
     use HasFactory;
+    use HasUuids;
+
+    protected $fillable = [
+        'uuid',
+        'fileable_uuid',
+        'fileable_type',
+        'width',
+        'height',
+        'path',
+        'mime_type',
+        'type',
+        'extension',
+        'size',
+        'file_name',
+        'file_original_name',
+        'name',
+        'full_path',
+        'url',
+        'disk',
+        'downloaded_count',
+        'is_public',
+        'is_active',
+        'created_at',
+    ];
+
+    protected $primaryKey = 'uuid';
+
+    public $casts = [
+        'is_public' => 'boolean',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
+    ];
+
+    protected $hidden = [
+        'full_path',
+        'disk',
+    ];
+
+    public function fileable(): MorphTo
+    {
+        return $this->morphTo(__FUNCTION__, 'fileable_type', 'fileable_uuid');
+    }
 }

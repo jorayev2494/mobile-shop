@@ -1,0 +1,17 @@
+get:
+  summary: "Get categories"
+  tags: 
+    -  Categories
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/categories/GetCategories.yml
+
+post: 
+  summary: "Create category"
+  tags: 
+    -  Categories
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/categories/Create.yml
+  responses: 
+    201:
+      $ref: ../../../components/responses/admin/categories/Create.yml

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\Admin\Admin\Category\Domain;
+namespace Project\Domains\Admin\Category\Domain;
 
 use App\Repositories\Contracts\BaseModelRepositoryInterface;
-use Project\Domains\Category\Domain\ValueObjects\CategoryUUID;
+use Project\Domains\Admin\Category\Domain\ValueObjects\CategoryUUID;
 
 interface CategoryRepositoryInterface extends BaseModelRepositoryInterface
 {

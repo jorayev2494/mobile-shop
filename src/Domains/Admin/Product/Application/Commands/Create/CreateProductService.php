@@ -8,11 +8,13 @@ use Illuminate\Http\UploadedFile;
 use Project\Domains\Admin\Product\Domain\Product;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
+use Project\Shared\Domain\FilesystemInterface;
 
 final class CreateProductService
 {
     public function __construct(
         private readonly ProductRepositoryInterface $repository,
+        private readonly FilesystemInterface $filesystem,
         private readonly EventBusInterface $eventBus,
     )
     {
@@ -28,9 +30,12 @@ final class CreateProductService
 
     private function uploadMedias(Product $product): void
     {
+        $uploadedMedias = [];
         /** @var UploadedFile $media */
         foreach ($product->medias as $key => $media) {
-            
+            $uploadedMedias[] = $this->filesystem->uploadFile(Product::MEDIA_PATH, $media);
         }
+
+        $product->setMedias($uploadedMedias);
     }
 }

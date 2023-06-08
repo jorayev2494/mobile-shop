@@ -27,13 +27,9 @@ final class RabbitMqDomainEventsConsumer
 
     public function consume(callable $subscriber, string $queueName): void
     {
-        // dd($subscriber, $queueName);
         $this->channel->queue_declare($queueName, false, true, false, false);
 
-        // dd($subscriber, $queueName);
-
         try {
-            // $this->channel->queue($queueName)->consume($this->consumer($subscriber));
             $this->channel->basic_consume($queueName, '', false, false, false, false, $this->consumer($subscriber, $queueName));
         } catch (\Exception) {
             dd('ees');
@@ -81,7 +77,7 @@ final class RabbitMqDomainEventsConsumer
 
         return $eventClass::fromPrimitives(
             $eventData['id'],
-            $eventData['data'],
+            $eventData['body'],
             $eventData['event_id'],
             $eventData['occurred_on']
         );

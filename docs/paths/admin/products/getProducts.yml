@@ -1,0 +1,24 @@
+get:
+  summary: Get products
+  tags: 
+    -  Products
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/Token.yml
+  responses: 
+    200:
+      $ref: ../../../components/responses/admin/products/GetProducts.yml
+
+post:
+  summary: Create product
+  tags: 
+    -  Products
+  security: 
+    -  bearerAuth: []
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/products/Create.yml
+  responses:
+    201:
+      $ref: ../../../components/responses/admin/products/CreateProduct.yml
+        

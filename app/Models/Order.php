@@ -53,6 +53,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $products_count
  * @property string $address_uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressUuid($value)
+ * @property string $card_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCardUuid($value)
  */
 class Order extends Model
 {

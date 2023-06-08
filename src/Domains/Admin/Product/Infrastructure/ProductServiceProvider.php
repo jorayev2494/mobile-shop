@@ -10,7 +10,8 @@ use Project\Domains\Admin\Product\Application\Commands\Delete\DeleteProductComma
 use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductCommandHandler;
 use Project\Domains\Admin\Product\Application\Queries\Find\FindProductQueryHandler;
 use Project\Domains\Admin\Product\Application\Queries\Get\GetProductsQueryHandler;
-use Project\Domains\Admin\Product\Application\Subscribers\ProductWasCreatedEventHandler;
+use Project\Domains\Admin\Product\Application\Subscribers\ProductWasCreatedDomainEventHandler;
+use Project\Domains\Admin\Product\Application\Subscribers\ProductWasDeletedDomainEventHandler;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
 use Project\Domains\Admin\Product\Infrastructure\Eloquent\ProductRepository;
 
@@ -37,6 +38,7 @@ final class ProductServiceProvider extends ServiceProvider
         $this->app->tag(GetProductsQueryHandler::class, 'query_handler');
         $this->app->tag(FindProductQueryHandler::class, 'query_handler');
 
-        $this->app->tag(ProductWasCreatedEventHandler::class, 'domain_event_subscriber');
+        $this->app->tag(ProductWasCreatedDomainEventHandler::class, 'domain_event_subscriber');
+        $this->app->tag(ProductWasDeletedDomainEventHandler::class, 'domain_event_subscriber');
     }
 }
