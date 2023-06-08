@@ -1,0 +1,21 @@
+get:
+  summary: "Show categories"
+  tags: 
+    -  Categories
+  parameters: 
+    - $ref: ../../../components/parameters/uuid.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/categories/Show.yml
+
+post: 
+  summary: "Update category"
+  tags: 
+    -  Categories
+  parameters: 
+    - $ref: ../../../components/parameters/uuid.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/categories/Create.yml
+  responses: 
+    201:
+      $ref: ../../../components/responses/admin/categories/Create.yml

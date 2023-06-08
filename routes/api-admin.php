@@ -7,6 +7,11 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
+use App\Http\Controllers\Api\Admin\Category\CreateCategoryController;
+use App\Http\Controllers\Api\Admin\Category\DeleteCategoryController;
+use App\Http\Controllers\Api\Admin\Category\GetCategoryController;
+use App\Http\Controllers\Api\Admin\Category\ShowCategoryController;
+use App\Http\Controllers\Api\Admin\Category\UpdateCategoryController;
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
@@ -29,7 +34,13 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
     });
 
     $router->apiResource('/roles', RoleController::class);
-    $router->apiResource('/categories', CategoryController::class);
+    $router->group(['prefix' => 'categories', 'as' => 'categories.'], static function (Router $router): void {
+        $router->get('/', GetCategoryController::class);
+        $router->post('/', CreateCategoryController::class);
+        $router->get('/{uuid}', ShowCategoryController::class);
+        $router->put('/{uuid}', UpdateCategoryController::class);
+        $router->delete('/{uuid}', DeleteCategoryController::class);
+    });
 
     $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
         $router->get('/', GetProductController::class);

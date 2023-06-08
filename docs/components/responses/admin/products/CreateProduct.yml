@@ -1,0 +1,7 @@
+description: 'Created product'
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/uuid.yml

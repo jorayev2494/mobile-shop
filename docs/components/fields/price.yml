@@ -1,0 +1,5 @@
+type: object
+properties:
+  price:
+    type: string
+    example: "448.5"

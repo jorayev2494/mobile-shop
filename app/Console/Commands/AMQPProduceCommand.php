@@ -6,11 +6,11 @@ use Illuminate\Console\Command;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
-class AMQPProducerCommand extends Command
+class AMQPProduceCommand extends Command
 {
-    protected $signature = 'rabbitmq:producer';
+    protected $signature = 'rabbitmq:produce';
 
-    protected $description = 'RabbitMQ producer';
+    protected $description = 'RabbitMQ produce';
 
     public function handle(AMQPStreamConnection $amqpConnection): int
     {

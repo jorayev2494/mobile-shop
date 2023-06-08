@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Category\Application\Commands\Update;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Project\Domains\Category\Domain\Category;
-use Project\Domains\Category\Domain\CategoryRepositoryInterface;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Domains\Admin\Category\Domain\Category;
+use Project\Domains\Admin\Category\Domain\CategoryRepositoryInterface;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class UpdateCategoryCommandHandler implements CommandHandler
+final class UpdateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository

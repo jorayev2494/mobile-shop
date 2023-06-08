@@ -1,0 +1,6 @@
+type: object
+properties:
+  viewed_count:
+    type: integer
+    example: 4
+    default: 0

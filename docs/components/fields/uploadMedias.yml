@@ -1,0 +1,9 @@
+type: object
+properties:
+  medias:
+    type: array
+    items:
+      type: string
+      format: binary
+    minItems: 1 
+    maxItems: 10

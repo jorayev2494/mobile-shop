@@ -1,0 +1,10 @@
+description: "Get Categories"
+content:
+  application/json:
+    schema:
+      type: object
+      allOf:        
+        -  $ref: ../../../fields/uuid.yml
+        -  $ref: ../../../fields/value.yml
+        -  $ref: ../../../fields/isActive.yml
+        -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

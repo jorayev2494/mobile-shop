@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('files', static function (Blueprint $table): void {
             $table->uuid()->primary();
 
-            $table->integer('fileable_id')->nullable();
+            $table->string('fileable_uuid')->nullable();
             $table->string('fileable_type')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();

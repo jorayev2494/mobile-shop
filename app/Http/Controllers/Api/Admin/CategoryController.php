@@ -36,43 +36,35 @@ class CategoryController extends Controller
         $this->authModel = AppAuth::model() ?? Admin::factory()->make();
     }
 
-    public function index(Request $request, GetCategoriesQueryHandler $handler): JsonResponse
-    {
-        $query = GetCategoriesQuery::makeFromRequest($request);
-        $result = $handler($query);
+    // public function store(Request $request, CreateCategoryCommandHandler $handler): JsonResponse
+    // {
+    //     $query = new CreateCategoryCommand($request->get('value'), $request->boolean('is_active', true));
+    //     $result = $handler($query);
 
-        return $this->response->json($result);
-    }
+    //     return $this->response->json($result, Response::HTTP_CREATED);
+    // }
 
-    public function store(Request $request, CreateCategoryCommandHandler $handler): JsonResponse
-    {
-        $query = new CreateCategoryCommand($request->get('value'), $request->boolean('is_active', true));
-        $result = $handler($query);
+    // public function show(FindCategoryQueryHandler $handler, string $uuid): JsonResponse
+    // {
+    //     $query = new FindCategoryQuery($uuid);
+    //     $result = $handler($query);
 
-        return $this->response->json($result, Response::HTTP_CREATED);
-    }
+    //     return $this->response->json($result);
+    // }
 
-    public function show(FindCategoryQueryHandler $handler, string $uuid): JsonResponse
-    {
-        $query = new FindCategoryQuery($uuid);
-        $result = $handler($query);
+    // public function update(Request $request, UpdateCategoryCommandHandler $handler, string $uuid): JsonResponse
+    // {
+    //     $query = new UpdateCategoryCommand($uuid, $request->get('value'), $request->boolean('is_active'));
+    //     $result = $handler($query);
 
-        return $this->response->json($result);
-    }
+    //     return $this->response->json($result, Response::HTTP_ACCEPTED);
+    // }
 
-    public function update(Request $request, UpdateCategoryCommandHandler $handler, string $uuid): JsonResponse
-    {
-        $query = new UpdateCategoryCommand($uuid, $request->get('value'), $request->boolean('is_active'));
-        $result = $handler($query);
+    // public function destroy(DeleteCategoryCommandHandler $handler, string $uuid): Response
+    // {
+    //     $query = new DeleteCategoryCommand($uuid);
+    //     $handler($query);
 
-        return $this->response->json($result, Response::HTTP_ACCEPTED);
-    }
-
-    public function destroy(DeleteCategoryCommandHandler $handler, string $uuid): Response
-    {
-        $query = new DeleteCategoryCommand($uuid);
-        $handler($query);
-
-        return $this->response->noContent();
-    }
+    //     return $this->response->noContent();
+    // }
 }

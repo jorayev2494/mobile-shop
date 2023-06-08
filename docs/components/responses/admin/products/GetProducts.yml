@@ -1,0 +1,24 @@
+description: Get products response
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../schemas/Paginate.yml
+        -  properties:
+            data:
+              type: array
+              items:
+                type: object
+                allOf: 
+                  -  $ref: ../../../fields/uuid.yml
+                  -  $ref: ../../../fields/title.yml
+                  -  $ref: ../../../fields/categoryUuid.yml
+                  -  $ref: ../../../fields/currencyUuid.yml
+                  -  $ref: ../../../fields/price.yml
+                  -  $ref: ../../../fields/discountPercentage.yml
+                  -  $ref: ../../../fields/viewedCount.yml
+                  -  $ref: ../../../fields/description.yml
+                  -  $ref: ../../../fields/isActive.yml
+                  -  $ref: ../../../fields/deletedAt.yml
+                  -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

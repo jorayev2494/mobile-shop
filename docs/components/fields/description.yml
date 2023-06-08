@@ -1,0 +1,5 @@
+type: object
+properties:
+  description:
+    type: string
+    example: "Description Hatter. 'I told you butter wouldn't suit the works!' he added looking angrily at the sides of it; so, after hunting all about for it, you know--' 'What did they live on?' said Alice, very earnestly."

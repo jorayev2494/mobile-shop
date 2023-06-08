@@ -1,0 +1,6 @@
+type: object
+properties:
+  category_uuid:
+    type: string
+    example: "995762aa-6fff-43aa-b39c-d13c9a06fc8d"
+    uniqueItems: true

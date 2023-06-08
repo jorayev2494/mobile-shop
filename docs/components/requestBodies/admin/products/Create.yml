@@ -1,0 +1,19 @@
+content:
+  multipart/form-data:
+    schema: 
+      type: object
+      required: 
+        -  title
+        -  category_uuid
+        -  currency_uuid
+        -  price
+        -  medias
+        -  description
+      allOf: 
+        -  $ref: ../../../fields/title.yml
+        -  $ref: ../../../fields/categoryUuid.yml
+        -  $ref: ../../../fields/currencyUuid.yml
+        -  $ref: ../../../fields/price.yml
+        -  $ref: ../../../fields/discountPercentage.yml
+        -  $ref: ../../../fields/uploadMedias.yml
+        -  $ref: ../../../fields/description.yml
