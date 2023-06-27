@@ -8,7 +8,9 @@ content:
         -  email
         -  password
         -  password_confirmation
+        -  agree_with_privacy
       allOf:
         -  $ref: ../../../fields/firstNameAndLastName.yml
         -  $ref: ../../../fields/adminEmail.yml
         -  $ref: ../../../fields/passwordConfirmation.yml
+        -  $ref: ../../../fields/agreeWithPrivacy.yml

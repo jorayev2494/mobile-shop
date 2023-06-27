@@ -1,0 +1,6 @@
+name: search_by
+in: query
+schema:
+  type: string
+  example: "name"
+  description: "This value must be column of data"

@@ -55,6 +55,9 @@ tags:
   - name: Products
     description: Products description
 
+  - name: Orders
+    description: Orders description
+
 x-tagGroups: 
   - name: Authentication
     tags: 
@@ -72,6 +75,10 @@ x-tagGroups:
   - name: Products
     tags: 
       -  Products
+
+  - name: Orders
+    tags: 
+      -  Orders
 
 servers:
   - description: 'Local server'
@@ -119,6 +126,13 @@ paths:
 
   /admin/products/{uuid}:
     $ref: paths/admin/products/Product.yml
+  
+  # Orders
+  /admin/orders:
+    $ref: paths/admin/orders/getOrders.yml
+
+  /admin/orders/{uuid}:
+    $ref: paths/admin/orders/Order.yml
 
 components:
   securitySchemes:

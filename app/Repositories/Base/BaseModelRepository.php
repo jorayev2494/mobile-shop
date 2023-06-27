@@ -74,10 +74,11 @@ abstract class BaseModelRepository implements BaseModelRepositoryInterface
             );
     }
 
-    public function paginate(BaseQuery $queryData, iterable $columns = ['+']): LengthAwarePaginator
+    public function paginate(BaseQuery $queryData, iterable $columns = ['*']): LengthAwarePaginator
     {
         /** @var Builder $build */
         $query = $this->getModelClone()->newQuery();
+        $query->select($columns);
 
         $this->search($queryData, $query)
             ->sort($queryData, $query)

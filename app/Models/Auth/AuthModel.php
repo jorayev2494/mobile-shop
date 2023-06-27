@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Auth;
 
 use App\Models\Contracts\Device;
+use App\Models\Traits\Avatar;
 use App\Models\Traits\CodeTrait;
 use App\Models\Traits\DeviceTrait;
 use App\Models\Traits\RestorePasswordTrait;
@@ -24,6 +25,7 @@ abstract class AuthModel extends JWTAuth implements Device
     use DeviceTrait;
     use CodeTrait;
     use RestorePasswordTrait;
+    use Avatar;
 
     protected $primaryKey = 'uuid';
 

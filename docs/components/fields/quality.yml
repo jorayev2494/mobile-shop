@@ -1,0 +1,6 @@
+type: object
+properties:
+  quality:
+    type: integer
+    example: 4
+    default: 0

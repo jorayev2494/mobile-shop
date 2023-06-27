@@ -19,6 +19,6 @@ class GetProductsQueryHandler implements QueryHandlerInterface
 
     public function __invoke(GetProductsQuery $query): LengthAwarePaginator
     {
-        return $this->repository->paginate($query);
+        return $this->repository->getPaginate($query);
     }
 }
