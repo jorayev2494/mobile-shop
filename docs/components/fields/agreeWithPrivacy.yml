@@ -1,0 +1,8 @@
+type: object
+properties:
+  agree_with_privacy:
+    type: boolean
+    example: true
+    enums:
+      - true
+      - false

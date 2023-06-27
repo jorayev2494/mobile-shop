@@ -3,7 +3,6 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\Profile\ProfileController;
-use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
@@ -12,7 +11,11 @@ use App\Http\Controllers\Api\Admin\Category\DeleteCategoryController;
 use App\Http\Controllers\Api\Admin\Category\GetCategoryController;
 use App\Http\Controllers\Api\Admin\Category\ShowCategoryController;
 use App\Http\Controllers\Api\Admin\Category\UpdateCategoryController;
+use App\Http\Controllers\Api\Admin\Order\GetOrderController;
+use App\Http\Controllers\Api\Admin\Order\ShowOrderController;
+use App\Http\Controllers\Api\Admin\Order\UpdateOrderController;
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
+use Illuminate\Http\Request;
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
     $router->post('/register', [AuthController::class, 'register'])->name('register');
@@ -34,6 +37,7 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
     });
 
     $router->apiResource('/roles', RoleController::class);
+
     $router->group(['prefix' => 'categories', 'as' => 'categories.'], static function (Router $router): void {
         $router->get('/', GetCategoryController::class);
         $router->post('/', CreateCategoryController::class);
@@ -49,6 +53,18 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->post('/{uuid}', UpdateProductController::class);
         $router->delete('/{uuid}', DeleteProductController::class);
     });
+
+    $router->group(['prefix' => 'orders', 'as' => 'orders.'], static function (Router $router): void {
+        $router->get('/', GetOrderController::class);
+        $router->get('/{uuid}', ShowOrderController::class);
+        $router->put('/{uuid}', UpdateOrderController::class);
+    });
 });
+
+// Route::post('/dropzone', function (Request $request): array {
+//     dd($request->all());
+
+//     return [];
+// });
 
 Route::get('/ping', static fn (): array => ['message' => 'pong'])->name('ping');

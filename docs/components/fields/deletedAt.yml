@@ -3,3 +3,4 @@ properties:
   deleted_at:
     type: integer
     example: 1234345454
+    nullable: true

@@ -1,0 +1,20 @@
+description: "Orders Response"
+content:
+  application/json:
+    schema:
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/uuid.yml
+        -  $ref: ../../../fields/clientUuid.yml
+        -  $ref: ../../../fields/email.yml
+        -  $ref: ../../../fields/phone.yml
+        -  $ref: ../../../fields/cardUuid.yml
+        -  $ref: ../../../fields/addressUuid.yml
+        -  $ref: ../../../fields/description.yml
+        -  $ref: ../../../fields/orderStatus.yml
+        -  $ref: ../../../fields/quality.yml
+        -  $ref: ../../../fields/sum.yml
+        -  $ref: ../../../fields/discardSum.yml
+        -  $ref: ../../../fields/isActive.yml
+        -  $ref: ../../../fields/deletedAt.yml
+        -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

@@ -1,0 +1,6 @@
+type: object
+properties:
+  discard_sum:
+    type: string
+    example: "10"
+    default: "0"

@@ -3,8 +3,10 @@
 namespace App\Http\Requests\Admin\Category;
 
 use App\Models\Auth\AppAuth;
+use App\Models\Category;
 use App\Models\Enums\AppGuardType;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateCategoryRequest extends FormRequest
 {
@@ -16,7 +18,11 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => ['required', 'string', 'unique:categories,value'],
+            'value' => [
+                'required',
+                'string',
+                Rule::unique(Category::class, 'value')->ignore($this->route()->parameter('uuid'), 'uuid'),
+            ],
             'is_active' => ['boolean'],
         ];
     }

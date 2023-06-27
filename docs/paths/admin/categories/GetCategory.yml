@@ -2,6 +2,16 @@ get:
   summary: "Get categories"
   tags: 
     -  Categories
+  security: 
+    -  bearerAuth: []
+  parameters:
+    # Basic Search
+    - $ref: ../../../components/parameters/search.yml
+    - $ref: ../../../components/parameters/search_by.yml
+    - $ref: ../../../components/parameters/page.yml
+    - $ref: ../../../components/parameters/per_page.yml
+    - $ref: ../../../components/parameters/sort_by.yml
+    - $ref: ../../../components/parameters/is_sort_desc.yml
   responses:
     200:
       $ref: ../../../components/responses/admin/categories/GetCategories.yml
@@ -10,6 +20,8 @@ post:
   summary: "Create category"
   tags: 
     -  Categories
+  security: 
+    -  bearerAuth: []
   requestBody: 
     $ref: ../../../components/requestBodies/admin/categories/Create.yml
   responses: 

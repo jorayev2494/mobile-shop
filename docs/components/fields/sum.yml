@@ -1,0 +1,6 @@
+type: object
+properties:
+  sum:
+    type: string
+    example: "1054"
+    default: "0"

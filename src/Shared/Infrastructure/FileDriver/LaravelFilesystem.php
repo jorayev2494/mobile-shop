@@ -29,6 +29,7 @@ final class LaravelFilesystem implements FilesystemInterface
             $fileData['name'] = Str::random($this->lengthRandomName) . '.' . $fileData['type'];
             $fileData['full_path'] = '/' . $uploadedFile->storeAs($path, $fileData['name']);
             $fileData['disk'] = env('FILESYSTEM_DISK');
+            $fileData['url_public'] = Storage::disk('s3s')->url($fileData['full_path']);
             $fileData['url'] = Storage::url($fileData['full_path']);
         } catch (\Throwable $th) {
             info('File upload message exception', [

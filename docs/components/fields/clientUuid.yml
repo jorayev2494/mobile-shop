@@ -1,0 +1,6 @@
+type: object
+properties:
+  client_uuid:
+    type: string
+    example: "995762a5-aac7-488e-a819-6d44849c0033"
+    uniqueItems: true

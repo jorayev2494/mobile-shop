@@ -4,6 +4,7 @@ namespace App\Mail\Admin\Auth;
 
 use App\Models\Admin;
 use App\Models\Auth\AuthModel;
+use App\Models\Client;
 use App\Models\Code;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -18,13 +19,21 @@ class SendRestoreLinkEmail extends Mailable implements ShouldQueue
 
     // public $queue = QueueType::MAIL;
 
+    private string $url;
+
     public string $restoreLink;
 
     public function __construct(
         private readonly AuthModel $authModel,
         private readonly Code $code,
     ) {
-        $this->restoreLink = config('admin_dashboard.page_routers.reset_password').'?'.http_build_query(['token' => $code->token, 'restored-type' => $this->authModel->getTable()]);
+        if ($authModel instanceof Admin) {
+            $this->url = config('admin_dashboard.admin_url') . config('admin_dashboard.page_routers.reset_password');
+        } else if ($authModel instanceof Client) {
+            // $this->url = config('admin_dashboard.admin_url');
+        }
+
+        $this->restoreLink = $this->url . '?' . http_build_query(['token' => $code->token]);
     }
 
     public function envelope()

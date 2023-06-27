@@ -7,6 +7,6 @@
         <title>Admin Restore password link</title>
     </head>
     <body>
-        {{ $restoreLink }}
+        <a href="{{ $restoreLink }}">{{ $restoreLink }}</a>
     </body>
 </html>

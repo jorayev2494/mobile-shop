@@ -1,0 +1,6 @@
+type: object
+properties:
+  phone:
+    type: string
+    example: '1-410-561-9930'
+    uniqueItems: true

@@ -1,0 +1,8 @@
+name: status
+in: query
+schema: 
+  type: string
+  example: "draft"
+  enum:
+    - "draft"
+    - "paid"

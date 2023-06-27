@@ -1,1 +1,7 @@
 description: "Category created"
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/uuid.yml
