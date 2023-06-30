@@ -9,21 +9,34 @@ use Illuminate\Database\Seeder;
 class CountrySeeder extends Seeder
 {
     private array $countries = [
-        'united_states',
-        'turkmenistan',
-        'ukraine',
-        'russia',
-        'poland',
-        'turkey',
+        [
+            'value' => 'united_states',
+            'iso' => 'us',
+        ],
+        [
+            'value' => 'turkmenistan',
+            'iso' => 'tm',
+        ],
+        [
+            'value' => 'ukraine',
+            'iso' => 'ua',
+        ],
+        [
+            'value' => 'russia',
+            'iso' => 'ru',
+        ],
+        [
+            'value' => 'poland',
+            'iso' => 'pl',
+        ],
+        [
+            'value' => 'turkey',
+            'iso' => 'tr',
+        ],
     ];
 
     public function run(): void
     {
-        Country::factory()->createMany(
-            array_map(
-                static fn (string $value): array => compact('value'),
-                $this->countries
-            )
-        );
+        Country::factory()->createMany($this->countries);
     }
 }

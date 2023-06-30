@@ -54,6 +54,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Card[] $cards
  * @property-read int|null $cards_count
  * @method static \Illuminate\Database\Eloquent\Builder|Client wherePhone($value)
+ * @property-read \App\Models\File|null $avatar
  */
 class Client extends AuthModel
 {

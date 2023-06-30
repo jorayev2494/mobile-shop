@@ -67,7 +67,7 @@ server-migrate:				## Run migrate
 server-migrate-status:			## Run migrate status
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan migrate:status
 
-migrate-fresh:			## Run migrate fresh
+server-migrate-fresh:			## Run migrate fresh
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan migrate:fresh
 
 server-migrate-install:		## Run migrate install
@@ -122,9 +122,6 @@ server-composer-remove:			## Compouser remove
 
 server-composer-remove-dev:			## Compouser remove dev
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli composer remove --dev $(package) --ignore-platform-reqs
-
-server-seed:							## Run Seeder
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artian db:seed --class=$(class)
 
 server-seed-class:						## Run Class Seeder
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan db:seed --class=$(class)

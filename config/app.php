@@ -205,6 +205,7 @@ return [
         Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
+        Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,
 
         // Clients ServiceProviders
         Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,

@@ -11,6 +11,11 @@ use App\Http\Controllers\Api\Admin\Category\DeleteCategoryController;
 use App\Http\Controllers\Api\Admin\Category\GetCategoryController;
 use App\Http\Controllers\Api\Admin\Category\ShowCategoryController;
 use App\Http\Controllers\Api\Admin\Category\UpdateCategoryController;
+use App\Http\Controllers\Api\Admin\Country\CreateCountryController;
+use App\Http\Controllers\Api\Admin\Country\DeleteCountryController;
+use App\Http\Controllers\Api\Admin\Country\IndexCountryController;
+use App\Http\Controllers\Api\Admin\Country\ShowCountryController;
+use App\Http\Controllers\Api\Admin\Country\UpdateCountryController;
 use App\Http\Controllers\Api\Admin\Order\GetOrderController;
 use App\Http\Controllers\Api\Admin\Order\ShowOrderController;
 use App\Http\Controllers\Api\Admin\Order\UpdateOrderController;
@@ -44,6 +49,14 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->get('/{uuid}', ShowCategoryController::class);
         $router->put('/{uuid}', UpdateCategoryController::class);
         $router->delete('/{uuid}', DeleteCategoryController::class);
+    });
+
+    $router->group(['prefix' => 'countries', 'as' => 'countries.'], static function (Router $router): void {
+        $router->get('/', IndexCountryController::class);
+        $router->post('/', CreateCountryController::class);
+        $router->get('/{uuid}', ShowCountryController::class);
+        $router->put('/{uuid}', UpdateCountryController::class);
+        $router->delete('/{uuid}', DeleteCountryController::class);
     });
 
     $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {

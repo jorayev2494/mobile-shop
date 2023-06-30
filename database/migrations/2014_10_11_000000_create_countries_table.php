@@ -12,6 +12,7 @@ return new class extends Migration
             $table->uuid()->primary();
 
             $table->string('value')->unique();
+            $table->string('iso')->unique();
             $table->boolean('is_active')->default(true);
             $table->softDeletes();
 
