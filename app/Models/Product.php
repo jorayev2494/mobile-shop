@@ -51,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property-read \App\Models\Currency $currency
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $medias
  * @property-read int|null $medias_count
+ * @property-read \App\Models\File|null $cover
  */
 class Product extends Model
 {

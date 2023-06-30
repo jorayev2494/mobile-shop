@@ -38,6 +38,7 @@ use App\Models\Auth\AuthModel;
  * @property-read int|null $codes_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Device[] $devices
  * @property-read int|null $devices_count
+ * @property-read \App\Models\File|null $avatar
  */
 class User extends AuthModel
 {

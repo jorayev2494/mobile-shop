@@ -9,9 +9,9 @@ use App\Models\Role;
 trait PermissionSeederTrait
 {
     /**
-     * @var array[array-key, array][string, string] $modelPermissionActions
+     * @var array[array-key, array][string, string] $defaultModelPermissionActions
      */
-    protected array $modelPermissionActions = [
+    protected array $defaultModelPermissionActions = [
         [
             'action' => 'index',
         ],
@@ -29,16 +29,12 @@ trait PermissionSeederTrait
         ],
     ];
 
-    public function modelPermissionsSeed(string $model, bool $isCreateRole = false): void
+    public function modelPermissionsSeed(string $model, array $actions = []): void
     {
         $model = class_basename(strtolower($model));
 
-        if ($isCreateRole) {
-            Role::create([
-                'value' => $model,
-                'prefix' => strtolower($model),
-            ]);
-        }
+        $actions = array_map(static fn (string $action): array => compact('action'), $actions);
+        $modelPermissionActions = array_merge($this->defaultModelPermissionActions, $actions);
 
         /** @var Role $adminRole */
         $adminRole = Role::first();
@@ -49,7 +45,7 @@ trait PermissionSeederTrait
                     'model' => $model,
                     'action' => $permission['action'],
                 ],
-                $this->modelPermissionActions
+                $modelPermissionActions
             )
         );
     }

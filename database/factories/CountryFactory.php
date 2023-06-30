@@ -13,6 +13,7 @@ class CountryFactory extends Factory
     {
         return [
             'value' => $this->faker->country,
+            'iso' => $this->faker->countryISOAlpha3(),
             // 'is_active' => $this->faker->boolean,
         ];
     }
