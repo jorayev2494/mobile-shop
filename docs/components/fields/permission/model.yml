@@ -1,0 +1,5 @@
+type: object
+properties:
+  model:
+    type: string
+    example: "Example value"

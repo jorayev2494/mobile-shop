@@ -45,6 +45,9 @@ tags:
 
   - name: Restore password
     description: Operations about users.
+  
+  - name: Roles
+    description: Permissions description
 
   - name: Profile
     description: This is a tag description.
@@ -63,6 +66,11 @@ x-tagGroups:
     tags: 
       - Authentication
       - Restore password
+
+  - name: Roles
+    tags:
+      - Roles
+      - Permissions
 
   - name: Profile
     tags: 
@@ -89,6 +97,7 @@ servers:
 
 security:
   - bearerAuth: []
+
 paths:
   # Authentication
   /admin/auth/register:
@@ -104,12 +113,25 @@ paths:
     $ref: paths/admin/auth/logout.yml
   # End Authentication
 
+  # Restore password
   /admin/auth/restore-password/link:
     $ref: paths/admin/auth/restore-password/link.yml
 
   /admin/auth/restore-password/restore:
     $ref: paths/admin/auth/restore-password/restore.yml
 
+  # Roles
+  /admin/roles:
+    $ref: paths/admin/roles/Role.yml
+
+  /admin/roles/{id}:
+    $ref: paths/admin/roles/RoleId.yml
+
+  # Permission
+  /admin/permissions:
+    $ref: paths/admin/permissions/Index.yml
+
+  # Profile
   /admin/profile/get:
     $ref: paths/admin/profile/get.yml
 

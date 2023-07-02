@@ -200,14 +200,15 @@ return [
         Project\Infrastructure\InfrastructureServiceProvider::class,
         Project\Utils\UtilsServiceProvider::class,
 
-        // Clients ServiceProviders
+        // Admin ServiceProviders
         Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
         Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,
+        Project\Domains\Admin\Permission\Infrastructure\PermissionServiceProvider::class,
 
-        // Clients ServiceProviders
+        // Client ServiceProviders
         Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Client\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Client\Favorite\Infrastructure\FavoriteServiceProvider::class,

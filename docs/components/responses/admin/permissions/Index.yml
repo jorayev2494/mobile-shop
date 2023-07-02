@@ -1,0 +1,16 @@
+description: Index response
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        - $ref: ../../../schemas/Paginate.yml
+        - properties:
+            data:
+              allOf: 
+                -  $ref: ../../../fields/id.yml
+                -  $ref: ../../../fields/permission/value.yml
+                -  $ref: ../../../fields/permission/model.yml
+                -  $ref: ../../../fields/permission/action.yml
+                -  $ref: ../../../fields/isActive.yml
+                -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

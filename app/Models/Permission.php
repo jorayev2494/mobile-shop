@@ -38,4 +38,9 @@ class Permission extends Model
         'action',
         'is_active',
     ];
+
+    // protected $casts = [
+    //     'created_at' => 'timestamp',
+    //     'updated_at' => 'timestamp',
+    // ];
 }

@@ -19,7 +19,13 @@ use App\Http\Controllers\Api\Admin\Country\UpdateCountryController;
 use App\Http\Controllers\Api\Admin\Order\GetOrderController;
 use App\Http\Controllers\Api\Admin\Order\ShowOrderController;
 use App\Http\Controllers\Api\Admin\Order\UpdateOrderController;
+use App\Http\Controllers\Api\Admin\Permission\IndexPermissionController;
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
+use App\Http\Controllers\Api\Admin\Role\CreateRoleController;
+use App\Http\Controllers\Api\Admin\Role\DeleteRoleController;
+use App\Http\Controllers\Api\Admin\Role\IndexRoleController;
+use App\Http\Controllers\Api\Admin\Role\ShowRoleController;
+use App\Http\Controllers\Api\Admin\Role\UpdateRoleController;
 use Illuminate\Http\Request;
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
@@ -41,7 +47,17 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->put('/', 'changePassword')->name('change_password');
     });
 
-    $router->apiResource('/roles', RoleController::class);
+    $router->group(['prefix' => 'roles', 'as' => 'roles.'], static function (Router $router): void {
+        $router->get('/', IndexRoleController::class);
+        $router->post('/', CreateRoleController::class);
+        $router->get('/{id}', ShowRoleController::class);
+        $router->put('/{id}', UpdateRoleController::class);
+        $router->delete('/{id}', DeleteRoleController::class);
+    });
+
+    $router->group(['prefix' => 'permissions', 'as' => 'permissions.'], static function (Router $router): void {
+        $router->get('/', IndexPermissionController::class);
+    });
 
     $router->group(['prefix' => 'categories', 'as' => 'categories.'], static function (Router $router): void {
         $router->get('/', GetCategoryController::class);

@@ -1,0 +1,5 @@
+type: object
+properties:
+  action:
+    type: string
+    example: "index"

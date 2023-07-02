@@ -1,0 +1,5 @@
+type: object
+properties:
+  value:
+    type: string
+    example: "admin_index"

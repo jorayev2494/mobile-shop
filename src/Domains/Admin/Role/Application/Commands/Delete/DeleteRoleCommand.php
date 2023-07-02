@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Role\Application\Commands\Delete;
 
-use Project\Shared\Application\Command\Command;
+use Project\Shared\Domain\Bus\Command\CommandInterface;
 
-final class DeleteRoleCommand extends Command
+final class DeleteRoleCommand implements CommandInterface
 {
     public function __construct(
         public readonly int $id,

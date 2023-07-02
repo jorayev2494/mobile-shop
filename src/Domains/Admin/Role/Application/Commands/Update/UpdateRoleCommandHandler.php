@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Admin\Role\Application\Commands\Update\UpdateRoleCommand;
 use Project\Domains\Admin\Role\Domain\Role;
 use Project\Domains\Admin\Role\Domain\RoleRepositoryInterface;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class UpdateRoleCommandHandler implements CommandHandler
+final class UpdateRoleCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly RoleRepositoryInterface $repository,
@@ -30,6 +30,7 @@ final class UpdateRoleCommandHandler implements CommandHandler
         $role = Role::fromPrimitives(
             $command->id,
             $command->value,
+            $command->permissions,
             $command->isActive,
         );
 
