@@ -3,6 +3,6 @@ properties:
   agree_with_privacy:
     type: boolean
     example: true
-    enums:
+    enum:
       - true
       - false

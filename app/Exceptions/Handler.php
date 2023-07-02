@@ -64,6 +64,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $ex): JsonResponse
     {
+        if ($ex instanceof \DomainException) {
+            return response()->json([
+                'message' => $ex->getMessage(),
+                // 'errors' => $ex->errors(),
+            ], Response::HTTP_FORBIDDEN);
+        }
+
         if ($ex instanceof ValidationException) {
             return response()->json([
                 'message' => 'Validation exception',

@@ -15,14 +15,33 @@ class RoleRepository extends BaseModelRepository implements RoleRepositoryInterf
         return RoleModel::class;
     }
 
+    public function findById(RoleId $id): ?Role
+    {
+        /** @var RoleModel $fRole */
+        $fRole = $this->getModelClone()->newQuery()->with('permissions:id,value,model,action,is_active')->find($id->value);
+
+        if ($fRole === null) {
+            return null;
+        }
+
+        $role = Role::fromPrimitives($fRole->id, $fRole->value, $fRole->permissions->toArray(), $fRole->is_active);
+
+        return $role;
+    }
+
     public function save(Role $role): bool
-    {        
-        return (bool) $this->getModelClone()->newQuery()->updateOrCreate(
+    {   
+        /** @var RoleModel $roleModel */
+        $roleModel = $this->getModelClone()->newQuery()->updateOrCreate(
             [
                 'id' => $role->id->value,
             ],
             $role->toArray()
         );
+
+        $roleModel->permissions()->sync($role->permissions, true);
+
+        return (bool) $role;
     }
 
     public function delete(RoleId $id): bool

@@ -1,0 +1,5 @@
+name: search
+in: query
+schema:
+  type: string
+  example: "Here search text..."

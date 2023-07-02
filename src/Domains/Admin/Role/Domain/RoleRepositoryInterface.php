@@ -7,6 +7,7 @@ use Project\Domains\Admin\Role\Domain\ValueObjects\RoleId;
 
 interface RoleRepositoryInterface extends BaseModelRepositoryInterface
 {
+    public function findById(RoleId $id): ?Role;
     public function save(Role $role): bool;
     public function delete(RoleId $id): bool;
 }
