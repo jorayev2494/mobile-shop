@@ -1,0 +1,22 @@
+get:
+  summary: 'Get'
+  tags: 
+    -  Profile
+  security: 
+    -  bearerAuth: []
+  responses: 
+    200:
+      $ref: ../../../components/responses/admin/profile/get.yml
+
+post:
+  summary: 'Update'
+  tags:
+    -  Profile
+  security: 
+    -  bearerAuth: []
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/profile/Update.yml
+  responses: 
+    202:
+      $ref: ../../../components/responses/admin/profile/Update.yml
+      

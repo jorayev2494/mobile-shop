@@ -44,7 +44,7 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
     $router->group(['prefix' => 'profile', 'controller' => ProfileController::class, 'as' => 'profile.'], static function (Router $router): void {
         $router->get('/', 'show')->name('show');
         $router->post('/', 'update')->name('update');
-        $router->put('/', 'changePassword')->name('change_password');
+        $router->put('/change-password', 'changePassword')->name('change_password');
     });
 
     $router->group(['prefix' => 'roles', 'as' => 'roles.'], static function (Router $router): void {

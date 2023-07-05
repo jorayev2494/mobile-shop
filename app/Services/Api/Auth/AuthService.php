@@ -91,7 +91,7 @@ class AuthService implements ContractsAuthService
             'refresh_token' => $device->refresh_token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'auth_data' => $authModel,
+            'auth_data' => $authModel?->fresh(['role:id,value', 'avatar'])->append('full_name'),
         ];
     }
 }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('mime_type');
             $table->string('type');
             $table->string('extension');
-            $table->string('size');
+            $table->integer('size');
             $table->string('file_name')->nullable();
             $table->string('file_original_name');
             $table->string('name');

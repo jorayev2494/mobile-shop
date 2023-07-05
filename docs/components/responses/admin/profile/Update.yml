@@ -1,4 +1,4 @@
-description: 'Get profile response'
+description: 'Profile updated'
 content:
   application/json:
     schema: 

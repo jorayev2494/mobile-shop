@@ -29,6 +29,13 @@ abstract class AuthModel extends JWTAuth implements Device
 
     protected $primaryKey = 'uuid';
 
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
+        );
+    }
+
     public function password(): Attribute
     {
         return Attribute::make(
