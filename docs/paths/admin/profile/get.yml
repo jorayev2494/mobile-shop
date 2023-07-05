@@ -1,9 +1,0 @@
-get:
-  summary: 'Get profile'
-  tags: 
-    -  Profile
-  security: 
-    -  bearerAuth: []
-  responses: 
-    200:
-      $ref: ../../../components/responses/admin/profile/get.yml

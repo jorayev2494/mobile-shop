@@ -59,6 +59,7 @@ class Admin extends AuthModel
     ];
 
     protected $hidden = [
+        'role_id',
         'password',
         'remember_token',
     ];

@@ -4,33 +4,35 @@ declare(strict_types=1);
 
 namespace Project\Shared\Infrastructure\FileDriver;
 
+use App\Models\File;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Project\Shared\Domain\FilesystemInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-use function Lambdish\Phunctional\get;
-
 final class LaravelFilesystem implements FilesystemInterface
 {
     private int $lengthRandomName = 32;
 
-    public function uploadFile(string $path, UploadedFile $uploadedFile): array
+    public function uploadFile(string $path, UploadedFile $uploadedFile): ?File
     {
         try {
+            $bucketPath = '/' . env('AWS_BUCKET');
             list($fileData['width'], $fileData['height']) = @getimagesize($uploadedFile->getPathname());
-            $fileData['path'] = $path;
+            $fileData['path'] = $bucketPath . $path;
             $fileData['mime_type'] = $uploadedFile->getClientMimeType();
             $fileData['type'] = $uploadedFile->getClientOriginalExtension();
             $fileData['extension'] = $uploadedFile->getClientOriginalExtension();
             $fileData['size'] = $uploadedFile->getSize();
             $fileData['file_original_name'] = $uploadedFile->getClientOriginalName();
             $fileData['name'] = Str::random($this->lengthRandomName) . '.' . $fileData['type'];
-            $fileData['full_path'] = '/' . $uploadedFile->storeAs($path, $fileData['name']);
+            $fileData['full_path'] = $bucketPath . '/' . $uploadedFile->storeAs($path, $fileData['name']);
             $fileData['disk'] = env('FILESYSTEM_DISK');
             $fileData['url_public'] = Storage::disk('s3s')->url($fileData['full_path']);
             $fileData['url'] = Storage::url($fileData['full_path']);
+
+            return File::make($fileData);
         } catch (\Throwable $th) {
             info('File upload message exception', [
                 'message' => $th->getMessage(),
@@ -41,10 +43,10 @@ final class LaravelFilesystem implements FilesystemInterface
             throw new BadRequestException('File load exception!');
         }
 
-        return $fileData;
+        return null;
     }
 
-    public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): array
+    public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): ?File
     {
         $this->deleteFile($path, $deleteFileName);
 

@@ -87,8 +87,8 @@ class Handler extends ExceptionHandler
 
         if ($ex instanceof BadRequestException) {
             return response()->json([
-                'message' => 'Bad request exception',
-                'error' => $ex->getMessage(),
+                'message' => $ex->getMessage(),
+                'error' => 'Bad request exception',
             ], Response::HTTP_BAD_REQUEST);
         }
 

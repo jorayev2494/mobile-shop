@@ -132,8 +132,11 @@ paths:
     $ref: paths/admin/permissions/Index.yml
 
   # Profile
-  /admin/profile/get:
-    $ref: paths/admin/profile/get.yml
+  /admin/profile:
+    $ref: paths/admin/profile/Profile.yml
+
+  /admin/profile/change-password:
+    $ref: paths/admin/profile/ChangePassword.yml
 
   # Categories
   /admin/categories:

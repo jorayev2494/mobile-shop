@@ -100,8 +100,11 @@ class File extends Model
     ];
 
     protected $hidden = [
-        'full_path',
+        'fileable_uuid',
+        'fileable_type',
+        'url',
         'disk',
+        'is_public',
     ];
 
     public function fileable(): MorphTo

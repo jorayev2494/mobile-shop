@@ -13,4 +13,9 @@ trait Avatar
     {
         return $this->morphOne(File::class, 'fileable', 'fileable_type', 'fileable_uuid', 'uuid');
     }
+
+    public function avatarPath(): string
+    {
+        return '/avatar';
+    }
 }

@@ -187,6 +187,7 @@ services:
         - 9000:9000
         - 9001:9001
     networks:
+        - shop-network
         - test-shop-network
 
 #   minio-create-bucket:
