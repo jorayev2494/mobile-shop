@@ -1,0 +1,37 @@
+get:
+  summary: Show Manager
+  tags: 
+    -  Managers
+  security:
+    -  bearerAuth: []
+  parameters:
+    -  $ref: ../../../components/parameters/query/uuid.yml
+  responses: 
+    200:
+      $ref: ../../../components/responses/admin/managers/Show.yml
+
+post:
+  summary: Update Manager
+  tags: 
+    -  Managers
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    -  $ref: ../../../components/parameters/query/uuid.yml
+  requestBody:
+    $ref: ../../../components/requestBodies/admin/managers/Update.yml
+  responses:
+    202:
+      description: Updated Manager
+
+delete:
+  summary: Delete Manager
+  tags: 
+    -  Managers
+  security:
+    -  bearerAuth: []
+  parameters: 
+    -  $ref: ../../../components/parameters/query/uuid.yml
+  responses:
+    204:
+      description: Deleted Manager

@@ -51,6 +51,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Admin extends AuthModel
 {
     protected $fillable = [
+        'uuid',
         'first_name',
         'last_name',
         'email',

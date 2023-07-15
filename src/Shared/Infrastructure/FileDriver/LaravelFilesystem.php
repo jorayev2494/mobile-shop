@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Project\Shared\Infrastructure\FileDriver;
 
-use App\Models\File;
 use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -29,11 +28,16 @@ final class LaravelFilesystem implements FilesystemInterface
             $fileData['name'] = Str::random($this->lengthRandomName) . '.' . $fileData['type'];
             $fileData['full_path'] = $bucketPath . '/' . $uploadedFile->storeAs($path, $fileData['name']);
             $fileData['disk'] = env('FILESYSTEM_DISK');
-            $fileData['url_public'] = Storage::disk('s3s')->url($fileData['full_path']);
             $fileData['url'] = Storage::url($fileData['full_path']);
 
-            return File::make($fileData);
+            $file = File::make($fileData);
+            $file->url_pattern = UrlPattern::make($file);
+
+            // dd($file);
+
+            return $file;
         } catch (\Throwable $th) {
+            dd($th->getMessage(), $th->getLine(), $th->getFile(), $fileData);
             info('File upload message exception', [
                 'message' => $th->getMessage(),
                 'file' => $th->getFile(),

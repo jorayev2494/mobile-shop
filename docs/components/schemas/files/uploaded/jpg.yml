@@ -1,0 +1,16 @@
+type: object
+allOf: 
+  -  $ref: ../../../fields/uuid.yml
+  -  $ref: ../../../fields/width.yml
+  -  $ref: ../../../fields/height.yml
+  -  $ref: ../../../fields/path.yml
+  -  $ref: ../../../fields/file/mime_types/imageJpeg.yml
+  -  $ref: ../../../fields/file/extensions/jpeg.yml
+  -  $ref: ../../../fields/size.yml
+  -  $ref: ../../../fields/file_name.yml
+  -  $ref: ../../../fields/file_original_name.yml
+  -  $ref: ../../../fields/full_path.yml
+  -  $ref: ../../../fields/downloaded_count.yml
+  -  $ref: ../../../fields/isActive.yml
+  -  $ref: ../../../fields/createdAt.yml
+  -  $ref: ../../../fields/updatedAt.yml

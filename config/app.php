@@ -201,6 +201,7 @@ return [
         Project\Utils\UtilsServiceProvider::class,
 
         // Admin ServiceProviders
+        Project\Domains\Admin\Manager\Infrastructure\ManagerServiceProvider::class,
         Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
         Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,

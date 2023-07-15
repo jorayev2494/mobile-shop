@@ -1,0 +1,10 @@
+description: Show manager response
+content:
+  application/json:
+    schema: 
+      allOf: 
+        -  $ref: ../../../fields/uuid.yml
+        -  $ref: ../../../fields/firstName.yml
+        -  $ref: ../../../fields/lastName.yml
+        -  $ref: ../../../fields/adminEmail.yml
+        -  $ref: ../../../fields/roleId.yml
