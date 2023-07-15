@@ -84,6 +84,7 @@ class File extends Model
         'name',
         'full_path',
         'url',
+        'url_pattern',
         'disk',
         'downloaded_count',
         'is_public',

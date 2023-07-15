@@ -3,30 +3,15 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\Profile\ProfileController;
-use App\Http\Controllers\Api\Admin\RoleController;
 use App\Http\Controllers\Api\Admin\Auth\AuthController;
 use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
-use App\Http\Controllers\Api\Admin\Category\CreateCategoryController;
-use App\Http\Controllers\Api\Admin\Category\DeleteCategoryController;
-use App\Http\Controllers\Api\Admin\Category\GetCategoryController;
-use App\Http\Controllers\Api\Admin\Category\ShowCategoryController;
-use App\Http\Controllers\Api\Admin\Category\UpdateCategoryController;
-use App\Http\Controllers\Api\Admin\Country\CreateCountryController;
-use App\Http\Controllers\Api\Admin\Country\DeleteCountryController;
-use App\Http\Controllers\Api\Admin\Country\IndexCountryController;
-use App\Http\Controllers\Api\Admin\Country\ShowCountryController;
-use App\Http\Controllers\Api\Admin\Country\UpdateCountryController;
-use App\Http\Controllers\Api\Admin\Order\GetOrderController;
-use App\Http\Controllers\Api\Admin\Order\ShowOrderController;
-use App\Http\Controllers\Api\Admin\Order\UpdateOrderController;
 use App\Http\Controllers\Api\Admin\Permission\IndexPermissionController;
+use App\Http\Controllers\Api\Admin\Order\{GetOrderController, ShowOrderController, UpdateOrderController,};
+use App\Http\Controllers\Api\Admin\Category\{CreateCategoryController, DeleteCategoryController, GetCategoryController, ShowCategoryController, UpdateCategoryController,};
+use App\Http\Controllers\Api\Admin\Country\{CreateCountryController, DeleteCountryController, IndexCountryController, ShowCountryController, UpdateCountryController,};
+use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
-use App\Http\Controllers\Api\Admin\Role\CreateRoleController;
-use App\Http\Controllers\Api\Admin\Role\DeleteRoleController;
-use App\Http\Controllers\Api\Admin\Role\IndexRoleController;
-use App\Http\Controllers\Api\Admin\Role\ShowRoleController;
-use App\Http\Controllers\Api\Admin\Role\UpdateRoleController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexRoleController, ShowRoleController, UpdateRoleController,};
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
     $router->post('/register', [AuthController::class, 'register'])->name('register');
@@ -45,6 +30,14 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->get('/', 'show')->name('show');
         $router->post('/', 'update')->name('update');
         $router->put('/change-password', 'changePassword')->name('change_password');
+    });
+
+    $router->group(['prefix' => 'managers', 'as' => 'admins.'], static function (Router $router): void {
+        $router->get('/', IndexManagerController::class);
+        $router->post('/', CreateManagerController::class);
+        $router->get('/{uuid}', ShowManagerController::class);
+        $router->post('/{uuid}', UpdateManagerController::class);
+        $router->delete('/{uuid}', DeleteManagerController::class);
     });
 
     $router->group(['prefix' => 'roles', 'as' => 'roles.'], static function (Router $router): void {

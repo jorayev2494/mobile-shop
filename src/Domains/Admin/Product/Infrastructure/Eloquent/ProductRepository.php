@@ -12,6 +12,7 @@ use Project\Domains\Admin\Product\Domain\Product;
 use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductUUID;
 use Project\Shared\Application\Query\BaseQuery;
+use Project\Shared\Infrastructure\FileDriver\File;
 
 final class ProductRepository extends BaseModelRepository implements ProductRepositoryInterface
 {
@@ -54,8 +55,12 @@ final class ProductRepository extends BaseModelRepository implements ProductRepo
         );
 
         if (count($product->medias) > 0) {
-            // dd($product->medias);
-            $createdProduct->medias()->createMany($product->medias);
+            $createdProduct->medias()->createMany(
+                array_map(
+                    static fn (File $file): array => $file->setHidden([])->attributesToArray(),
+                    iterator_to_array($product->medias)
+                )
+            );
         }
 
         return (bool) $createdProduct;

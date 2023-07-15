@@ -1,0 +1,5 @@
+type: object
+properties:
+  file_original_name:
+    type: string
+    example: 'clouds_flight_horizon_275365_1920x1080.jpg'

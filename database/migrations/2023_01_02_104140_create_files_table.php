@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('full_path');
             $table->string('url');
+            $table->string('url_pattern');
             $table->integer('downloaded_count')->default(0);
             $table->string('disk');
             $table->boolean('is_public')->default(false);

@@ -20,21 +20,21 @@ class CreateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // 'title' => ['required', 'string', 'max:225'],
-            // 'category_uuid' => ['required', 'string', 'exists:categories,uuid'],
-            // 'currency_uuid' => ['required', 'string', 'exists:currencies,uuid'],
-            // 'price' => ['required', 'string'],
-            // 'discount_presence' => ['nullable', 'string'],
-            // 'medias' => ['required', 'array'],
-            // // 'medias.*' => Rule::forEach(static fn (UploadedFile $value, string $attribute, array $attributeValue): array  => ['required', 'file', File::types(ProductMimeType::getValues())]),
-            // // 'medias.*' => Rule::forEach(static function ($value, string $attribute, array $attributeValue): array {
-            // //     dd($value);
+            'title' => ['required', 'string', 'max:225'],
+            'category_uuid' => ['required', 'string', 'exists:categories,uuid'],
+            'currency_uuid' => ['required', 'string', 'exists:currencies,uuid'],
+            'price' => ['required', 'string'],
+            'discount_presence' => ['nullable', 'string'],
+            'medias' => ['required', 'array'],
+            // 'medias.*' => Rule::forEach(static fn (UploadedFile $value, string $attribute, array $attributeValue): array  => ['required', 'file', File::types(ProductMimeType::getValues())]),
+            // 'medias.*' => Rule::forEach(static function ($value, string $attribute, array $attributeValue): array {
+            //     dd($value);
 
-            // //     return [];
-            // // }),
+            //     return [];
+            // }),
 
-            // 'description' => ['required', 'string'],
-            // 'is_active' => ['nullable', 'boolean'],
+            'description' => ['required', 'string'],
+            'is_active' => ['nullable', 'boolean'],
         ];
     }
 }

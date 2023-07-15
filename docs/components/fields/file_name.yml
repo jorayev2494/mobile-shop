@@ -1,0 +1,6 @@
+type: object
+properties:
+  file_name:
+    type: string
+    example: file_name.ext
+    nullable: true

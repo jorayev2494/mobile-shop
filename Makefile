@@ -46,7 +46,7 @@ server-restart:					## Restart project
 server-bash:						## Project bash terminal
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli bash
 
-fpm-bash:						## Project bash terminal
+server-fpm-bash:						## Project bash terminal
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-fpm bash
 
 server-ps:							## Show project process

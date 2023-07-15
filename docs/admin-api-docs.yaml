@@ -41,16 +41,19 @@ externalDocs:
 
 tags:
   - name: Authentication
-    description: Example echo operations.
+    description: Example echo operations
 
   - name: Restore password
-    description: Operations about users.
+    description: Operations about users
   
   - name: Roles
     description: Permissions description
 
   - name: Profile
-    description: This is a tag description.
+    description: This is Profile description
+  
+  - name: Managers
+    description: Managers description
 
   - name: Categories
     description: Categories description
@@ -75,6 +78,10 @@ x-tagGroups:
   - name: Profile
     tags: 
       -  Profile
+
+  - name: Managers
+    tags: 
+      -  Managers
 
   - name: Categories
     tags: 
@@ -137,6 +144,13 @@ paths:
 
   /admin/profile/change-password:
     $ref: paths/admin/profile/ChangePassword.yml
+  
+  # Managers
+  /managers:
+    $ref: paths/admin/managers/Index.yml
+
+  /managers/{uuid}:
+    $ref: paths/admin/managers/ManagerUUID.yml
 
   # Categories
   /admin/categories:

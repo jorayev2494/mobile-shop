@@ -9,6 +9,19 @@ x-php-cli: &php-cli
   volumes:
       - ../:/var/project
 
+x-ngx-proxy: &ngx-proxy-server
+    build: 
+        context: ./nginx_proxy
+        dockerfile: Dockerfile
+    container_name: ${COMPOSE_PROJECT_NAME}-ngx-proxy
+    restart: unless-stopped
+    volumes: 
+        - ../:/var/project
+    depends_on: 
+        - php-fpm
+    links: 
+        - php-fpm
+
 services:
   # Nginx Service
   nginx:
@@ -27,6 +40,13 @@ services:
     links:
         - php-fpm
     networks:
+        - shop-network
+
+  ngx_proxy_imgs:
+    <<: *ngx-proxy-server
+    ports: 
+        - 9999:8888
+    networks: 
         - shop-network
 
   # PHP FPM Service
@@ -133,6 +153,7 @@ services:
         - ${MAILHOG_INTERFACE_PORT}:8025
         # - ${MAILHOG_PORT}:1025
     networks:
+        - shop-network
         - test-shop-network
 
   # RabbitMQ Service

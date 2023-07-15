@@ -1,0 +1,6 @@
+type: object
+properties:
+  downloaded_count:
+    type: integer
+    example: 5
+    default: 0

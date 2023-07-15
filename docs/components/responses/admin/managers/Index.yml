@@ -1,0 +1,34 @@
+description: Index response
+content:
+  application/json:
+    schema: 
+      allOf: 
+        - $ref: ../../../schemas/Paginate.yml
+        - properties:
+           data:
+            type: array
+            items:
+              type: object
+              allOf: 
+                -  $ref: ../../../fields/uuid.yml
+                -  $ref: ../../../fields/firstName.yml
+                -  $ref: ../../../fields/lastName.yml
+                -  $ref: ../../../fields/adminEmail.yml
+                -  $ref: ../../../fields/createdAtAndUpdatedAt.yml
+                -  properties:
+                    avatar:
+                      $ref: ../../../schemas/files/uploaded/jpg.yml
+                      nullable: true
+                    role:
+                      type: object
+                      allOf: 
+                        -  $ref: ../../../fields/id.yml
+                        -  properties:
+                            value:
+                              type: string
+                              example: admin
+                              enum:
+                                - admin
+                                - moderator
+                        -  $ref: ../../../fields/isActive.yml
+

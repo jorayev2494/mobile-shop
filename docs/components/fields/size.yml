@@ -1,0 +1,5 @@
+type: object
+properties:
+  size:
+    type: integer
+    example: size
