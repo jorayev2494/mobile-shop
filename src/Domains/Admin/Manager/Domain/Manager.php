@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Manager\Domain;
 
+use Project\Domains\Admin\Manager\Domain\Avatar;
 use Project\Domains\Admin\Manager\Domain\ValueObjects\ManagerEmail;
 use Project\Domains\Admin\Manager\Domain\ValueObjects\ManagerFirstName;
 use Project\Domains\Admin\Manager\Domain\ValueObjects\ManagerLastName;
@@ -14,6 +15,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 class Manager extends AggregateRoot
 {
     private ?ManagerPassword $password = null;
+    private ?Avatar $avatar = null;
 
     private ?int $roleId;
 
@@ -51,6 +53,16 @@ class Manager extends AggregateRoot
         return $manager;
     }
 
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(Avatar $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
     public function setPassword(ManagerPassword $password): void
     {
         $this->password = $password;
@@ -77,6 +89,7 @@ class Manager extends AggregateRoot
             'uuid' => $this->uuid->value,
             'first_name' => $this->firstName->value,
             'last_name' => $this->lastName->value,
+            'avatar' => $this->avatar?->toArray(),
             'email' => $this->email->value,
             'password' => $this->password?->value,
             'role_id' => $this->roleId,

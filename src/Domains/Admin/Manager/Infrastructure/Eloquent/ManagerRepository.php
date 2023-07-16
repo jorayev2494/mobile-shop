@@ -9,6 +9,7 @@ use App\Repositories\Base\BaseModelRepository;
 use Project\Domains\Admin\Manager\Domain\ManagerRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Project\Domains\Admin\Manager\Domain\Manager;
+use Project\Domains\Admin\Manager\Domain\Avatar;
 use Project\Domains\Admin\Manager\Domain\ValueObjects\ManagerUUID;
 use Project\Shared\Application\Query\BaseQuery;
 
@@ -47,6 +48,14 @@ class ManagerRepository extends BaseModelRepository implements ManagerRepository
 
         $manager = Manager::fromPrimitives($fManager->uuid, $fManager->first_name, $fManager->last_name, $fManager->email);
         $manager->setRoleId($fManager->role_id);
+
+        if ($fManager->avatar !== null) {
+            /** @var App\Models\File $avatar */
+            $avatar = $fManager->avatar;
+            $manager->setAvatar(
+                new Avatar($avatar->uuid, $avatar->width, $avatar->height, $avatar->mime_type, $avatar->size, $avatar->file_original_name, $avatar->url_pattern)
+            );
+        }
 
         return $manager;
     }

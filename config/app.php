@@ -208,6 +208,7 @@ return [
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,
         Project\Domains\Admin\Permission\Infrastructure\PermissionServiceProvider::class,
+        \Project\Domains\Admin\Currency\Infrastructure\CurrencyServiceProvider::class,
 
         // Client ServiceProviders
         Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,

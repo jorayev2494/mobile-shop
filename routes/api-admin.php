@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Admin\Permission\IndexPermissionController;
 use App\Http\Controllers\Api\Admin\Order\{GetOrderController, ShowOrderController, UpdateOrderController,};
 use App\Http\Controllers\Api\Admin\Category\{CreateCategoryController, DeleteCategoryController, GetCategoryController, ShowCategoryController, UpdateCategoryController,};
 use App\Http\Controllers\Api\Admin\Country\{CreateCountryController, DeleteCountryController, IndexCountryController, ShowCountryController, UpdateCountryController,};
+use App\Http\Controllers\Api\Admin\Currency\IndexCurrencyController;
 use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
 use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexRoleController, ShowRoleController, UpdateRoleController,};
@@ -68,6 +69,10 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->delete('/{uuid}', DeleteCountryController::class);
     });
 
+    $router->group(['prefix' => 'currencies', 'as' => 'currencies.'], static function (Router $router): void {
+        $router->get('/', IndexCurrencyController::class);
+    });
+
     $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
         $router->get('/', GetProductController::class);
         $router->post('/', CreateProductController::class);
@@ -82,11 +87,5 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->put('/{uuid}', UpdateOrderController::class);
     });
 });
-
-// Route::post('/dropzone', function (Request $request): array {
-//     dd($request->all());
-
-//     return [];
-// });
 
 Route::get('/ping', static fn (): array => ['message' => 'pong'])->name('ping');

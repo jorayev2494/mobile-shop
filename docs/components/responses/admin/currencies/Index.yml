@@ -1,0 +1,16 @@
+description: Response index currencies
+content:
+  application/json:
+    schema: 
+      allOf: 
+        -  $ref: ../../../schemas/Paginate.yml
+        -  properties:
+            data:
+              type: array
+              items:
+                type: object
+                allOf: 
+                  -  $ref: ../../../fields/uuid.yml
+                  -  $ref: ../../../fields/value.yml
+                  -  $ref: ../../../fields/isActive.yml
+                  -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

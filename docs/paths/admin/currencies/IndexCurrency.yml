@@ -1,0 +1,17 @@
+get:
+  summary: Currencies index
+  tags:
+    - Currencies
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/query/page.yml
+    - $ref: ../../../components/parameters/query/per_page.yml
+    - $ref: ../../../components/parameters/query/search.yml
+    - $ref: ../../../components/parameters/query/search_by.yml
+    - $ref: ../../../components/parameters/query/sort_by.yml
+    - $ref: ../../../components/parameters/query/is_sort_desc.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/currencies/Index.yml
+  

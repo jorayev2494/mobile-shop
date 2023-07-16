@@ -39,8 +39,7 @@ class OrderSeeder extends Seeder
 
     public function run(): void
     {
-        for ($i = 0; $i < 50; $i++) {
-
+        for ($i = 0; $i < 150; $i++) {
             $client = $this->clients->random(1)->first();
 
             /** @var Order $order */
@@ -48,7 +47,6 @@ class OrderSeeder extends Seeder
                 'client_uuid' => $client->uuid,
                 'card_uuid' => $client->cards->random(1)->first()->uuid,
                 'address_uuid' => $client->addresses->random(1)->first()->uuid,
-                'status' => OrderStatus::PAID,
                 'quality' => 0,
                 'sum' => 0,
                 'discard_sum' => 0,

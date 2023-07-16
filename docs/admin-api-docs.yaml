@@ -57,6 +57,9 @@ tags:
 
   - name: Categories
     description: Categories description
+
+  - name: Currencies
+    description: Currencies description
   
   - name: Products
     description: Products description
@@ -86,6 +89,10 @@ x-tagGroups:
   - name: Categories
     tags: 
       -  Categories
+
+  - name: Currencies
+    tags: 
+      -  Currencies
   
   - name: Products
     tags: 
@@ -158,6 +165,10 @@ paths:
   
   /admin/categories/{uuid}:
     $ref: paths/admin/categories/Category.yml
+
+  # Currencies
+  /admin/currencies:
+    $ref: paths/admin/currencies/IndexCurrency.yml
 
   # Products
   /admin/products:
