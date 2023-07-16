@@ -6,5 +6,6 @@ enum OrderStatus : string
 {
     case DRAFT = 'draft';
     case PAID = 'paid';
-    case DELIVERED = 'delivery';
+    case DELIVERY = 'delivery';
+    case DELIVERED = 'delivered';
 }
