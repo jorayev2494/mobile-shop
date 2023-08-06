@@ -24,6 +24,7 @@ RUN apt-get update \
 
 RUN apt-get update \
     && apt-get install -y libpq-dev \
+    && apt-get install -y libjpeg-dev \
     && apt-get install -y zip \
     && apt-get install -y unzip \
     && apt-get install -y git \
@@ -36,9 +37,16 @@ RUN apt-get update \
     # Enable extensions
     && docker-php-ext-enable pdo_pgsql \
     && docker-php-ext-enable pgsql \
+    # Image extensions
+    && docker-php-ext-configure gd --with-jpeg \
+    && docker-php-ext-install gd \
     # Install
     && apt-get -y --no-install-recommends install imagemagick php8.2-imagick php8.2-pgsql pdo_pgsql pdo nano php8.2-gd php8.2-redis php8.2-bcmath php8.2-zmq \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+
+# Create image
+# RUN apt-get install docker-php-ext-configure gd --with-jpeg \
+    # && docker-php-ext-install gd
 
 #region Postgres Extensions
 # RUN set -ex \

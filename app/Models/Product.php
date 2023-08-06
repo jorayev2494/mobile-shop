@@ -78,8 +78,8 @@ class Product extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
+        // 'created_at' => 'timestamp',
+        // 'updated_at' => 'timestamp',
     ];
 
     public function discountPrice(): Attribute

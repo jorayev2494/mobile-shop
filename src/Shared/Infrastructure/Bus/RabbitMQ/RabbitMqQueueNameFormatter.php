@@ -21,7 +21,7 @@ final class RabbitMqQueueNameFormatter
             last($subscriberClassPaths),
         ];
 
-        return implode('.', map(self::toSnakeCase(), $queueNameParts));
+        return implode('.', map(self::toCamelCase(), $queueNameParts));
     }
 
     public static function formatRetry(DomainEventSubscriberInterface $subscriber): string
@@ -48,5 +48,11 @@ final class RabbitMqQueueNameFormatter
     private static function toSnakeCase(): callable
     {
         return static fn (string $text) => Str::toSnakeCase($text);
+    }
+
+    private static function toCamelCase(): callable
+    {
+        // return static fn (string $text) => ucfirst(Str::toCamelCase($text));
+        return static fn (string $text) => Str::toCamelCase($text);
     }
 }

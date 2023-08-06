@@ -7,10 +7,10 @@ namespace Project\Domains\Client\Card\Application\Commands\Delete;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Card\Domain\CardRepositoryInterface;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardUUID;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
-final class DeleteCardCommandHandler implements CommandHandler
+final class DeleteCardCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly AuthManagerInterface $authManager,

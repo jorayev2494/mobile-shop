@@ -31,12 +31,12 @@ final class AuthManager implements AuthManagerInterface
 
     public function admin(): ?Admin
     {
-        return $this->authManager->admin();
+        return ($admin = $this->authManager->admin()) instanceof Admin ? $admin : null;
     }
 
     public function client(): ?Client
     {
-        return $this->authManager->user();
+        return ($client = $this->authManager->user()) instanceof Client ? $client : null;
     }
 
     public function check(AuthGuard $guard = null): bool

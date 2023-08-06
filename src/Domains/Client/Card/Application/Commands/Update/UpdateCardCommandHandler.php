@@ -6,10 +6,10 @@ namespace Project\Domains\Client\Card\Application\Commands\Update;
 
 use Project\Domains\Client\Card\Domain\Card;
 use Project\Domains\Client\Card\Domain\CardRepositoryInterface;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
-final class UpdateCardCommandHandler implements CommandHandler
+final class UpdateCardCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly AuthManagerInterface $authManager,
@@ -19,21 +19,18 @@ final class UpdateCardCommandHandler implements CommandHandler
         
     }
 
-    public function __invoke(UpdateCardCommand $command): array
+    public function __invoke(UpdateCardCommand $command): void
     {
         $card = Card::fromPrimitives(
             $command->uuid,
             $this->authManager->client()->uuid,
             $command->type,
-            $command->holder_name,
+            $command->holderName,
             $command->number,
             $command->cvv,
-            $command->expiration_date,
-            $command->is_active
+            $command->expirationDate,
         );
 
         $this->repository->save($card);
-
-        return ['uuid' => $card->uuid->value];
     }
 }

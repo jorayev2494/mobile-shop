@@ -27,10 +27,6 @@ final class EloquentCardRepository extends BaseModelRepository implements CardRe
             ->sort($queryData, $query)
             ->filters($queryData, $query);
 
-        $query->with([
-            'client',
-        ]);
-
         return $query->paginate($queryData->per_page);
     }
 

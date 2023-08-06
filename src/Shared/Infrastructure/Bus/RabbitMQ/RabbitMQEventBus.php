@@ -56,7 +56,9 @@ final class RabbitMQEventBus implements EventBusInterface
         ]);
 
         $msg = new AMQPMessage($body, $this->getProperties());
-        $this->channel->basic_publish($msg, self::EXCHANGE_NAME, $routingKey);
+        // dd(compact('routingKey'));
+        // https://www.cloudamqp.com/blog/how-to-run-rabbitmq-with-php.html
+        $this->channel->basic_publish($msg, $event::exchangeName(), $routingKey);
     }
 
     private function getProperties(): array

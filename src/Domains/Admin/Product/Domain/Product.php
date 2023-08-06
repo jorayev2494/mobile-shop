@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Domain;
 
+use Project\Domains\Admin\Product\Domain\Events\ProductMediaWasAddedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Events\ProductWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductCategoryUUID;
@@ -12,6 +13,7 @@ use Project\Domains\Admin\Product\Domain\ValueObjects\ProductDiscountPercentage;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductPrice;
 use Project\Domains\Admin\Product\Domain\ValueObjects\ProductUUID;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
+use Project\Shared\Infrastructure\FileDriver\File;
 
 class Product extends AggregateRoot
 {
@@ -71,7 +73,13 @@ class Product extends AggregateRoot
         $this->record(new ProductWasDeletedDomainEvent($this->uuid->value));
     }
 
-    public function setMedias(iterable $medias): void
+    public function addMedia(File $media): void
+    {
+        $this->medias[] = $media;
+        $this->record(new ProductMediaWasAddedDomainEvent($this->uuid->value, $media->toArray()));
+    }
+
+    public function addMedias(iterable $medias): void
     {
         $this->medias = $medias;
     }

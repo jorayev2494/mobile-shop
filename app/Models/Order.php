@@ -55,6 +55,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressUuid($value)
  * @property string $card_uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereCardUuid($value)
+ * @property int $number
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereNumber($value)
  */
 class Order extends Model
 {
@@ -65,6 +67,7 @@ class Order extends Model
 
     protected $fillable = [
         'uuid',
+        // 'number',
         'client_uuid',
         'email',
         'phone',

@@ -57,7 +57,8 @@ class AuthService implements ContractsAuthService
         return $this->authToken(
             $token,
             $authModel = AppAuth::model(),
-            $authModel->addDevice($credentialsData->device_id)
+            $authModel->addDevice($credentialsData->device_id),
+            $guard
         );
     }
 
@@ -71,7 +72,7 @@ class AuthService implements ContractsAuthService
             throw new BadRequestException('Unauthorized', 401);
         }
 
-        return $this->authToken($token, $device->deviceAble, $device);
+        return $this->authToken($token, $device->deviceAble, $device, $guard);
     }
 
     public function logout(?AuthModel $authModel, string $deviceId, AppGuardType $guard = AppGuardType::ADMIN): void
@@ -84,14 +85,24 @@ class AuthService implements ContractsAuthService
         AppAuth::logout();
     }
 
-    private function authToken(string $token, AuthModel $authModel, Device $device): array
+    private function authToken(string $token, AuthModel $authModel, Device $device, AppGuardType $guard = AppGuardType::ADMIN): array
     {
         return [
             'access_token' => $token,
             'refresh_token' => $device->refresh_token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
-            'auth_data' => $authModel?->fresh(['role:id,value', 'avatar'])->append('full_name'),
+            'auth_data' => $this->getAuthData($authModel, $guard),
         ];
+    }
+
+    private function getAuthData(AuthModel $authModel, AppGuardType $guard = AppGuardType::ADMIN): AuthModel
+    {
+        $authModel = match ($guard) {
+            AppGuardType::ADMIN => $authModel?->fresh(['role:id,value', 'avatar']),
+            AppGuardType::CLIENT => $authModel,
+        };
+
+        return $authModel->append('full_name');
     }
 }

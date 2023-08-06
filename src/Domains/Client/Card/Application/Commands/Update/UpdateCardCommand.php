@@ -4,18 +4,17 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Card\Application\Commands\Update;
 
-use Project\Shared\Application\Command\Command;
+use Project\Shared\Domain\Bus\Command\CommandInterface;
 
-final class UpdateCardCommand extends Command
+final class UpdateCardCommand implements CommandInterface
 {
     public function __construct(
         public readonly string $uuid,
         public readonly string $type,
-        public readonly string $holder_name,
+        public readonly string $holderName,
         public readonly string $number,
         public readonly string $cvv,
-        public readonly string $expiration_date,
-        public readonly bool $is_active = true,
+        public readonly string $expirationDate,
     )
     {
         

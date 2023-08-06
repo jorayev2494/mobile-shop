@@ -10,6 +10,10 @@ return new class extends Migration
     {
         Schema::create('orders', static function (Blueprint $table): void {
             $table->uuid()->primary();
+            $table->integer('number', false, true)
+                    // ->autoIncrement()
+                    ->startingValue(100000)
+                    ->unique();
 
             $table->foreignUuid('client_uuid')->references('uuid')->on('clients');
 

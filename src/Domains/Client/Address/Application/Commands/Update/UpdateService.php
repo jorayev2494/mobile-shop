@@ -23,15 +23,14 @@ final class UpdateService
         $address = Address::fromPrimitives(
             $command->uuid,
             $command->title,
-            $command->full_name,
+            $command->fullName,
             $this->authManager->client()->uuid,
-            $command->first_address,
-            $command->second_address,
-            $command->zip_code,
-            $command->country_uuid,
-            $command->city_uuid,
+            $command->firstAddress,
+            $command->secondAddress,
+            $command->zipCode,
+            $command->countryUuid,
+            $command->cityUuid,
             $command->district,
-            $command->is_active,
         );
 
         $this->repository->save($address);

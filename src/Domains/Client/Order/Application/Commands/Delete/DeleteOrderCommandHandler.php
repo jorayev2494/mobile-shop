@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Project\Domains\Client\Order\Application\Commands\Delete;
 
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderUUID;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class DeleteOrderCommandHandler implements CommandHandler
+final class DeleteOrderCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly DeleteOrderService $service,

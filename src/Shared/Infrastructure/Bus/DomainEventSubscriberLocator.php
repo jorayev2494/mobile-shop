@@ -29,7 +29,9 @@ final class DomainEventSubscriberLocator
 
     public function withRabbitMqQueueNamed(string $queueName): DomainEventSubscriberInterface|callable
     {
+        // dd($queueName, $this->mapping);
         // project.domains.admin.product_was_created_domain_event_handler
+        // project.domains.admin.productWasCreatedDomainEventHandler
         $subscriber = search(
             static fn (DomainEventSubscriberInterface $subscriber) => RabbitMqQueueNameFormatter::format($subscriber) === $queueName,
             $this->mapping

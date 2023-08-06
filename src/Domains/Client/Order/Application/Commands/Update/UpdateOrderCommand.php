@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Project\Domains\Client\Order\Application\Commands\Update;
 
 use Project\Shared\Application\Command\Command;
+use Project\Shared\Domain\Bus\Command\CommandInterface;
 
-final class UpdateOrderCommand extends Command
+final class UpdateOrderCommand extends Command implements CommandInterface
 {
     public function __construct(
         public readonly string $uuid,

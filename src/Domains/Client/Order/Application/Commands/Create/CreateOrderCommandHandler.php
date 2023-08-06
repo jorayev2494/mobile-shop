@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Application\Commands\Create;
 
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
-final class CreateOrderCommandHandler implements CommandHandler
+final class CreateOrderCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CreateOrderService $service,

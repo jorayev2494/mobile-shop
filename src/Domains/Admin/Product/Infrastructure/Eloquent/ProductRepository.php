@@ -54,6 +54,8 @@ final class ProductRepository extends BaseModelRepository implements ProductRepo
             $product->toArray()
         );
 
+        // dd($product->medias);
+
         if (count($product->medias) > 0) {
             $createdProduct->medias()->createMany(
                 array_map(
