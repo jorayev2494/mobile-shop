@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Product\Application\Queries\Get;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Project\Domains\Client\Product\Domain\ProductRepositoryInterface;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
@@ -17,8 +17,8 @@ final class GetProductsQueryHandler implements QueryHandlerInterface
         
     }
 
-    public function __invoke(GetProductsQuery $query): LengthAwarePaginator
+    public function __invoke(GetProductsQuery $query): Paginator
     {
-        return $this->repository->paginate($query);
+        return $this->repository->indexSimplePaginate($query);
     }
 }

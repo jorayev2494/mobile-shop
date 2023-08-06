@@ -9,6 +9,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Project\Domains\Client\Order\Domain\Order;
 use Project\Domains\Client\Order\Domain\OrderRepositoryInterface;
+use Project\Domains\Client\Order\Domain\ValueObjects\OrderClientUUID;
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderUUID;
 use Project\Shared\Application\Query\BaseQuery;
 
@@ -29,11 +30,11 @@ final class OrderRepository extends BaseModelRepository implements OrderReposito
         );
     }
 
-    public function getClientOrdersPaginate(OrderUUID $uuid, BaseQuery $queryData): LengthAwarePaginator
+    public function getClientOrdersPaginate(OrderClientUUID $clientUuid, BaseQuery $queryData): LengthAwarePaginator
     {
         /** @var Builder $build */
         $query = $this->getModelClone()->newQuery();
-        $query->where('client_uuid', $uuid->value);
+        $query->where('client_uuid', $clientUuid->value);
 
         $this->search($queryData, $query)
             ->sort($queryData, $query)

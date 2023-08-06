@@ -28,8 +28,6 @@ abstract class DomainEvent implements Event
 
     abstract public static function eventName(): string;
 
-    // abstract public function toPrimitives(): array;
-
     public function aggregateId(): string
     {
         return $this->aggregateId;
@@ -43,5 +41,10 @@ abstract class DomainEvent implements Event
     public function occurredOn(): string
     {
         return $this->occurredOn;
+    }
+
+    public static function exchangeName(): string
+    {
+        return 'shop.exchange';
     }
 }

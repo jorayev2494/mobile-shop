@@ -47,6 +47,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereAvatar($value)
  * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUuid($value)
+ * @property-read string $full_name
  */
 class Admin extends AuthModel
 {

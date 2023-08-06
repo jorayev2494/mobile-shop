@@ -10,7 +10,7 @@ use Project\Utils\Auth\Contracts\AuthManagerInterface;
 final class ToggleFavoriteCommandService
 {
 
-    private readonly Client $client;
+    private readonly ?Client $client;
 
     public function __construct(
         private readonly AuthManagerInterface $authManager,

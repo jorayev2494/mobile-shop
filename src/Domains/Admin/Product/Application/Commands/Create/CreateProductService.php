@@ -30,12 +30,19 @@ final class CreateProductService
 
     private function uploadMedias(Product $product): void
     {
-        $uploadedMedias = [];
+        // $uploadedMedias = [];
+
+        $uploadedFiles = $product->medias;
+        $product->medias = [];
+
         /** @var UploadedFile $media */
-        foreach ($product->medias as $key => $media) {
-            $uploadedMedias[] = $this->filesystem->uploadFile(Product::MEDIA_PATH, $media);
+        foreach ($uploadedFiles as $key => $media) {
+            $uploadedMedia = $this->filesystem->uploadFile(Product::MEDIA_PATH, $media);
+            // $uploadedMedias[] = $uploadedMedia;
+            $product->addMedia($uploadedMedia);
+            // $product->addMedia($this->filesystem->uploadFile(Product::MEDIA_PATH, $media));
         }
 
-        $product->setMedias($uploadedMedias);
+        // $product->addMedias($uploadedMedias);
     }
 }

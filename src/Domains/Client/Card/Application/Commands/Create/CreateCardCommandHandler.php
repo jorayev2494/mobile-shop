@@ -13,10 +13,10 @@ use Project\Domains\Client\Card\Domain\ValueObjects\CardHolderName;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardNumber;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardType;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardUUID;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
-final class CreateCardCommandHandler implements CommandHandler
+final class CreateCardCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly AuthManagerInterface $authManager,
@@ -26,21 +26,18 @@ final class CreateCardCommandHandler implements CommandHandler
         
     }
 
-    public function __invoke(CreateCardCommand $command): array
+    public function __invoke(CreateCardCommand $command): void
     {
-        $uuid = CardUUID::generate();
+        $uuid = CardUUID::fromValue($command->uuid);
         $clientUUID = CardClientUUID::fromValue($this->authManager->client()->uuid);
         $type = CardType::fromValue($command->type);
-        $holderName = CardHolderName::fromValue($command->holder_name);
+        $holderName = CardHolderName::fromValue($command->holderName);
         $number = CardNumber::fromValue($command->number);
         $cvv = CardCVV::fromValue($command->cvv);
         $expirationDate = CardExpirationDate::fromValue($command->expiration_date);
-        $isActive = $command->is_active;
 
-        $card = Card::crate($uuid, $clientUUID, $type, $holderName, $number, $cvv, $expirationDate, $isActive);
+        $card = Card::crate($uuid, $clientUUID, $type, $holderName, $number, $cvv, $expirationDate);
 
         $this->repository->save($card);
-
-        return ['uuid' => $uuid->value];
     }
 }

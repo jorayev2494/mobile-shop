@@ -36,15 +36,14 @@ final class CreateCommandService
         $address = Address::create(
             $addressUUID,
             AddressTitle::fromValue($command->title),
-            AddressFullName::fromValue($command->full_name),
+            AddressFullName::fromValue($command->fullName),
             $clientUUID,
-            AddressFirstAddress::fromValue($command->first_address),
-            AddressSecondAddress::fromValue($command->second_address),
-            AddressZipCode::fromValue($command->zip_code),
-            AddressCountryUUID::fromValue($command->country_uuid),
-            AddressCityUUID::fromValue($command->city_uuid),
+            AddressFirstAddress::fromValue($command->firstAddress),
+            AddressSecondAddress::fromValue($command->secondAddress),
+            AddressZipCode::fromValue($command->zipCode),
+            AddressCountryUUID::fromValue($command->countryUuid),
+            AddressCityUUID::fromValue($command->cityUuid),
             AddressDistrict::fromValue($command->district),
-            $command->is_active
         );
 
         $this->repository->save($address);

@@ -62,6 +62,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string|null $fileable_uuid
  * @property-read Model|\Eloquent $fileable
  * @method static \Illuminate\Database\Eloquent\Builder|File whereFileableUuid($value)
+ * @property string $url_pattern
+ * @method static \Illuminate\Database\Eloquent\Builder|File whereUrlPattern($value)
  */
 class File extends Model
 {

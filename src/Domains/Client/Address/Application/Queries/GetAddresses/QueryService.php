@@ -8,7 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Project\Domains\Client\Address\Domain\AddressRepositoryInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
-final class QueryService implements \Project\Shared\Domain\Bus\Query\QueryHandler
+final class QueryService
 {
     public function __construct(
         private readonly AddressRepositoryInterface $repository,
@@ -20,6 +20,7 @@ final class QueryService implements \Project\Shared\Domain\Bus\Query\QueryHandle
 
     public function execute(Query $query): LengthAwarePaginator
     {
-        return $this->repository->getClientAddressesPaginate($this->authManager->client()->uuid, $query);
+        // return $this->repository->getClientAddressesPaginate($this->authManager->client()->uuid, $query);
+        return $this->repository->paginate($query);
     }
 }

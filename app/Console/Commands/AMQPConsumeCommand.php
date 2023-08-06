@@ -10,6 +10,7 @@ class AMQPConsumeCommand extends Command
 {
 
     // project.domains.admin.product_was_created_domain_event_handler
+    // project.domains.admin.productWasCreatedDomainEventHandler
     public function __construct(
         private readonly DomainEventSubscriberLocator $locator,
     )

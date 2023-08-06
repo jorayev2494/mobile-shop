@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Card\Domain\Card;
 use Project\Domains\Client\Card\Domain\CardRepositoryInterface;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardUUID;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class FindCardQueryHandler implements QueryHandler
+final class FindCardQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CardRepositoryInterface $repository,
@@ -19,7 +19,7 @@ final class FindCardQueryHandler implements QueryHandler
         
     }
 
-    public function __invoke(FindCardQuery $query): array
+    public function __invoke(FindCardQuery $query): Card
     {
         $foundCard = $this->repository->find(CardUUID::fromValue($query->uuid));
 
@@ -27,6 +27,6 @@ final class FindCardQueryHandler implements QueryHandler
             throw new ModelNotFoundException();
         }
 
-        return $foundCard->toArray();
+        return $foundCard;
     }
 }

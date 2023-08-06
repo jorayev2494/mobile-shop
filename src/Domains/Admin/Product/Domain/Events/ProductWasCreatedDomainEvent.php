@@ -32,6 +32,11 @@ class ProductWasCreatedDomainEvent extends DomainEvent
         return 'product.was.created';
     }
 
+    public static function exchangeName(): string
+    {
+        return 'product.exchange';
+    }
+
     public function toArray(): array
     {
         return [

@@ -7,10 +7,10 @@ namespace Project\Domains\Client\Card\Application\Queries\GetCards;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Project\Domains\Client\Card\Domain\CardRepositoryInterface;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardClientUUID;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
-final class GetCardsQueryHandler implements QueryHandler
+final class GetCardsQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CardRepositoryInterface $repository,

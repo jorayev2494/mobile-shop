@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Project\Domains\Client\Order\Application\Queries\Find;
 
 use Project\Domains\Client\Order\Domain\ValueObjects\OrderUUID;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class FindOrderQueryHandler implements QueryHandler
+final class FindOrderQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly FindOrderService $service

@@ -11,8 +11,9 @@ use Project\Domains\Client\Card\Domain\ValueObjects\CardHolderName;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardNumber;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardType;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardUUID;
+use Project\Shared\Domain\Aggregate\AggregateRoot;
 
-final class Card
+final class Card extends AggregateRoot
 {
     private function __construct(
         public readonly CardUUID $uuid,
@@ -22,7 +23,6 @@ final class Card
         public readonly CardNumber $number,
         public readonly CardCVV $cvv,
         public readonly CardExpirationDate $expirationDate,
-        public readonly bool $isActive = true,
     )
     {
         
@@ -36,7 +36,6 @@ final class Card
         string $number,
         string $cvv,
         string $expirationDate,
-        bool $isActive = true,
     ): self
     {
         return new self(
@@ -47,7 +46,6 @@ final class Card
             CardNumber::fromValue($number),
             CardCVV::fromValue($cvv),
             CardExpirationDate::fromValue($expirationDate),
-            $isActive
         );
     }
 
@@ -59,10 +57,9 @@ final class Card
         CardNumber $number,
         CardCVV $cvv,
         CardExpirationDate $expirationDate,
-        bool $isActive = true,
     ): self
     {
-        return new self($uuid, $clientUUID, $type, $holderName, $number, $cvv, $expirationDate, $isActive);
+        return new self($uuid, $clientUUID, $type, $holderName, $number, $cvv, $expirationDate);
     }
 
     public function toArray(): array
@@ -75,7 +72,6 @@ final class Card
             'number' => $this->number->value,
             'cvv' => $this->cvv->value,
             'expiration_date' => $this->expirationDate->value,
-            'is_active' => $this->isActive,
         ];
     }
 }

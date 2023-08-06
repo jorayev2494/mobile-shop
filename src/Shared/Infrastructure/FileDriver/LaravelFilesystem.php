@@ -14,7 +14,7 @@ final class LaravelFilesystem implements FilesystemInterface
 {
     private int $lengthRandomName = 32;
 
-    public function uploadFile(string $path, UploadedFile $uploadedFile): ?File
+    public function uploadFile(string $path, UploadedFile $uploadedFile): File
     {
         try {
             $bucketPath = '/' . env('AWS_BUCKET');
@@ -37,17 +37,15 @@ final class LaravelFilesystem implements FilesystemInterface
 
             return $file;
         } catch (\Throwable $th) {
-            dd($th->getMessage(), $th->getLine(), $th->getFile(), $fileData);
-            info('File upload message exception', [
-                'message' => $th->getMessage(),
-                'file' => $th->getFile(),
-                'line' => $th->getLine(),
-                'trace' => $th->getTrace(),
-            ]);
+            // dd($th->getMessage(), $th->getLine(), $th->getFile(), $fileData);
+            // info('File upload message exception', [
+            //     'message' => $th->getMessage(),
+            //     'file' => $th->getFile(),
+            //     'line' => $th->getLine(),
+            //     'trace' => $th->getTrace(),
+            // ]);
             throw new BadRequestException('File load exception!');
         }
-
-        return null;
     }
 
     public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): ?File
