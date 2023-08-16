@@ -25,9 +25,7 @@ class QueryHandler implements QueryHandlerInterface
     {
         $cart = $this->repository->findByUUID(CartUUID::fromValue($query->uuid));
 
-        if ($cart === null) {
-            throw new ModelNotFoundException();
-        }
+        $cart ?? throw new ModelNotFoundException();
 
         return $cart;
     }

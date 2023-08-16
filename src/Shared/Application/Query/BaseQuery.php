@@ -6,9 +6,8 @@ use App\Data\Contracts\MakeFromRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Project\Shared\Domain\Bus\Query\QueryInterface;
-use Spatie\LaravelData\Data;
 
-abstract class BaseQuery extends Data implements QueryInterface, MakeFromRequest
+abstract class BaseQuery implements QueryInterface, MakeFromRequest
 {
 
     private function __construct(
@@ -54,7 +53,7 @@ abstract class BaseQuery extends Data implements QueryInterface, MakeFromRequest
             search: $request->query->get('search'),
             search_by: $request->query->get('search_by'),
             page: $request->query->getInt('page', 1),
-            per_page: $request->query->getInt('per_page'),
+            per_page: $request->query->getInt('per_page', 10),
             cursor: $request->query->get('cursor'),
             sort_by: $request->query->get('sort_by', 'uuid'),
             is_sort_desc: $request->query->getBoolean('is_sort_desc'),

@@ -17,11 +17,7 @@ class AddProductRequest extends FormRequest
     {
         return [
             'product_uuid' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',uuid'],
-
-            'product_currency_uuid' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',currency_uuid'],
-            'product_quality' => ['required', 'integer'],
-            'product_price' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',price'],
-            'product_discount_percentage' => ['required'],
+            'product_quality' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

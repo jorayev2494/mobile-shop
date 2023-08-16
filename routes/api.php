@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Client\Cart\{
     ShowCartController,
     DeleteProductFromCartController,
 };
+use App\Http\Controllers\Api\Client\Country\IndexCountryController;
 use App\Http\Controllers\Api\Client\Order\{
     IndexOrderController,
     CreateOrderController,
@@ -61,6 +62,10 @@ Route::group(['prefix' => 'products', 'as' => 'products'], static function (Rout
     $router->get('/{uuid}', ShowProductController::class);
 });
 
+Route::group(['prefix' => 'countries', 'as' => 'countries.'], static function (Router $router): void {
+    $router->get('/', IndexCountryController::class);
+});
+
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
     $router->group(['prefix' => 'cards', 'as' => 'cards.'], static function (Router $router): void {
         $router->get('/', IndexCardController::class);
@@ -82,8 +87,8 @@ Route::group(['middleware' => 'auth:client'], static function (Router $router): 
         $router->get('/', IndexCartController::class);
         $router->post('/', CreateCartController::class);
         $router->get('/{uuid}', ShowCartController::class);
-        $router->post('/{uuid}/add-product', AddProductController::class);
-        $router->delete('/{uuid}/delete-product', DeleteProductFromCartController::class);
+        $router->post('/{uuid}/products', AddProductController::class);
+        $router->delete('/{uuid}/products', DeleteProductFromCartController::class);
     });
 
     $router->group(['prefix' => 'orders', 'as' => 'orders.'], static function (Router $router): void {
@@ -96,7 +101,7 @@ Route::group(['middleware' => 'auth:client'], static function (Router $router): 
 
     $router->group(['prefix' => 'favorites', 'as' => 'favorites.'], static function (Router $router): void {
         $router->get('/', IndexFavoriteController::class);
-        $router->put('/{product_uuid}', ToggleFavoriteController::class);
+        $router->post('/{product_uuid}', ToggleFavoriteController::class);
     });
 });
 

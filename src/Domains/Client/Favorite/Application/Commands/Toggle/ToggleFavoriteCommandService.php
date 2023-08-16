@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Favorite\Application\Commands\Toggle;
 
-use App\Models\Client;
-use Project\Utils\Auth\Contracts\AuthManagerInterface;
+use Project\Domains\Client\Favorite\Domain\Favorite;
+use Project\Domains\Client\Favorite\Domain\Member\ValueObjects\MemberUUID;
+use Project\Domains\Client\Favorite\Domain\Product\ValueObjects\ProductUUID;
+use Project\Domains\Client\Favorite\Infrastructure\Eloquent\FavoriteRepository;
 
 final class ToggleFavoriteCommandService
 {
 
-    private readonly ?Client $client;
-
     public function __construct(
-        private readonly AuthManagerInterface $authManager,
+        private readonly FavoriteRepository $repository,
     )
     {
-        $this->client = $authManager->client();
+
     }
 
     public function execute(ToggleFavoriteCommand $command): void
     {
-        $this->client->favorites->contains($command->productUUID) ? $this->client->favorites()->detach($command->productUUID)
-                                                                  : $this->client->favorites()->attach($command->productUUID);
+        $favorite = new Favorite(
+            MemberUUID::fromValue($command->memberUUID),
+            ProductUUID::fromValue($command->productUUID)
+        );
+
+        $this->repository->contains($favorite)  ? $this->repository->unfavorite($favorite)
+                                                : $this->repository->favorite($favorite);
     }
 }

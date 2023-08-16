@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Address;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Address\UpdateAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Address\Application\Commands\Update\UpdateCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;

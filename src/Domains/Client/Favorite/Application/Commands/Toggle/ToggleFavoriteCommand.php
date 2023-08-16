@@ -9,6 +9,7 @@ use Project\Shared\Domain\Bus\Command\CommandInterface;
 final class ToggleFavoriteCommand implements CommandInterface
 {
     public function __construct(
+        public readonly string $memberUUID,
         public readonly string $productUUID,
     )
     {

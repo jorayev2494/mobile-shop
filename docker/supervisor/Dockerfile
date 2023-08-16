@@ -68,7 +68,9 @@ WORKDIR /var/project
 
 EXPOSE 9001
 
-COPY configs/supervisord.conf /etc/supervisor/
+# https://serverfault.com/questions/211525/supervisor-not-loading-new-configuration-files
+# COPY configs/supervisord.conf /etc/supervisor/
+COPY configs/ /etc/supervisor/
 
 CMD ["supervisord", "-c", "/etc/supervisor/supervisord.conf", "-n"]
 # CMD ["/usr/bin/supervisord"]

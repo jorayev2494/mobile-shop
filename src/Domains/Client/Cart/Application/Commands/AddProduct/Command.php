@@ -10,10 +10,10 @@ class Command implements CommandInterface
     public function __construct(
         public readonly string $uuid,
         public readonly string $productUuid,
-        public readonly string $productCurrencyUUID,
+        // public readonly string $productCurrencyUUID,
         public readonly int $productQuality,
-        public readonly string $productPrice,
-        public readonly string $productDiscountPercentage,
+        // public readonly string $productPrice,
+        // public readonly string $productDiscountPercentage,
     )
     {
         

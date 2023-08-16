@@ -77,6 +77,7 @@ class Product extends Model
     protected $primaryKey = 'uuid';
 
     protected $casts = [
+        'discount_percentage' => 'integer',
         'is_active' => 'boolean',
         // 'created_at' => 'timestamp',
         // 'updated_at' => 'timestamp',
@@ -85,7 +86,14 @@ class Product extends Model
     public function discountPrice(): Attribute
     {
         return Attribute::make(
-            get: fn () => ($discount = $this->attributes['discount_percentage']) > 0 ? ($this->attributes['price'] / 100) * $discount : null
+            get: fn (): int => ($discount = $this->attributes['discount_percentage']) > 0 ? ($this->attributes['price'] / 100) * $discount : 0
+        );
+    }
+
+    public function discountPercentage(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): int => (int) $this->attributes['discount_percentage'],
         );
     }
 

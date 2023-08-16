@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Application\Commands\Create;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Cart\Domain\Cart\Cart;
 use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartClientUUID;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
 use Project\Domains\Client\Cart\Domain\Product\Product;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductCurrencyUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductDiscountPercentage;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductPrice;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductQuality;
+use Project\Domains\Client\Cart\Domain\Product\ProductRepositoryInterface;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductCurrencyUUID;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductDiscountPercentage;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductPrice;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductQuality;
 use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductUUID;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
@@ -21,6 +23,7 @@ class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CartRepositoryInterface $repository,
+        private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
     )
     {
@@ -29,38 +32,43 @@ class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $cart = Cart::create(
-            CartUUID::fromValue($command->uuid),
-            CartClientUUID::fromValue($this->authManager->client()->uuid),
-            $this->loadProducts($command)
-        );
-        
+        // $cart = $this->repository->findClientCartByClientUUID(CartClientUUID::fromValue($this->authManager->client()->uuid));
+
+        // if ($cart === null) {   
+            $cart = Cart::create(
+                CartUUID::fromValue($command->uuid),
+                CartClientUUID::fromValue($this->authManager->client()->uuid)
+            );
+        // }
+
+        $cart->addProduct($this->makeProduct($command));
         $this->repository->save($cart);
     }
 
-    private function loadProducts(Command $command): iterable
+    private function makeProduct(Command $command): Product
     {
-        $products = [];
+        $product = $this->productRepository->findByUuid(ProductUUID::fromValue($command->productUuid));
 
-        foreach ($command->products as $key => [
-            'uuid' => $uuid,
-            'currency_uuid' => $currencyUUID,
-            'quality' => $quality,
-            'price' => $price,
-            'discount_percentage' => $discountPercentage,
-        ]) {
-            $price = ((float) $price) * $quality;
-            $discountPercentage = ((float) $discountPercentage) * $quality;
+        $product ?? throw new ModelNotFoundException("Product not found");
 
-            $products[] = Product::create(
-                ProductUUID::fromValue($uuid),
-                ProductCurrencyUUID::fromValue($currencyUUID),
-                ProductQuality::fromValue($quality),
-                ProductPrice::fromValue((string) $price),
-                ProductDiscountPercentage::fromValue((string) $discountPercentage)
-            );
-        }
+        $productPrice = ((float) $product->price->value) * $command->productQuality;
+        $productDiscountPercentage = ((float) $product->discountPercentage->value) * $command->productQuality;
 
-        return $products;
+        $product = Product::create(
+            $product->uuid,
+            $product->title,
+            $product->categoryUUID,
+            $product->currencyUUID,
+            $product->price,
+            $product->discountPercentage,
+            $product->viewedCount,
+            
+            CartProductCurrencyUUID::fromValue($product->currencyUUID->value),
+            CartProductQuality::fromValue($command->productQuality),
+            CartProductPrice::fromValue((string) $productPrice),
+            CartProductDiscountPercentage::fromValue((string) $productDiscountPercentage),
+        );
+
+        return $product;
     }
 }

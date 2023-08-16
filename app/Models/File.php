@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $mime_type
  * @property string $type
  * @property string $extension
- * @property string $size
+ * @property int $size
  * @property string|null $file_name
  * @property string $file_original_name
  * @property string $name

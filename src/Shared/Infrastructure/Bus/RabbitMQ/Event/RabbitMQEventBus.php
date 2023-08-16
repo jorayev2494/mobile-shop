@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Project\Shared\Infrastructure\Bus\RabbitMQ;
+namespace Project\Shared\Infrastructure\Bus\RabbitMQ\Event;
 
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Wire\AMQPTable;
@@ -10,12 +10,18 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\RoutingKey;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 
 final class RabbitMQEventBus implements EventBusInterface
 {
+    use RoutingKey;
+    use QueueName;
+
     public const EVENT_CLASS_KEY = 'event_class';
-    private const EXCHANGE_NAME = 'test_exchange';
+    private const EXCHANGE_NAME = '%s.event';
 
     private readonly AMQPChannel $channel;
 
@@ -41,8 +47,10 @@ final class RabbitMQEventBus implements EventBusInterface
 
     private function publishEvent(DomainEvent $event): void
     {
+        $queueName = RabbitMqQueueNameFormatter::format($event);
+
         $messageId = $event->eventId();
-        $routingKey = $event->eventName();
+        $routingKey = $this->makeRoutingKey($queueName, $event);     // $event->eventName();
         $body = $this->serializeDomainEvent($event);
 
         $this->setProperties([
@@ -58,7 +66,21 @@ final class RabbitMQEventBus implements EventBusInterface
         $msg = new AMQPMessage($body, $this->getProperties());
         // dd(compact('routingKey'));
         // https://www.cloudamqp.com/blog/how-to-run-rabbitmq-with-php.html
-        $this->channel->basic_publish($msg, $event::exchangeName(), $routingKey);
+        $this->channel->basic_publish($msg, $this->getExchangeName($event), $routingKey);
+    }
+
+    private function getExchangeName(DomainEvent $event): string
+    {
+        $name = RabbitMqQueueNameFormatter::format($event);
+        // dd(
+        //     // $event,
+        //     // $this->makeRoutingKey($name, $event),
+        //     $this->makeQueueName($name, $event),
+        // );
+
+        // return sprintf(self::EXCHANGE_NAME, $event::exchangeName());
+
+        return $this->makeQueueName($name, $event);
     }
 
     private function getProperties(): array

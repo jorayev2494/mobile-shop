@@ -56,6 +56,11 @@ class Product extends AggregateRoot
         $this->currency = $data;
     }
 
+    public function getDiscountPrice(): int
+    {
+        return (int) (($discount = ((int) $this->discountPercentage->value)) > 0 ? ($this->price->value / 100) * $discount : 0);
+    }
+
     public function toArray(): array
     {
         return [
@@ -65,7 +70,8 @@ class Product extends AggregateRoot
             'currency_uuid' => $this->currencyUUID->value,
             'price' => $this->price->value,
             'currency' => $this->currency,
-            'discount_percentage' => $this->discountPercentage->value,
+            'discount_percentage' => (int) $this->discountPercentage->value,
+            'discount_price' => $this->getDiscountPrice(),
             'medias' => $this->medias,
             'viewed_count' => $this->viewedCount,
             'description' => $this->description,

@@ -6,9 +6,8 @@ namespace App\Data\Auth;
 
 use App\Data\Contracts\MakeFromFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\LaravelData\Data;
 
-class RegisterData extends Data implements MakeFromFormRequest
+class RegisterData implements MakeFromFormRequest
 {
     public function __construct(
         public readonly string $first_name,
@@ -22,6 +21,15 @@ class RegisterData extends Data implements MakeFromFormRequest
 
     public static function makeFromFormRequest(FormRequest $request): static
     {
-        return static::from($request->validated());
+        [
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'email' => $email,
+            'phone' => $phone,
+            'password' => $password,
+            'country_uuid' => $country_uuid,
+        ] = $request->validated();
+
+        return new static($first_name, $last_name, $email, $phone, $password, $country_uuid);
     }
 }

@@ -20,7 +20,6 @@ final class UpdateOrderCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UpdateOrderCommand $command): void
     {
-        dd($command);
         $order = $this->repository->find(OrderUUID::fromValue($command->uuid));
 
         if ($order === null) {

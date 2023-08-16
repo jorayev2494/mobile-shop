@@ -1,16 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Address;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\Address\StoreAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Address\Application\Commands\Create\CreateCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
-class CreateAddressController extends Controller
+class CreateAddressController
 {
     public function __construct(
         private readonly ResponseFactory $response,

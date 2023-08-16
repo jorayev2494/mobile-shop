@@ -9,6 +9,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartStatus;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartClientUUID;
+use Project\Domains\Client\Cart\Domain\CartProduct\CartProduct;
 use Project\Domains\Client\Cart\Domain\Product\Product;
 
 class Cart extends AggregateRoot
@@ -22,6 +23,12 @@ class Cart extends AggregateRoot
      */
     public Collection $products;
 
+    /**
+     * @template TValue of CartProduct
+     * @var Collection<array-key, CartProduct> $cartProducts
+     */
+    public Collection $cartProducts;
+
     private function __construct(
         public readonly CartUUID $uuid,
         public readonly CartClientUUID $clientUUID,
@@ -32,7 +39,7 @@ class Cart extends AggregateRoot
         $this->status = CartStatus::DRAFT;
     }
 
-    public static function create(CartUUID $uuid, CartClientUUID $clientUUID, iterable $products): self
+    public static function create(CartUUID $uuid, CartClientUUID $clientUUID, iterable $products = []): self
     {
         $cart = new self($uuid, $clientUUID, $products);
 
@@ -65,7 +72,7 @@ class Cart extends AggregateRoot
     {
         $this->products = $this->products->empty();
 
-        foreach ($products as $key => $product) {
+        foreach ($products as $product) {
             $this->products->add($product);
         }
     }
@@ -95,9 +102,10 @@ class Cart extends AggregateRoot
             iterator_to_array($this->products)
         );
 
-        $quality = $this->products->sum(static fn (Product $product): int => $product->quality->value);
-        $sum = $this->products->sum(static fn (Product $product): float => (float) $product->price->value);
-        $discountPercentage = $this->products->sum(static fn (Product $product): float => (float) $product->discountPercentage->value);
+        $quality = $this->products->sum(static fn (Product $product): int => $product->cartProductQuality->value);
+        $sum = $this->products->sum(static fn (Product $product): float => (float) $product->cartProductPrice->value);
+        $discountPercentage = $this->products->sum(static fn (Product $product): float => (float) $product->cartProductDiscountPercentage?->value);
+        $discountPrice = $this->products->sum(static fn (Product $product): int => (int) $product->getDiscountPrice());
 
         return [
             'uuid' => $this->uuid->value,
@@ -107,6 +115,7 @@ class Cart extends AggregateRoot
             'quality' => $quality,
             'sum' => $sum,
             'discount_percentage' => $discountPercentage,
+            'discount_price' => $discountPrice,
         ];
     }
 }

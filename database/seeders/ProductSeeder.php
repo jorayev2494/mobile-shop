@@ -27,7 +27,7 @@ class ProductSeeder extends Seeder
 
     public function run(): void
     {        
-        for ($i = 0; $i < 25; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $fakeProduct = Product::factory()->create([
                 'category_uuid' => $this->categories->random(1)->first()->uuid,
                 'currency_uuid' => $this->currencies->random(1)->first()->uuid,

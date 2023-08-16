@@ -17,11 +17,13 @@ class CreateCartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'products' => [
-                'array',
-                // Rule::forEach(static function ())
-            ],
-            'products.*.uuid' => ['string', 'exists:' . \App\Models\Product::class . ',uuid'],
+            'product_uuid' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',uuid'],
+            'product_quality' => ['required', 'numeric', 'min:1'],
+            // 'products' => [
+            //     'array',
+            //     // Rule::forEach(static function ())
+            // ],
+            // 'products.*.uuid' => ['string', 'exists:' . \App\Models\Product::class . ',uuid'],
         ];
     }
 }

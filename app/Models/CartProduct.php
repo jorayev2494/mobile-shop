@@ -37,9 +37,9 @@ class CartProduct extends Pivot
     protected $fillable = [
         'cart_uuid',
         'product_uuid',
-        'currency_uuid',
-        'quality',
-        'price',
-        'discount_percentage',
+        'cart_currency_uuid',
+        'cart_quality',
+        'cart_price',
+        'cart_discount_percentage',
     ];
 }

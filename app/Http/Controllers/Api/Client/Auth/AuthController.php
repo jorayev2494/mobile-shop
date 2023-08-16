@@ -26,12 +26,12 @@ class AuthController extends Controller
         // parent::middleware('guest')->except('logout');
     }
 
-    public function register(RegisterRequest $request): Response
+    public function register(RegisterRequest $request): JsonResponse
     {
         $registerData = RegisterData::makeFromFormRequest($request);
-        $this->service->register($registerData, AppGuardType::CLIENT);
+        $registeredModel = $this->service->register($registerData, AppGuardType::CLIENT);
 
-        return $this->response->noContent(Response::HTTP_ACCEPTED);
+        return $this->response->json(['uuid' => $registeredModel->uuid], Response::HTTP_ACCEPTED);
     }
 
     public function login(LoginRequest $request): JsonResponse
