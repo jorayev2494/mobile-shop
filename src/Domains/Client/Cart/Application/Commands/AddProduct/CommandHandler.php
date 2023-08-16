@@ -9,11 +9,12 @@ use Project\Domains\Client\Cart\Domain\Cart\Cart;
 use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartStatus;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductCurrencyUUID;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductDiscountPercentage;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductPrice;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductQuality;
 use Project\Domains\Client\Cart\Domain\Product\Product;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductCurrencyUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductDiscountPercentage;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductPrice;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductQuality;
+use Project\Domains\Client\Cart\Domain\Product\ProductRepositoryInterface;
 use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductUUID;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
@@ -22,6 +23,7 @@ class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CartRepositoryInterface $repository,
+        private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
     )
     {
@@ -32,48 +34,58 @@ class CommandHandler implements CommandHandlerInterface
     {
         $cart = $this->repository->findByUUID(CartUUID::fromValue($command->uuid));
 
-        if ($cart === null) {
-            throw new ModelNotFoundException();
-        }
+        $cart ?? throw new ModelNotFoundException("Cart not found");
 
         if ($cart->getStatus() === CartStatus::ORDERED) {
             throw new \DomainException("This cart is ordered");
         }
 
-        $this->addProduct($cart, $this->makeAddProduct($command));
+        $this->addProduct($cart, $this->makeProduct($command));
 
         $this->repository->save($cart);
     }
 
-    private function makeAddProduct(Command $command): Product
+    private function makeProduct(Command $command): Product
     {
-        $productPrice = ((float) $command->productPrice) * $command->productQuality;
-        $productDiscountPercentage = ((float) $command->productDiscountPercentage) * $command->productQuality;
+        $product = $this->productRepository->findByUuid(ProductUUID::fromValue($command->productUuid));
 
-        $addProduct = Product::create(
-            ProductUUID::fromValue($command->productUuid),
-            ProductCurrencyUUID::fromValue($command->productCurrencyUUID),
-            ProductQuality::fromValue($command->productQuality),
-            ProductPrice::fromValue((string) $productPrice),
-            ProductDiscountPercentage::fromValue((string) $productDiscountPercentage),
+        $product ?? throw new ModelNotFoundException("Product not found");
+
+        $productPrice = ((float) $product->price->value) * $command->productQuality;
+        $productDiscountPercentage = ((float) $product->discountPercentage->value) * $command->productQuality;
+
+        $product = Product::create(
+            $product->uuid,
+            $product->title,
+            $product->categoryUUID,
+            $product->currencyUUID,
+            $product->price,
+            $product->discountPercentage,
+            $product->viewedCount,
+            
+            CartProductCurrencyUUID::fromValue($product->currencyUUID->value),
+            CartProductQuality::fromValue($command->productQuality),
+            CartProductPrice::fromValue((string) $productPrice),
+            CartProductDiscountPercentage::fromValue((int) $productDiscountPercentage),
         );
 
-        return $addProduct;
+        return $product;
     }
 
-    private function addProduct(Cart $cart, Product $aProduct): void
+
+    private function addProduct(Cart $cart, Product $product): void
     {
         $products = [];
 
-        foreach ($cart->getProducts() as $key => $product) {
-            if ($product->uuid->value === $aProduct->uuid->value) {
+        foreach ($cart->getProducts() as $cartProduct) {
+            if ($cartProduct->uuid->value === $product->uuid->value) {
                 continue;
             }
 
-            $products[] = $product;
+            $products[] = $cartProduct;
         }
 
         $cart->addProducts($products);
-        $cart->addProduct($aProduct);
+        $cart->addProduct($product);
     }
 }

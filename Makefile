@@ -63,11 +63,11 @@ server-ps:							## Show project process
 	printf "%s\n" "Target bar executing..."
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} ps
 
-server-logs:							## Show project process
+server-container-logs:							## Show project process
 	printf "%s\n" "Target bar executing..."
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH}  logs $(container)
 
-server-logs-f:							## Show project process
+server-container-logs-f:							## Show project process
 	printf "%s\n" "Target bar executing..."
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH}  logs -f $(container)
 

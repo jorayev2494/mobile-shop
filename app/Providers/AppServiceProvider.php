@@ -25,7 +25,9 @@ use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerQueryBus;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerCommandBus;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMQEventBus;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\CommandHandlerLocator;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\RabbitMQCommandBus;
+use Project\Shared\Infrastructure\Bus\RabbitMQ\Event\RabbitMQEventBus;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -43,8 +45,7 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(ContractAuthService::class, AuthService::class);
 
-        $this->app->bind(\App\Services\Api\Contracts\ProfileService::class, \App\Services\Api\ProfileService::class
-        );
+        $this->app->bind(\App\Services\Api\Contracts\ProfileService::class, \App\Services\Api\ProfileService::class);
 
         // Services
         $this->app->bind(RoleServiceInterface::class, RoleService::class);
@@ -93,5 +94,14 @@ class AppServiceProvider extends ServiceProvider
             CommandBusInterface::class,
             static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerCommandBus => new MessengerCommandBus($app->tagged('command_handler'))
         );
+
+        #region RabbitMQ Command Bus
+        $this->app->bind(
+            CommandHandlerLocator::class,
+            static fn (\Illuminate\Contracts\Foundation\Application $app): CommandHandlerLocator => new CommandHandlerLocator($app->tagged('command_handler'))
+        );
+
+        // $this->app->bind(CommandBusInterface::class, RabbitMQCommandBus::class);
+        #endregion
     }
 }

@@ -19,7 +19,7 @@ class ProductResource extends JsonResource
             'currency_uuid' => $this->when(! $this->resource->relationLoaded('currency'), $this->resource->currency_uuid),
             'cover' => $this->whenLoaded('cover'),
             'price' => $this->resource->price,
-            'discount_percentage' => $this->resource->discount_percentage,
+            'discount_percentage' => (int) $this->resource->discount_percentage,
             'discount_price' => $this->resource->discount_price,
             'viewed_count' => $this->resource->viewed_count,
             'description' => $this->resource->description,

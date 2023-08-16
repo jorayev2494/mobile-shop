@@ -33,7 +33,7 @@ class AuthService implements ContractsAuthService
         return resolve(auth()->guard($this->guard->value)->getProvider()->getModel());
     }
 
-    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): void
+    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): AuthModel
     {
         $data = [];
 
@@ -44,13 +44,16 @@ class AuthService implements ContractsAuthService
             $data = $registerData->toArray();
         }
 
-        $this->authModel::query()->create($data);
+        /** @var AuthModel $authModel */
+        $authModel = $this->authModel::query()->create($data);
+
+        return $authModel;
     }
 
     public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::ADMIN): array
     {
         /** @var string|bool $token */
-        if (! ($token = Auth::guard($this->guard->value)->attempt($credentialsData->except('device_id')->toArray()))) {
+        if (! ($token = Auth::guard($this->guard->value)->attempt($credentialsData->toArray()))) {
             throw new BadRequestException('Invalid credentials!');
         }
 
@@ -100,7 +103,7 @@ class AuthService implements ContractsAuthService
     {
         $authModel = match ($guard) {
             AppGuardType::ADMIN => $authModel?->fresh(['role:id,value', 'avatar']),
-            AppGuardType::CLIENT => $authModel,
+            AppGuardType::CLIENT => $authModel?->fresh(['avatar']),
         };
 
         return $authModel->append('full_name');

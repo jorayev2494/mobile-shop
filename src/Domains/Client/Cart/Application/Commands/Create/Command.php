@@ -9,7 +9,9 @@ class Command implements CommandInterface
 {
     public function __construct(
         public readonly string $uuid,
-        public readonly iterable $products,
+        // public readonly iterable $products,
+        public readonly string $productUuid,
+        public readonly int $productQuality,
     )
     {
         

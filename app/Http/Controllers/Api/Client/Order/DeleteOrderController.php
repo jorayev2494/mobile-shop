@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Order;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Order\Application\Commands\Delete\DeleteOrderCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
-class DeleteOrderController extends Controller
+class DeleteOrderController
 {
     public function __construct(
         private readonly ResponseFactory $response,

@@ -6,9 +6,8 @@ namespace App\Data\Profile;
 
 use App\Data\Contracts\MakeFromFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\LaravelData\Data;
 
-class ChangePasswordData extends Data implements MakeFromFormRequest
+class ChangePasswordData implements MakeFromFormRequest
 {
     public function __construct(
         public readonly string $device_id,
@@ -19,9 +18,16 @@ class ChangePasswordData extends Data implements MakeFromFormRequest
 
     public static function makeFromFormRequest(FormRequest $request): static
     {
-        return self::from([
-            ...$request->validated(),
-            'device_id' => $request->headers->get('x-device-id'),
-        ]);
+        [
+            'device_id' => $device_id,
+            'current_password' => $current_password,
+            'password' => $password,
+        ] = $request->validated();
+
+        return new static(
+            $request->headers->get('x-device-id'),
+            $current_password,
+            $password,
+        );
     }
 }

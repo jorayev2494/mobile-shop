@@ -48,10 +48,10 @@ class Cart extends Model
         return $this->belongsToMany(Product::class, CartProduct::class, 'cart_uuid', 'product_uuid', 'uuid', 'uuid')
                     ->withPivot([
                                     // 'uuid AS cart_uuid',
-                                    'currency_uuid AS cart_currency_uuid',
-                                    'quality AS cart_quality',
-                                    'price AS cart_price',
-                                    'discount_percentage AS cart_discount_percentage',
+                                    'cart_currency_uuid AS cart_currency_uuid',
+                                    'cart_quality AS cart_quality',
+                                    'cart_price AS cart_price',
+                                    'cart_discount_percentage AS cart_discount_percentage',
                                 ]);
     }
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Card;
 
 use App\Http\Requests\Client\Card\StoreCardRequest;

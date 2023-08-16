@@ -10,7 +10,7 @@ use App\Models\Enums\AppGuardType;
 
 interface AuthService
 {
-    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): void;
+    public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): AuthModel;
 
     public function login(AuthCredentialsData $credentialsData, AppGuardType $guard = AppGuardType::ADMIN): array;
 

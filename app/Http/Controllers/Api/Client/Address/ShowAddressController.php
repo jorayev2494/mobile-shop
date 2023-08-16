@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Address;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Project\Domains\Client\Address\Application\Queries\Find\FindAddressQuery;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
-class ShowAddressController extends Controller
+class ShowAddressController
 {
     public function __construct(
         private readonly ResponseFactory $response,

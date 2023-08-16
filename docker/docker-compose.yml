@@ -94,6 +94,7 @@ services:
         context: ./supervisor
         dockerfile: Dockerfile
     container_name: ${COMPOSE_PROJECT_NAME}-supervisor
+    # command: ['php /var/project/artisan create-rabbitmq-exchanges']
     restart: unless-stopped
     volumes:
         - ../:/var/project

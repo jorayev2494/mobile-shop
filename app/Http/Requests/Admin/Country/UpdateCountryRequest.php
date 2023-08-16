@@ -10,25 +10,34 @@ use Illuminate\Validation\Rule;
 
 class UpdateCountryRequest extends FormRequest
 {
+
+    private string $uuid;
+
     public function authorize(): bool
     {
         return AppAuth::check(AppGuardType::ADMIN);
     }
 
+    protected function prepareForValidation(): void
+    {
+        $this->uuid = $this->route()->parameter('uuid');
+
+        $this->merge(['uuid' => $this->uuid]);
+    }
+
     public function rules(): array
     {
-        $uuid = $this->route()->parameter('uuid');
-
         return [
+            'uuid' => ['required', Rule::exists(Country::class, 'uuid')],
             'value' => [
                 'required',
                 'alpha_dash',
-                Rule::unique(Country::class, 'value')->ignore($uuid, 'uuid'),
+                Rule::unique(Country::class, 'value')->ignore($this->uuid, 'uuid'),
             ],
             'iso' => [
                 'required',
                 'alpha_dash',
-                Rule::unique(Country::class, 'iso')->ignore($uuid, 'uuid'),
+                Rule::unique(Country::class, 'iso')->ignore($this->uuid, 'uuid'),
                 'max:5',
             ],
             'is_active' => ['boolean'],

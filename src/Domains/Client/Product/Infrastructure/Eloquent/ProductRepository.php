@@ -31,7 +31,7 @@ final class ProductRepository extends BaseModelRepository implements ProductRepo
             ->sort($queryData, $query)
             ->filters($queryData, $query);
 
-        $query->with(['currency:uuid,value', 'cover']);
+        $query->with(['currency:uuid,value', 'cover', 'category:uuid,value']);
 
         return $query->simplePaginate($queryData->per_page)->withQueryString();
     }

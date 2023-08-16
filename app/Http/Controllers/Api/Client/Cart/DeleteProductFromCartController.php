@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Cart;
 
 use App\Http\Requests\Client\Cart\AddProductRequest;
@@ -24,10 +26,6 @@ class DeleteProductFromCartController
             new Command(
                 $uuid,
                 $request->get('product_uuid'),
-                $request->get('product_currency_uuid'),
-                $request->get('product_quality'),
-                $request->get('product_price'),
-                $request->get('product_discount_percentage'),
             )
         );
 

@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Order;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Project\Domains\Client\Order\Application\Queries\Get\GetOrdersQuery;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
-class IndexOrderController extends Controller
+class IndexOrderController
 {
     public function __construct(
         private readonly ResponseFactory $response,

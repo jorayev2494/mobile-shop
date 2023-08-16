@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Project\Shared\Infrastructure\Bus\RabbitMQ;
+namespace Project\Shared\Infrastructure\Bus\RabbitMQ\Command;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use Project\Shared\Domain\Bus\Command\CommandInterface;
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 use Project\Utils\JSON;
 use RuntimeException;
 
-final class RabbitMqDomainEventsConsumer
+final class RabbitMqCommandsConsumer
 {
     private readonly AMQPChannel $channel;
     private AMQPMessage $msg;
@@ -47,11 +48,11 @@ final class RabbitMqDomainEventsConsumer
     private function consumer(callable $subscriber, string $queueName): callable
     {
         return function (AMQPMessage $msg) use($subscriber, $queueName): void {
-            $event = $this->deserializeDomainEvent($msg);
+            $command = $this->deserializeCommand($msg);
 
             try {
-                $subscriber($event);
-                $this->consoleLog($event, $queueName);
+                $subscriber($command);
+                $this->consoleLog($command, $queueName);
             } catch (\Throwable $error) {
                 // $this->handleConsumptionError($envelope, $queue);
 
@@ -62,25 +63,27 @@ final class RabbitMqDomainEventsConsumer
         };
     }
 
-    private function deserializeDomainEvent(AMQPMessage $msg): DomainEvent
+    private function deserializeCommand(AMQPMessage $msg): CommandInterface
     {
         $this->msg = $msg;
 
-        $eventData = JSON::decode($msg->getBody());
-        $eventName = $eventData['id'];
+        return unserialize($msg->getBody());
+
+        // $eventData = JSON::decode($msg->getBody());
+        // $eventName = $eventData['id'];
         
-        $eventClass = $this->getHeader(RabbitMQEventBus::EVENT_CLASS_KEY);
+        // $eventClass = $this->getHeader(RabbitMQCommandBus::COMMAND_CLASS_KEY);
 
-        if (null === $eventClass) {
-            throw new RuntimeException("The event <$eventName> doesn't exist or has no subscribers");
-        }
+        // if (null === $eventClass) {
+        //     throw new RuntimeException("The event <$eventName> doesn't exist or has no subscribers");
+        // }
 
-        return $eventClass::fromPrimitives(
-            $eventData['id'],
-            $eventData['body'],
-            $eventData['event_id'],
-            $eventData['occurred_on']
-        );
+        // return $eventClass::fromPrimitives(
+        //     $eventData['id'],
+        //     $eventData['body'],
+        //     $eventData['event_id'],
+        //     $eventData['occurred_on']
+        // );
     }
 
     private function getProperty(string $key): mixed
@@ -97,15 +100,18 @@ final class RabbitMqDomainEventsConsumer
         return $nativeData[$key];
     }
 
-    private static function consoleLog(DomainEvent $event, string $queueName): void
+    private static function consoleLog(CommandInterface $command, string $queueName): void
     {
         echo PHP_EOL;
-        // echo ' [::] From RabbitMQ', PHP_EOL;
+        echo ' [x] Command class: ', $command::class, PHP_EOL;
         echo ' [x] On queue: ', $queueName, PHP_EOL;
-        echo ' [x] Event Name: ', $event->eventName(), PHP_EOL;
-        echo ' [x] Event Aggregate id: ', $event->aggregateId(), PHP_EOL;
-        // echo ' [x] Event data: ', json_encode($event->data, JSON_OBJECT_AS_ARRAY), PHP_EOL;
-        echo ' [x] Event event id: ', $event->eventId(), PHP_EOL;
-        echo ' [x] Event occurred on: ', $event->occurredOn(), PHP_EOL;
+
+        // // echo ' [::] From RabbitMQ', PHP_EOL;
+        // echo ' [x] On queue: ', $queueName, PHP_EOL;
+        // echo ' [x] Event Name: ', $event->eventName(), PHP_EOL;
+        // echo ' [x] Event Aggregate id: ', $event->aggregateId(), PHP_EOL;
+        // // echo ' [x] Event data: ', json_encode($event->data, JSON_OBJECT_AS_ARRAY), PHP_EOL;
+        // echo ' [x] Event event id: ', $event->eventId(), PHP_EOL;
+        // echo ' [x] Event occurred on: ', $event->occurredOn(), PHP_EOL;
     }
 }

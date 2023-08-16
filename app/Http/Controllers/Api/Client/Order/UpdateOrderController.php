@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Order;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\UpdateOrderRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Order\Application\Commands\Update\UpdateOrderCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
-class UpdateOrderController extends Controller
+class UpdateOrderController
 {
     public function __construct(
         private readonly ResponseFactory $response,

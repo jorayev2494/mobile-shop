@@ -25,17 +25,20 @@ class CommandHandler implements CommandHandlerInterface
     {
         $cart = $this->repository->findByUUID(CartUUID::fromValue($command->uuid));
 
-        if ($cart === null) {
-            throw new ModelNotFoundException();
+        $cart ?? throw new ModelNotFoundException();
+
+        $removeProduct = null;
+
+        foreach ($cart->getProducts() as $cartProduct) {
+            if ($cartProduct->uuid->value === $command->productUUID) {
+                $removeProduct = $cartProduct;
+                break;
+            }
         }
 
-        $removeProduct = Product::fromPrimitives(
-            $command->productUUID,
-            $command->productCurrencyUUID,
-            $command->productQuality,
-            $command->productPrice,
-            $command->productDiscountPercentage,
-        );
+        if ($removeProduct === null) {
+            throw new ModelNotFoundException();
+        }
 
         $cart->removeProduct($removeProduct);
         $this->repository->save($cart);

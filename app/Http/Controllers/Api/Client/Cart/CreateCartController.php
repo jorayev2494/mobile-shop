@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Cart;
 
 use App\Http\Requests\Client\Cart\CreateCartRequest;
@@ -25,7 +27,7 @@ class CreateCartController
         $uuid = $this->uuidGenerator->generate();
 
         $this->commandBus->dispatch(
-            new Command($uuid, $request->get('products'))
+            new Command($uuid, $request->get('product_uuid'), $request->get('product_quality'))
         );
 
         return $this->response->json(['uuid' => $uuid]);

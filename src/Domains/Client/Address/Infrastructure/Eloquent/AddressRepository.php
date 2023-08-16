@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\CLient\Address\Infrastructure\Eloquent;
+namespace Project\Domains\Client\Address\Infrastructure\Eloquent;
 
 use App\Repositories\Base\BaseModelRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;

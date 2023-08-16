@@ -14,10 +14,10 @@ return new class extends Migration
             $table->foreignUuid('cart_uuid')->references('uuid')->on('carts');
             $table->foreignUuid('product_uuid')->references('uuid')->on('products');
 
-            $table->foreignUuid('currency_uuid')->references('uuid')->on('currencies');
-            $table->integer('quality');
-            $table->integer('price');
-            $table->integer('discount_percentage')->nullable();
+            $table->foreignUuid('cart_currency_uuid')->references('uuid')->on('currencies');
+            $table->integer('cart_quality');
+            $table->integer('cart_price');
+            $table->integer('cart_discount_percentage')->nullable();
 
             $table->timestamps();
         });
