@@ -17,6 +17,7 @@ use App\Services\Api\Admin\ProductService;
 use App\Services\Api\Admin\RoleService;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Contracts\AuthService as ContractAuthService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Illuminate\Support\ServiceProvider;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
@@ -103,5 +104,16 @@ class AppServiceProvider extends ServiceProvider
 
         // $this->app->bind(CommandBusInterface::class, RabbitMQCommandBus::class);
         #endregion
+
+        $this->app->singleton('doctrine_entity_paths', static fn (): ArrayCollection => new ArrayCollection());
+        
+        \Illuminate\Foundation\Application::macro('addEntityPaths', function (array $entityPaths = []): void {            
+            $res = $this->make('doctrine_entity_paths');
+            
+            foreach ($entityPaths as $entityPath) {
+                $res->add($entityPath);
+            }
+        });
+
     }
 }

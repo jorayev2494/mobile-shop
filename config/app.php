@@ -218,6 +218,8 @@ return [
         Project\Domains\Client\Card\Infrastructure\CardServiceProvider::class,
         Project\Domains\Client\Cart\Infrastructure\CartServiceProvider::class,
         Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
+
+        App\Providers\DoctrineServiceProvider::class,
     ],
 
     /*
