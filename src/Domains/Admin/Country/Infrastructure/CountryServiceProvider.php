@@ -14,7 +14,8 @@ use Project\Domains\Admin\Country\Application\Commands\Update\CommandHandler as 
 use Project\Domains\Admin\Country\Application\Queries\Index\QueryHandler as IndexQueryHandler;
 use Project\Domains\Admin\Country\Application\Queries\Show\QueryHandler as ShowQueryHandler;
 use Project\Domains\Admin\Country\Domain\CountryRepositoryInterface;
-use Project\Domains\Admin\Country\Infrastructure\Eloquent\CountryRepository;
+use Project\Domains\Admin\Country\Infrastructure\Eloquent\CountryRepository as EloquentCountryRepository;
+use Project\Domains\Admin\Country\Infrastructure\Doctrine\CountryRepository as DoctrineCountryRepository;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\RabbitMQCommandBus;
 
@@ -22,6 +23,10 @@ final class CountryServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->addEntityPaths([
+            __DIR__ . '/../Domain',
+        ]);
+
         $this->app->when([
                         CreateCountryController::class,
                         UpdateCountryController::class,
@@ -30,7 +35,8 @@ final class CountryServiceProvider extends ServiceProvider
                     ->needs(CommandBusInterface::class)
                     ->give(RabbitMQCommandBus::class);
 
-        $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class);
+        // $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class); BaseEntityRepository
+        $this->app->bind(CountryRepositoryInterface::class, DoctrineCountryRepository::class);
 
         $this->app->tag(IndexQueryHandler::class, 'query_handler');
         $this->app->tag(ShowQueryHandler::class, 'query_handler');
