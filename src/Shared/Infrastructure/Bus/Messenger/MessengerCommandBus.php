@@ -36,6 +36,8 @@ final class MessengerCommandBus implements CommandBusInterface
             throw new CommandNotRegistered('Command ' . get_class($command) .  ' not registered.');
         } catch (HandlerFailedException $error) {
             throw $error->getPrevious() ?? $error;
-        }
+        } // catch (\Exception $ex) {
+        //     dd($ex);
+        // }
     }
 }

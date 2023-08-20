@@ -22,7 +22,7 @@ class DoctrineServiceProvider extends ServiceProvider
     {
         $config = ORMSetup::createAttributeMetadataConfiguration(
             paths: $this->app->make('doctrine_entity_paths')->toArray(),
-            isDevMode: $this->app->environment('production'),
+            isDevMode: !$this->app->environment('production'),
         );
 
         $connection = DriverManager::getConnection($this->connection, $config);

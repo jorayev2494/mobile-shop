@@ -21,12 +21,12 @@ final class CommandHandler implements CommandHandlerInterface
     public function __invoke(Command $command): void
     {
         $uuid = CountryUUID::fromValue($command->uuid);
-        $foundCountry = $this->repository->findByUUID($uuid);
+        $foundCountry = $this->repository->findByUuid($uuid);
 
         if ($foundCountry === null) {
             throw new ModelNotFoundException();
         }
 
-        $this->repository->delete($uuid);
+        $this->repository->delete($foundCountry);
     }
 }

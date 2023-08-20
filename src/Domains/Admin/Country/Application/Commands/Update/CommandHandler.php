@@ -6,8 +6,11 @@ namespace Project\Domains\Admin\Country\Application\Commands\Update;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Admin\Country\Domain\Country;
+use Project\Domains\Admin\Country\Domain\CountryEntity;
 use Project\Domains\Admin\Country\Domain\CountryRepositoryInterface;
+use Project\Domains\Admin\Country\Domain\ValueObjects\CountryISO;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUUID;
+use Project\Domains\Admin\Country\Domain\ValueObjects\CountryValue;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -21,19 +24,15 @@ final class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $foundCountry = $this->repository->findByUUID(CountryUUID::fromValue($command->uuid));
+        $foundCountry = $this->repository->findByUuid(CountryUUID::fromValue($command->uuid));
 
         if ($foundCountry === null) {
             throw new ModelNotFoundException();
         }
 
-        $country = Country::fromPrimitives(
-            $command->uuid,
-            $command->value,
-            $command->iso,
-            $command->isActive,
-        );
+        $foundCountry->setValue(CountryValue::fromValue($command->value));
+        $foundCountry->setISO(CountryISO::fromValue($command->iso));
 
-        $this->repository->save($country);
+        $this->repository->save($foundCountry);
     }
 }

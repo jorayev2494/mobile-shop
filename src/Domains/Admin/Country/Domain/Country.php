@@ -5,40 +5,75 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Country\Domain;
 
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryISO;
-use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUUID;
+use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUuid;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryValue;
+use Project\Domains\Admin\Country\Infrastructure\Doctrine\Types\Country\ISOType;
+use Project\Domains\Admin\Country\Infrastructure\Doctrine\Types\Country\UuidType;
+use Project\Domains\Admin\Country\Infrastructure\Doctrine\Types\Country\ValueType;
+use Project\Shared\Domain\Aggregate\AggregateRoot;
 
-final class Country
+#[ORM\Entity]
+#[ORM\Table(name: 'countries')]
+class Country extends AggregateRoot
 {
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    public readonly DateTimeImmutable $createdAt;
+    
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    public readonly DateTimeImmutable $updatedAt;
+
     private function __construct(
-        public readonly CountryUUID $uuid,
-        public readonly CountryValue $value,
-        public readonly CountryISO $iso,
-        public readonly bool $isActive = true,
-        public readonly ?int $createdAt = null,
-        public readonly ?int $updatedAt = null,
+        #[ORM\Id]
+        #[ORM\Column(name: 'uuid', type: UuidType::TYPE)]
+        public CountryUuid $uuid,
+        #[ORM\Column(name: 'value', type: ValueType::TYPE)]
+        public CountryValue $value,
+        #[ORM\Column(name: 'iso', type: ISOType::TYPE, length: 3)]
+        public CountryISO $iso,
+        #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
+        public bool $isActive = true,
     )
     {
-        $this->createdAt ?? new DateTimeImmutable();
-        $this->updatedAt ?? new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
-    public static function fromPrimitives(string $uuid, string $value, string $iso, bool $isActive, ?int $createdAt = null, ?int $updatedAt = null): self
-    {
-        return new self(
-            CountryUUID::fromValue($uuid),
-            CountryValue::fromValue($value),
-            CountryISO::fromValue($iso),
-            $isActive,
-            $createdAt,
-            $updatedAt
-        );
-    }
-
-    public static function create(CountryUUID $uuid, CountryValue $value, CountryISO $iso, bool $isActive): self
+    public static function create(CountryUuid $uuid, CountryValue $value, CountryISO $iso, bool $isActive = true): self
     {
         return new self($uuid, $value, $iso, $isActive);
+    }
+
+    public function getUuid(): CountryUuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(CountryUuid $uuid): void
+    {
+        $this->uuid = $uuid;
+    }
+
+    public function getValue(): CountryValue
+    {
+        return $this->value;
+    }
+
+    public function setValue(CountryValue $value): void
+    {
+        $this->value = $value;
+    }
+
+    public function getISO(): CountryISO
+    {
+        return $this->iso;
+    }
+
+    public function setISO(CountryISO $iso): void
+    {
+        $this->iso = $iso;
     }
 
     public function toArray(): array
@@ -48,8 +83,8 @@ final class Country
             'value' => $this->value->value,
             'iso' => $this->iso->value,
             'is_active' => $this->isActive,
-            'created_at' => $this->createdAt,
-            'updated_at' => $this->updatedAt,
+            'created_at' => $this->createdAt->getTimestamp(),
+            'updated_at' => $this->updatedAt->getTimestamp(),
         ];
     }
 }
