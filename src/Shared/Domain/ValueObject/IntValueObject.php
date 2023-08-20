@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace Project\Shared\Domain\ValueObject;
 
+// use Doctrine\DBAL\Types\Types;
+// use Doctrine\ORM\Mapping as ORM;
+
 abstract class IntValueObject
 {
-    public function __construct(
-        public readonly ?int $value
-    )
+
+    // #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    private readonly ?int $value;
+    public function __construct(?int $value)
     {
-        
+        $this->value = $value;
     }
 
     public static function fromValue(int $value = null): static

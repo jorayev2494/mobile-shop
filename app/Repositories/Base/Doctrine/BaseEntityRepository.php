@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repositories\Base;
+namespace App\Repositories\Base\Doctrine;
 
 use App\Repositories\Contracts\BaseEntityRepositoryInterface;
 use App\Repositories\Contracts\BaseModelRepositoryInterface;
@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
 use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +38,11 @@ abstract class BaseEntityRepository extends EntityRepository // implements BaseE
     }
 
     abstract public function getEntity();
+
+    protected function paginator($query, BaseQuery $dataDTO, bool $fetchJoinCollection = true): Paginator
+    {
+        return new Paginator($query, $dataDTO, $fetchJoinCollection);
+    }
 
     // public function get(array $columns = ['*']): Collection
     // {

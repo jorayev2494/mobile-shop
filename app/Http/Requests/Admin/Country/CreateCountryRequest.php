@@ -18,7 +18,7 @@ class CreateCountryRequest extends FormRequest
     {
         return [
             'value' => ['required', 'alpha_dash', 'unique:' . Country::class . ',value'],
-            'iso' => ['required', 'alpha_dash', 'unique:' . Country::class . ',iso', 'max:5'],
+            'iso' => ['required', 'alpha_dash', 'unique:' . Country::class . ',iso', 'max:3'],
             'is_active' => ['boolean'],
         ];
     }

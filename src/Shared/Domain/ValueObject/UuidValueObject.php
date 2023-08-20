@@ -6,14 +6,18 @@ namespace Project\Shared\Domain\ValueObject;
 
 use InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
+// use Doctrine\DBAL\Types\Types;
+// use Doctrine\ORM\Mapping as ORM;
 
-class UuidValueObject
+class UuidValueObject implements \Stringable
 {
-    protected function __construct(
-        public readonly string $value
-    )
+    // #[ORM\Column(type: Types::STRING, nullable: true)]
+    public string $value;
+
+    protected function __construct(string $value)
     {
         $this->assertIsValidUuid($value);
+        $this->value = $value;
     }
 
     public static function generate(): static
@@ -36,5 +40,10 @@ class UuidValueObject
         if (!Uuid::isValid($id)) {
             throw new InvalidArgumentException(sprintf('`<%s>` does not allow the value `<%s>`.', static::class, $id));
         }
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
     }
 }

@@ -55,7 +55,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
             page: $request->query->getInt('page', 1),
             per_page: $request->query->getInt('per_page', 10),
             cursor: $request->query->get('cursor'),
-            sort_by: $request->query->get('sort_by', 'uuid'),
+            sort_by: $request->query->get('sort_by', 'created_at'),
             is_sort_desc: $request->query->getBoolean('is_sort_desc'),
             filters: self::makeFilters($request->get('filters', [])),
         );

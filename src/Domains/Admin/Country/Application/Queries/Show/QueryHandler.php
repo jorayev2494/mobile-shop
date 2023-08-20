@@ -6,9 +6,8 @@ namespace Project\Domains\Admin\Country\Application\Queries\Show;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Admin\Country\Domain\Country;
-use Project\Domains\Admin\Country\Domain\CountryEntity;
 use Project\Domains\Admin\Country\Domain\CountryRepositoryInterface;
-use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUUID;
+use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUuid;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
 final class QueryHandler implements QueryHandlerInterface
@@ -20,9 +19,9 @@ final class QueryHandler implements QueryHandlerInterface
         
     }
 
-    public function __invoke(Query $query): CountryEntity
+    public function __invoke(Query $query): Country
     {
-        $country = $this->repository->findByUUID(CountryUUID::fromValue($query->uuid));
+        $country = $this->repository->findByUuid(CountryUuid::fromValue($query->uuid));
 
         if ($country === null) {
             throw new ModelNotFoundException();

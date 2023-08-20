@@ -7,6 +7,9 @@ use Illuminate\Console\Command;
 use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\CommandHandlerLocator;
 
+/**
+ * @see https://www.cloudamqp.com/blog/how-to-run-rabbitmq-with-php.html
+ */
 class CreateRabbitMQExchanges extends Command
 {
     protected $signature = 'create-rabbitmq-exchanges';

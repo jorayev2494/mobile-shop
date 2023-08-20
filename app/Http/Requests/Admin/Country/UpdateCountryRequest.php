@@ -38,7 +38,7 @@ class UpdateCountryRequest extends FormRequest
                 'required',
                 'alpha_dash',
                 Rule::unique(Country::class, 'iso')->ignore($this->uuid, 'uuid'),
-                'max:5',
+                'max:3',
             ],
             'is_active' => ['boolean'],
         ];
