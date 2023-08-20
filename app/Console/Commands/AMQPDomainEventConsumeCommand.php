@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Event\RabbitMqDomainEventsConsumer;
 
-class AMQPEventConsumeCommand extends Command
+class AMQPDomainEventConsumeCommand extends Command
 {
     public function __construct(
         private readonly DomainEventSubscriberLocator $locator,
@@ -15,9 +15,9 @@ class AMQPEventConsumeCommand extends Command
         parent::__construct();
     }
 
-    protected $signature = 'rabbitmq:event-consume {--Q|queue=ddd : Queue name example: project.domains.admin.product_was_created_domain_event_handler}';
+    protected $signature = 'rabbitmq:domain-event-consume {--Q|queue=ddd : Queue name example: project.domains.admin.product_was_created_domain_event_handler}';
 
-    protected $description = 'RabbitMQ Event Consume';
+    protected $description = 'RabbitMQ Domain Event Consume';
 
     public function handle(RabbitMqDomainEventsConsumer $consumer): int
     {

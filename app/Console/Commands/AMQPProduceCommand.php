@@ -17,7 +17,6 @@ class AMQPProduceCommand extends Command
         /** @var \PhpAmqpLib\Channel\AMQPChannel $channel */
         $channel = $amqpConnection->channel();
 
-        // $count = random_int(5, 25);
         $count = 1500;
         for ($i = 0; $i < $count; $i++) {
             $data = 'Hello RabbitMQ! ' . random_int(0000, 9999) . ' Uuid is ' . \Str::uuid();

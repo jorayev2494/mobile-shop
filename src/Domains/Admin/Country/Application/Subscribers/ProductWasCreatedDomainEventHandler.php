@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\Admin\Product\Application\Subscribers;
+namespace Project\Domains\Admin\Country\Application\Subscribers;
 
 use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
-use Project\Domains\Admin\Product\Domain\Events\ProductWasDeletedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Domain\LoggerInterface;
 use Project\Shared\Domain\MailerInterface;
@@ -28,7 +27,7 @@ final class ProductWasCreatedDomainEventHandler implements DomainEventSubscriber
 
     public function __invoke(ProductWasCreatedDomainEvent $event): void
     {
-        $this->logger->info('ProductWasCreatedHandler', $event->toArray());
-        $this->mailer->send('test@gmail.com', 'ProductWasCreatedHandler', data: $event->toArray());
+        $this->logger->info(__METHOD__, $event->toArray());
+        $this->mailer->send('testtt@gmail.com', __METHOD__, data: $event->toArray());
     }
 }
