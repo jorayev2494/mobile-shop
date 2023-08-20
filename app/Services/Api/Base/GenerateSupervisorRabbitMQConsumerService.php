@@ -2,32 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Services\Api;
+namespace App\Services\Api\Base;
 
-use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use Project\Shared\Domain\Bus\Event\DomainEvent;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
 
-class GenerateSupervisorRabbitMQConsumerService
+abstract class GenerateSupervisorRabbitMQConsumerService
 {
     use QueueName;
 
-    private const EVENTS_TO_PROCESS_AT_TIME             = 200;
-    private const NUMBERS_OF_PROCESSES_PER_SUBSCRIBER   = 1;
-    private const PATH                                  = __DIR__ . '/';
-    protected static $defaultName = 'codelytv:domain-events:rabbitmq:generate-supervisor-files';
+    protected const EVENTS_TO_PROCESS_AT_TIME             = 200;
+    protected const NUMBERS_OF_PROCESSES_PER_SUBSCRIBER   = 1;
+    protected const PATH                                  = __DIR__ . '/';
 
-    public function configCreator(object $handler, bool $append = false): void
+    abstract protected function getConsumeCommandPrefix(): string;
+
+    protected function generate(string $queueName, bool $append): void
     {
-        $name = RabbitMqQueueNameFormatter::format($handler);
-        $queueName = $this->makeQueueName($name, $handler);
-
-        $consumeCommandPrefix = match (true) {
-            $handler instanceof CommandHandlerInterface => 'command',
-            $handler instanceof DomainEvent => 'event',
-        };
-
         $fileContent = str_replace(
             [
                 '{queue_name}',
@@ -40,7 +30,7 @@ class GenerateSupervisorRabbitMQConsumerService
                 $queueName,
                 // self::PATH,
                 self::NUMBERS_OF_PROCESSES_PER_SUBSCRIBER,
-                $consumeCommandPrefix,
+                $this->getConsumeCommandPrefix(),
                 self::EVENTS_TO_PROCESS_AT_TIME,
             ],
             $this->template()
@@ -49,7 +39,7 @@ class GenerateSupervisorRabbitMQConsumerService
         file_put_contents($this->fileName($queueName), $fileContent, $append ? FILE_APPEND : 0);
     }
 
-    private function template(): string
+    protected function template(): string
     {
         // return <<<EOF
         //     [program:codelytv_{queue_name}]
@@ -78,9 +68,8 @@ class GenerateSupervisorRabbitMQConsumerService
         EOF;
     }
 
-    private function fileName(string $fileName = 'supervisord'): string
+    protected function fileName(string $fileName = 'supervisord'): string
     {
-        // return sprintf('%s/%s.ini', base_path(env('SUPERVISOR_PATH')), $queue);
         return sprintf('%s/%s.ini', base_path(env('SUPERVISOR_PATH')), $fileName);
     }
 }

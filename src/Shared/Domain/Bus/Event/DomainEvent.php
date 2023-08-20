@@ -43,8 +43,8 @@ abstract class DomainEvent implements Event
         return $this->occurredOn;
     }
 
-    public static function exchangeName(): string
-    {
-        return 'shop.exchange';
-    }
+    // public static function exchangeName(): string
+    // {
+    //     return 'shop.exchange';
+    // }
 }

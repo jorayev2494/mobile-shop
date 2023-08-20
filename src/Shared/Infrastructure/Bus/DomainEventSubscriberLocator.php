@@ -30,19 +30,10 @@ final class DomainEventSubscriberLocator implements LocatorInterface
 
     public function withRabbitMqQueueNamed(string $queueName): DomainEventSubscriberInterface|callable
     {
-        // dd($queueName, $this->mapping);
-        // project.domains.admin.product_was_created_domain_event_handler
-        // project.domains.admin.productWasCreatedDomainEventHandler
         $subscriber = search(
             static fn (DomainEventSubscriberInterface $subscriber) => (RabbitMqQueueNameFormatter::format($subscriber)) === $queueName,
             $this->mapping
         );
-        
-        if (array_key_exists($subscriber, $this->mapping)) {
-            $subscriber = new $this->mapping[$subscriber];
-        }
-
-        // dd($subscriber, $this->mapping);
 
         if (null === $subscriber) {
             throw new RuntimeException("There are no subscribers for the <$queueName> queue");
@@ -51,6 +42,9 @@ final class DomainEventSubscriberLocator implements LocatorInterface
         return $subscriber;
     }
 
+    /**
+     * @return array<array-key, DomainEventSubscriberInterface>
+     */
     public function all(): array
     {
         return $this->mapping;

@@ -10,18 +10,12 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\RoutingKey;
 use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 
 final class RabbitMQEventBus implements EventBusInterface
 {
-    use RoutingKey;
-    use QueueName;
-
     public const EVENT_CLASS_KEY = 'event_class';
-    private const EXCHANGE_NAME = '%s.event';
+    public const EXCHANGE_NAME = 'EventExchange';
 
     private readonly AMQPChannel $channel;
 
@@ -47,10 +41,8 @@ final class RabbitMQEventBus implements EventBusInterface
 
     private function publishEvent(DomainEvent $event): void
     {
-        $queueName = RabbitMqQueueNameFormatter::format($event);
-
         $messageId = $event->eventId();
-        $routingKey = $this->makeRoutingKey($queueName, $event);     // $event->eventName();
+        $routingKey = $event::eventName();
         $body = $this->serializeDomainEvent($event);
 
         $this->setProperties([
@@ -71,16 +63,7 @@ final class RabbitMQEventBus implements EventBusInterface
 
     private function getExchangeName(DomainEvent $event): string
     {
-        $name = RabbitMqQueueNameFormatter::format($event);
-        // dd(
-        //     // $event,
-        //     // $this->makeRoutingKey($name, $event),
-        //     $this->makeQueueName($name, $event),
-        // );
-
-        // return sprintf(self::EXCHANGE_NAME, $event::exchangeName());
-
-        return $this->makeQueueName($name, $event);
+        return self::EXCHANGE_NAME;
     }
 
     private function getProperties(): array

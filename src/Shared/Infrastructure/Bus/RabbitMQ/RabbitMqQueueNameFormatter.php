@@ -15,7 +15,12 @@ final class RabbitMqQueueNameFormatter
 {
     public static function format(DomainEventSubscriberInterface|CommandInterface|CommandHandlerInterface|DomainEvent $subscriber): string
     {
-        $queueName = explode('\\', str_replace(['\\', 'Project.Domains.'], ['.', ''], $subscriber::class));
+        return self::formatFromClassName($subscriber::class);
+    }
+
+    public static function formatFromClassName(string $className): string
+    {
+        $queueName = explode('\\', str_replace(['\\', 'Project.Domains.'], ['.', ''], $className));
 
         return implode('.', map(self::toCamelCase(), $queueName));
     }

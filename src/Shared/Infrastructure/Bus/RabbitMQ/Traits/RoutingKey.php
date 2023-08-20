@@ -8,11 +8,15 @@ trait RoutingKey
 {
     protected function makeRoutingKey(string $value, object $handler): string
     {
-        $className = class_basename($handler);
-        
+        return $this->makeRoutingKeyFromClassName($value, class_basename($handler));
+
+    }
+
+    protected function makeRoutingKeyFromClassName(string $value, string $handlerClassName): string
+    {        
         $ch = explode('.', $value);
         foreach ($ch as $key => $v) {
-            if ($v === $className) {
+            if ($v === $handlerClassName) {
                 unset($ch[$key]);
             }
         }

@@ -12,24 +12,15 @@ use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 trait QueueName
 {
     public function makeQueueName(string $value, object $handler): string
-    {
-        // $handlerPrefix = match (true) {
-        //     $handler instanceof CommandInterface => 'Commands',
-        //     $handler instanceof CommandHandlerInterface => 'Commands',
-        //     $handler instanceof DomainEventSubscriberInterface => 'Product', // 'Application',
-        //     $handler instanceof DomainEvent => 'Events',
-        //     // default => '',
-        // };
-        
-        // $routingKey = substr($value, 0, strpos($value, '.' . $className));
+    {        
+        return $this->makeQueueNameClassName($value, class_basename($handler));
+    }
 
-        // return substr($value, 0, strpos($value, $handlerPrefix) + strlen($handlerPrefix));
-
-        $className = class_basename($handler);
-        
+    public function makeQueueNameClassName(string $value, string $handlerClassName): string
+    {        
         $ch = explode('.', $value);
         foreach ($ch as $key => $v) {
-            if ($v === $className) {
+            if ($v === $handlerClassName) {
                 unset($ch[$key]);
             }
         }

@@ -14,6 +14,7 @@ use Project\Domains\Admin\Country\Application\Commands\Delete\CommandHandler as 
 use Project\Domains\Admin\Country\Application\Commands\Update\CommandHandler as UpdateCommandHandler;
 use Project\Domains\Admin\Country\Application\Queries\Index\QueryHandler as IndexQueryHandler;
 use Project\Domains\Admin\Country\Application\Queries\Show\QueryHandler as ShowQueryHandler;
+use Project\Domains\Admin\Country\Application\Subscribers\ProductWasCreatedDomainEventHandler;
 use Project\Domains\Admin\Country\Domain\CountryRepositoryInterface;
 use Project\Domains\Admin\Country\Infrastructure\Eloquent\CountryRepository as EloquentCountryRepository;
 use Project\Domains\Admin\Country\Infrastructure\Doctrine\CountryRepository as DoctrineCountryRepository;
@@ -52,5 +53,7 @@ final class CountryServiceProvider extends ServiceProvider
         $this->app->tag(CreateCommandHandler::class, 'command_handler');
         $this->app->tag(UpdateCommandHandler::class, 'command_handler');
         $this->app->tag(DeleteCommandHandler::class, 'command_handler');
+
+        $this->app->tag(ProductWasCreatedDomainEventHandler::class, 'domain_event_subscriber');
     }
 }
