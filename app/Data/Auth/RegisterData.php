@@ -13,9 +13,9 @@ class RegisterData implements MakeFromFormRequest
         public readonly string $first_name,
         public readonly string $last_name,
         public readonly string $email,
-        public readonly ?string $phone,
+        // public readonly ?string $phone,
         public readonly string $password,
-        public readonly ?string $country_uuid,
+        // public readonly ?string $country_uuid,
     ) {
     }
 
@@ -25,11 +25,23 @@ class RegisterData implements MakeFromFormRequest
             'first_name' => $first_name,
             'last_name' => $last_name,
             'email' => $email,
-            'phone' => $phone,
+            // 'phone' => $phone,
             'password' => $password,
-            'country_uuid' => $country_uuid,
+            // 'country_uuid' => $country_uuid,
         ] = $request->validated();
 
-        return new static($first_name, $last_name, $email, $phone, $password, $country_uuid);
+        return new static($first_name, $last_name, $email, $password);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            // 'phone' => $this->phone,
+            'password' => $this->password,
+            // 'country_uuid' => $this->country_uuid,
+        ];
     }
 }

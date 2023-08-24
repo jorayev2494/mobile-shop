@@ -7,7 +7,6 @@ namespace App\Services\Api\Auth;
 use App\Data\Auth\AuthCredentialsData;
 use App\Data\Auth\RefreshTokenData;
 use App\Data\Auth\RegisterData;
-use App\Models\Admin;
 use App\Models\Auth\AppAuth;
 use App\Models\Auth\AuthModel;
 use App\Models\Device;
@@ -35,13 +34,12 @@ class AuthService implements ContractsAuthService
 
     public function register(RegisterData $registerData, AppGuardType $guard = AppGuardType::ADMIN): AuthModel
     {
-        $data = [];
+        $data = $registerData->toArray();
 
         if ($guard === AppGuardType::ADMIN) {
-            $data = ['role_id' => 1,];
-            $data = $registerData->toArray() + $data;
+            $data = array_merge($data, ['role_id' => 1]);
         } else if ($guard === AppGuardType::CLIENT) {
-            $data = $registerData->toArray();
+            //
         }
 
         /** @var AuthModel $authModel */

@@ -32,8 +32,12 @@ final class CountryServiceProvider extends ServiceProvider
         Type::addType(UuidType::TYPE, UuidType::class);
         Type::addType(ISOType::TYPE, ISOType::class);
 
-        $this->app->addEntityPaths([
+        $this->app->addAdminEntityPaths([
             __DIR__ . '/../Domain',
+        ]);
+
+        $this->app->addAdminMigrationPaths([
+            'Project\Domains\Admin\Country\Infrastructure\Doctrine\Migrations' => __DIR__ . '/Doctrine/Migrations',
         ]);
 
         $this->app->when([

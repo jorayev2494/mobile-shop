@@ -25,7 +25,8 @@ final class CommandHandler implements CommandHandlerInterface
         $country = Country::create(
             CountryUuid::fromValue($command->uuid),
             CountryValue::fromValue($command->value),
-            CountryISO::fromValue($command->iso)
+            CountryISO::fromValue($command->iso),
+            $command->isActive,
         );
 
         $this->repository->save($country);

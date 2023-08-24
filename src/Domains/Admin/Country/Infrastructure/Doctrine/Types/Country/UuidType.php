@@ -22,10 +22,9 @@ class UuidType extends Type
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
-        // dd($value);
-        return $value->value;
+        return $value instanceof CountryUuid ? $value->value : $value;
     }
 
     /**

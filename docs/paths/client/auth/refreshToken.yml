@@ -1,0 +1,11 @@
+post:
+  summary: 'Refresh token'
+  tags: 
+    -   Authentication
+  parameters: 
+    - $ref: ../../../components/parameters/deviceId.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/auth/refreshToken.yml
+  responses: 
+    202:
+      $ref: ../../../components/responses/admin/auth/RefreshToken.yml

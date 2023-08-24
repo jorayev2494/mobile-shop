@@ -8,6 +8,11 @@ use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
 use App\Http\Controllers\Api\Admin\Permission\IndexPermissionController;
 use App\Http\Controllers\Api\Admin\Order\{GetOrderController, ShowOrderController, UpdateOrderController,};
 use App\Http\Controllers\Api\Admin\Category\{CreateCategoryController, DeleteCategoryController, GetCategoryController, ShowCategoryController, UpdateCategoryController,};
+use App\Http\Controllers\Api\Admin\Client\CreateClientController;
+use App\Http\Controllers\Api\Admin\Client\DeleteClientController;
+use App\Http\Controllers\Api\Admin\Client\IndexClientController;
+use App\Http\Controllers\Api\Admin\Client\ShowClientController;
+use App\Http\Controllers\Api\Admin\Client\UpdateClientController;
 use App\Http\Controllers\Api\Admin\Country\{CreateCountryController, DeleteCountryController, IndexCountryController, ShowCountryController, UpdateCountryController,};
 use App\Http\Controllers\Api\Admin\Currency\IndexCurrencyController;
 use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
@@ -39,6 +44,14 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->get('/{uuid}', ShowManagerController::class);
         $router->post('/{uuid}', UpdateManagerController::class);
         $router->delete('/{uuid}', DeleteManagerController::class);
+    });
+
+    $router->group(['prefix' => 'clients', 'as' => 'clients.'], static function (Router $router): void {
+        $router->get('/', IndexClientController::class);
+        $router->post('/', CreateClientController::class);
+        $router->get('/{uuid}', ShowClientController::class);
+        $router->put('/{uuid}', UpdateClientController::class);
+        $router->delete('/{uuid}', DeleteClientController::class);
     });
 
     $router->group(['prefix' => 'roles', 'as' => 'roles.'], static function (Router $router): void {

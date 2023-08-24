@@ -6,7 +6,12 @@ namespace Project\Domains\Admin\Country\Domain;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\PreUpdate;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryISO;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUuid;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryValue;
@@ -17,13 +22,14 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'countries')]
+#[HasLifecycleCallbacks]
 class Country extends AggregateRoot
 {
-    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    public readonly DateTimeImmutable $createdAt;
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $createdAt;
     
-    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    public readonly DateTimeImmutable $updatedAt;
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $updatedAt;
 
     private function __construct(
         #[ORM\Id]
@@ -37,8 +43,7 @@ class Country extends AggregateRoot
         public bool $isActive = true,
     )
     {
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        //
     }
 
     public static function create(CountryUuid $uuid, CountryValue $value, CountryISO $iso, bool $isActive = true): self
@@ -74,6 +79,19 @@ class Country extends AggregateRoot
     public function setISO(CountryISO $iso): void
     {
         $this->iso = $iso;
+    }
+
+    #[PrePersist]
+    public function prePersisting(PrePersistEventArgs $event): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    #[PreUpdate]
+    public function PreUpdating(PreUpdateEventArgs $event): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function toArray(): array

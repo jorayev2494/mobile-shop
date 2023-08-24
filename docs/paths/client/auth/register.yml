@@ -1,0 +1,12 @@
+post:
+  summary: 'Register'
+  tags: 
+    - Authentication
+  parameters: 
+    - $ref: ../../../components/parameters/deviceId.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/client/auth/Register.yml
+  responses: 
+    202:
+      $ref: ../../../components/responses/client/auth/Register.yml
+    
