@@ -1,0 +1,12 @@
+put:
+  summary: Restore password
+  tags: 
+    -  Restore password
+  parameters:
+    -  $ref: ../../../../components/parameters/Token.yml
+  requestBody:
+    $ref: ../../../../components/requestBodies/admin/auth/restore-password/restore.yml
+  responses:
+    202:
+      $ref: ../../../../components/responses/2xx/NoContent.yml
+  

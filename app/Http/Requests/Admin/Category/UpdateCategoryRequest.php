@@ -12,7 +12,7 @@ class UpdateCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return AppAuth::check(AppGuardType::ADMIN);
+        return !AppAuth::check(AppGuardType::ADMIN);
     }
 
     public function rules(): array

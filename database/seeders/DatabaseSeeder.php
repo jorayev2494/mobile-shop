@@ -9,11 +9,11 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(RoleSeeder::class);
-        $this->call(CountrySeeder::class);
+        // $this->call(CountrySeeder::class);
         $this->call(CitySeeder::class);
         $this->call(CurrencySeeder::class);
         $this->call(AdminSeeder::class);
-        $this->call(ClientSeeder::class);
+        // $this->call(ClientSeeder::class);
         $this->call(CardSeeder::class);
         $this->call(CategorySeeder::class);
 

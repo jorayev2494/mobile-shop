@@ -39,6 +39,13 @@ externalDocs:
   description: Find out how to create a GitHub repo for your OpenAPI definition.
   url: 'https://github.com/Rebilly/generator-openapi-repo'
 
+servers:
+  - description: 'Local server'
+    url: 'http://127.0.0.1:8084/api/admin'
+
+  - description: 'Global server'
+    url: 'https://example.com/api/admin'
+
 tags:
   - name: Authentication
     description: Example echo operations
@@ -101,13 +108,6 @@ x-tagGroups:
   - name: Orders
     tags: 
       -  Orders
-
-servers:
-  - description: 'Local server'
-    url: 'http://127.0.0.1:8084/api/admin'
-
-  - description: 'Global server'
-    url: 'https://example.com/api/v1'
 
 security:
   - bearerAuth: []

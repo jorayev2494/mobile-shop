@@ -57,7 +57,7 @@ Route::prefix('auth')->name('auth.')->group(static function (Router $router): vo
     });
 });
 
-Route::group(['prefix' => 'products', 'as' => 'products'], static function (Router $router): void {
+Route::group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
     $router->get('/', IndexProductController::class);
     $router->get('/{uuid}', ShowProductController::class);
 });

@@ -1,0 +1,8 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      required: 
+        -  refresh_token
+      allOf: 
+        -  $ref: ../../../fields/refreshToken.yml

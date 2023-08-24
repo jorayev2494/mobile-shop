@@ -67,7 +67,7 @@ services:
         - 9000
     depends_on:
         - postgres
-        - test-postgres
+        # - test-postgres
     volumes:
         - ../:/var/project
         # - ./php/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
@@ -82,8 +82,8 @@ services:
     <<: *php-cli
     container_name: ${COMPOSE_PROJECT_NAME}-php-cli
     restart: 'no'
-    depends_on:
-        - test-postgres
+    # depends_on:
+        # - test-postgres
     networks:
         - shop-network
         - test-shop-network
@@ -104,20 +104,26 @@ services:
         - shop-network
         - test-shop-network
 
+  # Link: https://dev.to/nietzscheson/multiples-postgres-databases-in-one-service-with-docker-compose-4fdf 
   # Postgres Service
   postgres:
-    image: postgres:12
+    image: postgres:alpine
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     restart: unless-stopped
     volumes:
+        - ./postgres/multiple-databases.sh:/docker-entrypoint-initdb.d/multiple-databases.sh
         - ./postgres/data/:/var/lib/postgresql/data
     environment:
-        POSTGRES_DB: devdb
-        POSTGRES_USER: devuser
-        POSTGRES_PASSWORD: devsecret
+        # POSTGRES_DB: devdb
+        POSTGRES_MULTIPLE_DATABASES: admindatabase, clientdatabase
+        POSTGRES_USER: shopuser
+        POSTGRES_PASSWORD: "shoppassword"
         PGDATA: /var/lib/postgresql/data/pgdata
-    # expose:
-    #     - 9000
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U shopuser"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     ports:
         - ${POSTGRES_PORT}:5432
     networks:
@@ -142,21 +148,21 @@ services:
 #         - shop-network
 
   # Postgres Service
-  test-postgres:
-    image: postgres:12
-    container_name: ${COMPOSE_PROJECT_NAME}-test-postgres
-    restart: unless-stopped
-    # volumes:
-        # - ./postgres/data/:/var/lib/postgresql/data
-    environment:
-        POSTGRES_DB: testdb
-        POSTGRES_USER: testuser
-        POSTGRES_PASSWORD: testsecret
-        PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-        - ${TEST_POSTGRES_PORT}:5432
-    networks:
-        - test-shop-network
+#   test-postgres:
+#     image: postgres:12
+#     container_name: ${COMPOSE_PROJECT_NAME}-test-postgres
+#     restart: unless-stopped
+#     # volumes:
+#         # - ./postgres/data/:/var/lib/postgresql/data
+#     environment:
+#         POSTGRES_DB: testdb
+#         POSTGRES_USER: testuser
+#         POSTGRES_PASSWORD: testsecret
+#         PGDATA: /var/lib/postgresql/data/pgdata
+#     ports:
+#         - ${TEST_POSTGRES_PORT}:5432
+#     networks:
+#         - test-shop-network
 
   # Mailhog Service
   mailhog:
@@ -289,16 +295,16 @@ services:
 #     networks:
 #         - shop-network
 
-#   adminer:
-#     image: adminer
-#     restart: unless-stopped
-#     container_name: ${COMPOSE_PROJECT_NAME}-adminer
-#     ports:
-#       - 8000:8080
-#     environment:
-#       - ADMINER_DEFAULT_SERVER=postgres-learn
-#     networks:
-#         - shop-network
+  adminer:
+    image: adminer
+    restart: unless-stopped
+    container_name: ${COMPOSE_PROJECT_NAME}-adminer
+    ports:
+      - 8000:8080
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+    networks:
+        - shop-network
 
 networks:
   shop-network:

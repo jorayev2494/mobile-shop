@@ -12,9 +12,9 @@ use Ramsey\Uuid\Uuid;
 class UuidValueObject implements \Stringable
 {
     // #[ORM\Column(type: Types::STRING, nullable: true)]
-    public string $value;
+    public ?string $value;
 
-    protected function __construct(string $value)
+    protected function __construct(?string $value)
     {
         $this->assertIsValidUuid($value);
         $this->value = $value;
@@ -25,7 +25,7 @@ class UuidValueObject implements \Stringable
         return new static(Uuid::uuid4()->toString());
     }
 
-    public static function fromValue(string $value): static
+    public static function fromValue(?string $value): static
     {
         return new static($value);
     }
@@ -35,10 +35,10 @@ class UuidValueObject implements \Stringable
         return $this->value === $other->value;
     }
 
-    private function assertIsValidUuid(string $id): void
+    private function assertIsValidUuid(?string $value): void
     {
-        if (!Uuid::isValid($id)) {
-            throw new InvalidArgumentException(sprintf('`<%s>` does not allow the value `<%s>`.', static::class, $id));
+        if (! is_null($value) && ! Uuid::isValid($value)) {
+            throw new InvalidArgumentException(sprintf('`<%s>` does not allow the value `<%s>`.', static::class, $value));
         }
     }
 
