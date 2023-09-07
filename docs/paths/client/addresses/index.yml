@@ -1,0 +1,21 @@
+get:
+  summary: Index addresses
+  tags: 
+    -  Addresses
+  security: 
+    -  bearerAuth: []
+  responses:
+    200: 
+      $ref: ../../../../components/responses/client/addresses/index.yml
+
+post: 
+  summary: Create Address
+  tags: 
+    -  Addresses
+  security: 
+    -  bearerAuth: []
+  requestBody: 
+    $ref: ../../../../components/requestBodies/client/addresses/create.yml    
+  responses: 
+    201:
+      $ref: ../../../../components/responses/2xx/Created.yml

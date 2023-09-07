@@ -1,0 +1,21 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      required: 
+        -  title
+        -  full_name
+        -  first_address
+        -  zip_code
+        -  country_uuid
+        -  city_uuid
+        -  district
+      allOf: 
+        -  $ref: ../../../fields/title.yml
+        -  $ref: ../../../fields/fullName.yml
+        -  $ref: ../../../fields/firstAddress.yml
+        -  $ref: ../../../fields/secondAddress.yml
+        -  $ref: ../../../fields/zipCode.yml
+        -  $ref: ../../../fields/countryUuid.yml
+        -  $ref: ../../../fields/cityUuid.yml
+        -  $ref: ../../../fields/district.yml

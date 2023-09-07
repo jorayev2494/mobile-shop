@@ -1,10 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Client\Authentication\LogoutController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Api\Client\Auth\AuthController;
-use App\Http\Controllers\Api\Client\Auth\Restore\RestorePasswordController;
 
 use App\Http\Controllers\Api\Client\Address\{
     IndexAddressController,
@@ -13,6 +11,11 @@ use App\Http\Controllers\Api\Client\Address\{
     UpdateAddressController,
     DeleteAddressController,
 };
+use App\Http\Controllers\Api\Client\Authentication\LoginController;
+use App\Http\Controllers\Api\Client\Authentication\RefreshTokenController;
+use App\Http\Controllers\Api\Client\Authentication\RegisterController;
+use App\Http\Controllers\Api\Client\Authentication\Restore\RestoreCodePasswordController;
+use App\Http\Controllers\Api\Client\Authentication\Restore\RestorePasswordController;
 use App\Http\Controllers\Api\Client\Card\{
     IndexCardController,
     CreateCardController,
@@ -43,17 +46,19 @@ use App\Http\Controllers\Api\Client\Favorite\{
 
 use App\Http\Controllers\Api\Client\Product\IndexProductController;
 use App\Http\Controllers\Api\Client\Product\ShowProductController;
+use App\Http\Controllers\Api\Client\Profile\ShowProfileController;
+use App\Http\Controllers\Api\Client\Profile\UpdateProfileController;
 
 // /** @var Illuminate\Routing\Router $router */
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
-    $router->post('/register', [AuthController::class, 'register'])->name('register');
-    $router->post('/login', [AuthController::class, 'login'])->name('login');
-    $router->post('/refresh-token', [AuthController::class, 'refreshToken'])->name('refresh-token');
-    $router->post('/logout', [AuthController::class, 'logout'])->name('logout');
+    $router->post('/register', RegisterController::class)->name('register');
+    $router->post('/login', LoginController::class)->name('login');
+    $router->post('/refresh-token', RefreshTokenController::class)->name('refresh-token');
+    $router->post('/logout', LogoutController::class)->name('logout');
 
     $router->group(['prefix' => 'restore-password', 'as' => 'restore_password.'], static function (Router $router): void {
-        $router->post('/link', [RestorePasswordController::class, 'link'])->name('link');
-        $router->put('/restore', [RestorePasswordController::class, 'restore'])->name('restore');
+        $router->post('/code', RestoreCodePasswordController::class)->name('code');
+        $router->put('/restore', RestorePasswordController::class)->name('restore');
     });
 });
 
@@ -67,6 +72,11 @@ Route::group(['prefix' => 'countries', 'as' => 'countries.'], static function (R
 });
 
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
+    $router->group(['prefix' => 'profile', 'as' => 'profile.'], static function (Router $router): void {
+        $router->get('/', ShowProfileController::class);
+        $router->put('/', UpdateProfileController::class);
+    });
+
     $router->group(['prefix' => 'cards', 'as' => 'cards.'], static function (Router $router): void {
         $router->get('/', IndexCardController::class);
         $router->post('/', CreateCardController::class);

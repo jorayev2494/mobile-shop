@@ -6,5 +6,5 @@
         -  email
         -  password
       allOf: 
-        -  $ref: ../../../fields/adminEmail.yml
+        -  $ref: ../../../fields/email.yml
         -  $ref: ../../../fields/password.yml

@@ -8,7 +8,7 @@ use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Events\ProductWasDeletedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Domain\LoggerInterface;
-use Project\Shared\Domain\MailerInterface;
+use Symfony\Component\Mailer\MailerInterface;
 
 final class ProductWasCreatedDomainEventHandler implements DomainEventSubscriberInterface
 {
@@ -29,6 +29,6 @@ final class ProductWasCreatedDomainEventHandler implements DomainEventSubscriber
     public function __invoke(ProductWasCreatedDomainEvent $event): void
     {
         $this->logger->info('ProductWasCreatedHandler', $event->toArray());
-        $this->mailer->send('test@gmail.com', 'ProductWasCreatedHandler', data: $event->toArray());
+        // $this->mailer->send('test@gmail.com', 'ProductWasCreatedHandler', data: $event->toArray());
     }
 }

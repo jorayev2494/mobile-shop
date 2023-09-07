@@ -30,16 +30,21 @@ class UuidValueObject implements \Stringable
         return new static($value);
     }
 
-    public function equals(self $other): bool
-    {
-        return $this->value === $other->value;
-    }
-
     private function assertIsValidUuid(?string $value): void
     {
         if (! is_null($value) && ! Uuid::isValid($value)) {
             throw new InvalidArgumentException(sprintf('`<%s>` does not allow the value `<%s>`.', static::class, $value));
         }
+    }
+
+    public function isEquals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
+
+    public function isNotEquals(self $other): bool
+    {
+        return $this->value !== $other->value;
     }
 
     public function __toString(): string

@@ -53,11 +53,18 @@ tags:
   - name: Restore password
     description: Operations about users
 
+  - name: Addresses
+    description: Addresses
+
 x-tagGroups: 
   - name: Authentication
     tags: 
       - Authentication
       - Restore password
+
+  - name: Addresses
+    tags: 
+      - Addresses
 
 security: 
   - bearerAuth: []
@@ -77,11 +84,18 @@ paths:
   # End Authentication
 
   # Restore password
-  /auth/restore-password/link:
-    $ref: paths/client/auth/restore-password/link.yml
+  /auth/restore-password/code:
+    $ref: paths/client/auth/restore-password/code.yml
 
   /auth/restore-password/restore:
     $ref: paths/client/auth/restore-password/restore.yml
+
+  # Addresses
+  /addresses:
+    $ref: paths/client/addresses/index.yml
+  
+  /addresses/{uuid}:
+    $ref: paths/client/addresses/addressUuid.yml
 
 components:
   securitySchemes:

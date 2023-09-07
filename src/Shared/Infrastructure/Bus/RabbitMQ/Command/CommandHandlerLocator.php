@@ -22,7 +22,7 @@ final class CommandHandlerLocator implements LocatorInterface
 
     private readonly array $mapping;
 
-    public function __construct(Traversable $mapping)
+    public function __construct(iterable $mapping)
     {
         $this->mapping = iterator_to_array($mapping);
     }

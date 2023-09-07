@@ -10,5 +10,5 @@ content:
         -  password_confirmation
       allOf:
         -  $ref: ../../../fields/firstNameAndLastName.yml
-        -  $ref: ../../../fields/clientEmail.yml
+        -  $ref: ../../../fields/email.yml
         -  $ref: ../../../fields/passwordConfirmation.yml

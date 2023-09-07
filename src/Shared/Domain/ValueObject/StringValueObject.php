@@ -10,16 +10,26 @@ namespace Project\Shared\Domain\ValueObject;
 abstract class StringValueObject // implements \Stringable
 {
     // #[ORM\Column(type: Types::STRING)]
-    public string $value;
+    public ?string $value;
 
-    public function __construct(string $value)
+    public function __construct(?string $value)
     {
         $this->value = $value;
     }
 
-    public static function fromValue(string $value): static
+    public static function fromValue(?string $value): static
     {
         return new static($value);
+    }
+
+    public function isEquals(self $other): bool
+    {
+        return $this->value === $other->value;
+    }
+
+    public function isNotEquals(self $other): bool
+    {
+        return $this->value !== $other->value;
     }
 
     // public function setValue(string $value): void

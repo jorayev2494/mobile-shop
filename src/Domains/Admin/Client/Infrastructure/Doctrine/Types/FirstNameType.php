@@ -22,7 +22,7 @@ class FirstNameType extends Type
      * @param AbstractPlatform $platform
      * @return string
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         return $value->value;
     }

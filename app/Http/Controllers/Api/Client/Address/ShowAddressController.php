@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Project\Domains\Client\Address\Application\Queries\Find\FindAddressQuery;
+use Project\Domains\Client\Address\Application\Queries\Show\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class ShowAddressController
@@ -22,7 +22,7 @@ class ShowAddressController
     public function __invoke(string $uuid): JsonResponse
     {
         $result = $this->queryBus->ask(
-            new FindAddressQuery($uuid)
+            new Query($uuid)
         );
 
         return $this->response->json($result);

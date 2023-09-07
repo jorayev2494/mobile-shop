@@ -21,8 +21,6 @@ class CountryRepository extends BaseAdminEntityRepository implements CountryRepo
     public function paginate(BaseQuery $dataDTO, iterable $columns = ['*']): Paginator
     {
         $query = $this->entityRepository->createQueryBuilder('c')
-                                        // ->setFirstResult(0)
-                                        // ->setMaxResults($dataDTO->per_page)
                                         ->getQuery();
 
         return $this->paginator($query, $dataDTO);

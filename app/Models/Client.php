@@ -59,6 +59,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Client extends AuthModel
 {
+    protected $connection = 'client_pgsql';
+
+    protected $table = 'auth_members';
+
     protected $fillable = [
         'first_name',
         'last_name',

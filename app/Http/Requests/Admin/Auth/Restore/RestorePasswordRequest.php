@@ -15,8 +15,8 @@ class RestorePasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|string|exists:codes,token',
-            'password' => 'required|string|min:6|confirmed',
+            'token' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
         ];
     }
 }

@@ -20,13 +20,12 @@ class CreateRoleRequest extends FormRequest
             'value' => [
                 'required',
                 'alpha_dash',
-                Rule::unique('roles', 'value'),
+                // Rule::unique('roles', 'value'),
             ],
             'permissions' => [
                 'array',
-                Rule::exists('permissions', 'id'),
+                // Rule::exists('permissions', 'id'),
             ],
-            'is_active' => ['boolean'],
         ];
     }
 }

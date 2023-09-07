@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Client\Auth\Restore;
 
 use App\Models\Auth\AppAuth;
+use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RestorePasswordLinkRequest extends FormRequest
@@ -15,7 +16,7 @@ class RestorePasswordLinkRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'email', 'exists:clients,email'],
+            'email' => ['required', 'email', 'exists:' . Client::class . ',email'],
         ];
     }
 }

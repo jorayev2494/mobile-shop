@@ -20,11 +20,11 @@ class UpdateRoleRequest extends FormRequest
             'value' => [
                 'required',
                 'alpha_dash',
-                Rule::unique('roles', 'value')->ignore($this->route()->parameter('id'), 'id'),
+                // Rule::unique('roles', 'value')->ignore($this->route()->parameter('id'), 'id'),
             ],
             'permissions' => [
                 'array',
-                Rule::exists('permissions', 'id'),
+                // Rule::exists('permissions', 'id'),
             ],
             'is_active' => ['boolean'],
         ];

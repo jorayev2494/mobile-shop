@@ -67,6 +67,7 @@ final class RabbitMqDomainEventsConsumer
         $this->msg = $msg;
 
         $eventData = JSON::decode($msg->getBody());
+
         $eventName = $eventData['id'];
         
         $eventClass = $this->getHeader(RabbitMQEventBus::EVENT_CLASS_KEY);

@@ -30,6 +30,8 @@ class DoctrineServiceProvider extends ServiceProvider
         'driver' => 'pdo_pgsql',
     ];
 
+    // protected $defer = true;
+
     public function register(): void
     {
         $this->connectAdminEntityManager();

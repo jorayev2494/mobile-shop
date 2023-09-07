@@ -58,7 +58,7 @@ class AuthService implements ContractsAuthService
         return $this->authToken(
             $token,
             $authModel = AppAuth::model(),
-            $authModel->addDevice($credentialsData->device_id),
+            // $authModel->addDevice($credentialsData->device_id),
             $guard
         );
     }
@@ -86,11 +86,16 @@ class AuthService implements ContractsAuthService
         AppAuth::logout();
     }
 
-    private function authToken(string $token, AuthModel $authModel, Device $device, AppGuardType $guard = AppGuardType::ADMIN): array
+    private function authToken(
+        string $token,
+        AuthModel $authModel,
+        // Device $device,
+        AppGuardType $guard = AppGuardType::ADMIN
+    ): array
     {
         return [
             'access_token' => $token,
-            'refresh_token' => $device->refresh_token,
+            // 'refresh_token' => $device->refresh_token,
             'token_type' => 'bearer',
             'expires_in' => auth()->factory()->getTTL() * 60,
             'auth_data' => $this->getAuthData($authModel, $guard),
@@ -99,11 +104,12 @@ class AuthService implements ContractsAuthService
 
     private function getAuthData(AuthModel $authModel, AppGuardType $guard = AppGuardType::ADMIN): AuthModel
     {
-        $authModel = match ($guard) {
-            AppGuardType::ADMIN => $authModel?->fresh(['role:id,value', 'avatar']),
-            AppGuardType::CLIENT => $authModel?->fresh(['avatar']),
-        };
+        // $authModel = match ($guard) {
+        //     AppGuardType::ADMIN => $authModel?->fresh(['role:id,value', 'avatar'])->append('full_name'),
+        //     // AppGuardType::CLIENT => $authModel?->fresh(['avatar']),
+        //     default => $authModel,
+        // };
 
-        return $authModel->append('full_name');
+        return $authModel;
     }
 }

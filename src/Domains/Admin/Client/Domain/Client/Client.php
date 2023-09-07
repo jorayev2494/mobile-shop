@@ -27,7 +27,7 @@ use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\UuidType;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'clients')]
+#[ORM\Table(name: 'client_clients')]
 #[HasLifecycleCallbacks]
 class Client extends AggregateRoot
 {
@@ -44,7 +44,7 @@ class Client extends AggregateRoot
   #[ORM\Column(type: EmailType::TYPE, unique: true, nullable: false)]
   private ClientEmail $email;
 
-  #[ORM\Column(type: PhoneType::TYPE, unique: true, nullable: true)]
+  #[ORM\Column(type: PhoneType::TYPE, nullable: true)]
   private ClientPhone $phone;
 
   #[ORM\Column(name: 'country_uuid', type: CountryUuidType::TYPE, nullable: true)]

@@ -21,7 +21,7 @@ use Project\Domains\Admin\Country\Infrastructure\Doctrine\Types\Country\ValueTyp
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'countries')]
+#[ORM\Table(name: 'country_countries')]
 #[HasLifecycleCallbacks]
 class Country extends AggregateRoot
 {

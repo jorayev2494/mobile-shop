@@ -201,17 +201,18 @@ return [
         Project\Utils\UtilsServiceProvider::class,
 
         // Admin ServiceProviders
+        Project\Domains\Admin\Authentication\Infrastructure\AuthenticationServiceProvider::class,
         Project\Domains\Admin\Manager\Infrastructure\ManagerServiceProvider::class,
-        Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
+        // Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
         Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,
-        Project\Domains\Admin\Permission\Infrastructure\PermissionServiceProvider::class,
         Project\Domains\Admin\Currency\Infrastructure\CurrencyServiceProvider::class,
         Project\Domains\Admin\Client\Infrastructure\ClientServerProvider::class,
 
         // Client ServiceProviders
+        // Project\Domains\Client\Authentication\Infrastructure\AuthenticationServiceProvider::class,
         Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Client\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Client\Favorite\Infrastructure\FavoriteServiceProvider::class,
@@ -219,6 +220,7 @@ return [
         Project\Domains\Client\Card\Infrastructure\CardServiceProvider::class,
         Project\Domains\Client\Cart\Infrastructure\CartServiceProvider::class,
         Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
+        Project\Domains\Client\Profile\Infrastructure\ProfileServiceProvider::class,
 
         App\Providers\DoctrineServiceProvider::class,
     ],
