@@ -1,9 +1,0 @@
-post:
-  summary: 'Send restore password link'
-  tags: 
-    -  Restore password
-  requestBody:
-    $ref: ../../../../components/requestBodies/admin/auth/restore-password/link.yml
-  responses:
-    202:
-      $ref: ../../../../components/responses/2xx/NoContent.yml

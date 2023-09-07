@@ -5,7 +5,7 @@ post:
   parameters:
     -  $ref: ../../../components/parameters/deviceId.yml
   requestBody:
-    $ref: ../../../components/requestBodies/admin/auth/Login.yml
+    $ref: ../../../components/requestBodies/client/auth/Login.yml
   responses:
     200:
-      $ref: ../../../components/responses/auth/LoginResponse.yml
+      $ref: ../../../components/responses/auth/client/LoginResponse.yml

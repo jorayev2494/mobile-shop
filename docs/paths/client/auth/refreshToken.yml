@@ -5,7 +5,7 @@ post:
   parameters: 
     - $ref: ../../../components/parameters/deviceId.yml
   requestBody: 
-    $ref: ../../../components/requestBodies/admin/auth/refreshToken.yml
+    $ref: ../../../components/requestBodies/client/auth/refreshToken.yml
   responses: 
     202:
-      $ref: ../../../components/responses/admin/auth/RefreshToken.yml
+      $ref: ../../../components/responses/client/auth/RefreshToken.yml

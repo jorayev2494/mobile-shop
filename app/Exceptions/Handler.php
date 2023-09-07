@@ -108,6 +108,8 @@ class Handler extends ExceptionHandler
                 Response::HTTP_UNAUTHORIZED);
         }
 
+        // dd($ex);
+
         return response()->json([
             // 'message' => 'Unauthenticated',
             'error' => $ex->getMessage(),

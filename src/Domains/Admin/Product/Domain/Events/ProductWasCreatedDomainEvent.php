@@ -23,7 +23,7 @@ class ProductWasCreatedDomainEvent extends DomainEvent
         array $data,
         string $eventId,
         string $occurredOn
-    ): DomainEvent {
+    ): self {
         return new self($aggregateId, $data, $eventId, $occurredOn);
     }
 

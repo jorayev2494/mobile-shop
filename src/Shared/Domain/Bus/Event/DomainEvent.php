@@ -20,7 +20,7 @@ abstract class DomainEvent implements Event
     }
 
     abstract public static function fromPrimitives(
-        string $aggregateId,
+        string $id,
         array $body,
         string $eventId,
         string $occurredOn,

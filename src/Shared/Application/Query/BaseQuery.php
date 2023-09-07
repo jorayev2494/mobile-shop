@@ -12,12 +12,12 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
 
     private function __construct(
         public readonly ?string $search,
-        public readonly ?string $search_by,
+        public readonly ?string $searchBy,
         public readonly ?int $page,
-        public readonly ?int $per_page,
+        public readonly ?int $perPage,
         public readonly ?string $cursor,
-        public readonly ?string $sort_by,
-        public readonly ?bool $is_sort_desc,
+        public readonly ?string $sortBy,
+        public readonly ?bool $isSortDesc,
         public readonly ?array $filters,
     )
     {
@@ -26,23 +26,23 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
 
     public static function make(
         ?string $search = null,
-        ?string $search_by = null,
+        ?string $searchBy = null,
         ?int $page = null,
-        ?int $per_page = null,
+        ?int $perPage = null,
         ?string $cursor = null,
-        ?string $sort_by = null,
-        ?bool $is_sort_desc = null,
+        ?string $sortBy = null,
+        ?bool $isSortDesc = null,
         ?array $filters = null,
     ): static
     {
         return new static(
             search: $search,
-            search_by: $search_by,
+            searchBy: $searchBy,
             page: $page,
-            per_page: $per_page,
+            perPage: $perPage,
             cursor: $cursor,
-            sort_by: $sort_by,
-            is_sort_desc: $is_sort_desc,
+            sortBy: $sortBy,
+            isSortDesc: $isSortDesc,
             filters: $filters,
         );
     }
@@ -51,12 +51,12 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
     {
         return new static(
             search: $request->query->get('search'),
-            search_by: $request->query->get('search_by'),
+            searchBy: $request->query->get('search_by'),
             page: $request->query->getInt('page', 1),
-            per_page: $request->query->getInt('per_page', 10),
+            perPage: $request->query->getInt('per_page', 10),
             cursor: $request->query->get('cursor'),
-            sort_by: $request->query->get('sort_by', 'created_at'),
-            is_sort_desc: $request->query->getBoolean('is_sort_desc'),
+            sortBy: $request->query->get('sort_by', 'created_at'),
+            isSortDesc: $request->query->getBoolean('is_sort_desc'),
             filters: self::makeFilters($request->get('filters', [])),
         );
     }

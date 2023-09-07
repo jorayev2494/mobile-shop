@@ -4,66 +4,99 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Role\Domain;
 
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Admin\Role\Domain\ValueObjects\RoleId;
 use Project\Domains\Admin\Role\Domain\ValueObjects\RoleValue;
+use Project\Domains\Admin\Role\Infrastructure\Doctrine\Types\ValueType;
+use Project\Domains\Admin\Role\Domain\Permission\Permission;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
+#[ORM\Entity]
+#[ORM\Table('role_roles')]
 class Role extends AggregateRoot
 {
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: Types::INTEGER)]
+    private int $id;
+
+    #[ORM\Column(type: ValueType::NAME, unique: true)]
+    private RoleValue $value;
+
+    #[ORM\ManyToMany(targetEntity: Permission::class, cascade: ['persist', 'remove'])]
+    #[ORM\JoinTable(name: 'role_roles_permissions')]
+    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: false)]
+    #[ORM\InverseJoinColumn(name: 'permission_id', referencedColumnName: 'id', nullable: false)]
+    private Collection $permissions;
+
+    private DateTimeInterface $createdAt;
+    private DateTimeInterface $updatedAt;
+
     private function __construct(
-        public readonly RoleId $id,
-        public readonly RoleValue $value,
-        public array $permissions = [],
-        public readonly bool $isActive = true,
-        // public readonly DateTimeInterface $createdAt,
-        // public readonly DateTimeInterface $updatedAt,
+        RoleValue $value,
+        array $permissions = [],
     )
     {   
-        
+        $this->value = $value;
+        $this->permissions = new ArrayCollection($permissions);
     }
 
-    public static function fromPrimitives(int $id, string $value, array $permissions = [], bool $isActive = true): self
+    public static function create(RoleValue $value, array $permissions = []): self
     {
-        return new self(
-            RoleId::fromValue($id),
-            RoleValue::fromValue($value),
-            $permissions,
-            $isActive,
-            // new DateTime('Y-m-d H:i:s'),
-            // new DateTime('Y-m-d H:i:s'),
-        );
-    }
-
-    public static function create(RoleId $id, RoleValue $value, array $permissions = [], bool $isActive = true): self
-    {
-        $role = new self(
-            $id,
-            $value,
-            $permissions,
-            $isActive,
-            // new DateTime('Y-m-d H:i:s'),
-            // new DateTime('Y-m-d H:i:s'),
-        );
+        $role = new self($value, $permissions);
 
         return $role;
     }
 
-    public function setPermissions(array $permissions): self
+    public static function fromPrimitives(string $value, array $permissions = []): self
     {
-        $this->permissions = $permissions;
-
-        return $this;
+        return new self(
+            RoleValue::fromValue($value),
+            $permissions,
+        );
     }
+    
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): void
+    {
+        $this->permissions->add($permission);
+    }
+
+    public function removePermission(Permission $permission): void
+    {
+        $this->permissions->removeElement($permission);
+    }
+
+	public function getValue(): RoleValue {
+		return $this->value;
+	}
+	
+	public function changeValue(RoleValue $value): void
+    {
+        if ($this->value->isNotEquals($value)) {
+            $this->value = $value;
+        }
+	}
 
     public function toArray(): array
     {
         return [
-            'id' => $this->id->value,
+            'id' => $this->id,
             'value' => $this->value->value,
-            'permissions' => $this->permissions,
-            'is_active' => $this->isActive,
-            // 'created_at' => $this->createdAt,
-            // 'updated_at' => $this->updatedAt,
+            'permissions' => array_map(
+                static fn (Permission $permission): array => $permission->toArray(),
+                $this->permissions->toArray()
+            ),
+            // 'created_at' => $this->createdAt->getTimestamp(),
+            // 'updated_at' => $this->updatedAt->getTimestamp(),
         ];
     }
 }

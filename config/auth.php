@@ -84,6 +84,11 @@ return [
             'model' => App\Models\Client::class,
         ],
 
+        // 'clients' => [
+        //     'driver' => 'eloquent',
+        //     'model' => Project\Domains\Client\Authentication\Domain\Member::class,
+        // ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Address\Application\Queries\GetAddresses;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Repositories\Base\Doctrine\Paginator;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
 final class QueryHandler implements QueryHandlerInterface
@@ -16,7 +16,7 @@ final class QueryHandler implements QueryHandlerInterface
         
     }
 
-    public function __invoke(Query $query): LengthAwarePaginator
+    public function __invoke(Query $query): Paginator
     {
         return $this->queryService->execute($query);
     }

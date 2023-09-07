@@ -15,8 +15,8 @@ final class CreateCommandHandler implements CommandHandlerInterface
         
     }
 
-    public function __invoke(CreateCommand $command): array
+    public function __invoke(CreateCommand $command): void
     {
-        return $this->service->execute($command);
+        $this->service->execute($command);
     }
 }

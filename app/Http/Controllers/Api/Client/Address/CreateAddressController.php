@@ -9,12 +9,14 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Address\Application\Commands\Create\CreateCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use Project\Shared\Domain\UuidGeneratorInterface;
 
 class CreateAddressController
 {
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
+        private readonly UuidGeneratorInterface $uuidGenerator,
     )
     {
         
@@ -22,8 +24,11 @@ class CreateAddressController
 
     public function __invoke(StoreAddressRequest $request): Response
     {
+        $uuid = $this->uuidGenerator->generate();
+
         $this->commandBus->dispatch(
             new CreateCommand(
+                $uuid,
                 $request->get('title'),
                 $request->get('full_name'),
                 $request->get('first_address'),

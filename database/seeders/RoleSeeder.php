@@ -23,12 +23,12 @@ class RoleSeeder extends Seeder
 
     public function run(): void
     {
-        Role::factory()->createMany(
-            array_map(
-                static fn (string $value): array => compact('value'),
-                $this->defaultRoles
-            )
-        );
+        // Role::factory()->createMany(
+        //     array_map(
+        //         static fn (string $value): array => compact('value'),
+        //         $this->defaultRoles
+        //     )
+        // );
 
         $this->modelPermissionsSeed(Admin::class, ['block']);
         $this->modelPermissionsSeed(User::class, ['block']);

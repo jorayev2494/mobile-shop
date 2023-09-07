@@ -8,4 +8,4 @@ post:
     - $ref: ../../../components/parameters/deviceId.yml
   responses: 
     204:
-      description: 'No content'
+      $ref: ../../../components/responses/2xx/NoContent.yml

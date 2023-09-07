@@ -22,7 +22,7 @@ class RefreshTokenRequest extends FormRequest
     {
         return [
             'x-device-id' => ['required', 'string'],
-            'refresh_token' => ['required', 'string', 'exists:devices,refresh_token'],
+            'refresh_token' => ['required', 'string'],
         ];
     }
 }

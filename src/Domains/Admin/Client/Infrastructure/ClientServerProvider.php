@@ -12,6 +12,11 @@ use Project\Domains\Admin\Client\Application\Commands\Update\CommandHandler as U
 use Project\Domains\Admin\Client\Application\Delete\CommandHandler as DeleteCommandHandler;
 use Project\Domains\Admin\Client\Application\Queries\Index\QueryHandler as IndexQueryHandler;
 use Project\Domains\Admin\Client\Application\Queries\Show\QueryHandler as ShowQueryHandler;
+use Project\Domains\Admin\Client\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber;
+use Project\Domains\Admin\Client\Application\Subscribers\ProfileEmailWasUpdatedDomainEventSubscriber;
+use Project\Domains\Admin\Client\Application\Subscribers\ProfileFirstNameWasUpdatedDomainEventSubscriber;
+use Project\Domains\Admin\Client\Application\Subscribers\ProfileLastNameWasUpdatedDomainEventSubscriber;
+use Project\Domains\Admin\Client\Application\Subscribers\ProfilePhoneWasUpdatedDomainEventSubscriber;
 use Project\Domains\Admin\Client\Domain\Client\ClientRepositoryInterface;
 use Project\Domains\Admin\Client\Infrastructure\Doctrine\ClientRepository;
 use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\CountryUuidType;
@@ -56,5 +61,13 @@ class ClientServerProvider extends ServiceProvider
         $this->app->tag(CreateCommandHandler::class, 'command_handler');
         $this->app->tag(UpdateCommandHandler::class, 'command_handler');
         $this->app->tag(DeleteCommandHandler::class, 'command_handler');
+
+        $this->app->tag(MemberWasRegisteredDomainEventSubscriber::class, 'domain_event_subscriber');
+        
+        $this->app->tag(ProfileFirstNameWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
+        $this->app->tag(ProfileLastNameWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
+        $this->app->tag(ProfileEmailWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
+        $this->app->tag(ProfilePhoneWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
+
     }
 }

@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 use App\Http\Requests\Client\Address\UpdateAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Address\Application\Commands\Update\UpdateCommand;
+use Project\Domains\Client\Address\Application\Commands\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateAddressController
@@ -23,7 +23,7 @@ class UpdateAddressController
     public function __invoke(UpdateAddressRequest $request, string $uuid): Response
     {
         $this->commandBus->dispatch(
-            new UpdateCommand(
+            new Command(
                 $uuid,
                 $request->get('title'),
                 $request->get('full_name'),

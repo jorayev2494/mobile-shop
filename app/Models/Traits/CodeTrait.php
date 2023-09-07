@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace App\Models\Traits;
 
+use App\Models\Admin;
+use App\Models\AdminCode;
+use App\Models\ClientCode;
 use App\Models\Code;
 use App\Models\Enums\AppGuardType;
 use App\Models\Enums\CodeType;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait CodeTrait
 {
-    public function codes(): MorphMany
+    public function codes(): HasMany
     {
-        return $this->morphMany(Code::class, 'code_able', 'code_able_type', 'code_able_uuid');
+        return $this->hasMany(
+            $this instanceof Admin ? AdminCode::class : ClientCode::class,
+            'member_uuid',
+            'uuid'
+        );
     }
 
     public function generateToken(CodeType $type, AppGuardType $guard = null): Code

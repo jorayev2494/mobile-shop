@@ -1,0 +1,6 @@
+type: object
+properties:
+  first_address:
+    type: string
+    example: 'First Address'
+    nullable: true

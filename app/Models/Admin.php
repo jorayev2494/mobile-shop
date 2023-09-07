@@ -51,6 +51,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Admin extends AuthModel
 {
+    protected $connection = 'admin_pgsql';
+
+    protected $table = 'auth_members';
+
     protected $fillable = [
         'uuid',
         'first_name',
@@ -75,8 +79,7 @@ class Admin extends AuthModel
     public function getJWTCustomClaims(): array
     {
         return [
-            'model' => self::class,
-            'role' => RoleResource::make($this->role()->with('permissions')->first()),
+            // 'role' => RoleResource::make($this->role()->with('permissions')->first()),
         ];
     }
 

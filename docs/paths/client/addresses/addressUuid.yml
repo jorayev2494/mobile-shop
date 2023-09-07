@@ -1,0 +1,37 @@
+get: 
+  summary: Show Address
+  tags: 
+    -  Addresses
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/path/uuid.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/client/addresses/show.yml
+
+put:
+  summary: Update Address
+  tags: 
+    -  Addresses
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/path/uuid.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/client/addresses/update.yml
+  responses:
+    202:
+      $ref: ../../../components/responses/2xx/Accepted.yml
+
+delete:
+  summary: Delete Address
+  tags: 
+    -  Addresses
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/path/uuid.yml
+  responses: 
+    204:
+      $ref: ../../../components/responses/2xx/NoContent.yml

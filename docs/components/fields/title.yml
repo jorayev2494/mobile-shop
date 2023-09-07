@@ -2,4 +2,4 @@ type: object
 properties:
   title:
     type: string
-    example: "This is title .."
+    example: "It is title"

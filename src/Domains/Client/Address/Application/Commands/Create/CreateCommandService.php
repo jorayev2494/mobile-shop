@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Address\Application\Commands\Create;
 
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressCityUUID;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressClientUUID;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressCountryUUID;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressCityUuid;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressAuthorUuid;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressCountryUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressDistrict;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressFirstAddress;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressFullName;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressSecondAddress;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressTitle;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressUUID;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressZipCode;
 use Project\Domains\Client\Address\Domain\AddressRepositoryInterface;
 use Project\Domains\Client\Address\Domain\Address;
@@ -28,26 +28,21 @@ final class CreateCommandService
         
     }
 
-    public function execute(CreateCommand $command): array
+    public function execute(CreateCommand $command): void
     {
-        $addressUUID = AddressUUID::generate();
-        $clientUUID = AddressClientUUID::fromValue($this->authManager->client()->uuid);
-
         $address = Address::create(
-            $addressUUID,
+            AddressUuid::fromValue($command->uuid),
             AddressTitle::fromValue($command->title),
             AddressFullName::fromValue($command->fullName),
-            $clientUUID,
+            AddressAuthorUuid::fromValue($this->authManager->client()->uuid),
             AddressFirstAddress::fromValue($command->firstAddress),
             AddressSecondAddress::fromValue($command->secondAddress),
             AddressZipCode::fromValue($command->zipCode),
-            AddressCountryUUID::fromValue($command->countryUuid),
-            AddressCityUUID::fromValue($command->cityUuid),
+            AddressCountryUuid::fromValue($command->countryUuid),
+            AddressCityUuid::fromValue($command->cityUuid),
             AddressDistrict::fromValue($command->district),
         );
 
         $this->repository->save($address);
-
-        return ['uuid' => $addressUUID->value];
     }
 }

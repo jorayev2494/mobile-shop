@@ -26,6 +26,7 @@ use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerQueryBus;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerCommandBus;
+use Project\Shared\Infrastructure\Bus\Messenger\MessengerEventBus;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\CommandHandlerLocator;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\RabbitMQCommandBus;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Event\RabbitMQEventBus;

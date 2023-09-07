@@ -22,7 +22,7 @@ server-install:					## Install project
 	@make -s server-init
 
 server-pull:						## Pull project
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} pull
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} pull --no-parallel
 
 server-build:						## Build project
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} build
@@ -71,9 +71,6 @@ server-container-logs-f:							## Show project process
 	printf "%s\n" "Target bar executing..."
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH}  logs -f $(container)
 
-server-supervisor-restart:
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} restart supervisor
-
 server-key-generate:			## Generate App encription keys
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan key:generate && ./artisan key:generate --env=testing
 
@@ -82,8 +79,17 @@ server-test:					## Run test
 	DB_PORT=54322
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan test
 
-server-migrate:				## Run migrate
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan migrate
+server-admin-migrations-diff:				## Run Admin migrations diff
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php ./vendor/bin/doctrine-migrations diff
+
+server-admin-migrations:				## Run Admin migrations
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php ./vendor/bin/doctrine-migrations migrate
+
+server-client-migrations-diff:				## Run Client migrations diff
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php './vendor/bin/doctrine-migrations diff'
+
+server-client-migrations:				## Run Client migrations
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ENTITY=client && php ./vendor/bin/doctrine-migrations migrate
 
 server-migrate-status:			## Run migrate status
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan migrate:status
@@ -125,6 +131,22 @@ server-pint-check:				## Run Pint Test
 
 server-pint-fix:				## Run Pint Fix
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./vendor/bin/pint -v
+
+server-create-rabbitmq-exchanges:		## Create RrabbitMQ Exchanges
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:command-handler-exchanges
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:domain-event-handler-exchanges
+
+server-generate-supervisor-rabbitmq:	## Generate Supervisor RabbitMQ
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:commands-consumer
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:domain-events-consumer
+
+server-supervisor-restart:
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up --build -d supervisor
+
+server-refresh-rabbitmq-and-restart-supervisor:
+	@make server-create-rabbitmq-exchanges
+	@make server-generate-supervisor-rabbitmq
+	@make server-supervisor-restart
 
 server-composer-du-o:			## Compouser dump autolad
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli composer du -o

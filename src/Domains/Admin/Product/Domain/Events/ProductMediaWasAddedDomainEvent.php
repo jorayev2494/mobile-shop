@@ -9,8 +9,9 @@ class ProductMediaWasAddedDomainEvent extends DomainEvent
     public function __construct(
         string $aggregateId,
         public readonly array $data,
-        $eventId = null,
-        $occurredOn = null)
+        string $eventId = null,
+        string $occurredOn = null
+    )
     {
         parent::__construct($aggregateId, $eventId, $occurredOn);
     }

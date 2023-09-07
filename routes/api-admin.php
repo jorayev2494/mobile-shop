@@ -3,9 +3,12 @@
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Admin\Profile\ProfileController;
-use App\Http\Controllers\Api\Admin\Auth\AuthController;
-use App\Http\Controllers\Api\Admin\Auth\Restore\RestorePasswordController;
-use App\Http\Controllers\Api\Admin\Permission\IndexPermissionController;
+use App\Http\Controllers\Api\Admin\Authentication\LoginController;
+use App\Http\Controllers\Api\Admin\Authentication\LogoutController;
+use App\Http\Controllers\Api\Admin\Authentication\RefreshTokenController;
+use App\Http\Controllers\Api\Admin\Authentication\RegisterController;
+use App\Http\Controllers\Api\Admin\Authentication\Restore\RestorePasswordLinkController;
+use App\Http\Controllers\Api\Admin\Authentication\Restore\RestorePasswordController;
 use App\Http\Controllers\Api\Admin\Order\{GetOrderController, ShowOrderController, UpdateOrderController,};
 use App\Http\Controllers\Api\Admin\Category\{CreateCategoryController, DeleteCategoryController, GetCategoryController, ShowCategoryController, UpdateCategoryController,};
 use App\Http\Controllers\Api\Admin\Client\CreateClientController;
@@ -17,17 +20,17 @@ use App\Http\Controllers\Api\Admin\Country\{CreateCountryController, DeleteCount
 use App\Http\Controllers\Api\Admin\Currency\IndexCurrencyController;
 use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
-use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexRoleController, ShowRoleController, UpdateRoleController,};
+use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexPermissionController, IndexRoleController, ShowRoleController, UpdateRoleController,};
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
-    $router->post('/register', [AuthController::class, 'register'])->name('register');
-    $router->post('/login', [AuthController::class, 'login'])->name('login');
-    $router->post('/refresh-token', [AuthController::class, 'refreshToken'])->name('refresh-token');
-    $router->post('/logout', [AuthController::class, 'logout'])->name('logout');
+    $router->post('/register', RegisterController::class)->name('register');
+    $router->post('/login', LoginController::class)->name('login');
+    $router->post('/refresh-token', RefreshTokenController::class)->name('refresh-token');
+    $router->post('/logout', LogoutController::class)->name('logout');
 
     $router->group(['prefix' => 'restore-password', 'as' => 'restore_password.'], static function (Router $router): void {
-        $router->post('/link', [RestorePasswordController::class, 'link'])->name('link');
-        $router->put('/restore', [RestorePasswordController::class, 'restore'])->name('restore');
+        $router->post('/link', RestorePasswordLinkController::class)->name('link');
+        $router->put('/restore', RestorePasswordController::class)->name('restore');
     });
 });
 
@@ -60,11 +63,12 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->get('/{id}', ShowRoleController::class);
         $router->put('/{id}', UpdateRoleController::class);
         $router->delete('/{id}', DeleteRoleController::class);
+
+        $router->group(['prefix' => 'permissions', 'as' => 'permissions.'], static function (Router $router): void {
+            $router->get('/', IndexPermissionController::class);
+        });
     });
 
-    $router->group(['prefix' => 'permissions', 'as' => 'permissions.'], static function (Router $router): void {
-        $router->get('/', IndexPermissionController::class);
-    });
 
     $router->group(['prefix' => 'categories', 'as' => 'categories.'], static function (Router $router): void {
         $router->get('/', GetCategoryController::class);

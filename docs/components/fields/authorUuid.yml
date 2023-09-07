@@ -1,0 +1,6 @@
+type: object
+properties:
+  author_uuid:
+    type: string
+    example: '99519931-291f-465e-b0ac-37b1c6d598fd'
+    format: uuid

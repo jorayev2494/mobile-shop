@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Database\Seeders\Traits;
 
 use App\Models\Role;
+use Project\Domains\Admin\Role\Application\Commands\CreatePermission\Command;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 trait PermissionSeederTrait
 {
@@ -31,22 +33,27 @@ trait PermissionSeederTrait
 
     public function modelPermissionsSeed(string $model, array $actions = []): void
     {
-        $model = class_basename(strtolower($model));
+        $subject = class_basename(strtolower($model));
 
         $actions = array_map(static fn (string $action): array => compact('action'), $actions);
-        $modelPermissionActions = array_merge($this->defaultModelPermissionActions, $actions);
+        $subjectPermissionActions = array_merge($this->defaultModelPermissionActions, $actions);
 
         /** @var Role $adminRole */
-        $adminRole = Role::first();
-        $adminRole->permissions()->createMany(
-            array_map(
-                static fn (array $permission): array => [
-                    'value' => "{$model}_{$permission['action']}",
-                    'model' => $model,
-                    'action' => $permission['action'],
-                ],
-                $modelPermissionActions
-            )
-        );
+        // $adminRole = Role::first();
+        // $adminRole->permissions()->createMany(
+        //     array_map(
+        //         static fn (array $permission): array => [
+        //             'value' => "{$subject}_{$permission['action']}",
+        //             'subject' => $subject,
+        //             'action' => $permission['action'],
+        //         ],
+        //         $subjectPermissionActions
+        //     )
+        // );
+        
+        $commandBus = app()->make(CommandBusInterface::class);
+        foreach ($subjectPermissionActions as ['action' => $action]) {
+            $commandBus->dispatch(new Command($subject, $action));
+        }
     }
 }

@@ -6,8 +6,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-
-use Project\Domains\Client\Address\Application\Commands\Delete\DeleteCommand;
+use Project\Domains\Client\Address\Application\Commands\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class DeleteAddressController
@@ -23,7 +22,7 @@ class DeleteAddressController
     public function __invoke(string $uuid): Response
     {
         $this->commandBus->dispatch(
-            new DeleteCommand($uuid)
+            new Command($uuid)
         );
 
         return $this->response->noContent();

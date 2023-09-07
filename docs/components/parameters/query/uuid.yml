@@ -1,5 +1,5 @@
 name: uuid
-in: path
+in: query
 required: true
 schema:
   type: string
