@@ -6,5 +6,5 @@ namespace App\Repositories\Contracts;
 
 interface BaseEntityRepositoryInterface
 {
-    public function getEntity(): string;
+    
 }

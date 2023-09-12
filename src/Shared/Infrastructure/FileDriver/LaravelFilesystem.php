@@ -14,37 +14,42 @@ final class LaravelFilesystem implements FilesystemInterface
 {
     private int $lengthRandomName = 32;
 
-    public function uploadFile(string $path, UploadedFile $uploadedFile): File
+    public function uploadFile(string $fileClassName, UploadedFile $uploadedFile): File
     {
+        $path = $fileClassName::PATH;
         try {
             $bucketPath = '/' . env('AWS_BUCKET');
-            list($fileData['width'], $fileData['height']) = @getimagesize($uploadedFile->getPathname());
-            $fileData['path'] = $bucketPath . $path;
-            $fileData['mime_type'] = $uploadedFile->getClientMimeType();
-            $fileData['type'] = $uploadedFile->getClientOriginalExtension();
-            $fileData['extension'] = $uploadedFile->getClientOriginalExtension();
-            $fileData['size'] = $uploadedFile->getSize();
-            $fileData['file_original_name'] = $uploadedFile->getClientOriginalName();
-            $fileData['name'] = Str::random($this->lengthRandomName) . '.' . $fileData['type'];
-            $fileData['full_path'] = $bucketPath . '/' . $uploadedFile->storeAs($path, $fileData['name']);
-            $fileData['disk'] = env('FILESYSTEM_DISK');
-            $fileData['url'] = Storage::url($fileData['full_path']);
+            list($width, $height) = @getimagesize($uploadedFile->getPathname());
+            $path = $bucketPath . $path;
+            $mimeType = $uploadedFile->getClientMimeType();
+            $extension = $uploadedFile->getClientOriginalExtension();
+            $size = $uploadedFile->getSize();
+            $fileOriginalName = $uploadedFile->getClientOriginalName();
+            $fileName = Str::random($this->lengthRandomName) . '.' . $extension;
+            $fullPath = $uploadedFile->storeAs($path, $fileName);
+            $url = Storage::url($fullPath);
 
-            $file = File::make($fileData);
-            $file->url_pattern = UrlPattern::make($file);
-
-            // dd($file);
-
-            return $file;
+            return $fileClassName::make(
+                $mimeType,
+                $width,
+                $height,
+                $extension,
+                $size,
+                $path,
+                $fullPath,
+                $fileName,
+                $fileOriginalName,
+                $url,
+            );
         } catch (\Throwable $th) {
-            // dd($th->getMessage(), $th->getLine(), $th->getFile(), $fileData);
+            // dd($th->getMessage(), $th->getLine(), $th->getFile());
             // info('File upload message exception', [
             //     'message' => $th->getMessage(),
             //     'file' => $th->getFile(),
             //     'line' => $th->getLine(),
             //     'trace' => $th->getTrace(),
             // ]);
-            throw new BadRequestException('File load exception!');
+            throw new BadRequestException($th->getMessage());
         }
     }
 
@@ -55,12 +60,10 @@ final class LaravelFilesystem implements FilesystemInterface
         return $this->uploadFile($path, $uploadedFile);
     }
 
-    public function deleteFile(string $path, ?string $deleteFileName): bool
+    public function deleteFile(File $file): bool
     {
-        if (!empty($deleteFileName) && Storage::exists($path)) {
-            $deleteFileName = str_replace($path . '/', '', $deleteFileName);
-
-            return Storage::delete($path . '/' . $deleteFileName);
+        if (Storage::exists($file->getFullPath())) {
+            return Storage::delete($file->getFullPath());
         }
 
         return true;

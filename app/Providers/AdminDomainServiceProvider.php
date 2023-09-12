@@ -1,28 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
-
-class AdminDomainServiceProvider extends ServiceProvider
+class AdminDomainServiceProvider extends DomainServiceProvider
 {
-    /**
-     * Register services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
-        //
+        parent::register();
     }
 
-    /**
-     * Bootstrap services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        //
+        parent::boot();
+    }
+
+    protected function registerMigrationPaths(): void
+    {
+        $this->app->addAdminMigrationPaths(static::MIGRATION_PATHS);
+    }
+
+    protected function registerEntityPaths(): void
+    {
+        $this->app->addAdminEntityPaths(static::ENTITY_PATHS);
     }
 }

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Category\Application\Commands\Update;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Project\Domains\Admin\Category\Domain\Category;
-use Project\Domains\Admin\Category\Domain\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryValue;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 final class UpdateCategoryCommandHandler implements CommandHandlerInterface
@@ -20,17 +21,14 @@ final class UpdateCategoryCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UpdateCategoryCommand $command): void
     {
-        $model = $this->repository->findOrNull($command->uuid);
+        $category = $this->repository->findByUuid(CategoryUuid::fromValue($command->uuid));
 
-        if ($model === null) {
+        if ($category === null) {
             throw new ModelNotFoundException();
         }
 
-        $category = Category::fromPrimitives(
-            $command->uuid,
-            $command->value,
-            $command->isActive
-        );
+        $category->changeValue(CategoryValue::fromValue($command->value));
+        $category->changeIsActive($command->isActive);
 
         $this->repository->save($category);
     }

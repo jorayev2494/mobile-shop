@@ -7,8 +7,6 @@ use App\Repositories\Base\Doctrine\Contracts\ClientEntityManagerInterface;
 use App\Repositories\Base\Doctrine\ProjectVersionComparator;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\Migrations\Version\Comparator;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMSetup;
 use Illuminate\Support\ServiceProvider;
 
@@ -29,8 +27,6 @@ class DoctrineServiceProvider extends ServiceProvider
         'host' => 'postgres',
         'driver' => 'pdo_pgsql',
     ];
-
-    // protected $defer = true;
 
     public function register(): void
     {

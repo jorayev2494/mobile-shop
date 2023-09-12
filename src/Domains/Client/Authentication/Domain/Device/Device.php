@@ -9,12 +9,11 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Project\Domains\Client\Authentication\Domain\Member;
 use Project\Shared\Domain\Authenticator\DeviceInterface;
 
 #[ORM\Entity]
-#[HasLifecycleCallbacks]
+#[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'auth_device')]
 final class Device implements DeviceInterface
 {
@@ -43,7 +42,8 @@ final class Device implements DeviceInterface
     #[ORM\Column(name: 'author_uuid', type: Types::STRING)]
     private string $authorUuid;
 
-    #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'devices', orphanRemoval: true)]
+    #[ORM\ManyToOne(targetEntity: Member::class, inversedBy: 'devices', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'author_uuid', referencedColumnName: 'uuid', nullable: false)]
     private Member $author;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]

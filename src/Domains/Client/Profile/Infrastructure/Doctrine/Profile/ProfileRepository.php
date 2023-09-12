@@ -10,7 +10,7 @@ use Project\Domains\Client\Profile\Domain\Profile\ProfileRepositoryInterface;
 
 class ProfileRepository extends BaseClientEntityRepository implements ProfileRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Profile::class;
     }

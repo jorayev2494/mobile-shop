@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Admin\Product;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Project\Domains\Admin\Product\Application\Queries\Find\FindProductQuery;
+use Project\Domains\Admin\Product\Application\Queries\Find\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 final class ShowProductController
@@ -22,7 +22,7 @@ final class ShowProductController
     public function __invoke(string $uuid): JsonResponse
     {
         $result = $this->queryBus->ask(
-            new FindProductQuery($uuid)
+            new Query($uuid)
         );
 
         return $this->response->json($result);

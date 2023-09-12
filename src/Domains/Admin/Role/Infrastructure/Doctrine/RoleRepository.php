@@ -13,7 +13,7 @@ use Project\Shared\Application\Query\BaseQuery;
 
 final class RoleRepository extends BaseAdminEntityRepository implements RoleRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Role::class;
     }

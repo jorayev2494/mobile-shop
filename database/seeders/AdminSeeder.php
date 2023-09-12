@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Project\Domains\Admin\Authentication\Application\Commands\Register\Command;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class AdminSeeder extends Seeder
 {
@@ -13,15 +13,25 @@ class AdminSeeder extends Seeder
         'admin2@gmail.com',
     ];
 
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+    )
+    {
+        
+    }
+
     public function run(): void
     {
-        $role = Role::query()->first();
-
-        Admin::factory()->createMany(
-            array_map(
-                static fn (string $email): array => compact('email') + ['role_id' => $role->id],
-                $this->adminEmails,
-            )
-        );
+        foreach ($this->adminEmails as $key => $email) {
+            $this->commandBus->dispatch(
+                new Command(
+                    "Admin{$key}",
+                    "Adminov{$key}",
+                    $email,
+                    '12345Secret_',
+                    true,
+                )
+            );
+        }
     }
 }

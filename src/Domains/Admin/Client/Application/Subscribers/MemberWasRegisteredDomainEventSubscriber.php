@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Client\Application\Subscribers;
 
 use Project\Domains\Admin\Client\Application\Commands\Create\Command;
-use Project\Domains\Admin\Client\Domain\Client\Client;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\ClientRepository;
 use Project\Domains\Client\Authentication\Domain\Events\MemberWasRegisteredDomainEvent;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
@@ -14,7 +12,6 @@ use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 class MemberWasRegisteredDomainEventSubscriber implements DomainEventSubscriberInterface
 {
     public function __construct(
-        private readonly ClientRepository $repository,
         private readonly CommandBusInterface $commandBus,
     )
     {

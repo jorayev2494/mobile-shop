@@ -81,6 +81,16 @@ class Country extends AggregateRoot
         $this->iso = $iso;
     }
 
+    public function getActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
     #[PrePersist]
     public function prePersisting(PrePersistEventArgs $event): void
     {

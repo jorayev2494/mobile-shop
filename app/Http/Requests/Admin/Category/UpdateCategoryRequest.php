@@ -12,7 +12,7 @@ class UpdateCategoryRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return !AppAuth::check(AppGuardType::ADMIN);
+        return AppAuth::check(AppGuardType::ADMIN);
     }
 
     public function rules(): array
@@ -21,7 +21,7 @@ class UpdateCategoryRequest extends FormRequest
             'value' => [
                 'required',
                 'string',
-                Rule::unique(Category::class, 'value')->ignore($this->route()->parameter('uuid'), 'uuid'),
+                Rule::unique('admin_pgsql.category_categories', 'value')->ignore($this->route()->parameter('uuid'), 'uuid'),
             ],
             'is_active' => ['boolean'],
         ];

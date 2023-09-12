@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Manager\Application\Queries\Index;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Project\Domains\Admin\Manager\Domain\ManagerRepositoryInterface;
+use App\Repositories\Base\Doctrine\Paginator;
+use Project\Domains\Admin\Manager\Domain\Manager\ManagerRepositoryInterface;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
 final class QueryHandler implements QueryHandlerInterface
@@ -15,8 +17,8 @@ final class QueryHandler implements QueryHandlerInterface
         
     }
 
-    public function __invoke(Query $query): LengthAwarePaginator
+    public function __invoke(Query $query): Paginator
     {
-        return $this->repository->indexPaginate($query);
+        return $this->repository->paginate($query);
     }
 }

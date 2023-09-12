@@ -4,43 +4,49 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Infrastructure;
 
-use Illuminate\Support\ServiceProvider;
-use Project\Domains\Admin\Product\Application\Commands\Create\CreateProductCommandHandler;
-use Project\Domains\Admin\Product\Application\Commands\Delete\DeleteProductCommandHandler;
-use Project\Domains\Admin\Product\Application\Commands\Update\UpdateProductCommandHandler;
-use Project\Domains\Admin\Product\Application\Queries\Find\FindProductQueryHandler;
-use Project\Domains\Admin\Product\Application\Queries\Get\GetProductsQueryHandler;
-use Project\Domains\Admin\Product\Application\Subscribers\ProductMediaWasAddedDomainEventHandler;
-use Project\Domains\Admin\Product\Application\Subscribers\ProductWasCreatedDomainEventHandler;
-use Project\Domains\Admin\Product\Application\Subscribers\ProductWasDeletedDomainEventHandler;
-use Project\Domains\Admin\Product\Domain\ProductRepositoryInterface;
-use Project\Domains\Admin\Product\Infrastructure\Eloquent\ProductRepository;
+use App\Providers\AdminDomainServiceProvider;
+use Project\Domains\Admin\Product\Domain\Media\MediaRepositoryInterface;
+use Project\Domains\Admin\Product\Domain\Product\ProductRepositoryInterface;
+use Project\Domains\Admin\Product\Infrastructure\Doctrine\Media\MediaRepository;
+use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\ProductRepository;
 
-final class ProductServiceProvider extends ServiceProvider
+final class ProductServiceProvider extends AdminDomainServiceProvider
 {
-    public function register(): void
-    {
-        // $this->app->bind(
-        //     QueryBusInterface::class,
-        //     static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerQueryBus => new MessengerQueryBus($app->tagged('query_handler'))
-        // );
+    protected const SERVICES = [
+        ProductRepositoryInterface::class => [self::SERVICE_BIND,  ProductRepository::class],
+        MediaRepositoryInterface::class => [self::SERVICE_BIND,  MediaRepository::class],
+    ];
 
-        // $this->app->bind(
-        //     CommandBusInterface::class,
-        //     static fn (\Illuminate\Contracts\Foundation\Application $app): MessengerCommandBus => new MessengerCommandBus($app->tagged('command_handler'))
-        // );
+    protected const QUERY_HANDLERS = [
+        \Project\Domains\Admin\Product\Application\Queries\Find\QueryHandler::class,
+        \Project\Domains\Admin\Product\Application\Queries\Get\QueryHandler::class,
+    ];
 
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+    protected const COMMAND_HANDLERS = [
+        \Project\Domains\Admin\Product\Application\Commands\Create\CommandHandler::class,
+        \Project\Domains\Admin\Product\Application\Commands\Delete\CommandHandler::class,
+        \Project\Domains\Admin\Product\Application\Commands\Update\CommandHandler::class,
+    ];
 
-        $this->app->tag(CreateProductCommandHandler::class, 'command_handler');
-        $this->app->tag(UpdateProductCommandHandler::class, 'command_handler');
-        $this->app->tag(DeleteProductCommandHandler::class, 'command_handler');
+    protected const DOMAIN_EVENT_SUBSCRIBERS = [
+        \Project\Domains\Admin\Product\Application\Subscribers\ProductMediaWasAddedDomainEventSubscriber::class,
+        \Project\Domains\Admin\Product\Application\Subscribers\ProductWasCreatedDomainEventSubscriber::class,
+        \Project\Domains\Admin\Product\Application\Subscribers\ProductWasDeletedDomainEventSubscriber::class,
+    ];
 
-        $this->app->tag(GetProductsQueryHandler::class, 'query_handler');
-        $this->app->tag(FindProductQueryHandler::class, 'query_handler');
+    protected const ENTITY_TYPES = [
+        \Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\UuidType::class,
+        \Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\TitleType::class,
+        \Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\CategoryUuidType::class,
+        \Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\DescriptionType::class,
+    ];
 
-        $this->app->tag(ProductWasCreatedDomainEventHandler::class, 'domain_event_subscriber');
-        $this->app->tag(ProductWasDeletedDomainEventHandler::class, 'domain_event_subscriber');
-        $this->app->tag(ProductMediaWasAddedDomainEventHandler::class, 'domain_event_subscriber');
-    }
+    protected const MIGRATION_PATHS = [
+        'Project\Domains\Admin\Product\Infrastructure\Doctrine\Migrations' => __DIR__ . '/Doctrine/Migrations',
+    ];
+
+    protected const ENTITY_PATHS = [
+        __DIR__ . '/../Domain/Product',
+        __DIR__ . '/../Domain/Media',
+    ];
 }

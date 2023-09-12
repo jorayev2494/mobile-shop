@@ -42,4 +42,9 @@ abstract class AuthModel extends JWTAuth implements Device
             set: static fn (string $value): string => Hash::make($value),
         );
     }
+
+    public function updatePassword(string $password): void
+    {
+        $this->update(['password' => $password]);
+    }
 }

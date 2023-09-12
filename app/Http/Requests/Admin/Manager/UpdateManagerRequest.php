@@ -24,13 +24,13 @@ class UpdateManagerRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                Rule::unique(Admin::class, 'email')->ignore($this->route()->parameter('uuid'), 'uuid'),
+                Rule::unique('admin_pgsql.manager_managers', 'email')->ignore($this->route()->parameter('uuid'), 'uuid'),
                 'max:255',
             ],
             'role_id' => [
                 'required',
                 'integer',
-                Rule::exists(Role::class, 'id'),
+                Rule::exists('admin_pgsql.role_roles', 'id'),
                 'max:255',
             ],
         ];

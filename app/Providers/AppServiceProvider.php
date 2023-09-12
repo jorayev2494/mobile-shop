@@ -49,15 +49,15 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->bind(\App\Services\Api\Contracts\ProfileService::class, \App\Services\Api\ProfileService::class);
 
-        // Services
-        $this->app->bind(RoleServiceInterface::class, RoleService::class);
-        $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
-        $this->app->bind(ProductServiceInterface::class, ProductService::class);
+        // // Services
+        // $this->app->bind(RoleServiceInterface::class, RoleService::class);
+        // $this->app->bind(CategoryServiceInterface::class, CategoryService::class);
+        // $this->app->bind(ProductServiceInterface::class, ProductService::class);
 
-        // Repositories
-        $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
-        $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        // // Repositories
+        // $this->app->bind(RoleRepositoryInterface::class, RoleRepository::class);
+        // $this->app->bind(CategoryRepositoryInterface::class, CategoryRepository::class);
+        // $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
     }
 
     public function boot(): void

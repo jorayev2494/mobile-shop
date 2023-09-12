@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Authentication\Domain\Member;
 
-use App\Repositories\Contracts\BaseEntityRepositoryInterface;
-
-interface MemberRepositoryInterface extends BaseEntityRepositoryInterface
+interface MemberRepositoryInterface
 {
     public function findByUuid(string $uuid): ?Member;
     public function findByEmail(string $email): ?Member;

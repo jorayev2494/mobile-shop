@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Country\Domain;
 
-use App\Repositories\Contracts\BaseModelRepositoryInterface;
 use App\Repositories\Base\Doctrine\Paginator;
 use Project\Domains\Admin\Country\Domain\ValueObjects\CountryUuid;
 use Project\Shared\Application\Query\BaseQuery;
 
-interface CountryRepositoryInterface // extends BaseModelRepositoryInterface
+interface CountryRepositoryInterface
 {
     public function paginate(BaseQuery $dataDTO, iterable $columns = ['*']): Paginator;
     public function findByUuid(CountryUuid $uuid): ?Country;

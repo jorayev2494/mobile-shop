@@ -12,7 +12,7 @@ use Project\Shared\Application\Query\BaseQuery;
 
 final class PermissionRepository extends BaseAdminEntityRepository implements PermissionRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Permission::class;
     }

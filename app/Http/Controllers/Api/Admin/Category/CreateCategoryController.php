@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Category\CreateCategoryRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Admin\Category\Application\Commands\Create\CreateCategoryCommand;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;

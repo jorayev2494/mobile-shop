@@ -34,12 +34,12 @@ class AuthServiceProvider extends ServiceProvider
         // https://code.tutsplus.com/tutorials/how-to-create-a-custom-authentication-guard-in-laravel--cms-29667
         JWTGuard::macro(
             'admin',
-            fn (): ?Admin => App::make('auth')->guard(AppGuardType::ADMIN)->user()
+            fn (): ?Admin => App::make('auth')->guard(AppGuardType::ADMIN->value)->user()
         );
 
         JWTGuard::macro(
             'client',
-            fn (): ?Client => App::make('auth')->guard(AppGuardType::CLIENT)->user()
+            fn (): ?Client => App::make('auth')->guard(AppGuardType::CLIENT->value)->user()
         );
 
         //

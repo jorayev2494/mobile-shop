@@ -12,7 +12,7 @@ use Project\Domains\Client\Authentication\Domain\Device\DeviceRepositoryInterfac
 
 final class DeviceRepository extends BaseClientEntityRepository implements DeviceRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Device::class;
     }

@@ -3,11 +3,10 @@
 namespace Project\Domains\Admin\Role\Domain;
 
 use App\Repositories\Base\Doctrine\Paginator;
-use App\Repositories\Contracts\BaseEntityRepositoryInterface;
 use Project\Domains\Admin\Role\Domain\ValueObjects\RoleId;
 use Project\Shared\Application\Query\BaseQuery;
 
-interface RoleRepositoryInterface extends BaseEntityRepositoryInterface
+interface RoleRepositoryInterface
 {
     public function findById(int $id): ?Role;
 

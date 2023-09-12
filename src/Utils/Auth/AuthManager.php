@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Project\Utils\Auth;
 
 use App\Models\Admin;
-use App\Models\Auth\AuthModel;
 use App\Models\Client;
+use App\Models\Auth\AuthModel;
 use App\Models\Enums\AppGuardType;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 

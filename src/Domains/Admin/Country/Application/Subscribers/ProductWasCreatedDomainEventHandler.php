@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Country\Application\Subscribers;
 
-use Project\Domains\Admin\Product\Domain\Events\ProductWasCreatedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasCreatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Domain\LoggerInterface;
 use Symfony\Component\Mailer\MailerInterface;

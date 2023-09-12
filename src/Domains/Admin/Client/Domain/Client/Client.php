@@ -18,12 +18,12 @@ use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientFirstName;
 use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientLastName;
 use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientPhone;
 use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientUuid;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\CountryUuidType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\EmailType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\FirstNameType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\LastNameType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\PhoneType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\UuidType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\CountryUuidType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\EmailType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\FirstNameType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\LastNameType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\PhoneType;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\UuidType;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
@@ -32,22 +32,22 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 class Client extends AggregateRoot
 {
   #[ORM\Id]
-  #[ORM\Column(name: 'uuid', type: UuidType::TYPE)]
+  #[ORM\Column(name: 'uuid', type: UuidType::NAME)]
   private ClientUuid $uuid;
 
-  #[ORM\Column(name: 'first_name', type: FirstNameType::TYPE, nullable: true)]
+  #[ORM\Column(name: 'first_name', type: FirstNameType::NAME, nullable: true)]
   private ClientFirstName $firstName;
 
-  #[ORM\Column(name: 'last_name', type: LastNameType::TYPE, nullable: true)]
+  #[ORM\Column(name: 'last_name', type: LastNameType::NAME, nullable: true)]
   private ClientLastName $lastName;
 
-  #[ORM\Column(type: EmailType::TYPE, unique: true, nullable: false)]
+  #[ORM\Column(type: EmailType::NAME, unique: true, nullable: false)]
   private ClientEmail $email;
 
-  #[ORM\Column(type: PhoneType::TYPE, nullable: true)]
+  #[ORM\Column(type: PhoneType::NAME, nullable: true)]
   private ClientPhone $phone;
 
-  #[ORM\Column(name: 'country_uuid', type: CountryUuidType::TYPE, nullable: true)]
+  #[ORM\Column(name: 'country_uuid', type: CountryUuidType::NAME, nullable: true)]
   private ?ClientCountryUuid $countryUuid;
 
   #[ORM\Column(name: 'email_verified_at', type: Types::DATETIME_IMMUTABLE, nullable: true)]

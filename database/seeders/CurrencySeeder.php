@@ -2,12 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Currency;
 use Illuminate\Database\Seeder;
+use Project\Domains\Admin\Currency\Application\Commands\Create\Command;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use Project\Shared\Domain\UuidGeneratorInterface;
 
 class CurrencySeeder extends Seeder
 {
-    private array $currencyCodes = [
+    private array $currencies = [
         'USD',
         'TMT',
         'UAH',
@@ -16,13 +18,24 @@ class CurrencySeeder extends Seeder
         'TRY',
     ];
 
+    public function __construct(
+        private readonly UuidGeneratorInterface $uuidGenerator,
+        private readonly CommandBusInterface $commandBus,
+    )
+    {
+
+    }
+
     public function run(): void
     {
-        Currency::factory()->createMany(
-            array_map(
-                static fn (string $value): array => compact('value'),
-                $this->currencyCodes
-            )
-        );
+        foreach ($this->currencies as $value) {
+            $this->commandBus->dispatch(
+                new Command(
+                    $this->uuidGenerator->generate(),
+                    $value,
+                    true,
+                )
+            );
+        }
     }
 }

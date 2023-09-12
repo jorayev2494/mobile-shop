@@ -9,6 +9,8 @@ use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 
 final class GenerateSupervisorRabbitMQCommandsConsumerService extends GenerateSupervisorRabbitMQConsumerService
 {
+    // public const SUPERVISOR_PATH = '/docker/supervisor/configs/commands';
+
     protected function getConsumeCommandPrefix(): string
     {
         return 'command';
