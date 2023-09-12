@@ -8,7 +8,7 @@ use App\Http\Requests\Admin\Product\CreateProductRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Product\Application\Commands\Create\CreateProductCommand;
+use Project\Domains\Admin\Product\Application\Commands\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 
@@ -27,13 +27,13 @@ final class CreateProductController
     {
         $uuid = $request->get('uuid', $this->uuidGenerator->generate());
 
-        $command = new CreateProductCommand(
+        $command = new Command(
             $uuid,
             $request->get('title'),
             $request->get('category_uuid'),
             $request->get('currency_uuid'),
-            $request->get('price'),
-            $request->get('discount_presence'),
+            (float) $request->get('price'),
+            (int) $request->get('discount_presence'),
             $request->file('medias'),
             $request->get('description'),
             $request->get('is_active', true),

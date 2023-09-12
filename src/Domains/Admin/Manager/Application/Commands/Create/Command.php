@@ -6,7 +6,7 @@ namespace Project\Domains\Admin\Manager\Application\Commands\Create;
 
 use Project\Shared\Domain\Bus\Command\CommandInterface;
 
-class Command implements CommandInterface
+final class Command implements CommandInterface
 {
     public function __construct(
         public readonly string $uuid,

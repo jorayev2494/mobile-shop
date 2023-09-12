@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Admin\Product;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Product\Application\Commands\Delete\DeleteProductCommand;
+use Project\Domains\Admin\Product\Application\Commands\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 final class DeleteProductController
@@ -22,7 +22,7 @@ final class DeleteProductController
     public function __invoke(string $uuid): Response
     {
         $this->commandBus->dispatch(
-            new DeleteProductCommand($uuid)
+            new Command($uuid)
         );
 
         return $this->response->noContent();

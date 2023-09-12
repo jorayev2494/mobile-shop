@@ -5,12 +5,11 @@ declare(strict_types=1);
 namespace Project\Domains\Client\Address\Domain;
 
 use App\Repositories\Base\Doctrine\Paginator;
-use App\Repositories\Contracts\BaseEntityRepositoryInterface;
 use Project\Domains\Client\Address\Domain\Address;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressUuid;
 use Project\Shared\Application\Query\BaseQuery;
 
-interface AddressRepositoryInterface extends BaseEntityRepositoryInterface
+interface AddressRepositoryInterface
 {
     public function findByUuid(AddressUuid $uuid): ?Address;
     public function getAuthorUuidPaginate(string $uuid, BaseQuery $query): Paginator;

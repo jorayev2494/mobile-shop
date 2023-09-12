@@ -10,7 +10,7 @@ use Project\Domains\Admin\Authentication\Domain\Member\MemberRepositoryInterface
 
 final class MemberRepository extends BaseAdminEntityRepository implements MemberRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Member::class;
     }

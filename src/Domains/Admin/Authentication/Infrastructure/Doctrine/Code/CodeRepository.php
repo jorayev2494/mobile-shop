@@ -10,7 +10,7 @@ use Project\Domains\Admin\Authentication\Domain\Code\CodeRepositoryInterface;
 
 final class CodeRepository extends BaseAdminEntityRepository implements CodeRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Code::class;
     }

@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping\PreUpdate;
 use Project\Domains\Admin\Authentication\Domain\Code\Code;
 use Project\Domains\Admin\Authentication\Domain\Device\Device;
 use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberRestorePasswordLinkWasAddedDomainEvent;
+use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberWasRegisteredDomainEvent;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 use Project\Shared\Domain\Authenticator\AuthenticatableInterface;
 
@@ -33,6 +34,9 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     #[ORM\Column(type: Types::STRING)]
     private string $password;
 
+    #[ORM\Column(name: 'role_id', nullable: true)]
+    private ?int $roleId;
+
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'author', cascade: ['persist', 'remove'])]
     private Collection $devices;
 
@@ -50,12 +54,13 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         $this->uuid = $uuid;
         $this->email = $email;
         $this->password = $password;
+        $this->roleId = null;
     }
 
     public static function create(string $uuid, string $firstName, string $lastName, string $email, string $password): self
     {
         $client = new self($uuid, $email, $password);
-        // $client->record(new MemberWasRegisteredDomainEvent($client->uuid, $firstName, $lastName, $client->email));
+        $client->record(new MemberWasRegisteredDomainEvent($client->uuid, $client->email));
 
         return $client;
     }

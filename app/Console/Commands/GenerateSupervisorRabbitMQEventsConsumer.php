@@ -21,9 +21,21 @@ class GenerateSupervisorRabbitMQEventsConsumer extends Command
 
     public function handle(DomainEventLocator $domainEventLocator): int
     {
+        // Clear dirs
+        // $this->generateSupervisorRabbitMQDomainEventsConsumerService->clearDirectory();
+
+        $output = $this->getOutput();
+        $output->newLine();
+        $output->text('Generating Supervisor RabbitMQ Domain Event Consumers');
+        $output->newLine();
+        $output->progressStart(count($domainEventLocator->all()));
+
         foreach ($domainEventLocator->all() as $handler => $subscribersTo) {
             $this->generateSupervisorRabbitMQDomainEventsConsumerService->configCreator($handler);
+            $output->progressAdvance();
         }
+
+        $output->progressFinish();
 
         return Command::SUCCESS;
     }

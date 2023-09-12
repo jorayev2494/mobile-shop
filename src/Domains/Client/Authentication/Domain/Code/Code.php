@@ -9,7 +9,6 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
-use Project\Domains\Client\Authentication\Domain\Code\Events\RestorePasswordCodeWasCreatedDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Member;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
@@ -35,8 +34,9 @@ final class Code extends AggregateRoot
     #[ORM\Column(name: 'device_id', type: Types::STRING)]
     private string $deviceId;
 
-    #[ORM\OneToOne(targetEntity: Member::class, mappedBy: 'code')]
-    private Member $member;
+    #[ORM\OneToOne(targetEntity: Member::class, inversedBy: 'code')]
+    #[ORM\JoinColumn(name: 'author_uuid', referencedColumnName: 'uuid', unique: true)]
+    private Member $author;
 
     #[ORM\Column(name: 'expired_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiredAt;
@@ -61,9 +61,9 @@ final class Code extends AggregateRoot
         return $code;
     }
 
-    public function setMember(Member $member): void
+    public function setAuthor(Member $author): void
     {
-        $this->member = $member;
+        $this->author = $author;
     }
 
     #[ORM\PrePersist]
@@ -130,7 +130,7 @@ final class Code extends AggregateRoot
             'id' => $this->id,
             'member_uuid' => $this->memberUuid,
             'value' => $this->value,
-            'member' => $this->member->toArray(),
+            'author' => $this->author->toArray(),
             'expired_at' => $this->expiredAt->getTimestamp(),
         ];
     }

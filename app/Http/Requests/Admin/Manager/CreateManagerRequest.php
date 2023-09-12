@@ -24,13 +24,13 @@ class CreateManagerRequest extends FormRequest
             'email' => [
                 'required',
                 'string',
-                Rule::unique(Admin::class, 'email'),
+                Rule::unique('admin_pgsql.manager_managers', 'email'),
                 'max:255',
             ],
             'role_id' => [
                 'required',
                 'integer',
-                Rule::exists(Role::class, 'id'),
+                Rule::exists('admin_pgsql.role_roles', 'id'),
                 'max:255',
             ],
         ];

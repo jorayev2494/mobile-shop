@@ -4,6 +4,10 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Project\Domains\Admin\Category\Application\Commands\Create\CreateCategoryCommand;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use Project\Shared\Domain\UuidGeneratorInterface;
+use Ramsey\Uuid\Uuid;
 
 class CategorySeeder extends Seeder
 {
@@ -15,13 +19,24 @@ class CategorySeeder extends Seeder
         'sofa',
     ];
 
+    public function __construct(
+        private readonly UuidGeneratorInterface $uuidGEnerator,
+        private readonly CommandBusInterface $commandBus,
+    )
+    {
+        
+    }
+
     public function run(): void
     {
-        Category::factory()->createMany(
-            array_map(
-                static fn (string $value): array => compact('value'),
-                $this->categories
-            )
-        );
+        foreach ($this->categories as $value) {
+            $this->commandBus->dispatch(
+                new CreateCategoryCommand(
+                    $this->uuidGEnerator->generate(),
+                    $value,
+                    true,
+                )
+            );
+        }
     }
 }

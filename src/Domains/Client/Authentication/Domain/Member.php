@@ -32,12 +32,10 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     #[ORM\Column(type: Types::STRING)]
     private string $password;
 
-    #[ORM\ManyToOne(targetEntity: Device::class, inversedBy: 'author', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'device_uuid', referencedColumnName: 'uuid', nullable: false)]
+    #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'author', cascade: ['persist', 'remove'])]
     private Collection $devices;
 
-    #[ORM\OneToOne(targetEntity: Code::class, inversedBy: 'member', orphanRemoval: true, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(name: 'code_id', referencedColumnName: 'id', unique: true)]
+    #[ORM\OneToOne(targetEntity: Code::class, mappedBy: 'author', orphanRemoval: true, cascade: ['persist', 'remove'])]
     public ?Code $code;
 
     private function __construct(string $uuid, string $email, string $password)
@@ -51,7 +49,7 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     public static function create(string $uuid, string $firstName, string $lastName, string $email, string $password): self
     {
         $client = new self($uuid, $email, $password);
-        // $client->record(new MemberWasRegisteredDomainEvent($client->uuid, $firstName, $lastName, $client->email));
+        $client->record(new MemberWasRegisteredDomainEvent($client->uuid, $firstName, $lastName, $client->email));
 
         return $client;
     }
@@ -59,13 +57,13 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     public function addDevice(Device $device): void
     {
         $this->devices->add($device);
-        $this->record(new MemberWasAddedDeviceDomainEvent($device->getUuid(), $device->getAuthor()->getUuid(), $device->getDeviceId()));
+        // $this->record(new MemberWasAddedDeviceDomainEvent($device->getUuid(), $device->getAuthor()->getUuid(), $device->getDeviceId()));
     }
 
     public function removeDevice(Device $device): void
     {
         $this->devices->removeElement($device);
-        $this->record(new DeviceWasRemovedDomainEvent($device->getUuid(), $device->getAuthorUuid()));
+        // $this->record(new DeviceWasRemovedDomainEvent($device->getUuid(), $device->getAuthorUuid()));
     }
 
     public function setRestorePasswordCode(Code $code): void

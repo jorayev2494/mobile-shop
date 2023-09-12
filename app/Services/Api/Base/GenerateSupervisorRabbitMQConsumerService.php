@@ -5,14 +5,24 @@ declare(strict_types=1);
 namespace App\Services\Api\Base;
 
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
+use Illuminate\Filesystem\Filesystem;
 
 abstract class GenerateSupervisorRabbitMQConsumerService
 {
     use QueueName;
 
+    public const SUPERVISOR_PATH = '/docker/supervisor/configs/commands-and-domain-events';
+
     protected const EVENTS_TO_PROCESS_AT_TIME             = 200;
     protected const NUMBERS_OF_PROCESSES_PER_SUBSCRIBER   = 1;
     protected const PATH                                  = __DIR__ . '/';
+
+    public function __construct(
+        private readonly Filesystem $filesystem,
+    )
+    {
+        
+    }
 
     abstract protected function getConsumeCommandPrefix(): string;
 
@@ -70,6 +80,14 @@ abstract class GenerateSupervisorRabbitMQConsumerService
 
     protected function fileName(string $fileName = 'supervisord'): string
     {
-        return sprintf('%s/%s.ini', base_path(env('SUPERVISOR_PATH')), $fileName);
+        return sprintf('%s/%s.ini', base_path(static::SUPERVISOR_PATH), $fileName);
+    }
+
+    public function clearDirectory(): void
+    {
+        $directoryFiles = str_replace('//', '/', base_path(static::SUPERVISOR_PATH));
+
+        $this->filesystem->deleteDirectory($directoryFiles);
+        $this->filesystem->makeDirectory($directoryFiles);
     }
 }

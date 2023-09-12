@@ -21,12 +21,14 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:225'],
-            'category_uuid' => ['required', 'string', 'exists:categories,uuid'],
-            'currency_uuid' => ['required', 'string', 'exists:currencies,uuid'],
+            'category_uuid' => ['required', 'string', 'exists:admin_pgsql.category_categories,uuid'],
+            'currency_uuid' => ['required', 'string', 'exists:admin_pgsql.currency_currencies,uuid'],
             'price' => ['required', 'string'],
             'discount_presence' => ['nullable', 'string'],
-            'medias' => ['required', 'array'],
-            'medias.*' => Rule::forEach(static fn (UploadedFile $value, string $attribute, array $attributeValue): array  => ['required', 'file', File::types(ProductMimeType::getValues())]),
+            'medias' => ['array'],
+            'medias.*' => Rule::forEach(static fn (UploadedFile $value, string $attribute, array $attributeValue): array => ['required', 'file', File::types(ProductMimeType::getValues())]),
+            'remove_media_ids' => ['array'],
+            'remove_media_ids.*' => Rule::forEach(static fn (int $value, string $attribute, array $attributeValue): array => ['numeric', Rule::exists('admin_pgsql.product_medias', 'id')]),
             'description' => ['required', 'string'],
             'is_active' => ['nullable', 'boolean'],
         ];

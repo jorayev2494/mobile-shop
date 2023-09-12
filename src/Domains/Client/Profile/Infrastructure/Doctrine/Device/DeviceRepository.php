@@ -10,7 +10,7 @@ use Project\Domains\Client\Profile\Domain\Device\DeviceRepositoryInterface;
 
 final class DeviceRepository extends BaseClientEntityRepository implements DeviceRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Device::class;
     }

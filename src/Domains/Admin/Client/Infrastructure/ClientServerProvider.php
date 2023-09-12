@@ -4,70 +4,63 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Client\Infrastructure;
 
-use App\Http\Controllers\Api\Admin\Client\CreateClientController;
-use Doctrine\DBAL\Types\Type;
-use Illuminate\Support\ServiceProvider;
-use Project\Domains\Admin\Client\Application\Commands\Create\CommandHandler as CreateCommandHandler;
-use Project\Domains\Admin\Client\Application\Commands\Update\CommandHandler as UpdateCommandHandler;
-use Project\Domains\Admin\Client\Application\Delete\CommandHandler as DeleteCommandHandler;
-use Project\Domains\Admin\Client\Application\Queries\Index\QueryHandler as IndexQueryHandler;
-use Project\Domains\Admin\Client\Application\Queries\Show\QueryHandler as ShowQueryHandler;
-use Project\Domains\Admin\Client\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber;
-use Project\Domains\Admin\Client\Application\Subscribers\ProfileEmailWasUpdatedDomainEventSubscriber;
-use Project\Domains\Admin\Client\Application\Subscribers\ProfileFirstNameWasUpdatedDomainEventSubscriber;
-use Project\Domains\Admin\Client\Application\Subscribers\ProfileLastNameWasUpdatedDomainEventSubscriber;
-use Project\Domains\Admin\Client\Application\Subscribers\ProfilePhoneWasUpdatedDomainEventSubscriber;
-use Project\Domains\Admin\Client\Domain\Client\ClientRepositoryInterface;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\ClientRepository;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\CountryUuidType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\EmailType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\FirstNameType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\LastNameType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\PhoneType;
-use Project\Domains\Admin\Client\Infrastructure\Doctrine\Types\UuidType;
+use App\Providers\AdminDomainServiceProvider;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
+use App\Http\Controllers\Api\Admin\Client\CreateClientController;
+use Project\Domains\Admin\Client\Domain\Client\ClientRepositoryInterface;
+use Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\ClientRepository;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\RabbitMQCommandBus;
 
-class ClientServerProvider extends ServiceProvider
+final class ClientServerProvider extends AdminDomainServiceProvider
 {
+    protected const SERVICES = [
+        ClientRepositoryInterface::class => [self::SERVICE_BIND, ClientRepository::class],
+    ];
+
+    protected const ENTITY_TYPES = [
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\UuidType::class,
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\FirstNameType::class,
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\LastNameType::class,
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\EmailType::class,
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\PhoneType::class,
+        \Project\Domains\Admin\Client\Infrastructure\Doctrine\Client\Types\CountryUuidType::class,
+    ];
+
+    protected const QUERY_HANDLERS = [
+        \Project\Domains\Admin\Client\Application\Queries\Index\QueryHandler::class,
+        \Project\Domains\Admin\Client\Application\Queries\Show\QueryHandler::class,
+    ];
+
+    protected const COMMAND_HANDLERS = [
+        \Project\Domains\Admin\Client\Application\Commands\Create\CommandHandler::class,
+        \Project\Domains\Admin\Client\Application\Commands\Update\CommandHandler::class,
+        \Project\Domains\Admin\Client\Application\Commands\Delete\CommandHandler::class,
+    ];
+
+    protected const DOMAIN_EVENT_SUBSCRIBERS = [
+        \Project\Domains\Admin\Client\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber::class,
+        \Project\Domains\Admin\Client\Application\Subscribers\ProfileEmailWasUpdatedDomainEventSubscriber::class,
+        \Project\Domains\Admin\Client\Application\Subscribers\ProfileFirstNameWasUpdatedDomainEventSubscriber::class,
+        \Project\Domains\Admin\Client\Application\Subscribers\ProfileLastNameWasUpdatedDomainEventSubscriber::class,
+        \Project\Domains\Admin\Client\Application\Subscribers\ProfilePhoneWasUpdatedDomainEventSubscriber::class,
+    ];
+
+    protected const MIGRATION_PATHS = [
+        'Project\Domains\Admin\Client\Infrastructure\Doctrine\Migrations' => __DIR__ . '/Doctrine/Migrations',
+    ];
+
+    protected const ENTITY_PATHS = [
+        __DIR__ . '/../Domain/Client',
+    ];
+
     public function register(): void
     {
-        Type::addType(UuidType::TYPE, UuidType::class);
-        Type::addType(FirstNameType::TYPE, FirstNameType::class);
-        Type::addType(LastNameType::TYPE, LastNameType::class);
-        Type::addType(EmailType::TYPE, EmailType::class);
-        Type::addType(PhoneType::TYPE, PhoneType::class);
-        Type::addType(CountryUuidType::TYPE, CountryUuidType::class);
+        parent::register();
 
         $this->app->when([
             CreateClientController::class,
         ])
         ->needs(CommandBusInterface::class)
         ->give(RabbitMQCommandBus::class);
-
-        $this->app->addAdminEntityPaths([
-            __DIR__ . '/../Domain',
-        ]);
-
-        $this->app->addAdminMigrationPaths([
-            'Project\Domains\Admin\Client\Infrastructure\Doctrine\Migrations' => __DIR__ . '/Doctrine/Migrations',
-        ]);
-
-        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
-
-        $this->app->tag(IndexQueryHandler::class, 'query_handler');
-        $this->app->tag(ShowQueryHandler::class, 'query_handler');
-
-        $this->app->tag(CreateCommandHandler::class, 'command_handler');
-        $this->app->tag(UpdateCommandHandler::class, 'command_handler');
-        $this->app->tag(DeleteCommandHandler::class, 'command_handler');
-
-        $this->app->tag(MemberWasRegisteredDomainEventSubscriber::class, 'domain_event_subscriber');
-        
-        $this->app->tag(ProfileFirstNameWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
-        $this->app->tag(ProfileLastNameWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
-        $this->app->tag(ProfileEmailWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
-        $this->app->tag(ProfilePhoneWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
-
     }
 }

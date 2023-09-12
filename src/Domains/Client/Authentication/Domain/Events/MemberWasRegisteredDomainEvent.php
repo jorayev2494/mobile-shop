@@ -38,7 +38,7 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'member.was.registered';
+        return 'client.member.was.registered';
     }
 
     public function toArray(): array

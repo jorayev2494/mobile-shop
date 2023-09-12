@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Authentication\Infrastructure\Doctrine\Device;
 
 use App\Repositories\Base\Doctrine\BaseAdminEntityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Query\Parameter;
 use Project\Domains\Admin\Authentication\Domain\Device\Device;
 use Project\Domains\Admin\Authentication\Domain\Device\DeviceRepositoryInterface;
 
 final class DeviceRepository extends BaseAdminEntityRepository implements DeviceRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Device::class;
     }

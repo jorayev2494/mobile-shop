@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Admin\Product;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Project\Domains\Admin\Product\Application\Queries\Get\GetProductsQuery;
+use Project\Domains\Admin\Product\Application\Queries\Get\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 final class GetProductController
@@ -23,7 +23,7 @@ final class GetProductController
     public function __invoke(Request $request): JsonResponse
     {
         $result = $this->queryBus->ask(
-            GetProductsQuery::makeFromRequest($request)
+            Query::makeFromRequest($request)
         );
 
         return $this->response->json($result);

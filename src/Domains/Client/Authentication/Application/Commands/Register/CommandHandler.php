@@ -11,7 +11,6 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\DomainException;
 use Project\Shared\Domain\PasswordHasherInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
-use Project\Shared\Infrastructure\UuidGenerator;
 
 class CommandHandler implements CommandHandlerInterface
 {

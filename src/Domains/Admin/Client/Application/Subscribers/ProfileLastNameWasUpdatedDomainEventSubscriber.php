@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Client\Application\Subscribers;
 
 use Project\Domains\Admin\Client\Domain\Client\ClientRepositoryInterface;
-use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientFirstName;
 use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientLastName;
 use Project\Domains\Admin\Client\Domain\Client\ValueObjects\ClientUuid;
-use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileFirstNameWasUpdatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileLastNameWasUpdatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 

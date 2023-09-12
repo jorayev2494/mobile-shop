@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Category\Application\Commands\Create;
 
-use Project\Domains\Admin\Category\Domain\Category;
-use Project\Domains\Admin\Category\Domain\CategoryRepositoryInterface;
-use Project\Domains\Admin\Category\Domain\ValueObjects\CategoryUUID;
-use Project\Domains\Admin\Category\Domain\ValueObjects\CategoryValue;
+use Project\Domains\Admin\Category\Domain\Category\Category;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryValue;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 
 final class CreateCategoryCommandHandler implements CommandHandlerInterface
@@ -22,7 +22,7 @@ final class CreateCategoryCommandHandler implements CommandHandlerInterface
     public function __invoke(CreateCategoryCommand $command): void
     {
         $category = Category::create(
-            CategoryUUID::fromValue($command->uuid),
+            CategoryUuid::fromValue($command->uuid),
             CategoryValue::fromValue($command->value),
             $command->isActive,
         );

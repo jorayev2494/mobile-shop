@@ -6,11 +6,11 @@ namespace Project\Domains\Admin\Category\Infrastructure\Eloquent;
 
 use App\Models\Category as CategoryModel;
 use App\Repositories\Base\BaseModelRepository;
-use Project\Domains\Admin\Category\Domain\Category;
-use Project\Domains\Admin\Category\Domain\CategoryRepositoryInterface;
-use Project\Domains\Admin\Category\Domain\ValueObjects\CategoryUUID;
+use Project\Domains\Admin\Category\Domain\Category\Category;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
 
-final class CategoryRepository extends BaseModelRepository implements CategoryRepositoryInterface
+final class CategoryRepository extends BaseModelRepository // implements CategoryRepositoryInterface
 {
 
     public function getModel(): string
@@ -22,13 +22,13 @@ final class CategoryRepository extends BaseModelRepository implements CategoryRe
     {
         return (bool) $this->getModelClone()->newQuery()->updateOrCreate(
             [
-                'uuid' => $category->uuid->value,
+                // 'uuid' => $category->uuid->value,
             ],
             $category->toArray()
         );
     }
 
-    public function delete(CategoryUUID $uuid): void
+    public function delete(CategoryUuid $uuid): void
     {
         $this->getModelClone()->newQuery()->find($uuid->value)->delete();
     }

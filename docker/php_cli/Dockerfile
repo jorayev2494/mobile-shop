@@ -65,5 +65,7 @@ RUN curl -sS https://getcomposer.org/installer | php \
 
 WORKDIR /var/project
 
+# ENTRYPOINT ["docker-php-entrypoint"]
+
 # CMD [ "sh" ]
 # RUN rm -rf /var/project/docker && chmod -R 777 /var/project/bootstrap && chmod -R 777 /var/project/storage

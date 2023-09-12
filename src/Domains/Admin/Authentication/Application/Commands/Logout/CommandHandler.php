@@ -36,10 +36,8 @@ final class CommandHandler implements CommandHandlerInterface
             return;
         }
 
-        // $member->removeDevice($device);
-        // $this->repository->save($member);
+        $member->removeDevice($device);
         $this->deviceRepository->delete($device);
-        // dd($member, $device);
         $this->authenticator->logout(AppGuardType::ADMIN);
     }
 }

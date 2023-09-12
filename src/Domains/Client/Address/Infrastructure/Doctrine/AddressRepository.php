@@ -13,7 +13,7 @@ use Project\Shared\Application\Query\BaseQuery;
 
 final class AddressRepository extends BaseClientEntityRepository implements AddressRepositoryInterface
 {
-    public function getEntity(): string
+    protected function getEntity(): string
     {
         return Address::class;
     }
