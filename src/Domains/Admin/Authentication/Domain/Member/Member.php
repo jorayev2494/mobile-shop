@@ -16,8 +16,8 @@ use Project\Domains\Admin\Authentication\Domain\Code\Code;
 use Project\Domains\Admin\Authentication\Domain\Device\Device;
 use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberRestorePasswordLinkWasAddedDomainEvent;
 use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberWasRegisteredDomainEvent;
+use Project\Infrastructure\Services\Authenticate\AuthenticatableInterface;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
-use Project\Shared\Domain\Authenticator\AuthenticatableInterface;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]

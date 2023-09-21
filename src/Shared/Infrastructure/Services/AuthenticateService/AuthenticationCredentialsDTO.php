@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Project\Shared\Infrastructure\Authenticator;
+namespace Project\Shared\Infrastructure\Services\AuthenticateService;
 
-class AuthenticateCredentialDTO
+class AuthenticationCredentialsDTO
 {
     public function __construct(
         public readonly string $email,

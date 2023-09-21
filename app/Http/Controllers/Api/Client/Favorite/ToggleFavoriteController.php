@@ -21,10 +21,10 @@ class ToggleFavoriteController
         
     }
 
-    public function __invoke(string $productUUID): Response
+    public function __invoke(string $productUuid): Response
     {
         $this->commandBus->dispatch(
-            new ToggleFavoriteCommand($this->authManager->client()->uuid, $productUUID)
+            new ToggleFavoriteCommand($this->authManager->client()->uuid, $productUuid)
         );
 
         return $this->response->noContent(Response::HTTP_ACCEPTED);

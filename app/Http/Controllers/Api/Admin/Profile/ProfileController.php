@@ -12,7 +12,6 @@ use App\Services\Api\Contracts\ProfileService;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Profile\Application\Commands\Update\Command;
 use Project\Domains\Admin\Profile\Application\Queries\GetProfile\Query;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
@@ -42,11 +41,11 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): Response
     {
         $this->commandBus->dispatch(
-            new Command(
+            new \Project\Domains\Admin\Profile\Application\Commands\Update\Command(
                 $request->get('first_name'),
                 $request->get('last_name'),
                 $request->get('email'),
-                $request->get('avatar'),
+                $request->file('avatar'),
                 $request->get('phone'),
             )
         );
@@ -56,8 +55,6 @@ class ProfileController extends Controller
 
     public function changePassword(ChangePasswordRequest $request): Response
     {
-        // $data = ChangePasswordData::makeFromFormRequest($request);
-        // $this->service->changePassword($this->authModel, $data);
         $this->commandBus->dispatch(
             new \Project\Domains\Admin\Profile\Application\Commands\ChangePassword\Command(
                 $request->get('current_password'),

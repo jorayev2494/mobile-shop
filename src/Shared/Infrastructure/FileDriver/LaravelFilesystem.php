@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Project\Shared\Domain\FilesystemInterface;
+use Ramsey\Uuid\Uuid;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 final class LaravelFilesystem implements FilesystemInterface
@@ -20,23 +21,22 @@ final class LaravelFilesystem implements FilesystemInterface
         try {
             $bucketPath = '/' . env('AWS_BUCKET');
             list($width, $height) = @getimagesize($uploadedFile->getPathname());
-            $path = $bucketPath . $path;
             $mimeType = $uploadedFile->getClientMimeType();
             $extension = $uploadedFile->getClientOriginalExtension();
             $size = $uploadedFile->getSize();
             $fileOriginalName = $uploadedFile->getClientOriginalName();
-            $fileName = Str::random($this->lengthRandomName) . '.' . $extension;
-            $fullPath = $uploadedFile->storeAs($path, $fileName);
+            $fullPath = $uploadedFile->storeAs($path, $fileName = $this->generateFileName($extension));
             $url = Storage::url($fullPath);
 
             return $fileClassName::make(
+                Uuid::uuid4()->toString(),
                 $mimeType,
                 $width,
                 $height,
                 $extension,
                 $size,
-                $path,
-                $fullPath,
+                $bucketPath . $path,
+                $bucketPath . $fullPath,
                 $fileName,
                 $fileOriginalName,
                 $url,
@@ -53,15 +53,24 @@ final class LaravelFilesystem implements FilesystemInterface
         }
     }
 
-    public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): ?File
+    private function generateFileName(string $extension): string
     {
-        $this->deleteFile($path, $deleteFileName);
-
-        return $this->uploadFile($path, $uploadedFile);
+        return Str::random($this->lengthRandomName) . '.' . $extension;
     }
 
-    public function deleteFile(File $file): bool
+    // public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): ?File
+    // {
+    //     $this->deleteFile($path, $deleteFileName);
+
+    //     return $this->uploadFile($path, $uploadedFile);
+    // }
+
+    public function deleteFile(?File $file): bool
     {
+        if ($file === null) {
+            return true;
+        }
+
         if (Storage::exists($file->getFullPath())) {
             return Storage::delete($file->getFullPath());
         }

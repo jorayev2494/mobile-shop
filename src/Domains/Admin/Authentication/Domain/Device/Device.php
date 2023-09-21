@@ -11,7 +11,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Project\Domains\Admin\Authentication\Domain\Member\Member;
-use Project\Shared\Domain\Authenticator\DeviceInterface;
+use Project\Infrastructure\Services\Authenticate\DeviceInterface;
 
 #[ORM\Entity]
 #[HasLifecycleCallbacks]

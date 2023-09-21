@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Application\Subscribers;
 
-use App\Models\File;
+use Project\Domains\Admin\Product\Domain\Media\MediaRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasDeletedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Domain\FilesystemInterface;
 
@@ -14,7 +15,7 @@ final class ProductWasDeletedDomainEventSubscriber implements DomainEventSubscri
 
     public function __construct(
         private readonly FilesystemInterface $filesystem,
-        private readonly File $fileRepository,
+        private readonly MediaRepositoryInterface $fileRepository,
     )
     {
         
@@ -27,12 +28,11 @@ final class ProductWasDeletedDomainEventSubscriber implements DomainEventSubscri
 
     public function __invoke(ProductWasDeletedDomainEvent $event): void
     {
-        $files = $this->fileRepository->newQuery()->where('fileable_uuid', $event->uuid)->get();
-        info('Found delete files: ', $files->toArray());
-        /** @var File $file */
-        foreach ($files as $key => $file) {
-            $this->filesystem->deleteFile($file->path, $file->name);
-            $file->delete();
+        $medias = $this->fileRepository->findManyByProductUuid(ProductUuid::fromValue($event->uuid));
+
+        foreach ($medias as $key => $media) {
+            $this->filesystem->deleteFile($media);
+            $media->delete();
         }
     }
 }

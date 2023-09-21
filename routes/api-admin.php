@@ -61,7 +61,6 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         });
     });
 
-
     $router->group(['prefix' => 'categories', 'as' => 'categories.'], static function (Router $router): void {
         $router->get('/', GetCategoryController::class);
         $router->post('/', CreateCategoryController::class);

@@ -15,8 +15,8 @@ use Project\Domains\Client\Authentication\Domain\Events\MemberWasRegisteredDomai
 use Project\Domains\Client\Authentication\Domain\Events\MemberWasRequestedRestoreCodePasswordDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Device\Device;
 use Project\Domains\Client\Authentication\Domain\Events\DeviceWasRemovedDomainEvent;
+use Project\Infrastructure\Services\Authenticate\AuthenticatableInterface;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
-use Project\Shared\Domain\Authenticator\AuthenticatableInterface;
 
 #[ORM\Entity]
 #[ORM\Table('auth_members')]
@@ -56,6 +56,7 @@ class Member extends AggregateRoot implements AuthenticatableInterface
 
     public function addDevice(Device $device): void
     {
+        $device->setAuthor($this);
         $this->devices->add($device);
         // $this->record(new MemberWasAddedDeviceDomainEvent($device->getUuid(), $device->getAuthor()->getUuid(), $device->getDeviceId()));
     }

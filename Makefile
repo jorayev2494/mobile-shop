@@ -36,6 +36,8 @@ server-up-build:					## Up and build project
 server-up:							## Up project
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up -d
 	@make server-ps
+	sleep 10
+	@make server-refresh-rabbitmq-and-restart-supervisor
 
 server-container-up-build:				## Up project container
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up --build -d $(container)
@@ -148,6 +150,9 @@ server-refresh-rabbitmq-and-restart-supervisor:
 	@make server-generate-supervisor-rabbitmq
 	@make server-supervisor-restart
 
+# srrars:
+# 	@make server-refresh-rabbitmq-and-restart-supervisor
+
 server-composer-du-o:			## Compouser dump autolad
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli composer du -o
 
@@ -169,8 +174,8 @@ server-composer-remove-dev:			## Compouser remove dev
 server-seed-class:						## Run Class Seeder
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan db:seed --class=$(class)
 
-.PHONY: server-help
-server-help:				## Show Project commands
-	@#echo ${Cyan}"\t\t This project 'Shop Server' REST API Server!"
-	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
-	@echo ${Red}"----------------------------------------------------------------------"
+# .PHONY: server-help
+# server-help:				## Show Project commands
+# 	@#echo ${Cyan}"\t\t This project 'Shop Server' REST API Server!"
+# 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+# 	@echo ${Red}"----------------------------------------------------------------------"

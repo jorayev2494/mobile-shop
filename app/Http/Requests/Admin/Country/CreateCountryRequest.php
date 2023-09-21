@@ -17,8 +17,8 @@ class CreateCountryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => ['required', 'alpha_dash', 'unique:' . Country::class . ',value'],
-            'iso' => ['required', 'alpha_dash', 'unique:' . Country::class . ',iso', 'max:3'],
+            'value' => ['required', 'alpha_dash', 'unique:admin_pgsql.country_countries,value'],
+            'iso' => ['required', 'alpha_dash', 'unique:admin_pgsql.country_countries,iso', 'max:3'],
             'is_active' => ['boolean'],
         ];
     }

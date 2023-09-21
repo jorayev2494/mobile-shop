@@ -13,6 +13,7 @@ use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductPrice;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductTitle;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\FilesystemInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -21,6 +22,7 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly ProductRepositoryInterface $repository,
         private readonly MediaRepositoryInterface $mediaRepository,
         private readonly FilesystemInterface $filesystem,
+        private readonly EventBusInterface $eventBus,
     )
     {
 
@@ -42,6 +44,7 @@ final class CommandHandler implements CommandHandlerInterface
         $this->uploadMedias($product, $command->medias);
 
         $this->repository->save($product);
+        $this->eventBus->publish(...$product->pullDomainEvents());
     }
 
     private function removeMedias(Product $product, array $removeMediaIds): void

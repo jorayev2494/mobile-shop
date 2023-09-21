@@ -24,16 +24,16 @@ final class FavoriteRepository extends BaseModelRepository implements FavoriteRe
     public function favorite(Favorite $favorite): void
     {
         $this->getModelClone()->newQuery()->create([
-            'client_uuid' => $favorite->memberUUID->value,
-            'product_uuid' => $favorite->productUUID->value,
+            'client_uuid' => $favorite->memberUuid->value,
+            'product_uuid' => $favorite->productUuid->value,
         ]);
     }
 
     public function unfavorite(Favorite $favorite): void
     {
         $this->getModelClone()->newQuery()->where([
-            ['client_uuid', $favorite->memberUUID->value],
-            ['product_uuid', $favorite->productUUID->value],
+            ['client_uuid', $favorite->memberUuid->value],
+            ['product_uuid', $favorite->productUuid->value],
         ])?->delete();
     }
 
@@ -51,8 +51,8 @@ final class FavoriteRepository extends BaseModelRepository implements FavoriteRe
     public function contains(Favorite $favorite): bool
     {
         return $this->getModelClone()->newQuery()->where([
-            ['client_uuid', $favorite->memberUUID->value],
-            ['product_uuid', $favorite->productUUID->value],
+            ['client_uuid', $favorite->memberUuid->value],
+            ['product_uuid', $favorite->productUuid->value],
         ])->exists();
     }
 }

@@ -6,7 +6,7 @@ namespace Project\Domains\Client\Product\Domain\ValueObjects;
 
 use Project\Shared\Domain\ValueObject\UuidValueObject;
 
-final class ProductUUID extends UuidValueObject
+final class ProductUuid extends UuidValueObject
 {
     
 }

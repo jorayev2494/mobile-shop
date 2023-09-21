@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Profile\Domain\Profile;
 
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileAvatar;
+use Project\Domains\Admin\Profile\Domain\Avatar\Avatar;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileEmail;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileFirstName;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileLastName;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfilePhone;
-use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\AvatarType;
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\EmailType;
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\FirstNameType;
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\LastNameType;
@@ -36,8 +34,12 @@ class Profile extends AggregateRoot
     #[ORM\Column(type: EmailType::NAME, unique: true)]
     private ProfileEmail $email;
 
-    #[ORM\Column(type: AvatarType::NAME, nullable: true)]
-    private ?ProfileAvatar $avatar;
+    #[ORM\Column(name: 'avatar_uuid', type: Types::STRING, nullable: true)]
+    private ?string $avatarUuid;
+
+    #[ORM\OneToOne(targetEntity: Avatar::class, inversedBy: 'profile', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'avatar_uuid', referencedColumnName: 'uuid')]
+    private ?Avatar $avatar;
 
     #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?ProfilePhone $phone;
@@ -113,6 +115,21 @@ class Profile extends AggregateRoot
 		$this->lastName = $lastName;
 	}
 
+	public function getFullName(): ?string
+    {
+		$result = null;
+
+        if ($this->firstName->isNotNull()) {
+            $result .= $this->firstName->value . ' ';
+        }
+
+        if ($this->lastName->isNotNull()) {
+            $result .= $this->lastName->value;
+        }
+
+        return $result;
+	}
+
 	public function getEmail(): ProfileEmail
     {
 		return $this->email;
@@ -123,7 +140,7 @@ class Profile extends AggregateRoot
 		$this->email = $email;
 	}
 
-    public function getAvatar(): ?ProfileAvatar
+    public function getAvatar(): ?Avatar
     {
 		return $this->avatar;
 	}
@@ -157,11 +174,11 @@ class Profile extends AggregateRoot
         }
     }
 	
-	public function changeAvatar(?ProfileAvatar $avatar): void
+	public function changeAvatar(?Avatar $avatar): void
     {
-        if ($this->avatar->isNotEquals($avatar)) {
+        // if ($this->avatar->isNotEquals($avatar)) {
             $this->avatar = $avatar;
-        }
+        // }
 	}
 
     public function changePhone(ProfilePhone $phone): void
@@ -178,8 +195,9 @@ class Profile extends AggregateRoot
             'uuid' => $this->uuid,
             'first_name' => $this->firstName?->value,
             'last_name' => $this->lastName?->value,
+            'full_name' => $this->getFullName(),
             'email' => $this->email?->value,
-            'avatar' => $this->avatar?->value,
+            'avatar' => $this->avatar?->toArray(),
             'phone' => $this->phone?->value,
         ];
     }

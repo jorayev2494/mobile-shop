@@ -32,16 +32,11 @@ final class CommandHandler implements CommandHandlerInterface
 
         $role->changeValue(RoleValue::fromValue($command->value));
 
-        $permissions = $this->permissionRepository->findManyByIds(
-            array_diff(
-                $command->permissions,
-                array_map(
-                    static fn (Permission $permission): int => $permission->getId(),
-                    $role->getPermissions()->toArray()
-                )
-            )
-        );
-        foreach ($permissions as $key => $permission) {
+        $permissions = $this->permissionRepository->findManyByIds($command->permissions);
+
+        $role->detachPermissions();
+
+        foreach ($permissions as $permission) {
             $role->addPermission($permission);
         }
 

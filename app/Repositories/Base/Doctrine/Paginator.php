@@ -18,8 +18,12 @@ use Project\Shared\Application\Query\BaseQuery;
 class Paginator implements Arrayable
 {
     private int $page;
+
     private int $perPage;
+
     private ?int $nextPage;
+
+    private int $to;
 
     private int $total;
 
@@ -52,6 +56,7 @@ class Paginator implements Arrayable
         $this->items = array_map(static fn (Arrayable $item): array => $item->toArray(), iterator_to_array($paginator->getIterator()));
         $this->lastPage = ($lastPage = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults())) > 0 ? $lastPage : null;
         $this->nextPage = ($nexPage = $dataDTO->page + 1) <= $this->lastPage ? $nexPage : null;
+        $this->to = $dataDTO->perPage * $dataDTO->page;
         $this->total = $paginator->count();
     }
 
@@ -90,6 +95,7 @@ class Paginator implements Arrayable
             'last_page' => $this->lastPage,
             'last_page_url' => $this->makePageUrl($this->lastPage),
             'per_page' => $this->perPage,
+            'to' => $this->to,
             'total' => $this->total,
         ];
     }
@@ -99,6 +105,8 @@ class Paginator implements Arrayable
         if ($page === null) {
             return null;
         }
+
+        unset($_REQUEST['page'], $_REQUEST['per_page']);
 
         return sprintf(
             '%s?%s',

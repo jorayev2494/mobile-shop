@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Product\Domain;
 
-use App\Repositories\Contracts\BaseModelRepositoryInterface;
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Pagination\Paginator;
-use Project\Domains\Client\Product\Domain\ValueObjects\ProductUUID;
+use App\Repositories\Base\Doctrine\Paginator;
+use Project\Domains\Client\Product\Domain\ValueObjects\ProductUuid;
 use Project\Shared\Application\Query\BaseQuery;
+use Project\Domains\Admin\Product\Domain\Product\Product;
 
-interface ProductRepositoryInterface extends BaseModelRepositoryInterface
+interface ProductRepositoryInterface
 {
-    public function indexSimplePaginate(BaseQuery $queryData, iterable $columns = ['*']): Paginator;
-    public function findByUUID(ProductUUID $uuid): ?Product;
+    public function paginate(BaseQuery $queryData): Paginator;
+    public function findByUuid(ProductUuid $uuid): ?Product;
 }

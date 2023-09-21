@@ -7,23 +7,23 @@ use Project\Shared\Domain\Bus\Event\DomainEvent;
 class ProductMediaWasAddedDomainEvent extends DomainEvent
 {
     public function __construct(
-        string $aggregateId,
+        public readonly string $uuid,
         public readonly array $data,
         string $eventId = null,
         string $occurredOn = null
     )
     {
-        parent::__construct($aggregateId, $eventId, $occurredOn);
+        parent::__construct($uuid, $eventId, $occurredOn);
     }
 
     public static function fromPrimitives(
-        string $aggregateId,
+        string $uuid,
         array $body,
         string $eventId,
         string $occurredOn,
     ): self
     {
-        return new self($aggregateId, $body, $eventId, $occurredOn);
+        return new self($uuid, $body, $eventId, $occurredOn);
     }
 
     public static function eventName(): string

@@ -27,6 +27,7 @@ class IndexProductController
         /** @var LengthAwarePaginator $result */
         $result = $this->queryBus->ask(GetProductsQuery::makeFromRequest($request));
 
-        return $this->response->json(ProductCollectionResource::make($result));
+        // return $this->response->json(ProductCollectionResource::make($result));
+        return $this->response->json($result);
     }
 }

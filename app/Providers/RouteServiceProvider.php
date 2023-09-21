@@ -25,13 +25,14 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->registerRoutePatterns();
         $this->routes(function (): void {
-            $this->registerAdminRoutes();
+            $this->registerAdminAPIRoutes();
             $this->registerAPIRoutes();
             $this->registerWebRoutes();
+            $this->registerPublicAPIRoutes();
         });
     }
 
-    private function registerAdminRoutes(): void
+    private function registerAdminAPIRoutes(): void
     {
         Route::middleware('api')
                 ->prefix('api/admin')
@@ -47,6 +48,15 @@ class RouteServiceProvider extends ServiceProvider
                 ->prefix('api')
                 ->group(
                     base_path('routes/api.php')
+                );
+    }
+
+    private function registerPublicAPIRoutes(): void
+    {
+        Route::middleware('api')
+                ->prefix('api/')
+                ->group(
+                    base_path('routes/api-public.php')
                 );
     }
 

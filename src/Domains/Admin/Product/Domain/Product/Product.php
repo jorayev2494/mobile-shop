@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Domain\Product;
 
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Event\{PrePersistEventArgs, PreUpdateEventArgs};
 use Illuminate\Contracts\Support\Arrayable;
 use Project\Domains\Admin\Product\Domain\Media\Media;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasAddedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductCategoryUuid;
@@ -53,6 +56,12 @@ class Product extends AggregateRoot
 
     private bool $isActive;
 
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $updatedAt;
+
     private function __construct(
         ProductUuid $uuid,
         ProductTitle $title,
@@ -71,6 +80,9 @@ class Product extends AggregateRoot
         $this->viewedCount = $viewedCount;
         $this->isActive = $isActive;
         $this->medias = new ArrayCollection();
+
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public static function fromPrimitives(string $uuid, string $title, string $categoryUuid, ProductPrice $price, string $description, int $viewedCount, bool $isActive): self
@@ -96,7 +108,18 @@ class Product extends AggregateRoot
     ): self
     {
         $product = new self($uuid, $title, $categoryUuid, $price, $description, 0, $isActive);
-        $product->record(new ProductWasCreatedDomainEvent($product->uuid->value, $product->toArray()));
+
+        $event = new ProductWasCreatedDomainEvent(
+            $product->uuid->value,
+            $product->title->value,
+            $product->categoryUuid->value,
+            $product->price->toArray(),
+            $product->viewedCount,
+            $product->description->value,
+            $product->isActive,
+        );
+
+        $product->record($event);
 
         return $product;
     }
@@ -188,27 +211,45 @@ class Product extends AggregateRoot
     {
         $media->setProduct($this);
         $this->medias->add($media);
-        // $this->record(new ProductMediaWasAddedDomainEvent($this->uuid->value, $media->toArray()));
+        $this->record(new ProductMediaWasAddedDomainEvent($this->uuid->value, $media->toArray()));
     }
 
     public function removeMedia(Media $media): void
     {
         $this->medias->removeElement($media);
+        $this->record(new ProductMediaWasDeletedDomainEvent($this->uuid->value, $media->getUuid()));
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(PrePersistEventArgs $event): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(PreUpdateEventArgs $event): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function toArray(): array
     {
         $medias = array_map(static fn (Arrayable $media): array => $media->toArray(), $this->medias->toArray());
+        $cover = array_shift($medias);
 
         return [
             'uuid' => $this->uuid->value,
             'title' => $this->title->value,
             'category_uuid' => $this->categoryUuid->value,
             'price' => $this->price->toArray(),
+            'cover' => $cover,
             'medias' => $medias,
             'viewed_count' => $this->viewedCount,
             'description' => $this->description->value,
             // 'is_active' => $this->isActive,
+            'created_at' => $this->createdAt->getTimestamp(),
+            'updated_at' => $this->updatedAt->getTimestamp(),
         ];
     }
 }
