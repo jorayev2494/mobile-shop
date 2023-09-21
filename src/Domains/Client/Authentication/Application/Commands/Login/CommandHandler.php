@@ -8,11 +8,12 @@ use App\Models\Enums\AppGuardType;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Authentication\Domain\Device\Device;
 use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
-use Project\Shared\Domain\Authenticator\AuthenticatorInterface;
+use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\TokenGeneratorInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
+use Project\Shared\Infrastructure\Services\AuthenticateService\AuthenticationCredentialsDTO;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -22,7 +23,7 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly AuthManagerInterface $authManager,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly TokenGeneratorInterface $tokenGenerator,
-        private readonly AuthenticatorInterface $authenticator,
+        private readonly AuthenticationServiceInterface $authenticationService,
         private readonly EventBusInterface $eventBus,
     )
     {
@@ -37,7 +38,7 @@ final class CommandHandler implements CommandHandlerInterface
             throw new ModelNotFoundException();
         }
 
-        $token = $this->authenticator->login($command, AppGuardType::CLIENT);
+        $token = $this->authenticationService->authenticate(new AuthenticationCredentialsDTO($command->email, $command->password), AppGuardType::CLIENT);
 
         $device = Device::create($this->uuidGenerator->generate(), $this->tokenGenerator->generate(), $command->deviceId);
         $member->addDevice($device);
@@ -45,6 +46,6 @@ final class CommandHandler implements CommandHandlerInterface
         $this->repository->save($member);
         $this->eventBus->publish(...$member->pullDomainEvents());
 
-        return $this->authenticator->authToken($token, $member, $device);
+        return $this->authenticationService->authToken($token, $member, $device);
     }
 }

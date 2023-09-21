@@ -30,7 +30,6 @@ use App\Http\Controllers\Api\Client\Cart\{
     ShowCartController,
     DeleteProductFromCartController,
 };
-use App\Http\Controllers\Api\Client\Country\IndexCountryController;
 use App\Http\Controllers\Api\Client\Order\{
     IndexOrderController,
     CreateOrderController,
@@ -44,10 +43,10 @@ use App\Http\Controllers\Api\Client\Favorite\{
     ToggleFavoriteController,
 };
 
-use App\Http\Controllers\Api\Client\Product\IndexProductController;
-use App\Http\Controllers\Api\Client\Product\ShowProductController;
-use App\Http\Controllers\Api\Client\Profile\ShowProfileController;
-use App\Http\Controllers\Api\Client\Profile\UpdateProfileController;
+use App\Http\Controllers\Api\Client\Profile\{
+    ShowProfileController,
+    UpdateProfileController,
+};
 
 // /** @var Illuminate\Routing\Router $router */
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
@@ -60,15 +59,6 @@ Route::prefix('auth')->name('auth.')->group(static function (Router $router): vo
         $router->post('/code', RestoreCodePasswordController::class)->name('code');
         $router->put('/restore', RestorePasswordController::class)->name('restore');
     });
-});
-
-Route::group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
-    $router->get('/', IndexProductController::class);
-    $router->get('/{uuid}', ShowProductController::class);
-});
-
-Route::group(['prefix' => 'countries', 'as' => 'countries.'], static function (Router $router): void {
-    $router->get('/', IndexCountryController::class);
 });
 
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
@@ -114,5 +104,3 @@ Route::group(['middleware' => 'auth:client'], static function (Router $router): 
         $router->post('/{product_uuid}', ToggleFavoriteController::class);
     });
 });
-
-Route::get('/ping', static fn (): array => ['message' => 'pong']);

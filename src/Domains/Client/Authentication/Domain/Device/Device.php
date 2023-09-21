@@ -10,7 +10,7 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Client\Authentication\Domain\Member;
-use Project\Shared\Domain\Authenticator\DeviceInterface;
+use Project\Infrastructure\Services\Authenticate\DeviceInterface;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]

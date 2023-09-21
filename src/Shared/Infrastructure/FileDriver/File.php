@@ -14,9 +14,8 @@ use Illuminate\Contracts\Support\Arrayable;
 abstract class File implements Arrayable
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column(type: Types::INTEGER)]
-    protected int $id;
+    #[ORM\Column(type: Types::STRING)]
+    protected string $uuid;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $width;
@@ -61,6 +60,7 @@ abstract class File implements Arrayable
     protected DateTimeImmutable $updatedAt;
 
     protected function __construct(
+        string $uuid,
         string $mimeType,
         ?int $width,
         ?int $height,
@@ -72,8 +72,10 @@ abstract class File implements Arrayable
         string $fileOriginalName,
         string $url,
         int $downloadedCount,
+        string $urlPattern = null,
     )
     {
+        $this->uuid = $uuid;
         $this->mimeType = $mimeType;
         $this->width = $width;
         $this->height = $height;
@@ -85,10 +87,11 @@ abstract class File implements Arrayable
         $this->fileOriginalName = $fileOriginalName;
         $this->url = $url;
         $this->downloadedCount = $downloadedCount;
-        $this->urlPattern = $this->makeUrlPattern($this);
+        $this->urlPattern = is_null($urlPattern) ? $this->makeUrlPattern($this) : $urlPattern;
     }
 
     public static function make(
+        string $uuid,
         string $mimeType,
         ?int $width,
         ?int $height,
@@ -100,9 +103,11 @@ abstract class File implements Arrayable
         string $fileOriginalName,
         string $url,
         int $downloadedCount = 0,
+        string $urlPattern = null,
     ): static
     {
         $media = new static(
+                        $uuid,
                         $mimeType,
                         $width,
                         $height,
@@ -114,6 +119,7 @@ abstract class File implements Arrayable
                         $fileOriginalName,
                         $url,
                         $downloadedCount,
+                        $urlPattern,
                     );
         
         return $media;
@@ -122,15 +128,20 @@ abstract class File implements Arrayable
     protected function makeUrlPattern(File $file): string
     {
         $res = match ($file->mimeType) {
-            MimeTypes::JPG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->fileName),
-            MimeTypes::JPEG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->fileName),
-            MimeTypes::PNG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->fileName),
-            MimeTypes::GIF->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->fileName),
+            MimeTypes::JPG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->fileName),
+            MimeTypes::JPEG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->fileName),
+            MimeTypes::PNG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->fileName),
+            MimeTypes::GIF->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->fileName),
 
-            default => sprintf('%s/%s', $file->path, $file->fileName)
+            default => sprintf('%s/%s', $file->getPath(), $file->fileName)
         };
 
         return "{endpoint}{$res}";
+    }
+
+    public function getUuid(): string
+    {
+        return $this->uuid;
     }
 
 	public function getFileName(): string
@@ -164,7 +175,7 @@ abstract class File implements Arrayable
     public function toArray(): array
     {
         return [
-            'id' => $this->id,
+            'uuid' => $this->uuid,
             'mime_type' => $this->mimeType,
             'width' => $this->width,
             'height' => $this->height,

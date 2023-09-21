@@ -2,21 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Project\Shared\Infrastructure\Authenticator;
+namespace Project\Shared\Infrastructure\Services\AuthenticateService;
 
 use App\Models\Auth\AppAuth;
 use App\Models\Enums\AppGuardType;
 use Illuminate\Http\Response;
-use Project\Shared\Domain\Authenticator\AuthenticatableInterface;
-use Project\Shared\Domain\Authenticator\AuthenticatorInterface;
-use Project\Shared\Domain\Authenticator\DeviceInterface;
+use Project\Infrastructure\Services\Authenticate\AuthenticatableInterface;
+use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
+use Project\Infrastructure\Services\Authenticate\DeviceInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-final class Authenticator implements AuthenticatorInterface
+class AuthenticationService implements AuthenticationServiceInterface
 {
 
-    public function login(AuthenticateCredentialDTO $data, AppGuardType $guard, array $claims = []): string
+    public function authenticate(AuthenticationCredentialsDTO $data, AppGuardType $guard, array $claims = []): string
     {
+        
         /** @var string $token */
         if (! ($token = \Auth::guard($guard->value)->claims($claims)->attempt($data->toArray()))) {
             throw new BadRequestException('Invalid credentials!');
@@ -25,7 +26,7 @@ final class Authenticator implements AuthenticatorInterface
         return $token;
     }
 
-    public function loginByUuid(string $uuid, AppGuardType $guard, array $claims = []): string
+    public function authenticateByUuid(string $uuid, AppGuardType $guard, array $claims = []): string
     {
         /** @var string $token */
         if (! ($token = \Auth::guard($guard->value)->claims($claims)->tokenById($uuid))) {

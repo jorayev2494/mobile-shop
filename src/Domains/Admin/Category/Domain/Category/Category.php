@@ -119,6 +119,8 @@ final class Category extends AggregateRoot
             'uuid' => $this->uuid->value,
             'value' => $this->value->value,
             'is_active' => $this->isActive,
+            'created_at' => $this->createdAt->getTimestamp(),
+            'updated_at' => $this->updatedAt->getTimestamp(),
         ];
     }
 }

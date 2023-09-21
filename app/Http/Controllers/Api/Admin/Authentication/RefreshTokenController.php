@@ -7,7 +7,6 @@ namespace App\Http\Controllers\Api\Admin\Authentication;
 use App\Http\Requests\Admin\Auth\RefreshTokenRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Project\Domains\Admin\Authentication\Application\Commands\RefreshToken\Command;
 use Project\Domains\Admin\Authentication\Application\Commands\RefreshToken\CommandHandler;
 

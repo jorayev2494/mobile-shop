@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Favorite\Application\Commands\Toggle;
 
-use Project\Domains\Client\Favorite\Domain\Favorite;
-use Project\Domains\Client\Favorite\Domain\Member\ValueObjects\MemberUUID;
-use Project\Domains\Client\Favorite\Domain\Product\ValueObjects\ProductUUID;
-use Project\Domains\Client\Favorite\Infrastructure\Eloquent\FavoriteRepository;
+use Project\Domains\Client\Favorite\Domain\Member\MemberRepositoryInterface;
+use Project\Domains\Client\Favorite\Domain\Member\ValueObjects\MemberUuid;
+use Project\Domains\Client\Favorite\Domain\Product\ProductRepositoryInterface;
+use Project\Domains\Client\Favorite\Domain\Product\ValueObjects\ProductUuid;
+use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class ToggleFavoriteCommandService
 {
 
     public function __construct(
-        private readonly FavoriteRepository $repository,
+        private readonly MemberRepositoryInterface $memberRepository,
+        private readonly ProductRepositoryInterface $productRepository,
+        private readonly AuthManagerInterface $authManager,
     )
     {
 
@@ -21,12 +24,24 @@ final class ToggleFavoriteCommandService
 
     public function execute(ToggleFavoriteCommand $command): void
     {
-        $favorite = new Favorite(
-            MemberUUID::fromValue($command->memberUUID),
-            ProductUUID::fromValue($command->productUUID)
-        );
+        $member = $this->memberRepository->findByUuid(MemberUuid::fromValue($command->memberUuid));
+        $product = $this->productRepository->findByUuid(ProductUuid::fromValue($command->productUuid));
 
-        $this->repository->contains($favorite)  ? $this->repository->unfavorite($favorite)
-                                                : $this->repository->favorite($favorite);
+        $member->getProducts()->contains($product) ? $member->removeProduct($product) : $member->addProduct($product);
+
+        $this->memberRepository->save($member);
+
+        // dd(
+        //     $member,
+        //     $product
+        // );
+
+        // $favorite = new Favorite(
+        //     MemberUUID::fromValue($command->memberUUID),
+        //     ProductUUID::fromValue($command->productUUID)
+        // );
+
+        // $this->repository->contains($favorite)  ? $this->repository->unfavorite($favorite)
+        //                                         : $this->repository->favorite($favorite);
     }
 }

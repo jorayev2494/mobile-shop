@@ -17,7 +17,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
         public readonly ?int $perPage,
         public readonly ?string $cursor,
         public readonly ?string $sortBy,
-        public readonly ?bool $isSortDesc,
+        public readonly ?bool $sortRule,
         public readonly ?array $filters,
     )
     {
@@ -31,7 +31,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
         ?int $perPage = null,
         ?string $cursor = null,
         ?string $sortBy = null,
-        ?bool $isSortDesc = null,
+        ?bool $sortRule = null,
         ?array $filters = null,
     ): static
     {
@@ -42,7 +42,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
             perPage: $perPage,
             cursor: $cursor,
             sortBy: $sortBy,
-            isSortDesc: $isSortDesc,
+            sortRule: $sortRule,
             filters: $filters,
         );
     }
@@ -56,7 +56,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
             perPage: $request->query->getInt('per_page', 10),
             cursor: $request->query->get('cursor'),
             sortBy: $request->query->get('sort_by', 'created_at'),
-            isSortDesc: $request->query->getBoolean('is_sort_desc'),
+            sortRule: $request->query->getBoolean('sort_rule'),
             filters: self::makeFilters($request->get('filters', [])),
         );
     }

@@ -4,62 +4,35 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Product\Infrastructure\Eloquent;
 
-use App\Repositories\Base\BaseModelRepository;
-use Illuminate\Contracts\Pagination\CursorPaginator;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
-use Project\Domains\Client\Product\Domain\Product;
+use App\Repositories\Base\Doctrine\Paginator;
+use App\Repositories\Base\Doctrine\BaseAdminEntityRepository;
+use Project\Domains\Admin\Product\Domain\Product\Product;
 use Project\Domains\Client\Product\Domain\ProductRepositoryInterface;
-use Project\Domains\Client\Product\Domain\ValueObjects\ProductUUID;
+use Project\Domains\Client\Product\Domain\ValueObjects\ProductUuid;
 use Project\Shared\Application\Query\BaseQuery;
 
-final class ProductRepository extends BaseModelRepository implements ProductRepositoryInterface
+final class ProductRepository extends BaseAdminEntityRepository implements ProductRepositoryInterface
 {
-    public function getModel(): string
+    protected function getEntity(): string
     {
-        return \App\Models\Product::class;
+        return Product::class;
     }
 
-    public function indexSimplePaginate(BaseQuery $queryData, iterable $columns = ['*']): Paginator
+    public function paginate(BaseQuery $queryData): Paginator
     {
-        /** @var Builder $build */
-        $query = $this->getModelClone()->newQuery();
-        $query->select($columns);
+        $query = $this->entityRepository->createQueryBuilder('p')
+                                        ->getQuery();
 
-        $this->search($queryData, $query)
-            ->sort($queryData, $query)
-            ->filters($queryData, $query);
-
-        $query->with(['currency:uuid,value', 'cover', 'category:uuid,value']);
-
-        return $query->simplePaginate($queryData->per_page)->withQueryString();
+        return $this->paginator($query, $queryData);
     }
 
-    public function findByUUID(ProductUUID $uuid): ?Product
+    public function findByUuid(ProductUuid $uuid): ?Product
     {
-        /** @var \App\Models\Product $fProduct */
-        $fProduct = $this->getModelClone()->newQuery()
-                                    ->with(['currency:uuid,value', 'medias'])
-                                    ->find($uuid->value);
+        $product = $this->entityRepository->find($uuid->value);
 
-        if ($fProduct === null) {
+        if ($product === null) {
             return null;
         }
-
-        $product = Product::fromPrimitives(
-            $fProduct->uuid,
-            $fProduct->title,
-            $fProduct->category_uuid,
-            $fProduct->currency_uuid,
-            (string) $fProduct->price,
-            (string) $fProduct->discount_percentage,
-            $fProduct->medias ?? [],
-            $fProduct->viewed_count,
-            $fProduct->description
-        );
-
-        $product->setCurrency($fProduct->currency->toArray());
 
         return $product;
     }

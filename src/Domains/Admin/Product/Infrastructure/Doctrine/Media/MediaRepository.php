@@ -7,12 +7,22 @@ namespace Project\Domains\Admin\Product\Infrastructure\Doctrine\Media;
 use App\Repositories\Base\Doctrine\BaseAdminEntityRepository;
 use Project\Domains\Admin\Product\Domain\Media\Media;
 use Project\Domains\Admin\Product\Domain\Media\MediaRepositoryInterface;
+use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 
 final class MediaRepository extends BaseAdminEntityRepository implements MediaRepositoryInterface
 {
     protected function getEntity(): string
     {
         return Media::class;
+    }
+
+    /**
+     * @param ProductUuid $productUuid
+     * @return iterable<Media>
+     */
+    public function findManyByProductUuid(ProductUuid $productUuid): iterable
+    {
+        return $this->entityRepository->findBy(['productUuid' => $productUuid]);
     }
 
     /**

@@ -107,7 +107,7 @@ services:
   # Link: https://dev.to/nietzscheson/multiples-postgres-databases-in-one-service-with-docker-compose-4fdf 
   # Postgres Service
   postgres:
-    image: postgres:alpine
+    image: postgres:15-alpine
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     restart: unless-stopped
     volumes:

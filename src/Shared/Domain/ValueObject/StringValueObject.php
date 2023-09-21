@@ -7,7 +7,7 @@ namespace Project\Shared\Domain\ValueObject;
 // use Doctrine\DBAL\Types\Types;
 // use Doctrine\ORM\Mapping as ORM;
 
-abstract class StringValueObject // implements \Stringable
+abstract class StringValueObject implements \Stringable
 {
     // #[ORM\Column(type: Types::STRING)]
     public ?string $value;
@@ -32,6 +32,16 @@ abstract class StringValueObject // implements \Stringable
         return $this->value !== $other->value;
     }
 
+    public function isNull(): bool
+    {
+        return is_null($this->value);
+    }
+
+    public function isNotNull(): bool
+    {
+        return ! is_null($this->value);
+    }
+
     // public function setValue(string $value): void
     // {
     //     $this->value = $value;
@@ -42,9 +52,9 @@ abstract class StringValueObject // implements \Stringable
     //     return $this->value;
     // }
 
-    // public function __toString(): string
-    // {
-    //     return $this->value;
-    // }
+    public function __toString(): string
+    {
+        return $this->value;
+    }
 
 }

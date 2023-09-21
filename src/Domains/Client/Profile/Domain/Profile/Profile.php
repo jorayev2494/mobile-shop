@@ -133,6 +133,21 @@ class Profile extends AggregateRoot
 		$this->phone = $phone;
 	}
 
+    public function getFullName(): ?string
+    {
+		$result = null;
+
+        if ($this->firstName->isNotNull()) {
+            $result .= $this->firstName->value . ' ';
+        }
+
+        if ($this->lastName->isNotNull()) {
+            $result .= $this->lastName->value;
+        }
+
+        return $result;
+	}
+
     public function changeFirstName(ProfileFirstName $firstName): void
     {
         if ($this->firstName->isNotEquals($firstName)) {
@@ -171,6 +186,7 @@ class Profile extends AggregateRoot
             'uuid' => $this->uuid,
             'first_name' => $this->firstName?->value,
             'last_name' => $this->lastName?->value,
+            'full_name' => $this->getFullName(),
             'email' => $this->email?->value,
             'phone' => $this->phone?->value,
         ];

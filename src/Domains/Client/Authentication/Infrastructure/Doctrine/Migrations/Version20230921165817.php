@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230909225624 extends AbstractMigration
+final class Version20230921165817 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,6 +20,7 @@ final class Version20230909225624 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SEQUENCE auth_codes_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE address_addresses (uuid VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, full_name VARCHAR(255) NOT NULL, author_uuid VARCHAR(255) NOT NULL, first_address VARCHAR(255) NOT NULL, second_address VARCHAR(255) DEFAULT NULL, zip_code INT DEFAULT NULL, country_uuid VARCHAR(255) NOT NULL, city_uuid VARCHAR(255) NOT NULL, district VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE TABLE auth_codes (id INT NOT NULL, author_uuid VARCHAR(255) DEFAULT NULL, member_uuid VARCHAR(255) NOT NULL, value INT NOT NULL, refresh_token VARCHAR(255) NOT NULL, device_id VARCHAR(255) NOT NULL, expired_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_298F90381D775834 ON auth_codes (value)');
@@ -35,12 +36,26 @@ final class Version20230909225624 extends AbstractMigration
         $this->addSql('COMMENT ON COLUMN auth_device.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE auth_members (uuid VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_B84F20CE7927C74 ON auth_members (email)');
+        $this->addSql('CREATE TABLE favorite_medias (uuid VARCHAR(255) NOT NULL, product_uuid VARCHAR(255) NOT NULL, width INT DEFAULT NULL, height INT DEFAULT NULL, mime_type VARCHAR(255) NOT NULL, extension VARCHAR(255) NOT NULL, size INT NOT NULL, path VARCHAR(255) NOT NULL, full_path VARCHAR(255) NOT NULL, file_name VARCHAR(255) NOT NULL, file_original_name VARCHAR(255) NOT NULL, url VARCHAR(255) NOT NULL, url_pattern VARCHAR(255) NOT NULL, downloaded_count INT NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE INDEX IDX_2E67C37B5C977207 ON favorite_medias (product_uuid)');
+        $this->addSql('COMMENT ON COLUMN favorite_medias.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN favorite_medias.updated_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('CREATE TABLE favorite_member (uuid VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('CREATE TABLE favorite_members_products (member_uuid VARCHAR(255) NOT NULL, product_uuid VARCHAR(255) NOT NULL, PRIMARY KEY(member_uuid, product_uuid))');
+        $this->addSql('CREATE INDEX IDX_C4DF53A42DF77CFA ON favorite_members_products (member_uuid)');
+        $this->addSql('CREATE INDEX IDX_C4DF53A45C977207 ON favorite_members_products (product_uuid)');
+        $this->addSql('CREATE TABLE favorite_products (uuid VARCHAR(255) NOT NULL, title VARCHAR(255) NOT NULL, category_uuid VARCHAR(255) NOT NULL, viewed_count INT NOT NULL, description VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, price_value NUMERIC(7, 2) NOT NULL, price_discount_percentage INT DEFAULT NULL, price_currency_uuid VARCHAR(255) NOT NULL, PRIMARY KEY(uuid))');
+        $this->addSql('COMMENT ON COLUMN favorite_products.created_at IS \'(DC2Type:datetime_immutable)\'');
+        $this->addSql('COMMENT ON COLUMN favorite_products.updated_at IS \'(DC2Type:datetime_immutable)\'');
         $this->addSql('CREATE TABLE profile_devices (uuid VARCHAR(255) NOT NULL, author_uuid VARCHAR(255) NOT NULL, device_id VARCHAR(255) NOT NULL, device_name VARCHAR(255) DEFAULT NULL, user_agent VARCHAR(255) DEFAULT NULL, os VARCHAR(255) DEFAULT NULL, os_version VARCHAR(255) DEFAULT NULL, app_version VARCHAR(255) DEFAULT NULL, ip_address VARCHAR(255) DEFAULT NULL, location VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE INDEX IDX_C2B990063590D879 ON profile_devices (author_uuid)');
         $this->addSql('CREATE TABLE profile_profiles (uuid VARCHAR(255) NOT NULL, first_name VARCHAR(255) DEFAULT NULL, last_name VARCHAR(255) DEFAULT NULL, email VARCHAR(255) NOT NULL, phone VARCHAR(255) DEFAULT NULL, PRIMARY KEY(uuid))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_725AE481E7927C74 ON profile_profiles (email)');
         $this->addSql('ALTER TABLE auth_codes ADD CONSTRAINT FK_298F90383590D879 FOREIGN KEY (author_uuid) REFERENCES auth_members (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE auth_device ADD CONSTRAINT FK_298C116C3590D879 FOREIGN KEY (author_uuid) REFERENCES auth_members (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE favorite_medias ADD CONSTRAINT FK_2E67C37B5C977207 FOREIGN KEY (product_uuid) REFERENCES favorite_products (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE favorite_members_products ADD CONSTRAINT FK_C4DF53A42DF77CFA FOREIGN KEY (member_uuid) REFERENCES favorite_member (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
+        $this->addSql('ALTER TABLE favorite_members_products ADD CONSTRAINT FK_C4DF53A45C977207 FOREIGN KEY (product_uuid) REFERENCES favorite_products (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE profile_devices ADD CONSTRAINT FK_C2B990063590D879 FOREIGN KEY (author_uuid) REFERENCES profile_profiles (uuid) NOT DEFERRABLE INITIALLY IMMEDIATE');
     }
 
@@ -48,13 +63,21 @@ final class Version20230909225624 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
+        $this->addSql('DROP SEQUENCE auth_codes_id_seq CASCADE');
         $this->addSql('ALTER TABLE auth_codes DROP CONSTRAINT FK_298F90383590D879');
         $this->addSql('ALTER TABLE auth_device DROP CONSTRAINT FK_298C116C3590D879');
+        $this->addSql('ALTER TABLE favorite_medias DROP CONSTRAINT FK_2E67C37B5C977207');
+        $this->addSql('ALTER TABLE favorite_members_products DROP CONSTRAINT FK_C4DF53A42DF77CFA');
+        $this->addSql('ALTER TABLE favorite_members_products DROP CONSTRAINT FK_C4DF53A45C977207');
         $this->addSql('ALTER TABLE profile_devices DROP CONSTRAINT FK_C2B990063590D879');
         $this->addSql('DROP TABLE address_addresses');
         $this->addSql('DROP TABLE auth_codes');
         $this->addSql('DROP TABLE auth_device');
         $this->addSql('DROP TABLE auth_members');
+        $this->addSql('DROP TABLE favorite_medias');
+        $this->addSql('DROP TABLE favorite_member');
+        $this->addSql('DROP TABLE favorite_members_products');
+        $this->addSql('DROP TABLE favorite_products');
         $this->addSql('DROP TABLE profile_devices');
         $this->addSql('DROP TABLE profile_profiles');
     }

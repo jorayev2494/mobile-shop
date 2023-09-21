@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Authentication\Application\Commands\Logout;
 
-use App\Models\Auth\AppAuth;
 use App\Models\Enums\AppGuardType;
 use Project\Domains\Client\Authentication\Domain\Device\DeviceRepositoryInterface;
 use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
-use Project\Shared\Domain\Authenticator\AuthenticatorInterface;
+use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use Project\Utils\Auth\AppGuard;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -19,7 +17,7 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly MemberRepositoryInterface $repository,
         private readonly DeviceRepositoryInterface $deviceRepository,
         private readonly AuthManagerInterface $authManager,
-        private readonly AuthenticatorInterface $authenticator,
+        private readonly AuthenticationServiceInterface $authenticationService,
     )
     {
         
@@ -40,6 +38,6 @@ final class CommandHandler implements CommandHandlerInterface
 
         $member->removeDevice($device);
         $this->repository->save($member);
-        $this->authenticator->logout(AppGuardType::CLIENT);
+        $this->authenticationService->logout(AppGuardType::CLIENT);
     }
 }

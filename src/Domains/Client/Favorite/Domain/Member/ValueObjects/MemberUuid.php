@@ -6,7 +6,7 @@ namespace Project\Domains\Client\Favorite\Domain\Member\ValueObjects;
 
 use Project\Shared\Domain\ValueObject\StringValueObject;
 
-final class MemberUUID extends StringValueObject
+final class MemberUuid extends StringValueObject
 {
 
 }
