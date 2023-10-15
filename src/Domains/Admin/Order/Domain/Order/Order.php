@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Order\Domain\Order;
 
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderAddressUUID;
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderCardUUID;
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderClientUUID;
+// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderAddressUuid;
+// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderCardUuid;
+// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderClientUuid;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Description;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Email;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Phone;
-use Project\Domains\Client\Order\Domain\Order\ValueObjects\UUID;
+use Project\Domains\Client\Order\Domain\Order\ValueObjects\Uuid;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 final class Order extends AggregateRoot
 {
     private function __construct(
-        public readonly UUID $uuid,
+        public readonly Uuid $uuid,
         public readonly Email $email,
         public readonly Phone $phone,
         // public readonly Description $description,
@@ -30,7 +30,7 @@ final class Order extends AggregateRoot
     }
 
     public static function create(
-        UUID $uuid,
+        Uuid $uuid,
         Email $email,
         Phone $phone,
         // Description $description,
@@ -64,7 +64,7 @@ final class Order extends AggregateRoot
         bool $isActive,
     ): self {
         return new self(
-            UUID::fromValue($uuid),
+            Uuid::fromValue($uuid),
             Email::fromValue($email),
             Phone::fromValue($phone),
             // Description::fromValue($description),

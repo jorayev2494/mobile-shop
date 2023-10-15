@@ -10,11 +10,6 @@ use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\RoutingKey;
 
-use RuntimeException;
-use Traversable;
-
-use function Lambdish\Phunctional\search;
-
 final class CommandHandlerLocator implements LocatorInterface
 {
     use QueueName;
@@ -42,7 +37,7 @@ final class CommandHandlerLocator implements LocatorInterface
         //     $this->mapping
         // );
 
-        $queue = null;
+        $queue = static fn (): null => null;
         foreach ($this->mapping as $h) {
             if (str_contains(RabbitMqQueueNameFormatter::format($h), $queueName)) {
                 $queue = $h;

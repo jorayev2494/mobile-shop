@@ -14,6 +14,12 @@ use RuntimeException;
 
 final class RabbitMqDomainEventsConsumer
 {
+    private const PREFETCH_SIZE = 0;
+
+    private const PREFETCH_COUNT = 1;
+
+    private const A_GLOBAL = false;
+
     private readonly AMQPChannel $channel;
 
     private AMQPMessage $msg;
@@ -22,7 +28,7 @@ final class RabbitMqDomainEventsConsumer
         private readonly AMQPStreamConnection $amqpConnection,
     ) {
         $this->channel = $amqpConnection->channel();
-        $this->channel->basic_qos(null, 1, null);
+        $this->channel->basic_qos(self::PREFETCH_SIZE, self::PREFETCH_COUNT, self::A_GLOBAL);
     }
 
     public function consume(callable $subscriber, string $queueName): void

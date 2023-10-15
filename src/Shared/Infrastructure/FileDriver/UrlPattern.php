@@ -15,13 +15,13 @@ class UrlPattern
 
     private static function makePattern(File $file): string
     {
-        return match ($file->mime_type) {
-            MimeTypes::JPG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->name),
-            MimeTypes::JPEG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->name),
-            MimeTypes::PNG->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->name),
-            MimeTypes::GIF->value => sprintf('%s/%sx%s/%s', $file->path, '{width}', '{height}', $file->name),
+        return match ($file->getMimeType()) {
+            MimeTypes::JPG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->getFileName()),
+            MimeTypes::JPEG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->getFileName()),
+            MimeTypes::PNG->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->getFileName()),
+            MimeTypes::GIF->value => sprintf('%s/%sx%s/%s', $file->getPath(), '{width}', '{height}', $file->getFileName()),
 
-            default => sprintf('%s/%s', $file->path, $file->name)
+            default => sprintf('%s/%s', $file->getPath(), $file->getFileName())
         };
     }
 }

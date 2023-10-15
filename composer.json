@@ -30,7 +30,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",
-        "psalm/plugin-laravel": "^2.0"
+        "vimeo/psalm": "^5.15"
     },
     "autoload": {
         "psr-4": {

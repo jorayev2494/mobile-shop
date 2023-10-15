@@ -117,6 +117,28 @@ function logs()
     docker-compose --file $SERVER_COMPOSE_FILE_PATH logs ${@:1}
 }
 
+function psalm()
+{
+    case "$1" in
+        'run')
+            docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./vendor/bin/psalter --issues=all
+        ;;
+        *)
+            echo -e "
+${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    paslm <command>
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    run ${BLUE}............................................................................${GREEN} Paslm run
+"
+            exit 1
+        ;;
+    esac
+}
+
+# https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/config.rst
 function php-cs-fixer() {
     case "$1" in
         'check')

@@ -42,13 +42,6 @@ final class LaravelFilesystem implements FilesystemInterface
                 $url,
             );
         } catch (\Throwable $th) {
-            // dd($th->getMessage(), $th->getLine(), $th->getFile());
-            // info('File upload message exception', [
-            //     'message' => $th->getMessage(),
-            //     'file' => $th->getFile(),
-            //     'line' => $th->getLine(),
-            //     'trace' => $th->getTrace(),
-            // ]);
             throw new BadRequestException($th->getMessage());
         }
     }
@@ -69,25 +62,5 @@ final class LaravelFilesystem implements FilesystemInterface
         }
 
         return true;
-    }
-
-    protected function deleteDir(string $path): bool
-    {
-        $this->changeDisk($disk);
-
-        if (Storage::disk($disk)->exists($path)) {
-            Storage::disk($disk)->deleteDirectory($path);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public function changeDisk(string &$disk): void
-    {
-        if (config('app.env') === 'local') {
-            $disk = 'public';
-        }
     }
 }
