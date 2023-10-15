@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Project\Domains\Client\Address\Domain;
 
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Client\Address\Domain\Events\AddressWasCreatedDomainEvent;
+use Project\Domains\Client\Address\Domain\Events\AddressWasDeletedDomainEvent;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressCityUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressAuthorUuid;
@@ -101,7 +103,23 @@ final class Address extends AggregateRoot
         AddressDistrict $district,
     ): self
     {
-        return new self($uuid, $title, $fullName, $clientUuid, $firstAddress, $secondAddress, $zipCode, $countryUuid, $cityUuid, $district);
+        $address = new self($uuid, $title, $fullName, $clientUuid, $firstAddress, $secondAddress, $zipCode, $countryUuid, $cityUuid, $district);
+        $address->record(
+            new AddressWasCreatedDomainEvent(
+                $address->getUuid()->value,
+                $address->getTitle()->value,
+                $address->getFullName()->value,
+                $address->getAuthorUuid()->value,
+                $address->getFirstAddress()->value,
+                $address->getSecondAddress()->value,
+                $address->getZipCode()->value,
+                $address->getCountryUuid()->value,
+                $address->getCityUuid()->value,
+                $address->getDistrict()->value
+            )
+        );
+
+        return $address;
     }
 
     public static function fromPrimitives(
@@ -249,6 +267,22 @@ final class Address extends AggregateRoot
             $this->district = $district;
         }
 	}
+
+    public function delete(): void
+    {
+        $this->record(new AddressWasDeletedDomainEvent(
+            $this->uuid->value,
+            $this->title->value,
+            $this->fullName->value,
+            $this->authorUuid->value,
+            $this->firstAddress->value,
+            $this->secondAddress->value,
+            $this->zipCode->value,
+            $this->countryUuid->value,
+            $this->cityUuid->value,
+            $this->district->value
+        ));
+    }
 
     public function toArray(): array
     {

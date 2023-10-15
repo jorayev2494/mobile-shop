@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# https://tech.osteel.me/posts/docker-for-local-web-development-part-4-smoothing-things-out-with-bash
+
+# source ./spinner.sh;
+source ./colors.sh;
+source ./functions.sh;
+
+printServerLstOfCommands()
+{
+    echo -e "
+ ${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    demo <command> [options] [arguments]
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    status ${BLUE}............................................................................${GREEN} Print status of containers
+    start ${BLUE}.............................................................................${GREEN} Start the containers
+    stop ${BLUE}..............................................................................${GREEN} Stop the containers
+    restart ${BLUE}...........................................................................${GREEN} Restart the container
+    pull ${BLUE}..............................................................................${GREEN} Pull the containers
+    build [--no-cache] ${BLUE}................................................................${GREEN} Build containers
+                                                                                          Options:
+                                                                                            --no-cache ${BLUE}..................................${GREEN} Build no cache
+    logs ${BLUE}..............................................................................${GREEN} Print logs of containers
+    restart-message-broker ${BLUE}............................................................${GREEN} Restart message broker
+    bash ${BLUE}..............................................................................${GREEN} Containter interactive terminal bash
+    cc ${BLUE}................................................................................${GREEN} Clear cache
+    database [admin, client] [[seed], fresh, diff, migrate] ${BLUE}...........................${GREEN} Database
+                                                                                        Options:
+                                                                                            type ${BLUE}........................................${GREEN} Many actions
+    artisan ${BLUE}...........................................................................${GREEN} Laravel Artisan commands
+    composer ${BLUE}..........................................................................${GREEN} Composerz commands
+    ${ENDCOLOR}
+"
+}
+
+case "$1" in
+    status)
+        status
+    ;;
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    restart)
+        restart
+    ;;
+    pull)
+        pull
+    ;;
+    build)
+        build ${@:2}
+    ;;
+    logs)
+        logs ${@:2}
+    ;;
+    restart-message-broker)
+        restart-message-broker
+    ;;
+    bash)
+        bash
+    ;;
+    cc)
+        cc
+    ;;
+    database)
+        database ${@:2}
+    ;;
+    artisan)
+        artisan ${@:2}
+    ;;
+    composer)
+        composer ${@:2}
+    ;;
+    *)
+        printServerLstOfCommands
+
+        exit 1
+    ;;
+esac

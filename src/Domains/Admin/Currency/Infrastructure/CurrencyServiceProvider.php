@@ -29,10 +29,13 @@ final class CurrencyServiceProvider extends AdminDomainServiceProvider
 
     protected const QUERY_HANDLERS = [
         \Project\Domains\Admin\Currency\Application\Queries\Index\QueryHandler::class,
+        \Project\Domains\Admin\Currency\Application\Queries\Show\QueryHandler::class,
     ];
 
     protected const COMMAND_HANDLERS = [
         \Project\Domains\Admin\Currency\Application\Commands\Create\CommandHandler::class,
+        \Project\Domains\Admin\Currency\Application\Commands\Update\CommandHandler::class,
+        \Project\Domains\Admin\Currency\Application\Commands\Delete\CommandHandler::class,
     ];
 
 }

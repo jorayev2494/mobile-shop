@@ -73,7 +73,7 @@ abstract class GenerateSupervisorRabbitMQConsumerService
         user            = root
         numprocs        = {processes}
         redirect_stderr = true
-        stdout_logfile  = /var/project/storage/logs/{queue_name}.log
+        stdout_logfile  = /var/project/storage/logs/supervisor/{queue_name}.log
 
         EOF;
     }

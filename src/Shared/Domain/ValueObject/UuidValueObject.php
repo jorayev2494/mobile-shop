@@ -49,6 +49,6 @@ class UuidValueObject implements \Stringable
 
     public function __toString(): string
     {
-        return $this->value;
+        return $this->value ?? 'test'; // ?? dd(get_called_class(), $this->value);
     }
 }

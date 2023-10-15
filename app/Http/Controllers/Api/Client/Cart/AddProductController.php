@@ -20,16 +20,12 @@ class AddProductController
         
     }
 
-    public function __invoke(AddProductRequest $request, string $uuid): Response
+    public function __invoke(AddProductRequest $request): Response
     {
         $this->commandBus->dispatch(
             new Command(
-                $uuid,
                 $request->get('product_uuid'),
-                // $request->get('product_currency_uuid'),
-                $request->get('product_quality'),
-                // $request->get('product_price'),
-                // $request->get('product_discount_percentage'),
+                $request->get('quantity'),
             )
         );
 

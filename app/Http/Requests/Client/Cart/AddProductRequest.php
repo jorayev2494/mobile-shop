@@ -16,8 +16,8 @@ class AddProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_uuid' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',uuid'],
-            'product_quality' => ['required', 'numeric', 'min:1'],
+            'product_uuid' => ['required', 'string', 'exists:client_pgsql.cart_products,uuid'],
+            'quantity' => ['required', 'numeric', 'min:1'],
         ];
     }
 }

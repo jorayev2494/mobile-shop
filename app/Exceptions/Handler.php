@@ -109,6 +109,7 @@ class Handler extends ExceptionHandler
         }
 
         // dd($ex);
+        // dd($ex->getPrevious());
 
         return response()->json([
             // 'message' => 'Unauthenticated',

@@ -12,7 +12,7 @@ use Project\Domains\Client\Card\Domain\ValueObjects\CardClientUUID;
 use Project\Domains\Client\Card\Domain\ValueObjects\CardUUID;
 use Project\Shared\Application\Query\BaseQuery;
 
-final class EloquentCardRepository extends BaseModelRepository implements CardRepositoryInterface
+final class EloquentCardRepository extends BaseModelRepository // implements CardRepositoryInterface
 {
     public function getModel(): string
     {

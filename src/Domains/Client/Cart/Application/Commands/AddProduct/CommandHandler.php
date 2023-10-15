@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Application\Commands\AddProduct;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Cart\Domain\Cart\Cart;
 use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartStatus;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductCurrencyUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductDiscountPercentage;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductPrice;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductQuality;
-use Project\Domains\Client\Cart\Domain\Product\Product;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\AuthorUuid;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\StatusEnum;
+use Project\Domains\Client\Cart\Domain\CartProduct\CartProduct;
+use Project\Domains\Client\Cart\Domain\CartProduct\ValueObjects\Quantity;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\Uuid;
 use Project\Domains\Client\Cart\Domain\Product\ProductRepositoryInterface;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductUUID;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Uuid as ValueObjectsUuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\UuidGeneratorInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
+use Project\Shared\Domain\DomainException;
 
 class CommandHandler implements CommandHandlerInterface
 {
@@ -25,6 +24,7 @@ class CommandHandler implements CommandHandlerInterface
         private readonly CartRepositoryInterface $repository,
         private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
+        private readonly UuidGeneratorInterface $uuidGenerator,
     )
     {
         
@@ -32,60 +32,29 @@ class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $cart = $this->repository->findByUUID(CartUUID::fromValue($command->uuid));
+        $authorUuid = AuthorUuid::fromValue($this->authManager->uuid());
+        $cart = $this->repository->findCartByAuthorUuid($authorUuid);
+        
+        $cart ??= Cart::create(Uuid::fromValue($this->uuidGenerator->generate()), $authorUuid);
 
-        $cart ?? throw new ModelNotFoundException("Cart not found");
-
-        if ($cart->getStatus() === CartStatus::ORDERED) {
-            throw new \DomainException("This cart is ordered");
+        if ($cart->getStatus()->isNotEquals(StatusEnum::DRAFT)) {
+            throw new DomainException("This cart is ordered");
         }
 
-        $this->addProduct($cart, $this->makeProduct($command));
+        $product = $this->productRepository->findByUuid(ValueObjectsUuid::fromValue($command->productUuid));
+
+        $productIsNotCart = true;
+        foreach ($cart->getCartProducts() as $key => $cartProduct) {
+            if ($cartProduct->getProduct()->getUuid()->isEquals($product->getUuid())) {
+                $productIsNotCart = false;
+                $cartProduct->setQuantity(Quantity::fromValue($command->quantity));
+            }
+        }
+
+        if ($productIsNotCart) {
+            $cart->addCartProduct(CartProduct::create($product, Quantity::fromValue($command->quantity)));
+        }
 
         $this->repository->save($cart);
-    }
-
-    private function makeProduct(Command $command): Product
-    {
-        $product = $this->productRepository->findByUuid(ProductUUID::fromValue($command->productUuid));
-
-        $product ?? throw new ModelNotFoundException("Product not found");
-
-        $productPrice = ((float) $product->price->value) * $command->productQuality;
-        $productDiscountPercentage = ((float) $product->discountPercentage->value) * $command->productQuality;
-
-        $product = Product::create(
-            $product->uuid,
-            $product->title,
-            $product->categoryUUID,
-            $product->currencyUUID,
-            $product->price,
-            $product->discountPercentage,
-            $product->viewedCount,
-            
-            CartProductCurrencyUUID::fromValue($product->currencyUUID->value),
-            CartProductQuality::fromValue($command->productQuality),
-            CartProductPrice::fromValue((string) $productPrice),
-            CartProductDiscountPercentage::fromValue((int) $productDiscountPercentage),
-        );
-
-        return $product;
-    }
-
-
-    private function addProduct(Cart $cart, Product $product): void
-    {
-        $products = [];
-
-        foreach ($cart->getProducts() as $cartProduct) {
-            if ($cartProduct->uuid->value === $product->uuid->value) {
-                continue;
-            }
-
-            $products[] = $cartProduct;
-        }
-
-        $cart->addProducts($products);
-        $cart->addProduct($product);
     }
 }

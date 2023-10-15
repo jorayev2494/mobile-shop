@@ -3,10 +3,12 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Domain\Product;
-use App\Repositories\Contracts\BaseModelRepositoryInterface;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductUUID;
 
-interface ProductRepositoryInterface extends BaseModelRepositoryInterface
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Uuid as ProductUuid;
+
+interface ProductRepositoryInterface
 {
-    public function findByUuid(ProductUUID $uuid): ?Product;
+    public function findByUuid(ProductUuid $uuid): ?Product;
+    public function save(Product $product): void;
+    public function delete(Product $product): void;
 }

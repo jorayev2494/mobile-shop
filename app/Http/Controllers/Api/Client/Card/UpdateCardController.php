@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Card;
 use App\Http\Requests\Client\Card\UpdateCardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Update\UpdateCardCommand;
+use Project\Domains\Client\Card\Application\Commands\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateCardController
@@ -23,7 +23,7 @@ class UpdateCardController
     public function __invoke(UpdateCardRequest $request, string $uuid): Response
     {
         $this->commandBus->dispatch(
-            new UpdateCardCommand(
+            new Command(
                 $uuid,
                 $request->get('type'),
                 $request->get('holder_name'),

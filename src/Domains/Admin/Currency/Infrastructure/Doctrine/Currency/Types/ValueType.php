@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Currency\Infrastructure\Doctrine\Currency\Types;
 
 use Doctrine\DBAL\Types\Type;
-use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\CurrencyValue;
+use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\Value;
 
 final class ValueType extends Type
 {
-    public const NAME = 'currency_domain_currency_value';
+    public const NAME = 'admin_currency_domain_value';
 
     public function getSQLDeclaration($column, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): string
     {
@@ -17,7 +17,7 @@ final class ValueType extends Type
     }
 
     /**
-     * @param CurrencyValue $value
+     * @param Value $value
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return string
      */
@@ -26,9 +26,9 @@ final class ValueType extends Type
         return $value->value;
     }
 
-    public function convertToPHPValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): CurrencyValue
+    public function convertToPHPValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): Value
     {
-        return CurrencyValue::fromValue($value);
+        return Value::fromValue($value);
     }
 
     public function getName(): string

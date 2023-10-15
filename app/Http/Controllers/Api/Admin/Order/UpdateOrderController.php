@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Order\UpdateOrderRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Order\Application\Commands\Update\UpdateOrderCommand;
+use Project\Domains\Admin\Order\Application\Commands\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateOrderController extends Controller
@@ -20,21 +20,17 @@ class UpdateOrderController extends Controller
         
     }
     
-    public function __invoke(UpdateOrderRequest $request): Response
+    public function __invoke(UpdateOrderRequest $request, string $uuid): Response
     {
-        dd($request);
-        dd(
-            new UpdateOrderCommand(
-                $request->get('uuid'),
-                $request->get('email'),
-                $request->get('phone'),
-                $request->get('description'),
+        $this->commandBus->dispatch(
+            new Command(
+                $uuid,
+                // $request->get('email'),
+                // $request->get('phone'),
+                // $request->get('description'),
                 $request->get('status')
             )
         );
-        // $this->commandBus->dispatch(
-            
-        // );
 
         return $this->response->noContent(Response::HTTP_ACCEPTED);
     }

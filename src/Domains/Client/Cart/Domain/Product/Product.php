@@ -1,136 +1,240 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Client\Cart\Domain\Product;
 
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductCurrencyUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductDiscountPercentage;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductPrice;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CartProductQuality;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductCategoryUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductCurrencyUUID;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductDiscountPercentage;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductPrice;
-use Project\Domains\Client\Cart\Domain\Product\ValueObjects\ProductUUID;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Event\{PrePersistEventArgs, PreUpdateEventArgs};
+use Illuminate\Contracts\Support\Arrayable;
+use Project\Domains\Client\Cart\Domain\CartProduct\CartProduct;
+use Project\Domains\Client\Cart\Domain\Category\Category;
+use Project\Domains\Client\Cart\Domain\Media\Media;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\CategoryUuid;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Description;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Price;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Title;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Uuid;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Product\Types\CategoryUuidType;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Product\Types\DescriptionType;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Product\Types\TitleType;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Product\Types\UuidType;
+use Project\Shared\Domain\Aggregate\AggregateRoot;
 
-class Product
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'cart_products')]
+class Product extends AggregateRoot
 {
+    #[ORM\Id]
+    #[ORM\Column(type: UuidType::NAME)]
+    private Uuid $uuid;
 
-    private ?Cover $cover;
+    #[ORM\Column(type: TitleType::NAME)]
+    private Title $title;
+
+    // #[ORM\Column(name: 'category_uuid', type: CategoryUuidType::NAME)]
+    // private CategoryUuid $categoryUuid;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'category_uuid', referencedColumnName: 'uuid')]
+    private Category $category;
+
+    #[ORM\Embedded(class: Price::class, columnPrefix: 'price_')]
+    private Price $price;
+
+    #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private Collection $medias;
+
+    // #[ManyToMany(targetEntity: Member::class, mappedBy: 'products')]
+    // private Collection $members;
+
+    #[ORM\Column(name: 'viewed_count', type: Types::INTEGER)]
+    private int $viewedCount;
+
+    #[ORM\Column(type: DescriptionType::NAME)]
+    private Description $description;
+
+    #[ORM\OneToOne(targetEntity: CartProduct::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
+    private CartProduct $cartProduct;
+
+    private bool $isActive;
+
+    #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $createdAt;
+
+    #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
+    private DateTimeImmutable $updatedAt;
 
     private function __construct(
-        public readonly ProductUUID $uuid,
-        public readonly string $title,
-        public readonly ProductCategoryUUID $categoryUUID,
-        public readonly ProductCurrencyUUID $currencyUUID,
-        public readonly ProductPrice $price,
-        public readonly ProductDiscountPercentage $discountPercentage,
-        public readonly int $viewedCount,
-
-        public readonly ?CartProductCurrencyUUID $cartProductCurrencyUUID = null,
-        public readonly ?CartProductQuality $cartProductQuality = null,
-        public readonly ?CartProductPrice $cartProductPrice = null,
-        public readonly ?CartProductDiscountPercentage $cartProductDiscountPercentage = null,
+        Uuid $uuid,
+        Title $title,
+        Category $category,
+        Price $price,
+        Description $description,
+        int $viewedCount = 0,
+        bool $isActive = true,
     )
     {
-        $this->cover = null;
+        $this->uuid = $uuid;
+        $this->title = $title;
+        $this->category = $category;
+        $this->price = $price;
+        $this->description = $description;
+        $this->viewedCount = $viewedCount;
+        $this->isActive = $isActive;
+        // $this->medias = new ArrayCollection();
+
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public static function fromPrimitives(string $uuid, string $title, Category $category, Price $price, string $description, int $viewedCount, bool $isActive): self
+    {
+        return new self(
+            Uuid::fromValue($uuid),
+            Title::fromValue($title),
+            $category,
+            $price,
+            Description::fromValue($description),
+            $viewedCount,
+            $isActive,
+        );
     }
 
     public static function create(
-        ProductUUID $uuid,
-        string $title,
-        ProductCategoryUUID $categoryUUID,
-        ProductCurrencyUUID $currencyUUID,
-        ProductPrice $price,
-        ProductDiscountPercentage $discountPercentage,
-        int $viewedCount,
-
-        ?CartProductCurrencyUUID $cartProductCurrencyUUID = null,
-        ?CartProductQuality $cartProductQuality = null,
-        ?CartProductPrice $cartProductPrice = null,
-        ?CartProductDiscountPercentage $cartProductDiscountPercentage = null,
+        Uuid $uuid,
+        Title $title,
+        Category $category,
+        Price $price,
+        Description $description,
+        bool $isActive = true,
     ): self
     {
-        $product = new self(
-            $uuid,
-            $title,
-            $categoryUUID,
-            $currencyUUID,
-            $price,
-            $discountPercentage,
-            $viewedCount,
-
-            $cartProductCurrencyUUID,
-            $cartProductQuality,
-            $cartProductPrice,
-            $cartProductDiscountPercentage,
-        );
+        $product = new self($uuid, $title, $category, $price, $description, 0, $isActive);
 
         return $product;
     }
 
-    public static function fromPrimitives(
-        string $uuid,
-        string $title,
-        string $categoryUUID,
-        string $currencyUUID,
-        string $price,
-        string $discountPercentage,
-        int $viewedCount,
-
-        ?string $cartProductCurrencyUUID = null,
-        ?int $cartProductQuality = null,
-        ?string $cartProductPrice = null,
-        ?int $cartProductDiscountPercentage = null,
-    ): self
+	public function getUuid(): Uuid
     {
-        return new self(
-            ProductUUID::fromValue($uuid),
-            $title,
-            ProductCategoryUUID::fromValue($categoryUUID),
-            ProductCurrencyUUID::fromValue($currencyUUID),
-            ProductPrice::fromValue($price),
-            ProductDiscountPercentage::fromValue($discountPercentage),
-            $viewedCount,
+		return $this->uuid;
+	}
 
-            $cartProductCurrencyUUID !== null ? CartProductCurrencyUUID::fromValue($cartProductCurrencyUUID) : $cartProductCurrencyUUID,
-            $cartProductQuality !== null ? CartProductQuality::fromValue($cartProductQuality) : $cartProductQuality,
-            $cartProductPrice !== null ? CartProductPrice::fromValue($cartProductPrice) : $cartProductPrice,
-            $cartProductDiscountPercentage !== null ? CartProductDiscountPercentage::fromValue($cartProductDiscountPercentage) : $cartProductDiscountPercentage,
-        );
+	public function getTitle(): Title
+    {
+		return $this->title;
+	}
+	
+	public function setTitle(Title $title): void
+    {
+		$this->title = $title;
+	}
+
+    public function changeTitle(Title $title): void
+    {
+        if ($this->title->isNotEquals($title)) {
+            $this->title = $title;
+        }
+	}
+
+	// public function getCategoryUuid(): CategoryUuid
+    // {
+	// 	return $this->categoryUuid;
+	// }
+	
+	// public function setCategoryUuid(CategoryUuid $categoryUuid): void
+    // {
+	// 	$this->categoryUuid = $categoryUuid;
+	// }
+
+	public function getPrice(): Price
+    {
+		return $this->price;
+	}
+	
+	public function setPrice(Price $price): void
+    {
+		$this->price = $price;
+	}
+
+    public function changePrice(Price $price): void
+    {
+        if ($this->price->isNotEquals($price)) {
+            $this->price = $price;
+        }
+	}
+
+	public function getDescription(): Description
+    {
+		return $this->description;
+	}
+	
+    public function setDescription(Description $description): void
+    {
+        $this->description = $description;
+	}
+
+	public function changeDescription(Description $description): void
+    {
+        if ($this->description->isNotEquals($description)) {
+            $this->description = $description;
+        }
+	}
+
+    public function getMedias(): iterable
+    {
+        return $this->medias->getIterator();
     }
 
-    public function getCover(): ?Cover
+    public function addMedia(Media $media): void
     {
-        return $this->cover;
+        $media->setProduct($this);
+        $this->medias->add($media);
     }
 
-    public function setCover(Cover $cover): void
+    public function removeMedia(Media $media): void
     {
-        $this->cover = $cover;
+        $this->medias->removeElement($media);
     }
 
-    public function getDiscountPrice(): int
+    public function getCover(): ?Media
     {
-        return ($discount = (int) $this->discountPercentage->value) > 0 ? (((float) $this->price->value) / 100) * $discount : 0;
+        return $this->medias->first() ?: null;
+    }
+
+    #[ORM\PrePersist]
+    public function prePersist(PrePersistEventArgs $event): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    #[ORM\PreUpdate]
+    public function preUpdate(PreUpdateEventArgs $event): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
     }
 
     public function toArray(): array
     {
+        $medias = array_map(static fn (Arrayable $media): array => $media->toArray(), $this->medias->toArray());
+
         return [
             'uuid' => $this->uuid->value,
-            'title' => $this->title,
-            'category_uuid' => $this->categoryUUID->value,
-            'currency_uuid' => $this->currencyUUID->value,
-            'cover' => $this->cover?->toArray(),
-            'price' => $this->price->value,
-            'discount_percentage' => $this->discountPercentage->value,
-            'discount_price' => $this->getDiscountPrice(),
+            'title' => $this->title->value,
+            'category' => $this->category->toArray(),
+            'price' => $this->price->toArray(),
+            'cover' => $this->getCover()?->toArray(),
+            'medias' => $medias,
             'viewed_count' => $this->viewedCount,
-
-            'cart_currency_uuid' => $this->cartProductCurrencyUUID?->value,
-            'cart_quality' => $this->cartProductQuality?->value,
-            'cart_price' => $this->cartProductPrice?->value,
-            'cart_discount_percentage' => $this->cartProductDiscountPercentage?->value,
+            'description' => $this->description->value,
+            // 'is_active' => $this->isActive,
+            'created_at' => $this->createdAt->getTimestamp(),
+            'updated_at' => $this->updatedAt->getTimestamp(),
         ];
     }
 }

@@ -37,6 +37,10 @@ class Country extends Model
     use HasFactory;
     use HasUuids;
 
+    protected $connection = 'admin_pgsql';
+
+    protected $table = 'country_countries';
+
     protected $fillable = [
         'uuid',
         'value',

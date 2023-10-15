@@ -12,6 +12,7 @@ use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileEmailWasUpdatedD
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileFirstNameWasUpdatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileLastNameWasUpdatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfilePhoneWasUpdatedDomainEvent;
+use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileWasCreatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileEmail;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileFirstName;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileLastName;
@@ -68,7 +69,18 @@ class Profile extends AggregateRoot
         ?ProfilePhone $phone = null,
     ): self
     {
-        return new self($uuid, $firstName, $lastName, $email, $phone);
+        $profile = new self($uuid, $firstName, $lastName, $email, $phone);
+        $profile->record(
+                    new ProfileWasCreatedDomainEvent(
+                        $profile->uuid,
+                        $profile->firstName->value,
+                        $profile->lastName->value,
+                        $profile->email->value,
+                        $profile->phone->value,
+                    )
+                );
+
+        return $profile;
     }
 
     public static function fromPrimitives(string $uuid, string $firstName, string $lastName, string $email, ?string $phone = null): self

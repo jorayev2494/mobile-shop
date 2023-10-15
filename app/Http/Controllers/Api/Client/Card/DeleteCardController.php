@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Card;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Delete\DeleteCardCommand;
+use Project\Domains\Client\Card\Application\Commands\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class DeleteCardController
@@ -22,7 +22,7 @@ class DeleteCardController
     public function __invoke(string $uuid): Response
     {
         $this->commandBus->dispatch(
-            new DeleteCardCommand($uuid)
+            new Command($uuid)
         );
 
         return $this->response->noContent();

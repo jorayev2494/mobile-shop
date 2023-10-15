@@ -32,8 +32,9 @@ final class RabbitMqCommandsConsumer
 
         try {
             $this->channel->basic_consume($queueName, '', false, false, false, false, $this->consumer($subscriber, $queueName));
-        } catch (\Exception) {
-            dd('ees');
+        } catch (\Exception $ex) {
+            // info(__METHOD__, [$ex->__toString()]);
+            // dd('ees');
             // We don't want to raise an error if there are no messages in the queue
         }
 

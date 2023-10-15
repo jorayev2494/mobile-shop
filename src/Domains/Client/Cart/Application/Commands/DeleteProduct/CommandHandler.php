@@ -6,8 +6,9 @@ namespace Project\Domains\Client\Cart\Application\Commands\DeleteProduct;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
-use Project\Domains\Client\Cart\Domain\Product\Product;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\AuthorUuid;
+use Project\Domains\Client\Cart\Domain\CartProduct\CartProductRepositoryInterface;
+use Project\Domains\Client\Cart\Domain\Product\ValueObjects\Uuid as ValueObjectsUuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
@@ -15,6 +16,7 @@ class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CartRepositoryInterface $repository,
+        private readonly CartProductRepositoryInterface $cartProductRepository,
         private readonly AuthManagerInterface $authManager,
     )
     {
@@ -23,30 +25,21 @@ class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $cart = $this->repository->findByUUID(CartUUID::fromValue($command->uuid));
+        $cart = $this->repository->findCartByAuthorUuid(AuthorUuid::fromValue($this->authManager->uuid()));
 
         $cart ?? throw new ModelNotFoundException();
 
-        $removeProduct = null;
+        $deleteProductUuid = ValueObjectsUuid::fromValue($command->productUuid);
 
-        foreach ($cart->getProducts() as $cartProduct) {
-            if ($cartProduct->uuid->value === $command->productUUID) {
-                $removeProduct = $cartProduct;
+        foreach ($cart->getCartProducts() as $cartProduct) {
+            if ($cartProduct->getProduct()->getUuid()->isEquals($deleteProductUuid)) {
+                $cart->removeProduct($cartProduct);
+                $this->cartProductRepository->delete($cartProduct);
                 break;
             }
         }
 
-        if ($removeProduct === null) {
-            throw new ModelNotFoundException();
-        }
-
-        $cart->removeProduct($removeProduct);
-        $this->repository->save($cart);
-        
-        // Delete cart if no products
-        if (count($cart->getProducts()) === 0) {
-            $this->repository->delete(CartUUID::fromValue($command->uuid));
-        }       
+        $cart->isEmpty() ? $this->repository->delete($cart) : $this->repository->save($cart);
     }
 
 }

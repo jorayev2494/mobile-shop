@@ -13,10 +13,16 @@ class DeleteProductRequest extends FormRequest
         return AppAuth::check(AppGuardType::CLIENT);
     }
 
+    protected function prepareForValidation()
+    {
+        $this->merge($this->route()->parameters());
+    }
+
     public function rules(): array
     {
+
         return [
-            'product_uuid' => ['required', 'string', 'exists:' . \App\Models\Product::class . ',uuid'],
+            'product_uuid' => ['required', 'string', 'exists:client_pgsql.cart_products,uuid'],
         ];
     }
 }
