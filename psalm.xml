@@ -5,13 +5,20 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="false"
+    findUnusedCode="false"
+
+    useDocblockTypes="true"
+    useDocblockPropertyTypes="true"
+
 >
     <projectFiles>
-        <directory name="app"/>
+        <directory name="app" />
         <directory name="database/factories"/>
         <directory name="database/seeders"/>
+        <directory name="src" />
         <ignoreFiles>
-            <directory name="vendor"/>
+            <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
-<plugins><pluginClass class="Psalm\LaravelPlugin\Plugin"/></plugins></psalm>
+</psalm>

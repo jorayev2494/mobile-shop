@@ -15,7 +15,7 @@ class DomainEventLocator implements LocatorInterface
     }
 
     /**
-     * @return array<array-key, string>
+     * @return array
      */
     public function all(): array
     {

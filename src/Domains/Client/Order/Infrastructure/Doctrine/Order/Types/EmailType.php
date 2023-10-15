@@ -20,7 +20,7 @@ final class EmailType extends Type
     /**
      * @param Email $value
      * @param AbstractPlatform $platform
-     * @return void
+     * @return string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {

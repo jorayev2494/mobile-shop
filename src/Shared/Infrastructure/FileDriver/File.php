@@ -11,6 +11,9 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Support\Arrayable;
 
+/**
+ * @template-implements Arrayable
+ */
 abstract class File implements Arrayable
 {
     #[ORM\Id]
@@ -169,6 +172,11 @@ abstract class File implements Arrayable
     {
         $this->updatedAt = new DateTimeImmutable();
     }
+
+	public function getMimeType(): string
+    {
+		return $this->mimeType;
+	}
 
     public function toArray(): array
     {

@@ -20,7 +20,7 @@ final class AuthorUuidType extends Type
     /**
      * @param AuthorUuid $value
      * @param AbstractPlatform $platform
-     * @return void
+     * @return string
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): string
     {

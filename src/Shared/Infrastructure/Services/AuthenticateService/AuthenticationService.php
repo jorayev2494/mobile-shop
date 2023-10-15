@@ -11,6 +11,7 @@ use Project\Infrastructure\Services\Authenticate\AuthenticatableInterface;
 use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
 use Project\Infrastructure\Services\Authenticate\DeviceInterface;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
+use Illuminate\Support\Facades\Auth;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
@@ -18,7 +19,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     {
         // dd($data->toArray(), $guard->value);
         /** @var string $token */
-        if (! ($token = \Auth::guard($guard->value)->claims($claims)->attempt($data->toArray()))) {
+        if (! ($token = Auth::guard($guard->value)->claims($claims)->attempt($data->toArray()))) {
             throw new BadRequestException('Invalid credentials!');
         }
 
@@ -28,7 +29,7 @@ class AuthenticationService implements AuthenticationServiceInterface
     public function authenticateByUuid(string $uuid, AppGuardType $guard, array $claims = []): string
     {
         /** @var string $token */
-        if (! ($token = \Auth::guard($guard->value)->claims($claims)->tokenById($uuid))) {
+        if (! ($token = Auth::guard($guard->value)->claims($claims)->tokenById($uuid))) {
             throw new BadRequestException('Unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
@@ -37,7 +38,7 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     public function invalidate(AppGuardType $guard): void
     {
-        // \Auth::guard($guard->value)->invalidate();
+        // Auth::guard($guard->value)->invalidate();
     }
 
     public function logout(AppGuardType $guard): void

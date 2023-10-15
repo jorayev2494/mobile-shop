@@ -35,7 +35,9 @@ final class AuthManager implements AuthManagerInterface
 
     public function uuid(AppGuardType $guard = null): ?string
     {
-        return $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->id();
+        $val = $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->id();
+
+        return ! is_null($val) ? (string) $val : $val;
     }
 
     public function check(AppGuardType $guard = null): bool
