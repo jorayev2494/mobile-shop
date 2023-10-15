@@ -30,13 +30,13 @@ final class MediaRepository extends BaseAdminEntityRepository implements MediaRe
      * @param array $ids
      * @return iterable<Media>
      */
-    public function findProductMediasByIds(string $productUuid, array $ids): iterable
+    public function findProductMediasByIds(string $productUuid, array $uuids): iterable
     {
         $query = $this->entityRepository->createQueryBuilder('m')
                                     ->where('m.productUuid = :productUuid')
-                                    ->andWhere('m.id IN (:ids)')
+                                    ->andWhere('m.uuid IN (:uuids)')
                                     ->setParameter('productUuid', $productUuid)
-                                    ->setParameter('ids', $ids)
+                                    ->setParameter('uuids', $uuids)
                                     ->getQuery();
 
         return $query->getResult();

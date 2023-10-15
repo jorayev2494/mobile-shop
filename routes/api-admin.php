@@ -10,6 +10,10 @@ use App\Http\Controllers\Api\Admin\Category\{CreateCategoryController, DeleteCat
 use App\Http\Controllers\Api\Admin\Client\{IndexClientController, CreateClientController, ShowClientController, UpdateClientController, DeleteClientController,};
 use App\Http\Controllers\Api\Admin\Currency\IndexCurrencyController;
 use App\Http\Controllers\Api\Admin\Country\{CreateCountryController, DeleteCountryController, IndexCountryController, ShowCountryController, UpdateCountryController,};
+use App\Http\Controllers\Api\Admin\Currency\CreateCurrencyController;
+use App\Http\Controllers\Api\Admin\Currency\DeleteCurrencyController;
+use App\Http\Controllers\Api\Admin\Currency\ShowCurrencyController;
+use App\Http\Controllers\Api\Admin\Currency\UpdateCurrencyController;
 use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
 use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexPermissionController, IndexRoleController, ShowRoleController, UpdateRoleController,};
@@ -79,6 +83,10 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
 
     $router->group(['prefix' => 'currencies', 'as' => 'currencies.'], static function (Router $router): void {
         $router->get('/', IndexCurrencyController::class);
+        $router->post('/', CreateCurrencyController::class);
+        $router->get('/{uuid}', ShowCurrencyController::class);
+        $router->put('/{uuid}', UpdateCurrencyController::class);
+        $router->delete('/{uuid}', DeleteCurrencyController::class);
     });
 
     $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {

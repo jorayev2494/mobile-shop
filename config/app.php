@@ -220,8 +220,11 @@ return [
         Project\Domains\Client\Address\Infrastructure\AddressServiceProvider::class,
         Project\Domains\Client\Card\Infrastructure\CardServiceProvider::class,
         Project\Domains\Client\Cart\Infrastructure\CartServiceProvider::class,
-        Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
+        // Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
         Project\Domains\Client\Profile\Infrastructure\ProfileServiceProvider::class,
+
+        Project\Domains\PublicApi\Currency\Infrastructure\CurrencyServiceProvider::class,
+        Project\Domains\PublicApi\Country\Infrastructure\CountryServiceProvider::class,
 
         App\Providers\DoctrineServiceProvider::class,
     ],

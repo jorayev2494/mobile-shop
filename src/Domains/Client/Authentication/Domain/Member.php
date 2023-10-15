@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Client\Authentication\Domain\Code\Code;
+use Project\Domains\Client\Authentication\Domain\Code\Events\RestorePasswordCodeWasCreatedDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Events\MemberWasAddedDeviceDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Events\MemberWasRegisteredDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Events\MemberWasRequestedRestoreCodePasswordDomainEvent;
@@ -105,6 +106,8 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     public function addCode(Code $code): void
     {
         $this->code = $code;
+        $code->setAuthor($this);
+        $this->record(new RestorePasswordCodeWasCreatedDomainEvent($this->uuid, $this->email, $this->code->getValue()));
     }
 
     public function toArray(): array

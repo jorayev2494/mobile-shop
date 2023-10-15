@@ -49,7 +49,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
 
     public static function makeFromRequest(Request|FormRequest $request): static
     {
-        return new static(
+        return (new static(
             search: $request->query->get('search'),
             searchBy: $request->query->get('search_by'),
             page: $request->query->getInt('page', 1),
@@ -58,12 +58,17 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
             sortBy: $request->query->get('sort_by', 'created_at'),
             sortRule: $request->query->getBoolean('sort_rule'),
             filters: self::makeFilters($request->get('filters', [])),
-        );
+        ))->fromRequest($request);
     }
 
-    private static function makeFilters(array $filters): array
+    protected static function makeFilters(array $filters): array
     {
         return $filters;
+    }
+
+    protected function fromRequest(Request|FormRequest $request): static
+    {
+        return $this;
     }
 
 }

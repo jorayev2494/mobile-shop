@@ -9,6 +9,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Admin\Category\Domain\Category\Events\CategoryWasCreatedDomainEvent;
+use Project\Domains\Admin\Category\Domain\Category\Events\CategoryWasDeletedDomainEvent;
 use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
 use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryValue;
 use Project\Domains\Admin\Category\Infrastructure\Doctrine\Category\Types\UuidType;
@@ -58,7 +60,10 @@ final class Category extends AggregateRoot
 
     public static function create(CategoryUUID $uuid, CategoryValue $value, bool $isActive): self
     {
-        return new self($uuid, $value, $isActive);
+        $category = new self($uuid, $value, $isActive);
+        $category->record(new CategoryWasCreatedDomainEvent($category->uuid->value, $category->value->value, $category->isActive));
+
+        return $category;
     }
 
     public function getUuid(): CategoryUuid
@@ -99,6 +104,11 @@ final class Category extends AggregateRoot
             $this->isActive = $isActive;
         }
 	}
+
+    public function delete()
+    {
+        $this->record(new CategoryWasDeletedDomainEvent($this->uuid->value));
+    }
 
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void

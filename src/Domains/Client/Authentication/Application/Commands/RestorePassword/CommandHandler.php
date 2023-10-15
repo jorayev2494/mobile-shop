@@ -29,7 +29,7 @@ class CommandHandler implements CommandHandlerInterface
             throw new ModelNotFoundException();
         }
 
-        $member = $this->repository->findByUuid($code->getMemberUuid());
+        $member = $code->getAuthor();
 
         if ($member === null) {
             throw new ModelNotFoundException();

@@ -16,9 +16,9 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['email'],
-            'phone' => ['string'],
-            'description' => ['required'],
+            // 'email' => ['email'],
+            // 'phone' => ['string'],
+            // 'description' => ['required'],
             'status' => ['required', 'string'],
         ];
     }

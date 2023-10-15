@@ -54,7 +54,7 @@ class Paginator implements Arrayable
         $this->page = $dataDTO->page;
         $this->perPage = $dataDTO->perPage;
         $this->items = array_map(static fn (Arrayable $item): array => $item->toArray(), iterator_to_array($paginator->getIterator()));
-        $this->lastPage = ($lastPage = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults())) > 0 ? $lastPage : null;
+        $this->lastPage = ($lastPage = (int) ceil($paginator->count() / $paginator->getQuery()->getMaxResults())) > 1 ? $lastPage : null;
         $this->nextPage = ($nexPage = $dataDTO->page + 1) <= $this->lastPage ? $nexPage : null;
         $this->to = $dataDTO->perPage * $dataDTO->page;
         $this->total = $paginator->count();

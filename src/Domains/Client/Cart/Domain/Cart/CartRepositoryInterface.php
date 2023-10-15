@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Domain\Cart;
 
-use App\Repositories\Contracts\BaseModelRepositoryInterface;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartClientUUID;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\Uuid;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\AuthorUuid;
 
-interface CartRepositoryInterface extends BaseModelRepositoryInterface
+interface CartRepositoryInterface
 {
-    public function findByUUID(CartUUID $uuid): ?Cart;
-    public function findClientCartByClientUUID(CartClientUUID $clientUUID): ?Cart;
+    public function findByUuid(Uuid $uuid): ?Cart;
+
+    public function findCartByAuthorUuid(AuthorUuid $authorUuid): ?Cart;
+
     public function save(Cart $cart): void;
 
-    public function delete(CartUUID $uuid): void;
+    public function delete(Cart $cart): void;
 }

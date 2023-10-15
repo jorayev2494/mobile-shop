@@ -28,7 +28,7 @@ class UpdateProductRequest extends FormRequest
             'medias' => ['array'],
             'medias.*' => Rule::forEach(static fn (UploadedFile $value, string $attribute, array $attributeValue): array => ['required', 'file', File::types(ProductMimeType::getValues())]),
             'remove_media_ids' => ['array'],
-            'remove_media_ids.*' => Rule::forEach(static fn (int $value, string $attribute, array $attributeValue): array => ['numeric', Rule::exists('admin_pgsql.product_medias', 'id')]),
+            'remove_media_ids.*' => Rule::forEach(static fn (string $value, string $attribute, array $attributeValue): array => ['string', Rule::exists('admin_pgsql.product_medias', 'uuid')]),
             'description' => ['required', 'string'],
             'is_active' => ['nullable', 'boolean'],
         ];

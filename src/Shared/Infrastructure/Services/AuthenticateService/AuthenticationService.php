@@ -17,7 +17,7 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     public function authenticate(AuthenticationCredentialsDTO $data, AppGuardType $guard, array $claims = []): string
     {
-        
+        // dd($data->toArray(), $guard->value);
         /** @var string $token */
         if (! ($token = \Auth::guard($guard->value)->claims($claims)->attempt($data->toArray()))) {
             throw new BadRequestException('Invalid credentials!');
@@ -38,7 +38,7 @@ class AuthenticationService implements AuthenticationServiceInterface
 
     public function invalidate(AppGuardType $guard): void
     {
-        \Auth::guard($guard->value)->invalidate(true);
+        // \Auth::guard($guard->value)->invalidate();
     }
 
     public function logout(AppGuardType $guard): void

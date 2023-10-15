@@ -9,11 +9,13 @@ use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
 use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
 use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryValue;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 
 final class CreateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly CategoryRepositoryInterface $repository
+        private readonly CategoryRepositoryInterface $repository,
+        private readonly EventBusInterface $eventBus,
     )
     {
         
@@ -28,5 +30,6 @@ final class CreateCategoryCommandHandler implements CommandHandlerInterface
         );
 
         $this->repository->save($category);
+        $this->eventBus->publish(...$category->pullDomainEvents());
     }
 }

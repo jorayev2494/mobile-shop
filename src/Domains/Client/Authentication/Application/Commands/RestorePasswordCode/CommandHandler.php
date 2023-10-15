@@ -36,6 +36,6 @@ class CommandHandler implements CommandHandlerInterface
         $member->addCode($code);
 
         $this->repository->save($member);
-        $this->eventBus->publish(...$code->pullDomainEvents());
+        $this->eventBus->publish(...$code->pullDomainEvents(), ...$member->pullDomainEvents());
     }
 }

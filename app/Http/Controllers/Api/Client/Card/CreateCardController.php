@@ -8,7 +8,7 @@ use App\Http\Requests\Client\Card\StoreCardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Create\CreateCardCommand;
+use Project\Domains\Client\Card\Application\Commands\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 
@@ -28,7 +28,7 @@ class CreateCardController
         $uuid = $this->uuidGenerator->generate();
 
         $this->commandBus->dispatch(
-            new CreateCardCommand(
+            new Command(
                 $uuid,
                 $request->get('type'),
                 $request->get('holder_name'),

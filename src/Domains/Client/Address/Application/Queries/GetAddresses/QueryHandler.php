@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Address\Application\Queries\GetAddresses;
 
-use App\Repositories\Base\Doctrine\Paginator;
+use Illuminate\Contracts\Support\Arrayable;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
 final class QueryHandler implements QueryHandlerInterface
@@ -16,8 +16,11 @@ final class QueryHandler implements QueryHandlerInterface
         
     }
 
-    public function __invoke(Query $query): Paginator
+    public function __invoke(Query $query): array
     {
-        return $this->queryService->execute($query);
+        return array_map(
+            static fn (Arrayable $address): array => $address->toArray(),
+            $this->queryService->execute($query)
+        );
     }
 }

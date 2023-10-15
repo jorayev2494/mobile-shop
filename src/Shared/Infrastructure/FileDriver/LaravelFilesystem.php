@@ -36,7 +36,7 @@ final class LaravelFilesystem implements FilesystemInterface
                 $extension,
                 $size,
                 $bucketPath . $path,
-                $bucketPath . $fullPath,
+                $fullPath,
                 $fileName,
                 $fileOriginalName,
                 $url,
@@ -58,21 +58,14 @@ final class LaravelFilesystem implements FilesystemInterface
         return Str::random($this->lengthRandomName) . '.' . $extension;
     }
 
-    // public function updateFile(string $path, ?string $deleteFileName, UploadedFile $uploadedFile): ?File
-    // {
-    //     $this->deleteFile($path, $deleteFileName);
-
-    //     return $this->uploadFile($path, $uploadedFile);
-    // }
-
     public function deleteFile(?File $file): bool
     {
         if ($file === null) {
             return true;
         }
 
-        if (Storage::exists($file->getFullPath())) {
-            return Storage::delete($file->getFullPath());
+        if (Storage::exists($fileFullPath = $file->getFullPath())) {
+            return Storage::delete($fileFullPath);
         }
 
         return true;

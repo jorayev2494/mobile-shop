@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\File;
+use Faker\Generator;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Database\Seeder;
 use Illuminate\Http\UploadedFile;
@@ -24,6 +25,8 @@ class ProductSeeder extends Seeder
     private readonly array $currencies;
 
     private readonly OutputStyle $output;
+
+    // private readonly Generator $faker;
     
     public function __construct(
         private readonly CommandBusInterface $commandBus,
@@ -31,11 +34,11 @@ class ProductSeeder extends Seeder
         private readonly CategoryRepositoryInterface $categoryRepository,
         private readonly CurrencyRepositoryInterface $currencyRepository,
         private readonly FilesystemInterface $filesystem,
+        private readonly Generator $fakeGenerator,
     )
     {
         $this->categories = $categoryRepository->get();
         $this->currencies = $currencyRepository->get();
-        
     }
 
     public function run(): void
@@ -68,13 +71,15 @@ class ProductSeeder extends Seeder
 
     private function generateMedias(int $mediaCount = 5): array
     {
-        $uploadedMedias = [];
+        $generatedMedias = [];
 
         for ($i = 0; $i < $mediaCount; $i++) { 
-            $fp = fake()->image(width: 400, height: 500);
-            $uploadedMedias[] = new UploadedFile($fp, "{$this->uuidGenerator->generate()}-fake.png", 'image/png');
+            // $fp = $this->fakeGenerator->image(width: 400, height: 500, category: 'cats');
+            $randomImageNumber = random_int(1, 15);
+            $fp = storage_path("app/public/faker/image-{$randomImageNumber}.jpg");
+            $generatedMedias[] = new UploadedFile($fp, "{$this->uuidGenerator->generate()}-fake.png", 'image/png');
         }
 
-        return $uploadedMedias;
+        return $generatedMedias;
     }
 }

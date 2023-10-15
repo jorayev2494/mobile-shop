@@ -217,7 +217,10 @@ class Product extends AggregateRoot
     public function removeMedia(Media $media): void
     {
         $this->medias->removeElement($media);
-        $this->record(new ProductMediaWasDeletedDomainEvent($this->uuid->value, $media->getUuid()));
+        $this->record($event = new ProductMediaWasDeletedDomainEvent($this->uuid->value, $media->getUuid()));
+
+        $eventHandler = app()->make(\Project\Domains\Client\Order\Application\Subscribers\Product\Media\ProductMediaWasDeletedDomainEventSubscriber::class);
+        $eventHandler($event);
     }
 
     #[ORM\PrePersist]

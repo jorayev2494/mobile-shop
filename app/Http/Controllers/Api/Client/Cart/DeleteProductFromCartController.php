@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Client\Cart;
 
-use App\Http\Requests\Client\Cart\AddProductRequest;
+use App\Http\Requests\Client\Cart\DeleteProductRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Cart\Application\Commands\DeleteProduct\Command;
@@ -20,11 +20,10 @@ class DeleteProductFromCartController
         
     }
 
-    public function __invoke(AddProductRequest $request, string $uuid): Response
+    public function __invoke(DeleteProductRequest $request, string $uuid): Response
     {
         $this->commandBus->dispatch(
             new Command(
-                $uuid,
                 $request->get('product_uuid'),
             )
         );

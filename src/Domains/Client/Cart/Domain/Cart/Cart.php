@@ -4,118 +4,158 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Domain\Cart;
 
-use Illuminate\Support\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Project\Domains\Client\Cart\Domain\Cart\Events\CartWasConfirmedDomainEvent;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartStatus;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartUUID;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\CartClientUUID;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\Uuid;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\AuthorUuid;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\OrderConfirmData;
+use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\StatusEnum;
 use Project\Domains\Client\Cart\Domain\CartProduct\CartProduct;
-use Project\Domains\Client\Cart\Domain\Product\Product;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Cart\Types\AuthorUuidType;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Cart\Types\StatusType;
+use Project\Domains\Client\Cart\Infrastructure\Doctrine\Cart\Types\UuidType;
+use Project\Domains\Client\Order\Application\Subscribers\Cart\CartWasConfirmedDomainEventSubscriber;
 
+#[ORM\Entity]
+#[ORM\Table('cart_carts')]
 class Cart extends AggregateRoot
 {
+    #[ORM\Id]
+    #[ORM\Column(type: UuidType::NAME)]
+    private Uuid $uuid;
 
-    private CartStatus $status;
+    #[ORM\Column(name: 'author_uuid', type: AuthorUuidType::NAME)]
+    private AuthorUuid $authorUuid;
+
+    #[ORM\Column(type: StatusType::NAME)]
+    private StatusEnum $status;
 
     /**
-     * @template TValue of Product
-     * @var Collection<array-key, Product> $products
+     * @var Collection<int, CartProduct>
      */
-    public Collection $products;
+    #[ORM\OneToMany(targetEntity: CartProduct::class, mappedBy: 'cart', cascade: ['persist', 'remove'])]
+    private Collection $cartProducts;
 
-    /**
-     * @template TValue of CartProduct
-     * @var Collection<array-key, CartProduct> $cartProducts
-     */
-    public Collection $cartProducts;
+    #[ORM\Embedded(class: OrderConfirmData::class, columnPrefix: 'order_confirm_')]
+    private OrderConfirmData $orderConfirmData;
 
-    private function __construct(
-        public readonly CartUUID $uuid,
-        public readonly CartClientUUID $clientUUID,
-        iterable $products = [],
-    )
+    private function __construct(Uuid $uuid, AuthorUuid $authorUuid, array $cartProducts = [])
     {
-        $this->products = Collection::make($products);
-        $this->status = CartStatus::DRAFT;
+        $this->uuid = $uuid;
+        $this->authorUuid = $authorUuid;
+        $this->cartProducts = new ArrayCollection($cartProducts);
+        $this->status = StatusEnum::DRAFT;
     }
 
-    public static function create(CartUUID $uuid, CartClientUUID $clientUUID, iterable $products = []): self
+    public static function create(Uuid $uuid, AuthorUuid $authorUuid, array $cartProducts = []): self
     {
-        $cart = new self($uuid, $clientUUID, $products);
+        $cart = new self($uuid, $authorUuid, $cartProducts);
 
         return $cart;
     }
 
-    public static function fromPrimitives(string $uuid, string $clientUUID, string $status, iterable $products = []): self
-    {
-        $cart = new self(CartUUID::fromValue($uuid), CartClientUUID::fromValue($clientUUID), $products);
-        $cart->status = CartStatus::from($status);
-
-        return $cart;
-    }
-
-    public function getStatus(): CartStatus
+    public function getStatus(): StatusEnum
     {
         return $this->status;
     }
 
-    public function addProduct(Product $product): void
+    public function setStatus(StatusEnum $status): void
     {
-        $this->products->add($product);
+        $this->status = $status;
+    }
+
+    public function addCartProduct(CartProduct $cartProduct): void
+    {
+        $cartProduct->setCart($this);
+        $this->cartProducts->add($cartProduct);
     }
 
     /**
-     * @param iterable<Product> $products
+     * @param iterable<CartProduct> $cartProduct
      * @return void
      */
-    public function addProducts(iterable $products): void
+    public function addProducts(iterable $cartProducts): void
     {
-        $this->products = $this->products->empty();
-
-        foreach ($products as $product) {
-            $this->products->add($product);
+        foreach ($cartProducts as $cartProduct) {
+            $this->addCartProduct($cartProduct);
         }
     }
 
-    public function removeProduct(Product $toProduct): void
+    public function removeProduct(CartProduct $cartProduct): void
     {
-        foreach ($this->products as $key => $product) {
-            if ($toProduct->uuid->value === $product->uuid->value) {
-                unset($this->products[$key]);
-                return;
-            }
+        if (! $this->cartProducts->contains($cartProduct)) {
+            return;
         }
+
+        $this->cartProducts->removeElement($cartProduct);
     }
 
     /**
-     * @return iterable<array-key, Product>
+     * @return iterable<int, CartProduct>
      */
-    public function getProducts(): iterable
+    public function getCartProducts(): iterable
     {
-        return $this->products;
+        return $this->cartProducts->toArray();
+    }
+
+    public function isEmpty(): bool
+    {
+        return $this->cartProducts->isEmpty();
+    }
+
+    public function confirm(OrderConfirmData $orderConfirmData): void
+    {
+        $this->orderConfirmData = $orderConfirmData;
+        $this->status = StatusEnum::CONFIRM;
+
+        $event = new CartWasConfirmedDomainEvent(
+            $this->uuid->value,
+            $this->authorUuid->value,
+            array_map(static fn (CartProduct $cartProduct): array => $cartProduct->toArray(), $this->cartProducts->toArray()),
+            $this->orderConfirmData->cardUuid,
+            $this->orderConfirmData->addressUuid,
+            $this->orderConfirmData->currencyUuid,
+            $this->orderConfirmData->email,
+            $this->orderConfirmData->phone,
+            $this->orderConfirmData->promoCode,
+            $this->orderConfirmData->note,
+        );
+
+        $this->record($event);
+        // $eventHandler = app()->make(CartWasConfirmedDomainEventSubscriber::class);
+        // $eventHandler($event);
     }
 
     public function toArray(): array
     {
-        $products = array_map(
-            static fn (Product $product): array => $product->toArray(),
-            iterator_to_array($this->products)
-        );
-
-        $quality = $this->products->sum(static fn (Product $product): int => $product->cartProductQuality->value);
-        $sum = $this->products->sum(static fn (Product $product): float => (float) $product->cartProductPrice->value);
-        $discountPercentage = $this->products->sum(static fn (Product $product): float => (float) $product->cartProductDiscountPercentage?->value);
-        $discountPrice = $this->products->sum(static fn (Product $product): int => (int) $product->getDiscountPrice());
+        $quantity = $sum = $sumDiscount = 0;
+        $products = $this->cartProducts->map($this->calculateCart($quantity, $sum, $sumDiscount))->toArray();
 
         return [
-            'uuid' => $this->uuid->value,
-            // 'client_uuid' => $this->clientUUID->value,
+            // 'status' => $this->status->value,
             'products' => $products,
-            'status' => $this->status->value,
-            'quality' => $quality,
+            'quantity' => $quantity,
             'sum' => $sum,
-            'discount_percentage' => $discountPercentage,
-            'discount_price' => $discountPrice,
+            'discount_percentage' => 0,
+            'discount_price' => (float) number_format($sumDiscount, 2),
         ];
+    }
+
+    private function calculateCart(int &$quantity, int &$sum, int &$sumDiscount): \Closure
+    {
+        return static function (CartProduct $cartProduct) use(&$quantity, &$sum, &$sumDiscount): array {
+            $data = $cartProduct->toArray();
+
+            ['quantity' => $q, 'sum' => $s, 'sum_discount' => $sDiscount] = $data;
+
+            $quantity += $q;
+            $sum += $s;
+            $sumDiscount += $sDiscount;
+
+            return $data;
+        };
     }
 }

@@ -9,23 +9,26 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Illuminate\Contracts\Support\Arrayable;
-use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\CurrencyUuid;
-use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\CurrencyValue;
+use Project\Domains\Admin\Currency\Domain\Currency\Events\CurrencyValueWasChangedDomainEvent;
+use Project\Domains\Admin\Currency\Domain\Currency\Events\CurrencyWasCreatedDomainEvent;
+use Project\Domains\Admin\Currency\Domain\Currency\Events\CurrencyWasDeletedDomainEvent;
+use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\Uuid;
+use Project\Domains\Admin\Currency\Domain\Currency\ValueObjects\Value;
 use Project\Domains\Admin\Currency\Infrastructure\Doctrine\Currency\Types\UuidType;
 use Project\Domains\Admin\Currency\Infrastructure\Doctrine\Currency\Types\ValueType;
+use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'currency_currencies')]
-class Currency implements Arrayable
+class Currency extends AggregateRoot
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
-    private CurrencyUuid $uuid;
+    private Uuid $uuid;
 
     #[ORM\Column(type: ValueType::NAME)]
-    private CurrencyValue $value;
+    private Value $value;
 
     #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
     private bool $isActive;
@@ -38,8 +41,8 @@ class Currency implements Arrayable
     private DateTimeImmutable $updatedAt;
 
     private function __construct(
-        CurrencyUuid $uuid,
-        CurrencyValue $value,
+        Uuid $uuid,
+        Value $value,
         bool $isActive,
     )
     {
@@ -49,18 +52,61 @@ class Currency implements Arrayable
     }
 
     public static function create(
-        CurrencyUuid $uuid,
-        CurrencyValue $value,
+        Uuid $uuid,
+        Value $value,
         bool $isActive,
     ): self
     {
-        return new self($uuid, $value, $isActive);
+        $currency = new self($uuid, $value, $isActive);
+        $currency->record(
+            new CurrencyWasCreatedDomainEvent(
+                $currency->getUuid()->value,
+                $currency->getValue()->value,
+                $currency->getIsActive()
+            )
+        );
+
+        return $currency;
     }
 
-    public function getUuid(): CurrencyUuid
+    public function getUuid(): Uuid
     {
 		return $this->uuid;
 	}
+
+	public function getValue(): Value
+    {
+		return $this->value;
+	}
+
+    public function changeValue(Value $value): void
+    {
+        if ($this->value->isNotEquals($value)) {
+            $this->value = $value;
+            $this->record(new CurrencyValueWasChangedDomainEvent($this->uuid->value, $this->value->value));
+        }
+    }
+
+	public function getIsActive(): bool
+    {
+		return $this->isActive;
+	}
+
+    public function changeIsActive(bool $isActive): void
+    {
+        if ($this->isActive !== $isActive) {
+            $this->isActive = $isActive;
+        }
+    }
+
+    public function delete(): void
+    {
+        $this->record(
+            new CurrencyWasDeletedDomainEvent(
+                $this->uuid->value
+            )
+        );
+    }
 
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void
@@ -83,5 +129,4 @@ class Currency implements Arrayable
             'is_active' => $this->isActive,
         ];
     }
-
 }

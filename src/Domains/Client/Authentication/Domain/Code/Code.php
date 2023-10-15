@@ -22,17 +22,8 @@ final class Code extends AggregateRoot
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\Column(name: 'member_uuid', type: Types::STRING)]
-    private string $memberUuid;
-
     #[ORM\Column(type: Types::INTEGER, unique: true)]
     private int $value;
-
-    #[ORM\Column(name: 'refresh_token', type: Types::STRING, unique: true)]
-    private string $refreshToken;
-
-    #[ORM\Column(name: 'device_id', type: Types::STRING)]
-    private string $deviceId;
 
     #[ORM\OneToOne(targetEntity: Member::class, inversedBy: 'code')]
     #[ORM\JoinColumn(name: 'author_uuid', referencedColumnName: 'uuid', unique: true)]
@@ -60,6 +51,11 @@ final class Code extends AggregateRoot
 
         return $code;
     }
+
+    public function getAuthor(): Member
+    {
+		return $this->author;
+	}
 
     public function setAuthor(Member $author): void
     {
@@ -99,36 +95,10 @@ final class Code extends AggregateRoot
 		$this->value = $value;
 	}
 
-	public function getMemberUuid(): string
-    {
-		return $this->memberUuid;
-	}
-
-    public function getRefreshToken(): string
-    {
-		return $this->refreshToken;
-	}
-	
-	public function setRefreshToken(string $refreshToken): void
-    {
-		$this->refreshToken = $refreshToken;
-	}
-
-    public function getDeviceId(): string
-    {
-		return $this->deviceId;
-	}
-	
-	public function setDeviceId(string $deviceId): void
-    {
-		$this->deviceId = $deviceId;
-	}
-
     public function toArray(): array
     {
         return [
             'id' => $this->id,
-            'member_uuid' => $this->memberUuid,
             'value' => $this->value,
             'author' => $this->author->toArray(),
             'expired_at' => $this->expiredAt->getTimestamp(),

@@ -8,6 +8,7 @@ use App\Repositories\Base\Doctrine\BaseClientEntityRepository;
 use App\Repositories\Base\Doctrine\Paginator;
 use Project\Domains\Client\Address\Domain\Address;
 use Project\Domains\Client\Address\Domain\AddressRepositoryInterface;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressAuthorUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressUuid;
 use Project\Shared\Application\Query\BaseQuery;
 
@@ -22,10 +23,21 @@ final class AddressRepository extends BaseClientEntityRepository implements Addr
     {
         return $this->entityRepository->find($uuid->value);
     }
-    public function getAuthorUuidPaginate(string $uuid, BaseQuery $queryData): Paginator
+
+    public function getByAuthorUuid(AddressAuthorUuid $uuid, BaseQuery $query): array
+    {
+        return $this->entityRepository->createQueryBuilder('a')
+                                    ->where('a.authorUuid = :authorUuid')
+                                    ->setParameter('authorUuid', $uuid)
+                                    ->getQuery()
+                                    ->getResult();
+    }
+
+    public function paginateByAuthorUuid(AddressAuthorUuid $uuid, BaseQuery $queryData): Paginator
     {
         $query = $this->entityRepository->createQueryBuilder('a')
-                                        // ->where(['authorUuid' => $uuid])
+                                        ->where('a.authorUuid = :authorUuid')
+                                        ->setParameter('authorUuid', $uuid)
                                         ->getQuery();
 
         return $this->paginator($query, $queryData);

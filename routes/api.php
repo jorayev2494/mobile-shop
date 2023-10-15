@@ -26,9 +26,9 @@ use App\Http\Controllers\Api\Client\Card\{
 use App\Http\Controllers\Api\Client\Cart\{
     IndexCartController,
     AddProductController,
-    CreateCartController,
-    ShowCartController,
+    OperatorCartProductController,
     DeleteProductFromCartController,
+    ConfirmController,
 };
 use App\Http\Controllers\Api\Client\Order\{
     IndexOrderController,
@@ -85,10 +85,13 @@ Route::group(['middleware' => 'auth:client'], static function (Router $router): 
 
     $router->group(['prefix' => 'carts', 'as' => 'carts.'], static function (Router $router): void {
         $router->get('/', IndexCartController::class);
-        $router->post('/', CreateCartController::class);
-        $router->get('/{uuid}', ShowCartController::class);
-        $router->post('/{uuid}/products', AddProductController::class);
-        $router->delete('/{uuid}/products', DeleteProductFromCartController::class);
+        $router->post('/confirm', ConfirmController::class);
+        
+        $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
+            $router->post('/', AddProductController::class);
+            $router->put('/{product_uuid}', OperatorCartProductController::class);
+            $router->delete('/{product_uuid}', DeleteProductFromCartController::class);
+        });
     });
 
     $router->group(['prefix' => 'orders', 'as' => 'orders.'], static function (Router $router): void {
