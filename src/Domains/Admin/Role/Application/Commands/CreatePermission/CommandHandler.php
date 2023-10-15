@@ -14,9 +14,8 @@ final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly PermissionRepositoryInterface $permissionRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

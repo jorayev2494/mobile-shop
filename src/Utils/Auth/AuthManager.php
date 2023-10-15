@@ -12,11 +12,9 @@ use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class AuthManager implements AuthManagerInterface
 {
-
     public function __construct(
         private readonly \Illuminate\Auth\AuthManager $authManager,
-    )
-    {
+    ) {
 
     }
 

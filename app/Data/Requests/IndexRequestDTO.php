@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class IndexRequestDTO implements MakeFromRequest
 {
-
     private function __construct(
         public readonly ?string $search,
         public readonly ?string $search_by,
@@ -19,9 +18,8 @@ class IndexRequestDTO implements MakeFromRequest
         public readonly ?string $sort_by,
         public readonly ?bool $is_sort_desc,
         public readonly ?array $filters,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function make(
@@ -32,8 +30,7 @@ class IndexRequestDTO implements MakeFromRequest
         ?string $sort_by = null,
         ?bool $is_sort_desc = null,
         ?array $filters = null,
-    ): static
-    {
+    ): static {
         return new static(
             search: $search,
             search_by: $search_by,

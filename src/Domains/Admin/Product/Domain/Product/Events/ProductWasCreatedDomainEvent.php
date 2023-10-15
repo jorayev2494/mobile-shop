@@ -18,8 +18,7 @@ class ProductWasCreatedDomainEvent extends DomainEvent
         public readonly bool $isActive,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

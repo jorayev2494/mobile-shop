@@ -26,9 +26,8 @@ final class CreateCommandHandler implements CommandHandlerInterface
         private readonly AddressRepositoryInterface $repository,
         private readonly AuthManagerInterface $authManager,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(CreateCommand $command): void

@@ -13,8 +13,7 @@ class OrderStatusWasChangedDomainEvent extends DomainEvent
         public readonly string $status,
         $eventId = null,
         $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

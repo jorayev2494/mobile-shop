@@ -8,6 +8,6 @@ class ProductCurrencyPrice
 {
     public function __construct()
     {
-        
+
     }
 }

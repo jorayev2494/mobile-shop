@@ -36,7 +36,7 @@ class Manager extends AggregateRoot
 
     #[ORM\Column(name: 'email', type: EmailType::NAME)]
     private ManagerEmail $email;
-    
+
     #[ORM\Column(name: 'role_id', nullable: true)]
     private ?int $roleId;
 
@@ -51,8 +51,7 @@ class Manager extends AggregateRoot
         ManagerFirstName $firstName,
         ManagerLastName $lastName,
         ManagerEmail $email,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -65,8 +64,7 @@ class Manager extends AggregateRoot
         ManagerFirstName $firstName,
         ManagerLastName $lastName,
         ManagerEmail $email,
-    )
-    {
+    ) {
         $manager = new self($uuid, $firstName, $lastName, $email);
 
         return $manager;
@@ -84,56 +82,56 @@ class Manager extends AggregateRoot
         return $manager;
     }
 
-	public function getFirstName(): ManagerFirstName
+    public function getFirstName(): ManagerFirstName
     {
-		return $this->firstName;
-	}
-	
-	public function setFirstName(ManagerFirstName $firstName): void
+        return $this->firstName;
+    }
+
+    public function setFirstName(ManagerFirstName $firstName): void
     {
-		$this->firstName = $firstName;
-	}
+        $this->firstName = $firstName;
+    }
 
     public function changeFirstName(ManagerFirstName $firstName): void
     {
         if ($this->firstName->isNotEquals($firstName)) {
             $this->firstName = $firstName;
         }
-	}
+    }
 
-	public function getLastName(): ManagerLastName
+    public function getLastName(): ManagerLastName
     {
-		return $this->lastName;
-	}
-	
-	public function setLastName(ManagerLastName $lastName): void
+        return $this->lastName;
+    }
+
+    public function setLastName(ManagerLastName $lastName): void
     {
-		$this->lastName = $lastName;
-	}
+        $this->lastName = $lastName;
+    }
 
     public function changeLastName(ManagerLastName $lastName): void
     {
         if ($this->lastName->isNotEquals($lastName)) {
             $this->lastName = $lastName;
         }
-	}
+    }
 
-	public function getEmail(): ManagerEmail
+    public function getEmail(): ManagerEmail
     {
-		return $this->email;
-	}
-	
-	public function setEmail(ManagerEmail $email): void
+        return $this->email;
+    }
+
+    public function setEmail(ManagerEmail $email): void
     {
-		$this->email = $email;
-	}
+        $this->email = $email;
+    }
 
     public function changeEmail(ManagerEmail $email): void
     {
         if ($this->email->isNotEquals($email)) {
             $this->email = $email;
         }
-	}
+    }
 
     public function setRoleId(?int $roleId): void
     {
@@ -150,7 +148,7 @@ class Manager extends AggregateRoot
         if ($this->roleId !== $roleId) {
             $this->roleId = $roleId;
         }
-	}
+    }
 
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void

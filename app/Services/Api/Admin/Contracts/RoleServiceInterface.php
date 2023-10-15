@@ -8,5 +8,4 @@ use App\Services\Api\Contracts\Actions\IndexInterface;
 
 interface RoleServiceInterface extends IndexInterface
 {
-    
 }

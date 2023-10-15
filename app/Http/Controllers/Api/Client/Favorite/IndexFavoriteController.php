@@ -12,13 +12,11 @@ use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class IndexFavoriteController
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Request $request): JsonResponse

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Shared\Application\Query;
 
 use App\Data\Contracts\MakeFromRequest;
@@ -9,7 +11,6 @@ use Project\Shared\Domain\Bus\Query\QueryInterface;
 
 abstract class BaseQuery implements QueryInterface, MakeFromRequest
 {
-
     private function __construct(
         public readonly ?string $search,
         public readonly ?string $searchBy,
@@ -19,9 +20,8 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
         public readonly ?string $sortBy,
         public readonly ?bool $sortRule,
         public readonly ?array $filters,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function make(
@@ -33,8 +33,7 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
         ?string $sortBy = null,
         ?bool $sortRule = null,
         ?array $filters = null,
-    ): static
-    {
+    ): static {
         return new static(
             search: $search,
             searchBy: $searchBy,
@@ -72,4 +71,3 @@ abstract class BaseQuery implements QueryInterface, MakeFromRequest
     }
 
 }
-

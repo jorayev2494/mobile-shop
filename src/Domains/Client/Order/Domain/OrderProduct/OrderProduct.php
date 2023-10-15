@@ -43,20 +43,20 @@ class OrderProduct implements Arrayable
         return new self($product, $quantity);
     }
 
-	public function getOrder(): Order
+    public function getOrder(): Order
     {
-		return $this->order;
-	}
+        return $this->order;
+    }
 
     public function setOrder(Order $order): void
     {
         $this->order = $order;
     }
 
-	public function getProduct(): Product
+    public function getProduct(): Product
     {
-		return $this->product;
-	}
+        return $this->product;
+    }
 
     public function setQuantity(Quantity $quantity): void
     {

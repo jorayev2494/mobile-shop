@@ -6,7 +6,6 @@ namespace App\Providers;
 
 class ClientDomainServiceProvider extends DomainServiceProvider
 {
-
     public function register(): void
     {
         parent::register();

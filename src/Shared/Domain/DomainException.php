@@ -6,5 +6,4 @@ namespace Project\Shared\Domain;
 
 class DomainException extends \DomainException // \Exception
 {
-    
 }

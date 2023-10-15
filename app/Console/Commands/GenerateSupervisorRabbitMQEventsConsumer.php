@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\Api\GenerateSupervisorRabbitMQDomainEventsConsumerService;
@@ -14,8 +16,7 @@ class GenerateSupervisorRabbitMQEventsConsumer extends Command
 
     public function __construct(
         private readonly GenerateSupervisorRabbitMQDomainEventsConsumerService $generateSupervisorRabbitMQDomainEventsConsumerService,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

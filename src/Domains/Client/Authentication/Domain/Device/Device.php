@@ -56,8 +56,7 @@ final class Device implements DeviceInterface
         string $uuid,
         string $refreshToken,
         string $deviceId,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->refreshToken = $refreshToken;
         $this->deviceId = $deviceId;
@@ -67,22 +66,21 @@ final class Device implements DeviceInterface
         string $uuid,
         string $refreshToken,
         string $deviceId,
-    ): self
-    {
-        $code = new self($uuid, $refreshToken,$deviceId);
+    ): self {
+        $code = new self($uuid, $refreshToken, $deviceId);
 
         return $code;
     }
 
     public function delete(): void
     {
-        
+
     }
 
     public function getUuid(): string
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
     public function getAuthor(): Member
     {
@@ -107,30 +105,30 @@ final class Device implements DeviceInterface
         $this->updatedAt = new DateTimeImmutable();
     }
 
-	public function getAuthorUuid(): string
+    public function getAuthorUuid(): string
     {
-		return $this->authorUuid;
-	}
+        return $this->authorUuid;
+    }
 
     public function getRefreshToken(): string
     {
-		return $this->refreshToken;
-	}
-	
-	public function setRefreshToken(string $refreshToken): void
+        return $this->refreshToken;
+    }
+
+    public function setRefreshToken(string $refreshToken): void
     {
-		$this->refreshToken = $refreshToken;
-	}
+        $this->refreshToken = $refreshToken;
+    }
 
     public function getDeviceId(): string
     {
-		return $this->deviceId;
-	}
-	
-	public function setDeviceId(string $deviceId): void
+        return $this->deviceId;
+    }
+
+    public function setDeviceId(string $deviceId): void
     {
-		$this->deviceId = $deviceId;
-	}
+        $this->deviceId = $deviceId;
+    }
 
     public function toArray(): array
     {

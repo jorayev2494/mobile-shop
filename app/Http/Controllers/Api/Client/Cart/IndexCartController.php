@@ -15,11 +15,10 @@ class IndexCartController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
-    
+
     public function __invoke(Request $request): JsonResponse
     {
         $result = $this->queryBus->ask(

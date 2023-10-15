@@ -16,9 +16,8 @@ final class CreateCategoryCommandHandler implements CommandHandlerInterface
     public function __construct(
         private readonly CategoryRepositoryInterface $repository,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(CreateCategoryCommand $command): void

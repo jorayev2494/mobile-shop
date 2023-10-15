@@ -76,13 +76,13 @@ final class Device extends AggregateRoot
         ];
     }
 
-	public function getDeviceId(): string
+    public function getDeviceId(): string
     {
-		return $this->deviceId;
-	}
+        return $this->deviceId;
+    }
 
-	public function getUuid(): string
+    public function getUuid(): string
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 }

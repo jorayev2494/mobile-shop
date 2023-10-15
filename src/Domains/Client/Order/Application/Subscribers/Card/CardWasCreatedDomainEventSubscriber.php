@@ -14,9 +14,8 @@ final class CardWasCreatedDomainEventSubscriber implements DomainEventSubscriber
 {
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

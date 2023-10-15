@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Order;
 
 use App\Http\Controllers\Controller;
@@ -11,15 +13,13 @@ use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateOrderController extends Controller
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
-    
+
     public function __invoke(UpdateOrderRequest $request, string $uuid): Response
     {
         $this->commandBus->dispatch(

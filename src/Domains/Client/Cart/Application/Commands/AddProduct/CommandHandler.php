@@ -25,16 +25,15 @@ class CommandHandler implements CommandHandlerInterface
         private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
         private readonly UuidGeneratorInterface $uuidGenerator,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void
     {
         $authorUuid = AuthorUuid::fromValue($this->authManager->uuid());
         $cart = $this->repository->findCartByAuthorUuid($authorUuid);
-        
+
         $cart ??= Cart::create(Uuid::fromValue($this->uuidGenerator->generate()), $authorUuid);
 
         if ($cart->getStatus()->isNotEquals(StatusEnum::DRAFT)) {

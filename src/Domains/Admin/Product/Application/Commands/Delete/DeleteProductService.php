@@ -19,9 +19,8 @@ final class DeleteProductService
         private readonly MediaRepositoryInterface $mediaRepository,
         private readonly FilesystemInterface $filesystem,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function execute(ProductUuid $uuid): void

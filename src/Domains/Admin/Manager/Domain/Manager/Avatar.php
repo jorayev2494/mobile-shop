@@ -14,9 +14,8 @@ class Avatar
         public readonly int $size,
         public readonly string $fileOriginalName,
         public readonly string $urlPattern,
-    )
-    {
-        
+    ) {
+
     }
 
     public function toArray(): array

@@ -19,8 +19,7 @@ abstract class CreateRabbitMQExchangesService
     private readonly AMQPChannel $channel;
     public function __construct(
         private readonly AMQPStreamConnection $amqpConnection,
-    )
-    {
+    ) {
         $this->channel = $amqpConnection->channel();
     }
 

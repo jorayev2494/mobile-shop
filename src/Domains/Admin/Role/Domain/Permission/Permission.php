@@ -44,8 +44,7 @@ final class Permission implements Arrayable
         PermissionSubject $subject,
         PermissionAction $action,
         array $roles = [],
-    )
-    {
+    ) {
         $this->subject = $subject;
         $this->action = $action;
         $this->value = PermissionValue::fromValue($subject->value . '_' . $action->value);
@@ -55,8 +54,7 @@ final class Permission implements Arrayable
     public static function create(
         PermissionSubject $subject,
         PermissionAction $action,
-    ): self
-    {
+    ): self {
         return new self($subject, $action);
     }
 

@@ -8,5 +8,4 @@ use Project\Shared\Domain\ValueObject\UuidValueObject;
 
 final class ProductUuid extends UuidValueObject
 {
-    
 }

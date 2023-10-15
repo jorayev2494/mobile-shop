@@ -11,8 +11,7 @@ final class DeleteCategoryCommand extends Command implements CommandInterface
 {
     public function __construct(
         public readonly string $uuid
-    )
-    {
-        
+    ) {
+
     }
 }

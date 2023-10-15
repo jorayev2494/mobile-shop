@@ -14,9 +14,8 @@ class RoleService implements RoleServiceInterface
 {
     public function __construct(
         private readonly RoleRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function index(AuthModel $authModel, IndexRequestDTO $dataDTO): LengthAwarePaginator

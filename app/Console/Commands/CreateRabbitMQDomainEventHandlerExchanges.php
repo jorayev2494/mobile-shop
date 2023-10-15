@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\Api\CreateRabbitMQDomainEventHandlerExchangesService;
@@ -17,8 +19,7 @@ class CreateRabbitMQDomainEventHandlerExchanges extends Command
 
     public function __construct(
         private readonly CreateRabbitMQDomainEventHandlerExchangesService $createRabbitMQDomainEventHandlerExchangesService,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

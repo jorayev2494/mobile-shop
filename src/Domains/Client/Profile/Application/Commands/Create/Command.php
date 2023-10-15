@@ -14,8 +14,7 @@ class Command implements CommandInterface
         public readonly string $lastName,
         public readonly string $email,
         public readonly string $phone = null,
-    ) 
-    {
+    ) {
 
     }
 }

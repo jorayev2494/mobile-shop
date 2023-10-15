@@ -36,7 +36,7 @@ class ClientRepository extends BaseAdminEntityRepository implements ClientReposi
         $this->entityRepository->getEntityManager()->persist($client);
         $this->entityRepository->getEntityManager()->flush();
     }
-    
+
     public function delete(Client $client): void
     {
         $this->entityRepository->getEntityManager()->remove($client);

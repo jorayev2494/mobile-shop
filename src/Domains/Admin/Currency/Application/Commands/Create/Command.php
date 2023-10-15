@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Admin\Currency\Application\Commands\Create;
+
 use Project\Shared\Domain\Bus\Command\CommandInterface;
 
 final class Command implements CommandInterface
@@ -11,8 +12,7 @@ final class Command implements CommandInterface
         public readonly string $uuid,
         public readonly string $value,
         public readonly bool $isActive,
-    )
-    {
-        
+    ) {
+
     }
 }

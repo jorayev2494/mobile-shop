@@ -15,9 +15,8 @@ class IndexCardController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
 
 

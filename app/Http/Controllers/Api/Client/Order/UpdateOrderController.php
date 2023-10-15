@@ -15,11 +15,10 @@ class UpdateOrderController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
-    
+
     public function __invoke(UpdateOrderRequest $request, string $uuid): Response
     {
         $this->commandBus->dispatch(

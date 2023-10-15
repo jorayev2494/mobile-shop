@@ -12,9 +12,8 @@ class QueryHandler implements QueryInterface
 {
     public function __construct(
         private readonly CountryRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query)

@@ -36,7 +36,7 @@ class ProfileServiceProvider extends AdminDomainServiceProvider
     protected const QUERY_HANDLERS = [
         \Project\Domains\Admin\Profile\Application\Queries\GetProfile\QueryHandler::class,
     ];
-    
+
     protected const COMMAND_HANDLERS = [
         \Project\Domains\Admin\Profile\Application\Commands\Update\CommandHandler::class,
         \Project\Domains\Admin\Profile\Application\Commands\ChangePassword\CommandHandler::class,

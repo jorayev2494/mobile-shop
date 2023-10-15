@@ -43,20 +43,20 @@ class CartProduct implements Arrayable
         return new self($product, $quantity);
     }
 
-	public function getCart(): Cart
+    public function getCart(): Cart
     {
-		return $this->cart;
-	}
+        return $this->cart;
+    }
 
     public function setCart(Cart $cart): void
     {
         $this->cart = $cart;
     }
 
-	public function getProduct(): Product
+    public function getProduct(): Product
     {
-		return $this->product;
-	}
+        return $this->product;
+    }
 
     public function getQuantity(): Quantity
     {

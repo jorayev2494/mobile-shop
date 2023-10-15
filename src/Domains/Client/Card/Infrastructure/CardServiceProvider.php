@@ -10,7 +10,6 @@ use Project\Domains\Client\Card\Infrastructure\Repositories\Doctrine\Card\CardRe
 
 final class CardServiceProvider extends ClientDomainServiceProvider
 {
-
     /** @var array<string, string> */
     protected const SERVICES = [
         CardRepositoryInterface::class => [self::SERVICE_BIND, CardRepository::class],

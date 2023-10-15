@@ -13,8 +13,7 @@ final class ProfilePhoneWasUpdatedDomainEvent extends DomainEvent
         public readonly ?string $phone,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

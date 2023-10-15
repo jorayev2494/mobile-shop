@@ -8,5 +8,4 @@ use Project\Shared\Domain\ValueObject\IntValueObject;
 
 final class ZipCode extends IntValueObject
 {
-    
 }

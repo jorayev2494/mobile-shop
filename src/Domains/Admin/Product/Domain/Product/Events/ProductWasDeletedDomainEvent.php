@@ -8,13 +8,11 @@ use Project\Shared\Domain\Bus\Event\DomainEvent;
 
 final class ProductWasDeletedDomainEvent extends DomainEvent
 {
-
     public function __construct(
         public readonly string $uuid,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -39,4 +37,4 @@ final class ProductWasDeletedDomainEvent extends DomainEvent
             'occurred_on' => $this->occurredOn(),
         ];
     }
-} 
+}

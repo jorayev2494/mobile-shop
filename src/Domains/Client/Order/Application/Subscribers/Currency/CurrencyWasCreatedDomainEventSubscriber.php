@@ -13,9 +13,8 @@ final class CurrencyWasCreatedDomainEventSubscriber implements DomainEventSubscr
 {
     public function __construct(
         private readonly CurrencyRepositoryInterface $currencyRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

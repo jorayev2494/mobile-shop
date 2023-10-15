@@ -19,7 +19,7 @@ abstract class File implements Arrayable
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $width;
-    
+
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
     protected ?int $height;
 
@@ -73,8 +73,7 @@ abstract class File implements Arrayable
         string $url,
         int $downloadedCount,
         string $urlPattern = null,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->mimeType = $mimeType;
         $this->width = $width;
@@ -104,24 +103,23 @@ abstract class File implements Arrayable
         string $url,
         int $downloadedCount = 0,
         string $urlPattern = null,
-    ): static
-    {
+    ): static {
         $media = new static(
-                        $uuid,
-                        $mimeType,
-                        $width,
-                        $height,
-                        $extension,
-                        $size,
-                        $path,
-                        $fullPath,
-                        $fileName,
-                        $fileOriginalName,
-                        $url,
-                        $downloadedCount,
-                        $urlPattern,
-                    );
-        
+            $uuid,
+            $mimeType,
+            $width,
+            $height,
+            $extension,
+            $size,
+            $path,
+            $fullPath,
+            $fileName,
+            $fileOriginalName,
+            $url,
+            $downloadedCount,
+            $urlPattern,
+        );
+
         return $media;
     }
 
@@ -144,20 +142,20 @@ abstract class File implements Arrayable
         return $this->uuid;
     }
 
-	public function getFileName(): string
+    public function getFileName(): string
     {
-		return $this->fileName;
-	}
+        return $this->fileName;
+    }
 
-	public function getPath(): string
+    public function getPath(): string
     {
-		return $this->path;
-	}
+        return $this->path;
+    }
 
     public function getFullPath(): string
     {
-		return $this->fullPath;
-	}
+        return $this->fullPath;
+    }
 
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void

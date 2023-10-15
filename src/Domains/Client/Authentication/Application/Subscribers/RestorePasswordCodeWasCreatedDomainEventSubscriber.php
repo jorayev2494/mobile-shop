@@ -13,9 +13,8 @@ class RestorePasswordCodeWasCreatedDomainEventSubscriber implements DomainEventS
 {
     public function __construct(
         private readonly MailerInterface $mailer,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -38,7 +37,7 @@ class RestorePasswordCodeWasCreatedDomainEventSubscriber implements DomainEventS
                 ->subject('Time for Symfony Mailer!')
                 ->text('Sending emails is fun again!')
                 ->html($view);
-            
+
         $this->mailer->send($message);
     }
 }

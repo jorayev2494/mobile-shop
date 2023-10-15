@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Enums;
 
-enum OrderStatus : string
+enum OrderStatus: string
 {
     case DRAFT = 'draft';
     case PAID = 'paid';

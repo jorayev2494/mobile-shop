@@ -17,9 +17,8 @@ final class ProductWasCreatedDomainEventSubscriber implements DomainEventSubscri
     public function __construct(
         private readonly ProductRepositoryInterface $productRepository,
         private readonly CategoryRepositoryInterface $categoryRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

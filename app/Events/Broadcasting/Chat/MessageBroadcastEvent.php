@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Events\Broadcasting\Chat;
 
 use Illuminate\Broadcasting\Channel;
@@ -12,7 +14,9 @@ use Illuminate\Queue\SerializesModels;
 
 class MessageBroadcastEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * Create a new event instance.

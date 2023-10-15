@@ -13,9 +13,8 @@ final class FindCategoryQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(FindCategoryQuery $query): object

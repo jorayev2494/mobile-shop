@@ -16,7 +16,7 @@ final class ProfilePhoneWasUpdatedDomainEventSubscriber implements DomainEventSu
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository
     ) {
-        
+
     }
 
     public static function subscribedTo(): array

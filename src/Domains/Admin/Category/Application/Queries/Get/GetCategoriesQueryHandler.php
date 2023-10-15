@@ -12,9 +12,8 @@ final class GetCategoriesQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(GetCategoriesQuery $query): Paginator

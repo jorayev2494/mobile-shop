@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Services\Api\GenerateSupervisorRabbitMQCommandsConsumerService;
@@ -15,8 +17,7 @@ class GenerateSupervisorRabbitMQCommandsConsumer extends Command
 
     public function __construct(
         private readonly GenerateSupervisorRabbitMQCommandsConsumerService $generateSupervisorRabbitMQCommandsConsumerService,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

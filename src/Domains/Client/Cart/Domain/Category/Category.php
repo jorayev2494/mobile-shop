@@ -45,8 +45,7 @@ class Category extends AggregateRoot
         Uuid $uuid,
         Value $value,
         bool $isActive,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->value = $value;
         $this->isActive = $isActive;
@@ -68,42 +67,42 @@ class Category extends AggregateRoot
 
     public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getValue(): Value
+    public function getValue(): Value
     {
-		return $this->value;
-	}
+        return $this->value;
+    }
 
-	public function setValue(Value $value): void
+    public function setValue(Value $value): void
     {
-		$this->value = $value;
-	}
+        $this->value = $value;
+    }
 
     public function changeValue(Value $value): void
     {
         if ($this->value->isNotEquals($value)) {
             $this->value = $value;
         }
-	}
+    }
 
-	public function getIsActive(): bool
+    public function getIsActive(): bool
     {
-		return $this->isActive;
-	}
-	
-	public function setIsActive(bool $isActive): void
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
     {
-		$this->isActive = $isActive;
-	}
+        $this->isActive = $isActive;
+    }
 
     public function changeIsActive(bool $isActive): void
     {
         if ($this->isActive === $isActive) {
             $this->isActive = $isActive;
         }
-	}
+    }
 
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void

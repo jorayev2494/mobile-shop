@@ -10,8 +10,7 @@ final class Query implements QueryInterface
 {
     public function __construct(
         public readonly string $uuid,
-    )
-    {
-        
+    ) {
+
     }
 }

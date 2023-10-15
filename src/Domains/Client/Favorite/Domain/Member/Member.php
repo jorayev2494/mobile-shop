@@ -33,8 +33,7 @@ final class Member implements Arrayable
 
     public function __construct(
         MemberUuid $uuid,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
     }
 

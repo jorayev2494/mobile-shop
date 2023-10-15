@@ -10,8 +10,7 @@ final class Command implements CommandInterface
 {
     public function __construct(
         public readonly string $deviceId,
-    )
-    {
-        
+    ) {
+
     }
 }

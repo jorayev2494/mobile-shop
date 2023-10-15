@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Client;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -12,9 +14,8 @@ class ShowClientController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
     public function __invoke(string $uuid): JsonResponse
     {

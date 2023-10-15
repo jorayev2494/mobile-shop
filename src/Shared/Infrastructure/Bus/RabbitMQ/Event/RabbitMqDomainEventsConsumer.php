@@ -20,8 +20,7 @@ final class RabbitMqDomainEventsConsumer
 
     public function __construct(
         private readonly AMQPStreamConnection $amqpConnection,
-    )
-    {
+    ) {
         $this->channel = $amqpConnection->channel();
         $this->channel->basic_qos(null, 1, null);
     }
@@ -48,7 +47,7 @@ final class RabbitMqDomainEventsConsumer
 
     private function consumer(callable $subscriber, string $queueName): callable
     {
-        return function (AMQPMessage $msg) use($subscriber, $queueName): void {
+        return function (AMQPMessage $msg) use ($subscriber, $queueName): void {
             $event = $this->deserializeDomainEvent($msg);
 
             try {
@@ -71,7 +70,7 @@ final class RabbitMqDomainEventsConsumer
         $eventData = JSON::decode($msg->getBody());
 
         $eventName = $eventData['id'];
-        
+
         $eventClass = $this->getHeader(RabbitMQEventBus::EVENT_CLASS_KEY);
 
         if (null === $eventClass) {

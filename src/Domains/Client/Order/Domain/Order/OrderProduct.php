@@ -13,9 +13,8 @@ final class OrderProduct
         public readonly int $quality,
         public readonly float $sum,
         public readonly float $discard_sum,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function fromPrimitives(string $uuid, string $orderUUID, string $productUUID, int $quality, float $sum, float $discardSum): self

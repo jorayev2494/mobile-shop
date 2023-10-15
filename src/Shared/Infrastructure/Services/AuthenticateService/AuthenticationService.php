@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthenticationService implements AuthenticationServiceInterface
 {
-
     public function authenticate(AuthenticationCredentialsDTO $data, AppGuardType $guard, array $claims = []): string
     {
         // dd($data->toArray(), $guard->value);

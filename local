@@ -32,6 +32,7 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
                                                                                             type ${BLUE}........................................${GREEN} Many actions
     artisan ${BLUE}...........................................................................${GREEN} Laravel Artisan commands
     composer ${BLUE}..........................................................................${GREEN} Composerz commands
+    php-cs-fixer ${BLUE}......................................................................${GREEN} Php CS Fixer
     ${ENDCOLOR}
 "
 }
@@ -75,6 +76,9 @@ case "$1" in
     ;;
     composer)
         composer ${@:2}
+    ;;
+    php-cs-fixer)
+        php-cs-fixer ${@:2}
     ;;
     *)
         printServerLstOfCommands

@@ -18,9 +18,8 @@ class QueryHandler implements QueryHandlerInterface
         private readonly CartRepositoryInterface $cartRepository,
         private readonly AuthManagerInterface $authManager,
         private readonly UuidGeneratorInterface $uuidGenerator,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query)

@@ -17,9 +17,8 @@ class ProfileService implements ContractsProfileService
 {
     public function __construct(
         private readonly FilesystemInterface $filesystem,
-    )
-    {
-        
+    ) {
+
     }
     public function show(Admin $authModel): Admin
     {

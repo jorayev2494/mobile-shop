@@ -13,8 +13,7 @@ final class DeviceWasRemovedDomainEvent extends DomainEvent
         public readonly string $authorUuid,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -23,8 +22,7 @@ final class DeviceWasRemovedDomainEvent extends DomainEvent
         array $body,
         string $eventId,
         string $occurredOn,
-    ): self
-    {
+    ): self {
         [
             'uuid' => $uuid,
             'author_uuid' => $authorUuid,

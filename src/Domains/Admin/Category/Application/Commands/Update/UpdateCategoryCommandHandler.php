@@ -14,9 +14,8 @@ final class UpdateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateCategoryCommand $command): void

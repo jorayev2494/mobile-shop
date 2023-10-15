@@ -13,9 +13,8 @@ final class OrderWasCreatedDomainEventSubscriber implements DomainEventSubscribe
 {
     public function __construct(
         private readonly CartRepositoryInterface $cartRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

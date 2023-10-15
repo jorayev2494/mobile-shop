@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Product\Domain\Product\Events;
 
 use Project\Shared\Domain\Bus\Event\DomainEvent;
@@ -11,8 +13,7 @@ class ProductMediaWasAddedDomainEvent extends DomainEvent
         public readonly array $data,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -21,8 +22,7 @@ class ProductMediaWasAddedDomainEvent extends DomainEvent
         array $body,
         string $eventId,
         string $occurredOn,
-    ): self
-    {
+    ): self {
         return new self($uuid, $body, $eventId, $occurredOn);
     }
 

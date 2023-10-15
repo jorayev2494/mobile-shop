@@ -21,8 +21,7 @@ final class CartWasConfirmedDomainEvent extends DomainEvent
         public readonly ?string $note,
         $eventId = null,
         $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -65,6 +64,6 @@ final class CartWasConfirmedDomainEvent extends DomainEvent
             ],
             'event_id' => $this->eventId(),
             'occurred_on' => $this->occurredOn(),
-        ]; 
+        ];
     }
 }

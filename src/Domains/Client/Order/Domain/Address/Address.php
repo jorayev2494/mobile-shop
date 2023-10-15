@@ -79,8 +79,7 @@ class Address extends AggregateRoot
         CountryUuid $countryUuid,
         CityUuid $cityUuid,
         District $district,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->title = $title;
         $this->fullName = $fullName;
@@ -106,8 +105,7 @@ class Address extends AggregateRoot
         CountryUuid $countryUuid,
         CityUuid $cityUuid,
         District $district,
-    ): self
-    {
+    ): self {
         return new self($uuid, $title, $fullName, $authorUuid, $firstAddress, $secondAddress, $zipCode, $countryUuid, $cityUuid, $district);
     }
 
@@ -122,8 +120,7 @@ class Address extends AggregateRoot
         string $countryUuid,
         string $cityUuid,
         string $district,
-    ): self
-    {
+    ): self {
         return new self(
             Uuid::fromValue($uuid),
             Title::fromValue($title),
@@ -138,124 +135,124 @@ class Address extends AggregateRoot
         );
     }
 
-	/**
-	 * @return Uuid
-	 */
-	public function getUuid(): Uuid
+    /**
+     * @return Uuid
+     */
+    public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	/**
-	 * @return Title
-	 */
-	public function getTitle(): Title
+    /**
+     * @return Title
+     */
+    public function getTitle(): Title
     {
-		return $this->title;
-	}
-	
-	public function changeTitle(Title $title): void
+        return $this->title;
+    }
+
+    public function changeTitle(Title $title): void
     {
         if ($this->title->isNotEquals($title)) {
             $this->title = $title;
         }
-	}
+    }
 
-	public function getFullName(): FullName
+    public function getFullName(): FullName
     {
-		return $this->fullName;
-	}
-	
-	public function changeFullName(FullName $fullName): void
+        return $this->fullName;
+    }
+
+    public function changeFullName(FullName $fullName): void
     {
         if ($this->fullName->isNotEquals($fullName)) {
             $this->fullName = $fullName;
         }
-	}
+    }
 
-	public function getAuthorUuid(): AuthorUuid
+    public function getAuthorUuid(): AuthorUuid
     {
-		return $this->authorUuid;
-	}
-	
-	public function changeAuthorUuid(AuthorUuid $authorUuid): void
+        return $this->authorUuid;
+    }
+
+    public function changeAuthorUuid(AuthorUuid $authorUuid): void
     {
         if ($this->authorUuid->isNotEquals($authorUuid)) {
             $this->authorUuid = $authorUuid;
         }
-	}
+    }
 
-	public function getFirstAddress(): FirstAddress
+    public function getFirstAddress(): FirstAddress
     {
-		return $this->firstAddress;
-	}
-	
-	public function changeFirstAddress(FirstAddress $firstAddress): void
+        return $this->firstAddress;
+    }
+
+    public function changeFirstAddress(FirstAddress $firstAddress): void
     {
         if ($this->firstAddress->isNotEquals($firstAddress)) {
             $this->firstAddress = $firstAddress;
         }
-	}
+    }
 
-	public function getSecondAddress(): SecondAddress
+    public function getSecondAddress(): SecondAddress
     {
-		return $this->secondAddress;
-	}
-	
-	public function changeSecondAddress(SecondAddress $secondAddress): void
+        return $this->secondAddress;
+    }
+
+    public function changeSecondAddress(SecondAddress $secondAddress): void
     {
         if ($this->secondAddress->isNotEquals($secondAddress)) {
             $this->secondAddress = $secondAddress;
         }
-	}
+    }
 
-	public function getZipCode(): ZipCode
+    public function getZipCode(): ZipCode
     {
-		return $this->zipCode;
-	}
-	
-	public function changeZipCode(ZipCode $zipCode): void
+        return $this->zipCode;
+    }
+
+    public function changeZipCode(ZipCode $zipCode): void
     {
         if ($this->zipCode->isNotEquals($zipCode)) {
             $this->zipCode = $zipCode;
         }
-	}
+    }
 
-	public function getCountryUuid(): CountryUuid
+    public function getCountryUuid(): CountryUuid
     {
-		return $this->countryUuid;
-	}
-	
-	public function changeCountryUuid(CountryUuid $countryUuid): void
+        return $this->countryUuid;
+    }
+
+    public function changeCountryUuid(CountryUuid $countryUuid): void
     {
         if ($this->countryUuid->isNotEquals($countryUuid)) {
             $this->countryUuid = $countryUuid;
         }
-	}
+    }
 
-	public function getCityUuid(): CityUuid
+    public function getCityUuid(): CityUuid
     {
-		return $this->cityUuid;
-	}
-	
-	public function changeCityUuid(CityUuid $cityUuid): void
+        return $this->cityUuid;
+    }
+
+    public function changeCityUuid(CityUuid $cityUuid): void
     {
         if ($this->cityUuid->isNotEquals($cityUuid)) {
             $this->cityUuid = $cityUuid;
         }
-	}
+    }
 
-	public function getDistrict(): District
+    public function getDistrict(): District
     {
-		return $this->district;
-	}
-	
-	public function changeDistrict(District $district): void
+        return $this->district;
+    }
+
+    public function changeDistrict(District $district): void
     {
         if ($this->district->isNotEquals($district)) {
             $this->district = $district;
         }
-	}
+    }
 
     public function toArray(): array
     {

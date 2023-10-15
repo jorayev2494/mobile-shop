@@ -15,9 +15,8 @@ final class QueryHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly CurrencyRepositoryInterface $currencyRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query): Currency

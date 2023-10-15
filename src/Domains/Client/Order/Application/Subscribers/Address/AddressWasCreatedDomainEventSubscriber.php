@@ -13,9 +13,8 @@ final class AddressWasCreatedDomainEventSubscriber implements DomainEventSubscri
 {
     public function __construct(
         private readonly AddressRepositoryInterface $addressRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

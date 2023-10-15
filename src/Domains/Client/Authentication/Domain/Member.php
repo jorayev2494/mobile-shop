@@ -83,25 +83,25 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         return $this->email;
     }
 
-	public function setEmail(string $email): void
+    public function setEmail(string $email): void
     {
-		$this->email = $email;
-	}
+        $this->email = $email;
+    }
 
     public function changePassword(string $password): void
     {
-		$this->password = $password;
-	}
+        $this->password = $password;
+    }
 
-	public function getDevices(): Collection
+    public function getDevices(): Collection
     {
-		return $this->devices;
-	}
-	
-	public function setDevices(ArrayCollection $devices): void
+        return $this->devices;
+    }
+
+    public function setDevices(ArrayCollection $devices): void
     {
-		$this->devices = $devices;
-	}
+        $this->devices = $devices;
+    }
 
     public function addCode(Code $code): void
     {

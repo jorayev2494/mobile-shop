@@ -11,8 +11,7 @@ final class Command implements CommandInterface
     public function __construct(
         public readonly string $refreshToken,
         public readonly string $deviceId,
-    )
-    {
-        
+    ) {
+
     }
 }

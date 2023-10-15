@@ -11,8 +11,7 @@ final class ToggleFavoriteCommand implements CommandInterface
     public function __construct(
         public readonly string $memberUuid,
         public readonly string $productUuid,
-    )
-    {
-        
+    ) {
+
     }
 }

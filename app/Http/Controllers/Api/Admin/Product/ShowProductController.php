@@ -14,9 +14,8 @@ final class ShowProductController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(string $uuid): JsonResponse

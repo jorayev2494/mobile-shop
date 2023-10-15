@@ -15,9 +15,8 @@ class UpdateCardController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateCardRequest $request, string $uuid): Response

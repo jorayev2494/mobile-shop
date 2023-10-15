@@ -10,9 +10,8 @@ final class UpdateOrderCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly UpdateOrderService $service,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateOrderCommand $command): array

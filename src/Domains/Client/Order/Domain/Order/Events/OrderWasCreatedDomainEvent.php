@@ -15,8 +15,7 @@ final class OrderWasCreatedDomainEvent extends DomainEvent
         // public readonly float $sum,
         ?string $eventId = null,
         ?string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

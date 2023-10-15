@@ -11,8 +11,7 @@ final class FindCategoryQuery extends Query implements QueryInterface
 {
     public function __construct(
         public readonly string $uuid,
-    )
-    {
-        
+    ) {
+
     }
 }

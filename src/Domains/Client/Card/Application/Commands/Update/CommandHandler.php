@@ -20,9 +20,8 @@ final class CommandHandler implements CommandHandlerInterface
     public function __construct(
         private readonly AuthManagerInterface $authManager,
         private readonly CardRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

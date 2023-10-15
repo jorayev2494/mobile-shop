@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -13,7 +15,7 @@ class S3TestCommand extends Command
 
     public function handle(): int
     {
-        for ($i = 0; $i < 1; $i++) { 
+        for ($i = 0; $i < 1; $i++) {
             $randomName = md5(microtime(true));
             Storage::put('test-folder/' . $randomName . '-example.txt', 'test');
         }

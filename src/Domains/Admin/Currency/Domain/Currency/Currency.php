@@ -44,8 +44,7 @@ class Currency extends AggregateRoot
         Uuid $uuid,
         Value $value,
         bool $isActive,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->value = $value;
         $this->isActive = $isActive;
@@ -55,8 +54,7 @@ class Currency extends AggregateRoot
         Uuid $uuid,
         Value $value,
         bool $isActive,
-    ): self
-    {
+    ): self {
         $currency = new self($uuid, $value, $isActive);
         $currency->record(
             new CurrencyWasCreatedDomainEvent(
@@ -71,13 +69,13 @@ class Currency extends AggregateRoot
 
     public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getValue(): Value
+    public function getValue(): Value
     {
-		return $this->value;
-	}
+        return $this->value;
+    }
 
     public function changeValue(Value $value): void
     {
@@ -87,10 +85,10 @@ class Currency extends AggregateRoot
         }
     }
 
-	public function getIsActive(): bool
+    public function getIsActive(): bool
     {
-		return $this->isActive;
-	}
+        return $this->isActive;
+    }
 
     public function changeIsActive(bool $isActive): void
     {

@@ -14,9 +14,8 @@ final class CurrencyValueWasChangedDomainEventSubscriber implements DomainEventS
 {
     public function __construct(
         private readonly CurrencyRepositoryInterface $currencyRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

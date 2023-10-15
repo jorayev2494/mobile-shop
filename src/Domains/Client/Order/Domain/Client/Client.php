@@ -52,8 +52,7 @@ class Client
         LastName $lastName,
         Email $email,
         Phone $phone,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -69,8 +68,7 @@ class Client
         string $lastName,
         string $email,
         string $phone,
-    ): self
-    {
+    ): self {
         return new self(
             Uuid::fromValue($uuid),
             FirstName::fromValue($firstName),
@@ -80,15 +78,15 @@ class Client
         );
     }
 
-	public function getEmail(): Email
+    public function getEmail(): Email
     {
-		return $this->email;
-	}
+        return $this->email;
+    }
 
-	public function getPhone(): Phone
+    public function getPhone(): Phone
     {
-		return $this->phone;
-	}
+        return $this->phone;
+    }
 
     public function addOrder(Order $order): void
     {
@@ -110,35 +108,35 @@ class Client
         $card->setAuthor($this);
     }
 
-	public function getFirstName(): FirstName
+    public function getFirstName(): FirstName
     {
-		return $this->firstName;
-	}
-	
-	public function setFirstName(FirstName $firstName): void
-    {
-		$this->firstName = $firstName;
-	}
+        return $this->firstName;
+    }
 
-	public function getLastName(): LastName
+    public function setFirstName(FirstName $firstName): void
     {
-		return $this->lastName;
-	}
-	
-	public function setLastName(LastName $lastName): void
+        $this->firstName = $firstName;
+    }
+
+    public function getLastName(): LastName
     {
-		$this->lastName = $lastName;
-	}
-	
-	public function setEmail(Email $email): void
+        return $this->lastName;
+    }
+
+    public function setLastName(LastName $lastName): void
     {
-		$this->email = $email;
-	}
-	
-	public function setPhone(Phone $phone): void
+        $this->lastName = $lastName;
+    }
+
+    public function setEmail(Email $email): void
     {
-		$this->phone = $phone;
-	}
+        $this->email = $email;
+    }
+
+    public function setPhone(Phone $phone): void
+    {
+        $this->phone = $phone;
+    }
 
     public function toArray(): array
     {

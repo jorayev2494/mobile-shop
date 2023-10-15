@@ -12,13 +12,11 @@ use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class ToggleFavoriteCommandService
 {
-
     public function __construct(
         private readonly MemberRepositoryInterface $memberRepository,
         private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
+    ) {
 
     }
 

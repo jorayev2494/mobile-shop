@@ -116,3 +116,30 @@ function logs()
 {
     docker-compose --file $SERVER_COMPOSE_FILE_PATH logs ${@:1}
 }
+
+function php-cs-fixer() {
+    case "$1" in
+        'check')
+            ./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --verbose -vvv --diff --allow-risky=yes --using-cache=no app
+            ./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --verbose -vvv --diff --allow-risky=yes --using-cache=no src
+        ;;
+        'fix')
+            ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --verbose -vvv --diff --allow-risky=yes --using-cache=no app
+            ./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php --verbose -vvv --diff --allow-risky=yes --using-cache=no src
+        ;;
+        *)
+            echo -e "
+${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    php-cs-fixer <command>
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    check ${BLUE}............................................................................${GREEN} Print status of containers
+    fix ${BLUE}..............................................................................${GREEN} Start the containers
+"
+
+            exit 1
+        ;;
+    esac
+}

@@ -37,7 +37,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'order_orders')]
- class Order extends AggregateRoot
+class Order extends AggregateRoot
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
@@ -102,8 +102,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
         array $orderProducts = [],
         Meta $meta = null,
         // bool $isActive = true,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->email = $email;
         $this->phone = $phone;
@@ -123,8 +122,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
         Note $note,
         array $orderProducts = [],
         Meta $meta = null,
-    ): self
-    {
+    ): self {
         $order = new self($uuid, $email, $phone, $note, $orderProducts, $meta);
         $order->record(
             new OrderWasCreatedDomainEvent(
@@ -148,15 +146,15 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
         $this->orderProducts->add($orderProduct);
     }
 
-	public function getUuid(): Uuid
+    public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getStatus():  StatusEnum
+    public function getStatus(): StatusEnum
     {
-		return $this->status;
-	}
+        return $this->status;
+    }
 
     public function changeStatus(StatusEnum $status): void
     {
@@ -166,45 +164,45 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
         }
     }
 
-	public function getMeta(): Meta
+    public function getMeta(): Meta
     {
-		return $this->meta;
-	}
-	
-	public function setMeta(Meta $meta): void
-    {
-		$this->meta = $meta;
-	}
+        return $this->meta;
+    }
 
-	public function getAuthor(): Client
+    public function setMeta(Meta $meta): void
     {
-		return $this->author;
-	}
-	
-	public function setAuthor(Client $author): void
-    {
-		$this->author = $author;
-	}
+        $this->meta = $meta;
+    }
 
-	public function getCard(): Card
+    public function getAuthor(): Client
     {
-		return $this->card;
-	}
-	
-	public function setCard(Card $card): void
-    {
-		$this->card = $card;
-	}
+        return $this->author;
+    }
 
-	public function getAddress(): Address
+    public function setAuthor(Client $author): void
     {
-		return $this->address;
-	}
-	
-	public function setAddress(Address $address): void
+        $this->author = $author;
+    }
+
+    public function getCard(): Card
     {
-		$this->address = $address;
-	}
+        return $this->card;
+    }
+
+    public function setCard(Card $card): void
+    {
+        $this->card = $card;
+    }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): void
+    {
+        $this->address = $address;
+    }
 
     public function setCurrency(Currency $currency): void
     {
@@ -226,8 +224,8 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 
     public function getEmail(): Email
     {
-		return $this->email;
-	}
+        return $this->email;
+    }
 
     public function toArray(): array
     {

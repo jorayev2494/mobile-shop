@@ -18,9 +18,8 @@ class CreateCardController
         private readonly ResponseFactory $response,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(StoreCardRequest $request): JsonResponse

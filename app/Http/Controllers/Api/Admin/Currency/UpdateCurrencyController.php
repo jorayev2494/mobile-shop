@@ -15,9 +15,8 @@ final class UpdateCurrencyController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateCurrencyRequest $request, string $uuid): Response

@@ -25,9 +25,8 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly TokenGeneratorInterface $tokenGenerator,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): array
@@ -39,7 +38,7 @@ final class CommandHandler implements CommandHandlerInterface
         }
 
         $token = $this->authenticationService->authenticate(new AuthenticationCredentialsDTO($command->email, $command->password), AppGuardType::ADMIN);
-        
+
         $foundDevice = $this->deviceRepository->findByAuthorUuidAndDeviceId($foundMember->getUuid(), $command->deviceId);
 
         $newDevice = Device::create(

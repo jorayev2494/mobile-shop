@@ -13,13 +13,11 @@ use Symfony\Component\Mime\Message;
 
 final class ProductWasCreatedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
-
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly MailerInterface $mailer,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

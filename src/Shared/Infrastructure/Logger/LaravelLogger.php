@@ -8,12 +8,10 @@ use Project\Shared\Domain\LoggerInterface;
 
 final class LaravelLogger implements LoggerInterface
 {
-
     public function __construct(
         private readonly \Psr\Log\LoggerInterface $logger,
-    )
-    {
-        
+    ) {
+
     }
 
     public function info(string $message, array $content = []): void

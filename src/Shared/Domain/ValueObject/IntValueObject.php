@@ -6,7 +6,6 @@ namespace Project\Shared\Domain\ValueObject;
 
 abstract class IntValueObject
 {
-
     public readonly ?int $value;
     public function __construct(?int $value)
     {

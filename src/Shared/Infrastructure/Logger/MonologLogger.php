@@ -10,8 +10,7 @@ final class MonologLogger implements LoggerInterface
 {
     public function __construct(
         private readonly \Monolog\Logger $logger,
-    )
-    {
+    ) {
     }
 
     public function info(string $message, array $context = []): void

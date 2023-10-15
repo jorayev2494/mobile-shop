@@ -22,8 +22,7 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly ProductRepositoryInterface $repository,
         private readonly FilesystemInterface $filesystem,
         private readonly EventBusInterface $eventBus,
-    )
-    {
+    ) {
 
     }
 

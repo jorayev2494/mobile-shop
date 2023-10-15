@@ -18,9 +18,8 @@ class CommandHandler implements CommandHandlerInterface
         private readonly CartRepositoryInterface $repository,
         private readonly CartProductRepositoryInterface $cartProductRepository,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

@@ -32,7 +32,7 @@ final class OrderRepository extends BaseClientEntityRepository implements OrderR
             $query->where('o.status = :status')
                 ->setParameter('status', $status);
         }
-                                        
+
         $query->getQuery();
 
         return $this->paginator($query, $queryData);

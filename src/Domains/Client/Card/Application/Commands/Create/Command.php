@@ -15,8 +15,7 @@ final class Command implements CommandInterface
         public readonly string $number,
         public readonly int $cvv,
         public readonly string $expiration_date,
-    )
-    {
-        
+    ) {
+
     }
 }

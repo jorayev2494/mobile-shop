@@ -36,8 +36,7 @@ final class Country
         bool $isActive = true,
         ?int $createdAt = null,
         ?int $updatedAt = null,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->value = $value;
         $this->iso = $iso;

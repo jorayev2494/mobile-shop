@@ -13,9 +13,8 @@ class MemberWasRegisteredDomainEventSubscriber implements DomainEventSubscriberI
 {
     public function __construct(
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Controller;
@@ -22,12 +24,10 @@ use Project\Domains\Client\Address\Application\Queries\Find\FindAddressQueryHand
 
 class AddressController extends Controller
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
-    )
-    {
-        
+    ) {
+
     }
 
     public function update(UpdateAddressRequest $request, UpdateCommandHandler $handler, string $uuid): JsonResponse

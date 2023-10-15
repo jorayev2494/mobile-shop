@@ -57,8 +57,7 @@ final class Card extends AggregateRoot
         Number $number,
         CVV $cvv,
         ExpirationDate $expirationDate,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->authorUuid = $authorUuid;
         $this->type = $type;
@@ -76,8 +75,7 @@ final class Card extends AggregateRoot
         string $number,
         int $cvv,
         string $expirationDate,
-    ): self
-    {
+    ): self {
         return new self(
             Uuid::fromValue($uuid),
             AuthorUuid::fromValue($authorUuid),
@@ -97,8 +95,7 @@ final class Card extends AggregateRoot
         Number $number,
         CVV $cvv,
         ExpirationDate $expirationDate,
-    ): self
-    {
+    ): self {
         $card = new self($uuid, $authorUuid, $type, $holderName, $number, $cvv, $expirationDate);
         $card->record(new CardWasCreatedDomainEvent(
             $card->uuid->value,

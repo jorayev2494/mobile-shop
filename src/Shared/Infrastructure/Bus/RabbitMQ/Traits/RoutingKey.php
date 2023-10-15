@@ -13,14 +13,14 @@ trait RoutingKey
     }
 
     protected function makeRoutingKeyFromClassName(string $value, string $handlerClassName): string
-    {        
+    {
         $ch = explode('.', $value);
         foreach ($ch as $key => $v) {
             if ($v === $handlerClassName) {
                 unset($ch[$key]);
             }
         }
-        
+
         // $routingKey = substr($value, 0, strpos($value, '.' . $className));
         $routingKey = implode('.', $ch);
 

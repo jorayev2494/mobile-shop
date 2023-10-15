@@ -12,7 +12,6 @@ use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
 
 final class CategoryRepository extends BaseModelRepository // implements CategoryRepositoryInterface
 {
-
     public function getModel(): string
     {
         return CategoryModel::class;

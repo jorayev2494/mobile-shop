@@ -72,30 +72,30 @@ class Code
         $this->updatedAt = new DateTimeImmutable();
     }
 
-	public function getValue(): string
+    public function getValue(): string
     {
-		return $this->value;
-	}
-	
-	public function setValue(string $value): void
-    {
-		$this->value = $value;
-	}
+        return $this->value;
+    }
 
-	public function getExpiredAt(): DateTimeImmutable
+    public function setValue(string $value): void
     {
-		return $this->expiredAt;
-	}
-	
-	public function setExpiredAt(int $value): void
-    {
-		$this->value = $value;
-	}
+        $this->value = $value;
+    }
 
-	public function getAuthorUuid(): string
+    public function getExpiredAt(): DateTimeImmutable
     {
-		return $this->authorUuid;
-	}
+        return $this->expiredAt;
+    }
+
+    public function setExpiredAt(int $value): void
+    {
+        $this->value = $value;
+    }
+
+    public function getAuthorUuid(): string
+    {
+        return $this->authorUuid;
+    }
 
     public function toArray(): array
     {

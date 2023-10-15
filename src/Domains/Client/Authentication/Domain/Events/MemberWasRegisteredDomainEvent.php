@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Client\Authentication\Domain\Events;
+
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 
 final class MemberWasRegisteredDomainEvent extends DomainEvent
@@ -14,8 +15,7 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
         public readonly string $email,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -24,8 +24,7 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
         array $body,
         string $eventId,
         string $occurredOn
-    ): self
-    {
+    ): self {
         [
             'uuid' => $uuid,
             'firstName' => $firstName,

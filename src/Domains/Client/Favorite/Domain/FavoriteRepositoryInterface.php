@@ -11,7 +11,7 @@ use Project\Shared\Application\Query\BaseQuery;
 interface FavoriteRepositoryInterface
 {
     public function favorite(Favorite $favorite): void;
-    
+
     public function unfavorite(Favorite $favorite): void;
 
     public function getClientFavoritesPaginate(BaseQuery $query, MemberUuid $memberUuid): CursorPaginator;

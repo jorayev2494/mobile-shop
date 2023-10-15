@@ -14,9 +14,8 @@ final class DeviceWasRemovedDomainEventSubscriber implements DomainEventSubscrib
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
         private readonly DeviceRepository $deviceRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Role\Infrastructure\Eloquent;
 
 use App\Models\Role as RoleModel;
@@ -30,7 +32,7 @@ class RoleRepository extends BaseModelRepository implements RoleRepositoryInterf
     }
 
     public function save(Role $role): bool
-    {   
+    {
         /** @var RoleModel $roleModel */
         $roleModel = $this->getModelClone()->newQuery()->updateOrCreate(
             [

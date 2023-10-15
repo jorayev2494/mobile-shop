@@ -6,7 +6,7 @@ namespace Project\Utils\Auth;
 
 use Illuminate\Support\Facades\Auth;
 
-enum AppGuard : string
+enum AppGuard: string
 {
     case CLIENT = 'api';
     case ADMIN = 'admin';

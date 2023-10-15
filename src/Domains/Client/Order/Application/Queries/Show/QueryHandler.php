@@ -14,9 +14,8 @@ final class QueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly OrderRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query): Order

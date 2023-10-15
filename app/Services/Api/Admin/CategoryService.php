@@ -14,9 +14,8 @@ class CategoryService implements CategoryServiceInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function index(AuthModel $authModel, IndexRequestDTO $dataDTO): LengthAwarePaginator

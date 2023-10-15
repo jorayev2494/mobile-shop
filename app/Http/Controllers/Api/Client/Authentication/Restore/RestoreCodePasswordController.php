@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Authentication\Restore;
 
 use App\Http\Requests\Client\Auth\Restore\RestorePasswordLinkRequest;
@@ -13,9 +15,8 @@ class RestoreCodePasswordController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(RestorePasswordLinkRequest $request): Response

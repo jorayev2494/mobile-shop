@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Enums;
 
-enum ProductMimeType : string
+enum ProductMimeType: string
 {
     case JPG = 'image/jpg';
     case JPEG = 'image/jpeg';

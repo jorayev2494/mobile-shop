@@ -22,5 +22,5 @@ class CurrencyRepository extends BaseAdminEntityRepository implements CurrencyRe
                                     ->where('c.isActive = true')
                                     ->getQuery()
                                     ->getResult();
-    }   
+    }
 }

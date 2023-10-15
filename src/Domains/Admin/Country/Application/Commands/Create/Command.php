@@ -13,8 +13,7 @@ final class Command implements CommandInterface
         public readonly string $value,
         public readonly string $iso,
         public readonly bool $isActive,
-    )
-    {
-        
+    ) {
+
     }
 }

@@ -9,7 +9,6 @@ use App\Repositories\Base\BaseModelRepository;
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-
 trait Seaerchable
 {
     public function paginate(IndexRequestDTO $dataDTO, iterable $columns = ['+']): LengthAwarePaginator

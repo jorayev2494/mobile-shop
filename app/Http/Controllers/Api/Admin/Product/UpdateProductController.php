@@ -15,9 +15,8 @@ final class UpdateProductController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateProductRequest $request, string $uuid): Response

@@ -15,9 +15,8 @@ final class MemberWasAddedDeviceDomainEventSubscriber implements DomainEventSubs
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
         private readonly DeviceRepositoryInterface $deviceRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -31,7 +30,7 @@ final class MemberWasAddedDeviceDomainEventSubscriber implements DomainEventSubs
     {
         $profile = $this->repository->findByUuid($event->authorUuid);
 
-        if ($profile == null) {
+        if ($profile === null) {
             return;
         }
 

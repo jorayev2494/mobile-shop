@@ -41,12 +41,12 @@ final class CountryServiceProvider extends ServiceProvider
         ]);
 
         $this->app->when([
-                        CreateCountryController::class,
-                        UpdateCountryController::class,
-                        DeleteCountryController::class,
-                    ])
-                    ->needs(CommandBusInterface::class)
-                    ->give(RabbitMQCommandBus::class);
+            CreateCountryController::class,
+            UpdateCountryController::class,
+            DeleteCountryController::class,
+        ])
+        ->needs(CommandBusInterface::class)
+        ->give(RabbitMQCommandBus::class);
 
         // $this->app->bind(CountryRepositoryInterface::class, CountryRepository::class); BaseEntityRepository
         $this->app->bind(CountryRepositoryInterface::class, DoctrineCountryRepository::class);

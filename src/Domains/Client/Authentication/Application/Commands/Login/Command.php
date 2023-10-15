@@ -12,8 +12,7 @@ final class Command implements CommandInterface
         public readonly string $email,
         public readonly string $password,
         public readonly string $deviceId,
-    )
-    {
-        
+    ) {
+
     }
 }

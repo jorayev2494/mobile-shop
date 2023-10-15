@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail\Auth;
 
 use Illuminate\Bus\Queueable;
@@ -10,7 +12,8 @@ use Illuminate\Queue\SerializesModels;
 
 class SendRestoreLinkEmail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -19,8 +22,7 @@ class SendRestoreLinkEmail extends Mailable
      */
     public function __construct(
         private readonly array $data,
-    )
-    {
+    ) {
         //
     }
 

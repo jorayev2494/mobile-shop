@@ -15,9 +15,8 @@ final class ProductMediaWasDeletedDomainEventSubscriber implements DomainEventSu
     public function __construct(
         private readonly ProductRepositoryInterface $productRepository,
         private readonly MediaRepositoryInterface $mediaRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

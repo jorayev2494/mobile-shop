@@ -15,14 +15,13 @@ class ShowProfileController extends Controller
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly QueryBusInterface $queryBus,
-    )
-    {
-        
+    ) {
+
     }
     public function __invoke(): JsonResponse
     {
         $result = $this->queryBus->ask(
-            new Query
+            new Query()
         );
 
         return $this->response->json($result);

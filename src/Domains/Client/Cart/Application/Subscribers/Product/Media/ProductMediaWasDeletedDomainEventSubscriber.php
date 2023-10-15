@@ -15,9 +15,8 @@ final class ProductMediaWasDeletedDomainEventSubscriber implements DomainEventSu
     public function __construct(
         private readonly ProductRepositoryInterface $productRepository,
         private readonly MediaRepositoryInterface $mediaRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -40,6 +39,6 @@ final class ProductMediaWasDeletedDomainEventSubscriber implements DomainEventSu
                 $product->removeMedia($media);
                 $this->mediaRepository->delete($media);
             }
-        }        
+        }
     }
 }

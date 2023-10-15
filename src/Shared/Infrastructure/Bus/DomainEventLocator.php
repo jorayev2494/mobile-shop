@@ -10,9 +10,8 @@ class DomainEventLocator implements LocatorInterface
 {
     public function __construct(
         private readonly DomainEventSubscriberLocator $domainEventSubscriberLocator
-    )
-    {
-        
+    ) {
+
     }
 
     /**

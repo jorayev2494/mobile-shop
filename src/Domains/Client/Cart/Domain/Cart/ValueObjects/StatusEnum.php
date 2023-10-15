@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Cart\Domain\Cart\ValueObjects;
 
-enum StatusEnum : string
+enum StatusEnum: string
 {
     case DRAFT = 'draft';
 

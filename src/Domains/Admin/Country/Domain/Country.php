@@ -27,7 +27,7 @@ class Country extends AggregateRoot
 {
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
-    
+
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $updatedAt;
 
@@ -41,8 +41,7 @@ class Country extends AggregateRoot
         public CountryISO $iso,
         #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
         public bool $isActive = true,
-    )
-    {
+    ) {
         //
     }
 

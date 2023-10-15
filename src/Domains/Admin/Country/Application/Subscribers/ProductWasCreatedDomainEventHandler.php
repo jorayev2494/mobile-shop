@@ -11,13 +11,11 @@ use Symfony\Component\Mailer\MailerInterface;
 
 final class ProductWasCreatedDomainEventHandler implements DomainEventSubscriberInterface
 {
-
     public function __construct(
         private readonly LoggerInterface $logger,
         private readonly MailerInterface $mailer,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

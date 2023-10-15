@@ -25,8 +25,7 @@ class Product extends AggregateRoot
         public readonly int $viewedCount,
         public readonly string $description,
         public readonly bool $isActive,
-    )
-    {
+    ) {
 
     }
 

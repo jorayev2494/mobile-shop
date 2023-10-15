@@ -23,8 +23,7 @@ final class RabbitMQEventBus implements EventBusInterface
 
     public function __construct(
         private readonly AMQPStreamConnection $amqpConnection,
-    )
-    {
+    ) {
         $this->channel = $amqpConnection->channel();
     }
 

@@ -8,6 +8,7 @@ use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+
 use function Lambdish\Phunctional\map;
 use function Lambdish\Phunctional\reduce;
 use function Lambdish\Phunctional\reindex;
@@ -26,7 +27,7 @@ final class CallableFirstParameterExtractor
 
     private static function classExtractor(CallableFirstParameterExtractor $parameterExtractor): callable
     {
-        return static fn(callable $handler): ?string => $parameterExtractor->extract($handler);
+        return static fn (callable $handler): ?string => $parameterExtractor->extract($handler);
     }
 
     private static function pipedCallablesReducer(): callable
@@ -44,7 +45,7 @@ final class CallableFirstParameterExtractor
 
     private static function unflatten(): callable
     {
-        return static fn($value) => [$value];
+        return static fn ($value) => [$value];
     }
 
     /**

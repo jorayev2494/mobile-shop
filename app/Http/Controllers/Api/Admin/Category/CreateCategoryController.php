@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Category;
 
 use App\Http\Controllers\Controller;
@@ -17,9 +19,8 @@ class CreateCategoryController extends Controller
         private readonly ResponseFactory $response,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(CreateCategoryRequest $request): JsonResponse

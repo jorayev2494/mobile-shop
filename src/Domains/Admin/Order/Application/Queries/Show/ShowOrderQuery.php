@@ -10,8 +10,7 @@ final class ShowOrderQuery implements QueryInterface
 {
     public function __construct(
         public readonly string $uuid,
-    )
-    {
-        
+    ) {
+
     }
 }

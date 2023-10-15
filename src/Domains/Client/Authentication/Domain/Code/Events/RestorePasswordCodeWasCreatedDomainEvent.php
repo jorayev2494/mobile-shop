@@ -14,9 +14,8 @@ class RestorePasswordCodeWasCreatedDomainEvent extends DomainEvent
         public int $code,
         $eventId = null,
         $occurredOn = null,
-    )
-    {
-        parent::__construct($uuid, $eventId, $occurredOn);    
+    ) {
+        parent::__construct($uuid, $eventId, $occurredOn);
     }
 
     public static function fromPrimitives(string $id, array $body, string $eventId, string $occurredOn): self

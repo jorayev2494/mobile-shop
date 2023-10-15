@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Admin\Country;
 
 use App\Models\Auth\AppAuth;
@@ -10,7 +12,6 @@ use Illuminate\Validation\Rule;
 
 class UpdateCountryRequest extends FormRequest
 {
-
     private string $uuid;
 
     public function authorize(): bool
