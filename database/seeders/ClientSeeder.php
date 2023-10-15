@@ -2,37 +2,35 @@
 
 namespace Database\Seeders;
 
-use App\Models\Client;
-use App\Models\Country;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Collection;
+use Project\Domains\Client\Authentication\Application\Commands\Register\Command;
+use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class ClientSeeder extends Seeder
 {
-
-    private readonly Collection $countries;
-
     private array $clientEmails = [
         'client@gmail.com',
         'client2@gmail.com',
     ];
 
-    public function __construct()
+    public function __construct(
+        private readonly CommandBusInterface $commandBus,
+    )
     {
-        $this->countries = Country::all();
+
     }
 
     public function run(): void
     {
-        Client::factory()->createMany(
-            array_map(
-                fn (string $email): array => compact('email') + ['country_uuid' => $this->countries->random(1)->first()->uuid],
-                $this->clientEmails,
-            )
-        );
-
-        for ($i = 1; $i < 48; $i++) { 
-            Client::factory()->create(['country_uuid' => $this->countries->random(1)->first()->uuid]);
-        };
+        foreach ($this->clientEmails as $key => $clientEmail) {
+            $this->commandBus->dispatch(
+                new Command(
+                    "Client{$key}",
+                    "Clientov{$key}",
+                    $clientEmail,
+                    '12345Secret_',
+                )
+            );
+        }
     }
 }

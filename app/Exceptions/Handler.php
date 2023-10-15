@@ -64,6 +64,13 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $ex): JsonResponse
     {
+        if ($ex instanceof \DomainException) {
+            return response()->json([
+                'message' => $ex->getMessage(),
+                // 'errors' => $ex->errors(),
+            ], Response::HTTP_FORBIDDEN);
+        }
+
         if ($ex instanceof ValidationException) {
             return response()->json([
                 'message' => 'Validation exception',
@@ -80,8 +87,8 @@ class Handler extends ExceptionHandler
 
         if ($ex instanceof BadRequestException) {
             return response()->json([
-                'message' => 'Bad request exception',
-                'error' => $ex->getMessage(),
+                'message' => $ex->getMessage(),
+                'error' => 'Bad request exception',
             ], Response::HTTP_BAD_REQUEST);
         }
 
@@ -100,6 +107,9 @@ class Handler extends ExceptionHandler
             ],
                 Response::HTTP_UNAUTHORIZED);
         }
+
+        // dd($ex);
+        // dd($ex->getPrevious());
 
         return response()->json([
             // 'message' => 'Unauthenticated',

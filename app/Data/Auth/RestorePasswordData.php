@@ -6,9 +6,8 @@ namespace App\Data\Auth;
 
 use App\Data\Contracts\MakeFromFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\LaravelData\Data;
 
-final class RestorePasswordData extends Data implements MakeFromFormRequest
+final class RestorePasswordData implements MakeFromFormRequest
 {
     public function __construct(
         public readonly string $token,
@@ -18,6 +17,8 @@ final class RestorePasswordData extends Data implements MakeFromFormRequest
 
     public static function makeFromFormRequest(FormRequest $request): static
     {
-        return static::from($request->validated());
+        ['token' => $token, 'password' => $password] = $request->validated();
+
+        return new static($token, $password);
     }
 }

@@ -5,5 +5,5 @@ post:
   requestBody:
     $ref: ../../../../components/requestBodies/admin/auth/restore-password/link.yml
   responses:
-    204:
-      description: 'No content'
+    202:
+      $ref: ../../../../components/responses/2xx/NoContent.yml

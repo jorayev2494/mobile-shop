@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\RoutePattern;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -10,38 +11,28 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    /**
-     * The path to the "home" route for your application.
-     *
-     * Typically, users are redirected here after authentication.
-     *
-     * @var string
-     */
-    public const HOME = '/home';
+    public const HOME = '';
 
-    /**
-     * Define your route model bindings, pattern filters, and other route configuration.
-     *
-     * @return void
-     */
-    public function boot()
+    /** @var array<string, RoutePattern> */
+    private const ROUTE_PATTERNS = [
+        'id' => RoutePattern::INTEGER,
+        'uuid' => RoutePattern::UUID,
+    ];
+
+    public function boot(): void
     {
         $this->configureRateLimiting();
 
+        $this->registerRoutePatterns();
         $this->routes(function (): void {
-            $this->registerAdminRoutes();
+            $this->registerAdminAPIRoutes();
             $this->registerAPIRoutes();
             $this->registerWebRoutes();
-            // Route::middleware('api')
-            //     ->prefix('api')
-            //     ->group(base_path('routes/api.php'));
-
-            // Route::middleware('web')
-            //     ->group(base_path('routes/web.php'));
+            $this->registerPublicAPIRoutes();
         });
     }
 
-    private function registerAdminRoutes(): void
+    private function registerAdminAPIRoutes(): void
     {
         Route::middleware('api')
                 ->prefix('api/admin')
@@ -60,17 +51,28 @@ class RouteServiceProvider extends ServiceProvider
                 );
     }
 
+    private function registerPublicAPIRoutes(): void
+    {
+        Route::middleware('api')
+                ->prefix('api/')
+                ->group(
+                    base_path('routes/api-public.php')
+                );
+    }
+
     private function registerWebRoutes(): void
     {
         Route::middleware('web')
                 ->group(base_path('routes/web.php'));
     }
 
-    /**
-     * Configure the rate limiters for the application.
-     *
-     * @return void
-     */
+    private function registerRoutePatterns(): void
+    {
+        foreach (self::ROUTE_PATTERNS as $key => $pattern) {
+            Route::pattern($key, $pattern->value);
+        }
+    }
+
     protected function configureRateLimiting()
     {
         RateLimiter::for('api', function (Request $request) {

@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Address\Application\Queries\GetAddresses;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Support\Arrayable;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class QueryHandler implements \Project\Shared\Domain\Bus\Query\QueryHandler
+final class QueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly QueryService $queryService,
@@ -15,8 +16,11 @@ final class QueryHandler implements \Project\Shared\Domain\Bus\Query\QueryHandle
         
     }
 
-    public function __invoke(Query $query): LengthAwarePaginator
+    public function __invoke(Query $query): array
     {
-        return $this->queryService->execute($query);
+        return array_map(
+            static fn (Arrayable $address): array => $address->toArray(),
+            $this->queryService->execute($query)
+        );
     }
 }

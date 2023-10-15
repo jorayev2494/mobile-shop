@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * App\Models\Product
@@ -47,6 +49,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $discount_percentage
  * @property-read \App\Models\Category $category
  * @property-read \App\Models\Currency $currency
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\File[] $medias
+ * @property-read int|null $medias_count
+ * @property-read \App\Models\File|null $cover
  */
 class Product extends Model
 {
@@ -72,15 +77,23 @@ class Product extends Model
     protected $primaryKey = 'uuid';
 
     protected $casts = [
+        'discount_percentage' => 'integer',
         'is_active' => 'boolean',
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp',
+        // 'created_at' => 'timestamp',
+        // 'updated_at' => 'timestamp',
     ];
 
     public function discountPrice(): Attribute
     {
         return Attribute::make(
-            get: fn () => ($discount = $this->attributes['discount_percentage']) > 0 ? ($this->attributes['price'] / 100) * $discount : null
+            get: fn (): int => ($discount = $this->attributes['discount_percentage']) > 0 ? ($this->attributes['price'] / 100) * $discount : 0
+        );
+    }
+
+    public function discountPercentage(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): int => (int) $this->attributes['discount_percentage'],
         );
     }
 
@@ -92,6 +105,16 @@ class Product extends Model
     public function currency(): BelongsTo
     {
         return $this->belongsTo(Currency::class, 'currency_uuid', 'uuid');
+    }
+
+    public function cover(): MorphOne
+    {
+        return $this->morphOne(File::class, 'fileable', 'fileable_type', 'fileable_uuid', 'uuid');
+    }
+
+    public function medias(): MorphMany
+    {
+        return $this->morphMany(File::class, 'fileable', 'fileable_type', 'fileable_uuid', 'uuid');
     }
 
 }

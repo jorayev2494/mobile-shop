@@ -6,9 +6,8 @@ namespace App\Data\Auth;
 
 use App\Data\Contracts\MakeFromFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\LaravelData\Data;
 
-class AuthCredentialsData extends Data implements MakeFromFormRequest
+class AuthCredentialsData implements MakeFromFormRequest
 {
     public function __construct(
         public readonly string $email,
@@ -19,9 +18,20 @@ class AuthCredentialsData extends Data implements MakeFromFormRequest
 
     public static function makeFromFormRequest(FormRequest $request): static
     {
-        return self::from([
-            ...$request->validated(),
-            'device_id' => $request->headers->get('x-device-id'),
-        ]);
+        ['email' => $email, 'password' => $password] = $request->validated();
+
+        return new static(
+            $email,
+            $password,
+            $request->headers->get('x-device-id'),
+        );
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'email' => $this->email,
+            'password' => $this->password,
+        ];
     }
 }

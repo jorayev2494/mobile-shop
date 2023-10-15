@@ -34,6 +34,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Code whereValue($value)
+ * @property string $code_able_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Code whereCodeAbleUuid($value)
  */
 class Code extends Model
 {
@@ -42,6 +44,8 @@ class Code extends Model
      */
     public $fillable = [
         'user_id',
+        'code_able_uuid',
+        'code_able_type',
         'type',
         'value',
         'token',
@@ -59,6 +63,6 @@ class Code extends Model
      */
     public function codeAble(): MorphTo
     {
-        return $this->morphTo(__FUNCTION__, 'code_able_type', 'code_able_id');
+        return $this->morphTo(__FUNCTION__, 'code_able_type', 'code_able_uuid');
     }
 }

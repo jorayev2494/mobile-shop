@@ -1,0 +1,8 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      required: 
+        -  email
+      allOf: 
+        -  $ref: ../../../../fields/email.yml

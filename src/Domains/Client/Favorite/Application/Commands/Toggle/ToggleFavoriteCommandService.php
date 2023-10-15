@@ -4,24 +4,44 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Favorite\Application\Commands\Toggle;
 
-use App\Models\Client;
+use Project\Domains\Client\Favorite\Domain\Member\MemberRepositoryInterface;
+use Project\Domains\Client\Favorite\Domain\Member\ValueObjects\MemberUuid;
+use Project\Domains\Client\Favorite\Domain\Product\ProductRepositoryInterface;
+use Project\Domains\Client\Favorite\Domain\Product\ValueObjects\ProductUuid;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class ToggleFavoriteCommandService
 {
 
-    private readonly Client $client;
-
     public function __construct(
+        private readonly MemberRepositoryInterface $memberRepository,
+        private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
     )
     {
-        $this->client = $authManager->client();
+
     }
 
     public function execute(ToggleFavoriteCommand $command): void
     {
-        $this->client->favorites->contains($command->productUUID) ? $this->client->favorites()->detach($command->productUUID)
-                                                                  : $this->client->favorites()->attach($command->productUUID);
+        $member = $this->memberRepository->findByUuid(MemberUuid::fromValue($command->memberUuid));
+        $product = $this->productRepository->findByUuid(ProductUuid::fromValue($command->productUuid));
+
+        $member->getProducts()->contains($product) ? $member->removeProduct($product) : $member->addProduct($product);
+
+        $this->memberRepository->save($member);
+
+        // dd(
+        //     $member,
+        //     $product
+        // );
+
+        // $favorite = new Favorite(
+        //     MemberUUID::fromValue($command->memberUUID),
+        //     ProductUUID::fromValue($command->productUUID)
+        // );
+
+        // $this->repository->contains($favorite)  ? $this->repository->unfavorite($favorite)
+        //                                         : $this->repository->favorite($favorite);
     }
 }

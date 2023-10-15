@@ -1,0 +1,5 @@
+type: object
+properties:
+  second_address:
+    type: string
+    example: 'Second Address'

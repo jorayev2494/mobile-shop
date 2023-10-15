@@ -1,0 +1,6 @@
+type: object
+properties:
+  address_uuid:
+    type: string
+    example: "995762aa-b5d9-4073-b0dd-181c4c4bf353"
+    uniqueItems: true

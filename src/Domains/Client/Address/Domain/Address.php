@@ -4,81 +4,284 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Address\Domain;
 
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressCityUUID;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressClientUUID;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressCountryUUID;
+use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Client\Address\Domain\Events\AddressWasCreatedDomainEvent;
+use Project\Domains\Client\Address\Domain\Events\AddressWasDeletedDomainEvent;
+use Project\Shared\Domain\Aggregate\AggregateRoot;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressCityUuid;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressAuthorUuid;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressCountryUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressDistrict;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressFirstAddress;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressFullName;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressSecondAddress;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressTitle;
-use Project\Domains\Client\Address\Domain\ValueObjects\AddressUUID;
+use Project\Domains\Client\Address\Domain\ValueObjects\AddressUuid;
 use Project\Domains\Client\Address\Domain\ValueObjects\AddressZipCode;
-use Project\Shared\Domain\Aggregate\AggregateRoot;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\AuthorUuidType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\CityUuidType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\CountryUuidType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\DistrictType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\FirstAddressType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\FullNameType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\SecondAddressType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\TitleType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\UuidType;
+use Project\Domains\Client\Address\Infrastructure\Doctrine\Types\ZipCodeType;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'address_addresses')]
 final class Address extends AggregateRoot
 {
-    private function __construct(
-        public readonly AddressUUID $uuid,
-        public readonly AddressTitle $title,
-        public readonly AddressFullName $fullName,
-        public readonly AddressClientUUID $clientUUID,
-        public readonly AddressFirstAddress $firstAddress,
-        public readonly AddressSecondAddress $secondAddress,
-        public readonly AddressZipCode $zipCode,
-        public readonly AddressCountryUUID $countryUUID,
-        public readonly AddressCityUUID $cityUUID,
-        public readonly AddressDistrict $district,
-        public readonly bool $isActive = true,
-    )
-    {
-        
-    }
+    #[ORM\Id]
+    #[ORM\Column(type: UuidType::NAME)]
+    private AddressUuid $uuid;
 
-    public static function create(
-        AddressUUID $uuid,
+    #[ORM\Column(type: TitleType::NAME)]
+    private AddressTitle $title;
+
+    #[ORM\Column(name: 'full_name', type: FullNameType::NAME)]
+    private AddressFullName $fullName;
+
+    #[ORM\Column(name: 'author_uuid', type: AuthorUuidType::NAME)]
+    private AddressAuthorUuid $authorUuid;
+
+    #[ORM\Column(name: 'first_address', type: FirstAddressType::NAME)]
+    private AddressFirstAddress $firstAddress;
+
+    #[ORM\Column(name: 'second_address', type: SecondAddressType::NAME, nullable: true)]
+    private AddressSecondAddress $secondAddress;
+
+    #[ORM\Column(name: 'zip_code', type: ZipCodeType::NAME, length: 10, nullable: true)]
+    private AddressZipCode $zipCode;
+
+    #[ORM\Column(name: 'country_uuid', type: CountryUuidType::NAME)]
+    private AddressCountryUuid $countryUuid;
+
+    #[ORM\Column(name: 'city_uuid', type: CityUuidType::NAME)]
+    private AddressCityUuid $cityUuid;
+
+    #[ORM\Column(type: DistrictType::NAME)]
+    private AddressDistrict $district;
+
+    private function __construct(
+        AddressUuid $uuid,
         AddressTitle $title,
         AddressFullName $fullName,
-        AddressClientUUID $clientUUID,
+        AddressAuthorUuid $authorUuid,
         AddressFirstAddress $firstAddress,
         AddressSecondAddress $secondAddress,
         AddressZipCode $zipCode,
-        AddressCountryUUID $countryUUID,
-        AddressCityUUID $cityUUID,
+        AddressCountryUuid $countryUuid,
+        AddressCityUuid $cityUuid,
         AddressDistrict $district,
-        bool $isActive = true,
+    )
+    {
+        $this->uuid = $uuid;
+        $this->title = $title;
+        $this->fullName = $fullName;
+        $this->authorUuid = $authorUuid;
+        $this->firstAddress = $firstAddress;
+        $this->firstAddress = $firstAddress;
+        $this->secondAddress = $secondAddress;
+        $this->zipCode = $zipCode;
+        $this->countryUuid = $countryUuid;
+        $this->cityUuid = $cityUuid;
+        $this->district = $district;
+    }
+
+    public static function create(
+        AddressUuid $uuid,
+        AddressTitle $title,
+        AddressFullName $fullName,
+        AddressAuthorUuid $clientUuid,
+        AddressFirstAddress $firstAddress,
+        AddressSecondAddress $secondAddress,
+        AddressZipCode $zipCode,
+        AddressCountryUuid $countryUuid,
+        AddressCityUuid $cityUuid,
+        AddressDistrict $district,
     ): self
     {
-        return new self($uuid, $title, $fullName, $clientUUID, $firstAddress, $secondAddress, $zipCode, $countryUUID, $cityUUID, $district, $isActive);
+        $address = new self($uuid, $title, $fullName, $clientUuid, $firstAddress, $secondAddress, $zipCode, $countryUuid, $cityUuid, $district);
+        $address->record(
+            new AddressWasCreatedDomainEvent(
+                $address->getUuid()->value,
+                $address->getTitle()->value,
+                $address->getFullName()->value,
+                $address->getAuthorUuid()->value,
+                $address->getFirstAddress()->value,
+                $address->getSecondAddress()->value,
+                $address->getZipCode()->value,
+                $address->getCountryUuid()->value,
+                $address->getCityUuid()->value,
+                $address->getDistrict()->value
+            )
+        );
+
+        return $address;
     }
 
     public static function fromPrimitives(
         string $uuid,
         string $title,
         string $fullName,
-        string $clientUUID,
+        string $clientUuid,
         string $firstAddress,
-        string $secondAddress,
-        string $zipCode,
-        string $countryUUID,
-        string $cityUUID,
+        ?string $secondAddress,
+        int $zipCode,
+        string $countryUuid,
+        string $cityUuid,
         string $district,
-        bool $isActive = true,
     ): self
     {
         return new self(
-            AddressUUID::fromValue($uuid),
+            AddressUuid::fromValue($uuid),
             AddressTitle::fromValue($title),
             AddressFullName::fromValue($fullName),
-            AddressClientUUID::fromValue($clientUUID),
+            AddressAuthorUuid::fromValue($clientUuid),
             AddressFirstAddress::fromValue($firstAddress),
             AddressSecondAddress::fromValue($secondAddress),
             AddressZipCode::fromValue($zipCode),
-            AddressCountryUUID::fromValue($countryUUID),
-            AddressCityUUID::fromValue($cityUUID),
+            AddressCountryUuid::fromValue($countryUuid),
+            AddressCityUuid::fromValue($cityUuid),
             AddressDistrict::fromValue($district),
-            $isActive            
         );
+    }
+
+	/**
+	 * @return AddressUuid
+	 */
+	public function getUuid(): AddressUuid
+    {
+		return $this->uuid;
+	}
+
+	/**
+	 * @return AddressTitle
+	 */
+	public function getTitle(): AddressTitle
+    {
+		return $this->title;
+	}
+	
+	public function changeTitle(AddressTitle $title): void
+    {
+        if ($this->title->isNotEquals($title)) {
+            $this->title = $title;
+        }
+	}
+
+	public function getFullName(): AddressFullName
+    {
+		return $this->fullName;
+	}
+	
+	public function changeFullName(AddressFullName $fullName): void
+    {
+        if ($this->fullName->isNotEquals($fullName)) {
+            $this->fullName = $fullName;
+        }
+	}
+
+	public function getAuthorUuid(): AddressAuthorUuid
+    {
+		return $this->authorUuid;
+	}
+	
+	public function changeAuthorUuid(AddressAuthorUuid $authorUuid): void
+    {
+        if ($this->authorUuid->isNotEquals($authorUuid)) {
+            $this->authorUuid = $authorUuid;
+        }
+	}
+
+	public function getFirstAddress(): AddressFirstAddress
+    {
+		return $this->firstAddress;
+	}
+	
+	public function changeFirstAddress(AddressFirstAddress $firstAddress): void
+    {
+        if ($this->firstAddress->isNotEquals($firstAddress)) {
+            $this->firstAddress = $firstAddress;
+        }
+	}
+
+	public function getSecondAddress(): AddressSecondAddress
+    {
+		return $this->secondAddress;
+	}
+	
+	public function changeSecondAddress(AddressSecondAddress $secondAddress): void
+    {
+        if ($this->secondAddress->isNotEquals($secondAddress)) {
+            $this->secondAddress = $secondAddress;
+        }
+	}
+
+	public function getZipCode(): AddressZipCode
+    {
+		return $this->zipCode;
+	}
+	
+	public function changeZipCode(AddressZipCode $zipCode): void
+    {
+        if ($this->zipCode->isNotEquals($zipCode)) {
+            $this->zipCode = $zipCode;
+        }
+	}
+
+	public function getCountryUuid(): AddressCountryUuid
+    {
+		return $this->countryUuid;
+	}
+	
+	public function changeCountryUuid(AddressCountryUuid $countryUuid): void
+    {
+        if ($this->countryUuid->isNotEquals($countryUuid)) {
+            $this->countryUuid = $countryUuid;
+        }
+	}
+
+	public function getCityUuid(): AddressCityUuid
+    {
+		return $this->cityUuid;
+	}
+	
+	public function changeCityUuid(AddressCityUuid $cityUuid): void
+    {
+        if ($this->cityUuid->isNotEquals($cityUuid)) {
+            $this->cityUuid = $cityUuid;
+        }
+	}
+
+	public function getDistrict(): AddressDistrict
+    {
+		return $this->district;
+	}
+	
+	public function changeDistrict(AddressDistrict $district): void
+    {
+        if ($this->district->isNotEquals($district)) {
+            $this->district = $district;
+        }
+	}
+
+    public function delete(): void
+    {
+        $this->record(new AddressWasDeletedDomainEvent(
+            $this->uuid->value,
+            $this->title->value,
+            $this->fullName->value,
+            $this->authorUuid->value,
+            $this->firstAddress->value,
+            $this->secondAddress->value,
+            $this->zipCode->value,
+            $this->countryUuid->value,
+            $this->cityUuid->value,
+            $this->district->value
+        ));
     }
 
     public function toArray(): array
@@ -86,15 +289,14 @@ final class Address extends AggregateRoot
         return [
             'uuid' => $this->uuid->value,
             'title' => $this->title->value,
-            'client_uuid' => $this->clientUUID->value,
+            'author_uuid' => $this->authorUuid->value,
             'full_name' => $this->fullName->value,
             'first_address' => $this->firstAddress->value,
             'second_address' => $this->secondAddress->value,
             'zip_code' => $this->zipCode->value,
-            'country_uuid' => $this->countryUUID->value,
-            'city_uuid' => $this->cityUUID->value,
+            'country_uuid' => $this->countryUuid->value,
+            'city_uuid' => $this->cityUuid->value,
             'district' => $this->district->value,
-            'is_active' => $this->isActive,
         ];
     }
 }

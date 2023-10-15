@@ -1,0 +1,5 @@
+type: object
+properties:
+  district:
+    type: string
+    example: 'District district'

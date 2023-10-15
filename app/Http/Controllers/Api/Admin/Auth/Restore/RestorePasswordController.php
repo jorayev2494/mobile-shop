@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\Admin\Auth\Restore;
 
 use App\Data\Auth\RestorePasswordData;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\Restore\RestorePasswordLinkRequest;
-use App\Http\Requests\Auth\Restore\RestorePasswordRequest;
+use App\Http\Requests\Admin\Auth\Restore\RestorePasswordLinkRequest;
+use App\Http\Requests\Admin\Auth\Restore\RestorePasswordRequest;
 use App\Models\Enums\AppGuardType;
 use App\Services\Api\Auth\RestorePasswordService;
 use Illuminate\Http\Response;

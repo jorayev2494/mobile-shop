@@ -1,0 +1,14 @@
+get:
+  summary: Index
+  tags: 
+    -  Permissions
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/page.yml
+    - $ref: ../../../components/parameters/per_page.yml
+    - $ref: ../../../components/parameters/sort_by.yml
+    - $ref: ../../../components/parameters/is_sort_desc.yml
+  responses: 
+    200:
+      $ref: ../../../components/responses/admin/permissions/Index.yml

@@ -1,0 +1,6 @@
+type: object
+properties:
+  card_uuid:
+    type: string
+    example: "995762a9-9005-4264-8ad9-ed307b626004"
+    uniqueItems: true

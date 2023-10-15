@@ -10,13 +10,17 @@ return new class extends Migration
     {
         Schema::create('orders', static function (Blueprint $table): void {
             $table->uuid()->primary();
+            $table->integer('number', false, true)
+                    // ->autoIncrement()
+                    ->startingValue(100000)
+                    ->unique();
 
             $table->foreignUuid('client_uuid')->references('uuid')->on('clients');
 
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
 
-            // $table->uuid('country_uuid');
+            $table->foreignUuid('card_uuid')->references('uuid')->on('cards');
             $table->foreignUuid('address_uuid')->references('uuid')->on('addresses');
 
             $table->text('description')->nullable();

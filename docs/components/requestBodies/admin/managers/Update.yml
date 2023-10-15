@@ -1,0 +1,13 @@
+content:
+  multipart/form-data:
+    schema:
+      required: 
+        -  first_name
+        -  last_name
+        -  email
+        -  role_id
+      allOf: 
+        -  $ref: ../../../fields/firstName.yml
+        -  $ref: ../../../fields/lastName.yml
+        -  $ref: ../../../fields/adminEmail.yml
+        -  $ref: ../../../fields/roleId.yml

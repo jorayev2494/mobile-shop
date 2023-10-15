@@ -6,9 +6,8 @@ namespace App\Data\Auth;
 
 use App\Data\Contracts\MakeFromFormRequest;
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\LaravelData\Data;
 
-class RefreshTokenData extends Data implements MakeFromFormRequest
+class RefreshTokenData implements MakeFromFormRequest
 {
     public function __construct(
         public readonly ?string $device_id,

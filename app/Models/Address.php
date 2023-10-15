@@ -42,6 +42,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereUuid($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Address whereZipCode($value)
  * @mixin \Eloquent
+ * @property string $city_uuid
+ * @property-read \App\Models\Client $client
+ * @method static \Illuminate\Database\Eloquent\Builder|Address whereCityUuid($value)
  */
 class Address extends Model
 {

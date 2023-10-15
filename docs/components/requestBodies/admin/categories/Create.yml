@@ -1,0 +1,9 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      required: 
+        -  value
+      allOf: 
+        -  $ref: ../../../fields/value.yml
+        -  $ref: ../../../fields/isActive.yml

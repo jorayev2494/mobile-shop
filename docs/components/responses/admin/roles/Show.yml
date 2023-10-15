@@ -1,0 +1,18 @@
+description: Show
+content:
+  application/json:
+    schema: 
+      allOf: 
+        - $ref: ../../../fields/id.yml
+        - $ref: ../../../fields/role/value.yml
+          properties:
+            permissions:
+              type: array
+              items:
+                type: object
+                allOf: 
+                  -  $ref: ../../../fields/id.yml
+                  -  $ref: ../../../fields/permission/value.yml
+                  -  $ref: ../../../fields/permission/model.yml
+                  -  $ref: ../../../fields/permission/action.yml
+                  -  $ref: ../../../fields/isActive.yml

@@ -47,31 +47,39 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereAvatar($value)
  * @property string $uuid
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUuid($value)
+ * @property-read string $full_name
  */
 class Admin extends AuthModel
 {
+    protected $connection = 'admin_pgsql';
+
+    protected $table = 'auth_members';
+
     protected $fillable = [
-        'name',
+        'uuid',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'role_id',
     ];
 
     protected $hidden = [
+        'role_id',
         'password',
         'remember_token',
     ];
 
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'timestamp',
+        'created_at' => 'timestamp',
+        'updated_at' => 'timestamp',
     ];
 
     public function getJWTCustomClaims(): array
     {
         return [
-            'testKey' => 'testValue',
-            'model' => self::class,
-            'role' => RoleResource::make($this->role()->with('permissions')->first()),
+            // 'role' => RoleResource::make($this->role()->with('permissions')->first()),
         ];
     }
 

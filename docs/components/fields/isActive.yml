@@ -1,0 +1,8 @@
+type: object
+properties:
+  is_active:
+    type: boolean
+    example: true
+    enum:
+      - true
+      - false

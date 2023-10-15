@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Repositories\Base;
 
-use App\Data\Requests\IndexRequestDTO;
 use App\Repositories\Contracts\BaseModelRepositoryInterface;
 use App\Repositories\Pipelines\Filters\RelationFilter;
 use App\Repositories\Pipelines\Filters\StringFilter;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -74,16 +75,43 @@ abstract class BaseModelRepository implements BaseModelRepositoryInterface
             );
     }
 
-    public function paginate(BaseQuery $queryData, iterable $columns = ['+']): LengthAwarePaginator
+    public function paginate(BaseQuery $queryData, iterable $columns = ['*']): LengthAwarePaginator
     {
         /** @var Builder $build */
         $query = $this->getModelClone()->newQuery();
+        $query->select($columns);
 
         $this->search($queryData, $query)
             ->sort($queryData, $query)
             ->filters($queryData, $query);
 
         return $query->paginate($queryData->per_page);
+    }
+
+    public function cursorPaginate(BaseQuery $queryData, iterable $columns = ['*']): CursorPaginator
+    {
+        /** @var Builder $build */
+        $query = $this->getModelClone()->newQuery();
+        $query->select($columns);
+
+        $this->search($queryData, $query)
+            ->sort($queryData, $query)
+            ->filters($queryData, $query);
+
+        return $query->cursorPaginate($queryData->per_page)->withQueryString();
+    }
+
+    public function simplePaginate(BaseQuery $queryData, iterable $columns = ['*']): Paginator
+    {
+        /** @var Builder $build */
+        $query = $this->getModelClone()->newQuery();
+        $query->select($columns);
+
+        $this->search($queryData, $query)
+            ->sort($queryData, $query)
+            ->filters($queryData, $query);
+
+        return $query->simplePaginate($queryData->per_page)->withQueryString();
     }
 
     protected function search(BaseQuery $dataDTO, Builder $query = null): self

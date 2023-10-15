@@ -1,0 +1,5 @@
+type: object
+properties:
+  email_verified_at:
+    type: integer
+    example: 1685757415

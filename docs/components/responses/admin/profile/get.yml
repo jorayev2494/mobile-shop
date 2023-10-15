@@ -5,6 +5,6 @@ content:
       type: object
       allOf: 
         -  $ref: ../../../fields/id.yml
-        -  $ref: ../../../fields/firstNameAndLastName.yml
-      # properties: 
-      #   - $ref: ../../../fields/id.yml
+        -  $ref: ../../../fields/firstName.yml
+        -  $ref: ../../../fields/lastName.yml
+        -  $ref: ../../../fields/adminEmail.yml

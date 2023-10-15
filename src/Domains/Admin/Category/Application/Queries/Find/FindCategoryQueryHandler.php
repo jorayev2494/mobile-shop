@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Category\Application\Queries\Find;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Project\Domains\Category\Domain\CategoryRepositoryInterface;
-use Project\Shared\Domain\Bus\Query\QueryHandler;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
+use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
 
-final class FindCategoryQueryHandler implements QueryHandler
+final class FindCategoryQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $repository,
@@ -19,12 +20,12 @@ final class FindCategoryQueryHandler implements QueryHandler
 
     public function __invoke(FindCategoryQuery $query): object
     {
-        $model = $this->repository->findOrNull($query->uuid);
+        $category = $this->repository->findByUuid(CategoryUuid::fromValue($query->uuid));
 
-        if ($model === null) {
+        if ($category === null) {
             throw new ModelNotFoundException();
         }
 
-        return $model;
+        return $category;
     }
 }

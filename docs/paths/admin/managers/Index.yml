@@ -1,0 +1,26 @@
+get:
+  summary: Get managers
+  tags: 
+    -  Managers
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: ../../../components/parameters/query/page.yml
+    - $ref: ../../../components/parameters/query/per_page.yml
+    - $ref: ../../../components/parameters/query/sort_by.yml
+    - $ref: ../../../components/parameters/query/is_sort_desc.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/managers/Index.yml
+
+post:
+  summary: Create Manager
+  tags: 
+    -  Managers
+  security: 
+    -  bearerAuth: []
+  requestBody:
+    $ref: ../../../components/requestBodies/admin/managers/Create.yml
+  responses: 
+    202:
+      description: Created Manager

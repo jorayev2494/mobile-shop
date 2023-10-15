@@ -5,18 +5,19 @@ namespace Project\Shared\Application\Query;
 use App\Data\Contracts\MakeFromRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-use Spatie\LaravelData\Data;
+use Project\Shared\Domain\Bus\Query\QueryInterface;
 
-abstract class BaseQuery extends Data implements MakeFromRequest
+abstract class BaseQuery implements QueryInterface, MakeFromRequest
 {
 
     private function __construct(
         public readonly ?string $search,
-        public readonly ?string $search_by,
+        public readonly ?string $searchBy,
         public readonly ?int $page,
-        public readonly ?int $per_page,
-        public readonly ?string $sort_by,
-        public readonly ?bool $is_sort_desc,
+        public readonly ?int $perPage,
+        public readonly ?string $cursor,
+        public readonly ?string $sortBy,
+        public readonly ?bool $sortRule,
         public readonly ?array $filters,
     )
     {
@@ -25,41 +26,49 @@ abstract class BaseQuery extends Data implements MakeFromRequest
 
     public static function make(
         ?string $search = null,
-        ?string $search_by = null,
+        ?string $searchBy = null,
         ?int $page = null,
-        ?int $per_page = null,
-        ?string $sort_by = null,
-        ?bool $is_sort_desc = null,
+        ?int $perPage = null,
+        ?string $cursor = null,
+        ?string $sortBy = null,
+        ?bool $sortRule = null,
         ?array $filters = null,
     ): static
     {
         return new static(
             search: $search,
-            search_by: $search_by,
+            searchBy: $searchBy,
             page: $page,
-            per_page: $per_page,
-            sort_by: $sort_by,
-            is_sort_desc: $is_sort_desc,
+            perPage: $perPage,
+            cursor: $cursor,
+            sortBy: $sortBy,
+            sortRule: $sortRule,
             filters: $filters,
         );
     }
 
     public static function makeFromRequest(Request|FormRequest $request): static
     {
-        return new static(
+        return (new static(
             search: $request->query->get('search'),
-            search_by: $request->query->get('search_by'),
+            searchBy: $request->query->get('search_by'),
             page: $request->query->getInt('page', 1),
-            per_page: $request->query->getInt('per_page'),
-            sort_by: $request->query->get('sort_by'),
-            is_sort_desc: $request->query->getBoolean('is_sort_desc'),
+            perPage: $request->query->getInt('per_page', 10),
+            cursor: $request->query->get('cursor'),
+            sortBy: $request->query->get('sort_by', 'created_at'),
+            sortRule: $request->query->getBoolean('sort_rule'),
             filters: self::makeFilters($request->get('filters', [])),
-        );
+        ))->fromRequest($request);
     }
 
-    private static function makeFilters(array $filters): array
+    protected static function makeFilters(array $filters): array
     {
         return $filters;
+    }
+
+    protected function fromRequest(Request|FormRequest $request): static
+    {
+        return $this;
     }
 
 }

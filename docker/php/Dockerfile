@@ -30,6 +30,12 @@ RUN docker-php-ext-enable xdebug
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 
+#region Amqp
+RUN apt-get update && apt-get install -y librabbitmq-dev libssh-dev \
+    && docker-php-ext-install opcache bcmath sockets \
+    && pecl install amqp \
+    && docker-php-ext-enable amqp
+#endregion
 
 # RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 COPY ./php.ini $PHP_INI_DIR/php.ini

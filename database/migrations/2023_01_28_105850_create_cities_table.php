@@ -8,19 +8,19 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('cities', static function (Blueprint $table): void {
-            $table->uuid()->primary();
+        // Schema::create('cities', static function (Blueprint $table): void {
+        //     $table->uuid()->primary();
 
-            $table->string('value');
-            $table->foreignUuid('country_uuid')->references('uuid')->on('countries');
-            $table->boolean('is_active')->default(true);
+        //     $table->string('value');
+        //     $table->foreignUuid('country_uuid')->references('uuid')->on('countries');
+        //     $table->boolean('is_active')->default(true);
 
-            $table->timestamps();
-        });
+        //     $table->timestamps();
+        // });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('cities');
+        // Schema::dropIfExists('cities');
     }
 };

@@ -38,8 +38,8 @@ class Role extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'created_at' => 'datetime:timestamp',
-        'updated_at' => 'datetime:timestamp',
+        // 'created_at' => 'datetime:timestamp',
+        // 'updated_at' => 'datetime:timestamp',
     ];
 
     public function permissions(): BelongsToMany

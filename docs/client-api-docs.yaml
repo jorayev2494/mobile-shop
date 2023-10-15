@@ -10,7 +10,8 @@ info:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
-    url: 'https://redocly.github.io/openapi-template/logo.png'
+    url: 'https://cdni.iconscout.com/illustration/premium/thumb/programmers-building-mobile-application-2890186-2406689.png?f=webp'
+    altText: Mobile App API
   description: |
     This is an **example** API to demonstrate features of the OpenAPI
     specification.
@@ -37,32 +38,64 @@ info:
 externalDocs:
   description: Find out how to create a GitHub repo for your OpenAPI definition.
   url: 'https://github.com/Rebilly/generator-openapi-repo'
-# tags:
-#   - name: Echo
-#     description: Example echo operations.
-#   - name: User
-#     description: Operations about users.
-#   - name: Tag
-#     description: This is a tag description.
-servers:
-  - url: 'http://example.com/api/v1'
-  - url: 'https://example.com/api/v1'
-paths:
-  # /auth/login:
-  #   get:      
-  #     summary: 'Login'
-  #     tags: 
-  #       -  Test
-  #     parameters: 
-  #       - $ref: components/parameters/Test.yml
-  #     responses: 
-  #       204:
-  #         description: 'No content'
-    
-  #   # $ref: paths/auth/login.yml
 
-  /auth/login:    
-    $ref: paths/auth/login.yml
+servers:
+  - description: 'Local server'
+    url: 'http://127.0.0.1:8084/api'
+
+  - description: 'Global server'
+    url: 'https://example.com/api/v1'
+
+tags:
+  - name: Authentication
+    description: Example echo operations
+
+  - name: Restore password
+    description: Operations about users
+
+  - name: Addresses
+    description: Addresses
+
+x-tagGroups: 
+  - name: Authentication
+    tags: 
+      - Authentication
+      - Restore password
+
+  - name: Addresses
+    tags: 
+      - Addresses
+
+security: 
+  - bearerAuth: []
+paths:
+  # Authentication
+  /auth/register:
+    $ref: paths/client/auth/register.yml
+
+  /auth/login:
+    $ref: paths/client/auth/login.yml
+
+  /auth/refresh-token:
+    $ref: paths/client/auth/refreshToken.yml
+
+  /auth/logout:
+    $ref: paths/client/auth/logout.yml
+  # End Authentication
+
+  # Restore password
+  /auth/restore-password/code:
+    $ref: paths/client/auth/restore-password/code.yml
+
+  /auth/restore-password/restore:
+    $ref: paths/client/auth/restore-password/restore.yml
+
+  # Addresses
+  /addresses:
+    $ref: paths/client/addresses/index.yml
+  
+  /addresses/{uuid}:
+    $ref: paths/client/addresses/addressUuid.yml
 
 components:
   securitySchemes:

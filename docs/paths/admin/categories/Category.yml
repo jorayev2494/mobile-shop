@@ -1,0 +1,37 @@
+get:
+  summary: "Show categories"
+  tags: 
+    -  Categories
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/uuid.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/categories/Show.yml
+
+put: 
+  summary: "Update category"
+  tags: 
+    -  Categories
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/uuid.yml
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/categories/Update.yml
+  responses: 
+    202:
+      $ref: ../../../components/responses/admin/categories/Update.yml
+
+delete: 
+  summary: "Delete category"
+  tags: 
+    -  Categories
+  security: 
+    -  bearerAuth: []
+  parameters: 
+    - $ref: ../../../components/parameters/uuid.yml
+  responses: 
+    204:
+      $ref: ../../../components/responses/admin/categories/Delete.yml

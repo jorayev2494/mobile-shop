@@ -1,0 +1,30 @@
+get:
+  summary: Get products
+  tags: 
+    -  Products
+  security: 
+    -  bearerAuth: []
+  parameters:
+    # Basic Search
+    - $ref: ../../../components/parameters/search.yml
+    - $ref: ../../../components/parameters/search_by.yml
+    - $ref: ../../../components/parameters/page.yml
+    - $ref: ../../../components/parameters/per_page.yml
+    - $ref: ../../../components/parameters/sort_by.yml
+    - $ref: ../../../components/parameters/is_sort_desc.yml
+  responses: 
+    200:
+      $ref: ../../../components/responses/admin/products/GetProducts.yml
+
+post:
+  summary: Create product
+  tags: 
+    -  Products
+  security: 
+    -  bearerAuth: []
+  requestBody: 
+    $ref: ../../../components/requestBodies/admin/products/Create.yml
+  responses:
+    201:
+      $ref: ../../../components/responses/admin/products/CreateProduct.yml
+        

@@ -1,0 +1,5 @@
+type: object
+properties:
+  full_path:
+    type: string
+    example: /path/to/something/something.txt

@@ -7,9 +7,8 @@ namespace App\Data\Requests;
 use App\Data\Contracts\MakeFromRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-use Spatie\LaravelData\Data;
 
-class IndexRequestDTO extends Data implements MakeFromRequest
+class IndexRequestDTO implements MakeFromRequest
 {
 
     private function __construct(

@@ -1,16 +1,17 @@
 openapi: 3.0.0
 info:
   version: 1.0.0
-  title: Example.com
-  termsOfService: 'https://example.com/terms/'
+  title: Mobile App Admin API
   contact:
-    email: contact@example.com
-    url: 'http://example.com/contact'
+    email: jorayev2494@gmail.com
+    url: 'http://127.0.0.1:8084/contact'
+  termsOfService: 'https://example.com/terms/'
   license:
     name: Apache 2.0
     url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
   x-logo:
-    url: 'https://redocly.github.io/openapi-template/logo.png'
+    url: 'https://cdni.iconscout.com/illustration/premium/thumb/mobile-application-development-2726415-2261413.png'
+    altText: Mobile App Admin API
   description: |
     This is an **example** API to demonstrate features of the OpenAPI
     specification.
@@ -37,39 +38,151 @@ info:
 externalDocs:
   description: Find out how to create a GitHub repo for your OpenAPI definition.
   url: 'https://github.com/Rebilly/generator-openapi-repo'
-# tags:
-#   - name: Echo
-#     description: Example echo operations.
-#   - name: User
-#     description: Operations about users.
-#   - name: Tag
-#     description: This is a tag description.
+
 servers:
-  - url: 'http://127.0.0.1:8084/api/admin'
-  - url: 'https://example.com/api/v1'
+  - description: 'Local server'
+    url: 'http://127.0.0.1:8084/api/admin'
+
+  - description: 'Global server'
+    url: 'https://example.com/api/admin'
+
+tags:
+  - name: Authentication
+    description: Example echo operations
+
+  - name: Restore password
+    description: Operations about users
+  
+  - name: Roles
+    description: Permissions description
+
+  - name: Profile
+    description: This is Profile description
+  
+  - name: Managers
+    description: Managers description
+
+  - name: Categories
+    description: Categories description
+
+  - name: Currencies
+    description: Currencies description
+  
+  - name: Products
+    description: Products description
+
+  - name: Orders
+    description: Orders description
+
+x-tagGroups: 
+  - name: Authentication
+    tags: 
+      - Authentication
+      - Restore password
+
+  - name: Roles
+    tags:
+      - Roles
+      - Permissions
+
+  - name: Profile
+    tags: 
+      -  Profile
+
+  - name: Managers
+    tags: 
+      -  Managers
+
+  - name: Categories
+    tags: 
+      -  Categories
+
+  - name: Currencies
+    tags: 
+      -  Currencies
+  
+  - name: Products
+    tags: 
+      -  Products
+
+  - name: Orders
+    tags: 
+      -  Orders
+
+security:
+  - bearerAuth: []
+
 paths:
   # Authentication
-  /auth/register:
+  /admin/auth/register:
     $ref: paths/admin/auth/register.yml
 
-  /auth/login:
+  /admin/auth/login:
     $ref: paths/admin/auth/login.yml
 
-  /auth/refresh-token:
+  /admin/auth/refresh-token:
     $ref: paths/admin/auth/refreshToken.yml
 
-  /auth/logout:
+  /admin/auth/logout:
     $ref: paths/admin/auth/logout.yml
   # End Authentication
 
-  /auth/restore-password/link:
+  # Restore password
+  /admin/auth/restore-password/link:
     $ref: paths/admin/auth/restore-password/link.yml
 
-  /auth/restore-password/restore:
+  /admin/auth/restore-password/restore:
     $ref: paths/admin/auth/restore-password/restore.yml
 
-  /profile/get:
-    $ref: paths/admin/profile/get.yml
+  # Roles
+  /admin/roles:
+    $ref: paths/admin/roles/Role.yml
+
+  /admin/roles/{id}:
+    $ref: paths/admin/roles/RoleId.yml
+
+  # Permission
+  /admin/permissions:
+    $ref: paths/admin/permissions/Index.yml
+
+  # Profile
+  /admin/profile:
+    $ref: paths/admin/profile/Profile.yml
+
+  /admin/profile/change-password:
+    $ref: paths/admin/profile/ChangePassword.yml
+  
+  # Managers
+  /managers:
+    $ref: paths/admin/managers/Index.yml
+
+  /managers/{uuid}:
+    $ref: paths/admin/managers/ManagerUUID.yml
+
+  # Categories
+  /admin/categories:
+    $ref: paths/admin/categories/GetCategory.yml
+  
+  /admin/categories/{uuid}:
+    $ref: paths/admin/categories/Category.yml
+
+  # Currencies
+  /admin/currencies:
+    $ref: paths/admin/currencies/IndexCurrency.yml
+
+  # Products
+  /admin/products:
+    $ref: paths/admin/products/getProducts.yml
+
+  /admin/products/{uuid}:
+    $ref: paths/admin/products/Product.yml
+  
+  # Orders
+  /admin/orders:
+    $ref: paths/admin/orders/getOrders.yml
+
+  /admin/orders/{uuid}:
+    $ref: paths/admin/orders/Order.yml
 
 components:
   securitySchemes:

@@ -4,33 +4,32 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Category\Application\Commands\Create;
 
-use Project\Domains\Category\Domain\Category;
-use Project\Domains\Category\Domain\CategoryRepositoryInterface;
-use Project\Domains\Category\Domain\ValueObjects\CategoryUUID;
-use Project\Domains\Category\Domain\ValueObjects\CategoryValue;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Domains\Admin\Category\Domain\Category\Category;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryValue;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 
-final class CreateCategoryCommandHandler implements CommandHandler
+final class CreateCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private readonly CategoryRepositoryInterface $repository
+        private readonly CategoryRepositoryInterface $repository,
+        private readonly EventBusInterface $eventBus,
     )
     {
         
     }
 
-    public function __invoke(CreateCategoryCommand $command): array
+    public function __invoke(CreateCategoryCommand $command): void
     {
-        $uuid = CategoryUUID::generate();
-
         $category = Category::create(
-            $uuid,
+            CategoryUuid::fromValue($command->uuid),
             CategoryValue::fromValue($command->value),
             $command->isActive,
         );
 
         $this->repository->save($category);
-
-        return ['uuid' => $uuid->value];
+        $this->eventBus->publish(...$category->pullDomainEvents());
     }
 }

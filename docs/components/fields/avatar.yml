@@ -1,0 +1,7 @@
+type: object
+properties:
+  avatar:
+    type: string
+    default: '/storage/admin/avatars/default.php'
+    example: '/storage/admin/avatars/default2.php'
+    nullable: true

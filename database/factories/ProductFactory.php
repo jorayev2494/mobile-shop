@@ -16,6 +16,7 @@ class ProductFactory extends Factory
             'price' => $this->faker->numberBetween(50, 500),
             'discount_percentage' => $this->faker->boolean ? $this->faker->numberBetween(5, 90) : null,
             'description' => $this->faker->realText(),
+            'viewed_count' => random_int(0, 100),
             // 'is_active' => $this->faker->boolean,
         ];
     }

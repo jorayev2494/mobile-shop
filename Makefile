@@ -1,132 +1,83 @@
 .DEFAULT_GOAL := help
 
-# Makefile
-# alias m="make"
+SERVER_COMPOSE_FILE_PATH := ./docker/docker-compose.yml
 
-COMPOSE_FILE_PATH := ./docker/docker-compose.yml
+server-init:										## Init
+	@make server-init-project
+	@make server-init-docker
 
-init:						## Init
-	@make init-project
-	@make init-docker
-
-init-project:				## Init Prokect
+server-init-project:								## Init Prokect
 	@cp .env.example .env
 
-init-testing:				# Init Testing
+server-init-testing:								## Init Testing
 	@cp .env.example .env.testing
 
-init-docker:				## Init Docker
+server-init-docker:									## Init Docker
 	@cp ./docker/.env.example ./docker/.env
 
-install:					## Install project
-	@make -s init
+server-install:										## Install project
+	@make -s server-init
 
-pull:						## Pull project
-	@docker-compose --file $(COMPOSE_FILE_PATH) pull
-
-build:						## Build project
-	@docker-compose --file $(COMPOSE_FILE_PATH) build
-
-build-no-cache:				## Build no cache project
-	@docker-compose --file $(COMPOSE_FILE_PATH) build --no-cache
-
-up-build:					## Up and build project
-	@docker-compose --file $(COMPOSE_FILE_PATH) up --build -d
-
-up:							## Up project
-	@docker-compose --file $(COMPOSE_FILE_PATH) up -d
-	@make ps
-
-down:						## Down project
-	docker-compose --file $(COMPOSE_FILE_PATH) down --remove-orphans
-
-restart:					## Restart project
-	@docker-compose --file $(COMPOSE_FILE_PATH) restart node
-
-bash:						## Project bash terminal
-	@docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli sh
-
-ps:							## Show project process
-	docker-compose --file $(COMPOSE_FILE_PATH) ps
-
-key-generate:			## Generate App encription keys
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan key:generate && ./artisan key:generate --env=testing
-
-test:					## Run test
+server-test:										## Run test
 	DB_HOST=test-postgres
 	DB_PORT=54322
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan test
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan test
 
-migrate:				## Run migrate
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate
+server-admin-database-diff:							## Run Admin database diff
+	ENTITY=admin php ./vendor/bin/doctrine-migrations diff
 
-migrate-status:			## Run migrate status
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:status
+server-admin-database-fresh:						## Run Admin database fresh
+	./artisan db:wipe --database=admin_pgsql --drop-views --drop-types
 
-migrate-fresh:			## Run migrate fresh
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:fresh
+server-admin-database-migrate:						## Run Admin database
+	ENTITY=admin php ./vendor/bin/doctrine-migrations migrate
 
-migrate-install:		## Run migrate install
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:install
+server-client-database-diff:						## Run Client database diff
+	ENTITY=client php ./vendor/bin/doctrine-migrations diff
 
-migrate-refresh:		## Run migrate refresh
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:refresh
+server-client-database-fresh:						## Run Client database fresh
+	./artisan db:wipe --database=client_pgsql --drop-views --drop-types
 
-migrate-reset:
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:reset
+server-client-database-migrate:						## Run Client migrations
+	ENTITY=client php ./vendor/bin/doctrine-migrations migrate
 
-migrate-rollback:		## Run migrate rollback
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:rollback
+server-database-seed:								## Run migrate fresh and seed
+	./artisan db:seed
 
-migrate-fresh-seed:			## Run migrate fresh and seed
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:fresh --seed
+server-psalm:										## Run Paslm
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./vendor/bin/psalm --show-info=true --no-cache
 
-migrate-refresh-seed:	## Run migrate refresh & seed
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:refresh --seed
+server-pint-check:									## Run Pint Test
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./vendor/bin/pint --test
 
-migrate-rollback-seed:	## Run migrate rollback & seed
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan migrate:rollback
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan db:seed
+server-pint-fix:									## Run Pint Fix
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./vendor/bin/pint -v
 
-cc:						## Clear chash
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan optimize:clear
+server-create-rabbitmq-exchanges:					## Create RrabbitMQ Exchanges
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:command-handler-exchanges
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:domain-event-handler-exchanges
 
-psalm:				## Run Paslm
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./vendor/bin/psalm --show-info=true --no-cache
+server-generate-supervisor-rabbitmq:				## Generate Supervisor RabbitMQ
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:commands-consumer
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:domain-events-consumer
 
+server-supervisor-restart:
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up --build -d supervisor
 
-pint-check:				## Run Pint Test
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./vendor/bin/pint --test
+server-refresh-rabbitmq-and-restart-supervisor:
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} rm -s -f -v supervisor
+	@make server-create-rabbitmq-exchanges
+	@make server-generate-supervisor-rabbitmq
+	@make server-supervisor-restart
 
-pint-fix:				## Run Pint Fix
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./vendor/bin/pint -v
+server-restart-message-broker:
+	@make server-refresh-rabbitmq-and-restart-supervisor
 
-composer-du-o:			## Compouser dump autolad
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer du -o
+server-seed-class:									## Run Class Seeder
+	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan db:seed --class=$(class)
 
-composer-install:			## Compouser install
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer install --ignore-platform-reqs
-
-composer-require:			## Compouser require
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer require $(package) --ignore-platform-reqs
-
-composer-require-dev:			## Compouser require dev
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer require --dev $(package) --ignore-platform-reqs
-
-composer-remove:			## Compouser remove
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer remove $(package) --ignore-platform-reqs
-
-composer-remove-dev:			## Compouser remove dev
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli composer remove --dev $(package) --ignore-platform-reqs
-
-seed:							## Run Seeder
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artian db:seed --class=$(class)
-
-seed-class:						## Run Class Seeder
-	docker-compose --file $(COMPOSE_FILE_PATH) run --rm php-cli ./artisan db:seed --class=$(class)
-
-.PHONY: help
-help:				## Show Project commands
-	@#echo ${Cyan}"\t\t This project 'job' REST API Server!"
+# .PHONY: server-help
+server-help:										## Show Project commands
+	@#echo ${Cyan}"\t\t This project 'Shop Server' REST API Server!"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo ${Red}"----------------------------------------------------------------------"

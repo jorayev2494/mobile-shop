@@ -1,0 +1,18 @@
+get:
+  summary: "Get Orders"
+  tags: 
+    -  Orders
+  parameters:
+    # Basic Search
+    - $ref: ../../../components/parameters/search.yml
+    - $ref: ../../../components/parameters/search_by.yml
+    - $ref: ../../../components/parameters/page.yml
+    - $ref: ../../../components/parameters/per_page.yml
+    - $ref: ../../../components/parameters/sort_by.yml
+    - $ref: ../../../components/parameters/is_sort_desc.yml
+
+    - $ref: ../../../components/parameters/admin/orders/query/status.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/orders/getOrders.yml
+  

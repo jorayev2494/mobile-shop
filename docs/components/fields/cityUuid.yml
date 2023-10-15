@@ -1,0 +1,6 @@
+type: object
+properties:
+  city_uuid:
+    type: string
+    example: 'ac9ec23e-0c0e-41fd-bf51-963d87ec725b'
+    format: uuid

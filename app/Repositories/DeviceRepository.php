@@ -23,8 +23,7 @@ final class DeviceRepository extends BaseModelRepository
             $device = $this->getModelClone()->where([
                 'device_id' => $deviceId,
                 'refresh_token' => $refreshToken,
-            ])
-                                    ->firstOrFail();
+            ])->firstOrFail();
 
             if (now()->timestamp > $device->expired_at) {
                 throw new AuthenticationException('Refresh token is expired');

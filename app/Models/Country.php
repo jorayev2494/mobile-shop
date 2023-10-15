@@ -29,11 +29,24 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\City[] $cities
  * @property-read int|null $cities_count
+ * @property string $iso
+ * @method static \Illuminate\Database\Eloquent\Builder|Country whereIso($value)
  */
 class Country extends Model
 {
     use HasFactory;
     use HasUuids;
+
+    protected $connection = 'admin_pgsql';
+
+    protected $table = 'country_countries';
+
+    protected $fillable = [
+        'uuid',
+        'value',
+        'iso',
+        'is_active',
+    ];
 
     protected $primaryKey = 'uuid';
 

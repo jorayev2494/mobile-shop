@@ -1,0 +1,10 @@
+description: 'Profile updated'
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/id.yml
+        -  $ref: ../../../fields/firstName.yml
+        -  $ref: ../../../fields/lastName.yml
+        -  $ref: ../../../fields/adminEmail.yml

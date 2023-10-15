@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Category\Application\Commands\Delete;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Project\Domains\Category\Domain\CategoryRepositoryInterface;
-use Project\Domains\Category\Domain\ValueObjects\CategoryUUID;
-use Project\Shared\Domain\Bus\Command\CommandHandler;
+use Project\Domains\Admin\Category\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Category\Domain\Category\ValueObjects\CategoryUuid;
+use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 
-final class DeleteCategoryCommandHandler implements CommandHandler
+final class DeleteCategoryCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        public readonly CategoryRepositoryInterface $repository
+        public readonly CategoryRepositoryInterface $repository,
+        public readonly EventBusInterface $eventBus,
     )
     {
         
@@ -20,12 +22,14 @@ final class DeleteCategoryCommandHandler implements CommandHandler
 
     public function __invoke(DeleteCategoryCommand $command): void
     {
-        $model = $this->repository->findOrNull($command->uuid);
+        $category = $this->repository->findByUuid(CategoryUuid::fromValue($command->uuid));
 
-        if ($model === null) {
+        if ($category === null) {
             throw new ModelNotFoundException();
         }
 
-        $this->repository->delete(CategoryUUID::fromValue($command->uuid));
+        $category->delete();
+        $this->repository->delete($category);
+        $this->eventBus->publish(...$category->pullDomainEvents());
     }
 }

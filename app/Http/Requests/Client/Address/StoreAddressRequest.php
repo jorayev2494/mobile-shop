@@ -21,9 +21,17 @@ class StoreAddressRequest extends FormRequest
             'full_name' => ['required', 'string'],
             'first_address' => ['required', 'string'],
             'second_address' => ['string'],
-            'zip_code' => ['required', 'string'],
-            'country_uuid' => ['required', 'string', Rule::exists('countries', 'uuid')],
-            'city_uuid' => ['required', 'string', Rule::exists('cities', 'uuid')],
+            'zip_code' => ['required', 'integer'],
+            'country_uuid' => [
+                'required',
+                'string',
+                // Rule::exists('countries', 'uuid'),
+            ],
+            'city_uuid' => [
+                'required',
+                'string',
+                // Rule::exists('cities', 'uuid'),
+            ],
             'district' => ['required', 'string'],
             'is_active' => ['boolean'],
         ];

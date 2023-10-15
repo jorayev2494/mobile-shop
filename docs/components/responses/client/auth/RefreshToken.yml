@@ -1,0 +1,21 @@
+description: 'No content'
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        -  $ref: ../../../fields/accessToken.yml
+        -  $ref: ../../../fields/refreshToken.yml
+        -  $ref: ../../../fields/tokenType.yml
+        -  $ref: ../../../fields/expiresIn.yml
+      properties:
+        auth_data:
+          type: object
+          allOf: 
+            -  $ref: ../../../fields/uuid.yml
+            -  $ref: ../../../fields/firstNameAndLastName.yml
+            -  $ref: ../../../fields/adminEmail.yml
+            -  $ref: ../../../fields/avatar.yml
+            -  $ref: ../../../fields/emailVerifiedAt.yml
+            -  $ref: ../../../fields/roleId.yml
+            -  $ref: ../../../fields/createdAtAndUpdatedAt.yml

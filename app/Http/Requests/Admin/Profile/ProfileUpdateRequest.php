@@ -2,23 +2,25 @@
 
 namespace App\Http\Requests\Admin\Profile;
 
-use App\Models\Admin;
 use App\Models\Auth\AppAuth;
+use App\Models\Enums\AppGuardType;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProfileUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return AppAuth::check();
+        return AppAuth::check(AppGuardType::ADMIN);
     }
 
     public function rules(): array
     {
         return [
-            'first_name' => ['string', 'min:2', 'max:255'],
-            'last_name' => ['string', 'min:2', 'max:255'],
-            'email' => ['email', 'unique:' . Admin::class . ',email', 'max:255'],
+            'first_name' => ['required', 'string', 'min:2', 'max:255'],
+            'last_name' => ['required', 'string', 'min:2', 'max:255'],
+            'email' => ['required', 'email', 'max:255'],
+            'avatar' => ['file', 'mimetypes:image/*'],
+            'phone' => ['nullable', 'string', 'min:2', 'max:255'],
         ];
     }
 }

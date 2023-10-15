@@ -1,0 +1,28 @@
+get:
+  summary: "Show Orders"
+  tags: 
+    -  Orders
+  parameters:
+    # Basic Search
+    - $ref: ../../../components/parameters/search.yml
+    - $ref: ../../../components/parameters/search_by.yml
+    - $ref: ../../../components/parameters/page.yml
+    - $ref: ../../../components/parameters/per_page.yml
+    - $ref: ../../../components/parameters/sort_by.yml
+    - $ref: ../../../components/parameters/is_sort_desc.yml
+
+    - $ref: ../../../components/parameters/uuid.yml
+  responses:
+    200:
+      $ref: ../../../components/responses/admin/orders/ShowOrder.yml
+
+put:
+  summary: "Update Orders"
+  tags: 
+    -  Orders
+  parameters:
+    - $ref: ../../../components/parameters/uuid.yml
+  responses:
+    202:
+      $ref: ../../../components/responses/admin/orders/UpdateOrder.yml
+  

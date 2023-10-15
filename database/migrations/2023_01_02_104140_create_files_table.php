@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('files', static function (Blueprint $table): void {
             $table->uuid()->primary();
 
-            $table->integer('fileable_id')->nullable();
+            $table->string('fileable_uuid')->nullable();
             $table->string('fileable_type')->nullable();
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
@@ -19,12 +19,13 @@ return new class extends Migration
             $table->string('mime_type');
             $table->string('type');
             $table->string('extension');
-            $table->string('size');
+            $table->integer('size');
             $table->string('file_name')->nullable();
             $table->string('file_original_name');
             $table->string('name');
             $table->string('full_path');
             $table->string('url');
+            $table->string('url_pattern');
             $table->integer('downloaded_count')->default(0);
             $table->string('disk');
             $table->boolean('is_public')->default(false);

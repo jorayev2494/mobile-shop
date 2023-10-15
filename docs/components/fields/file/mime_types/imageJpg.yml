@@ -1,0 +1,5 @@
+type: object
+properties:
+  path:
+    type: string
+    example: image/jpg

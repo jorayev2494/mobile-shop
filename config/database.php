@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('ADMIN_DB_CONNECTION', 'admin_pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -63,14 +63,29 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
+        'admin_pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' => env('ADMIN_DATABASE_URL'),
+            'host' => env('ADMIN_DB_HOST', '127.0.0.1'),
+            'port' => env('ADMIN_DB_PORT', '5432'),
+            'database' => env('ADMIN_DB_DATABASE', 'forge'),
+            'username' => env('ADMIN_DB_USERNAME', 'forge'),
+            'password' => env('ADMIN_DB_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+        'client_pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('CLIENT_DATABASE_URL'),
+            'host' => env('CLIENT_DB_HOST', '127.0.0.1'),
+            'port' => env('CLIENT_DB_PORT', '5432'),
+            'database' => env('CLIENT_DB_DATABASE', 'forge'),
+            'username' => env('CLIENT_DB_USERNAME', 'forge'),
+            'password' => env('CLIENT_DB_PASSWORD', ''),
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,

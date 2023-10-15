@@ -1,0 +1,8 @@
+content:
+  application/json:
+    schema: 
+      type: object
+      allOf: 
+        - $ref: ../../../fields/role/value.yml
+        - $ref: ../../../fields/role/permissions.yml
+        - $ref: ../../../fields/isActive.yml

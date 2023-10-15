@@ -30,30 +30,6 @@ class AddressController extends Controller
         
     }
 
-    public function index(Request $request, QueryHandler $queryHandler): JsonResponse
-    {
-        $query = Query::makeFromRequest($request);
-        $result = $queryHandler($query);
-
-        return $this->response->json($result);
-    }
-
-    public function store(StoreAddressRequest $request, CreateCommandHandler $handler): JsonResponse
-    {
-        $query = CreateCommand::from($request->validated());
-        $result = $handler($query);
-
-        return $this->response->json($result, Response::HTTP_CREATED);
-    }
-
-    public function show(FindAddressQueryHandler $handler, string $uuid): JsonResponse
-    {
-        $query = FindAddressQuery::from(compact('uuid'));
-        $result = $handler($query);
-
-        return $this->response->json($result);
-    }
-
     public function update(UpdateAddressRequest $request, UpdateCommandHandler $handler, string $uuid): JsonResponse
     {
         $command = UpdateCommand::from($request->validated() + compact('uuid'));

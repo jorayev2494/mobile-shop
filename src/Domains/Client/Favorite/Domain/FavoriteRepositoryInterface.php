@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Favorite\Domain;
 
-use App\Models\Client;
-use App\Repositories\Contracts\BaseModelRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Contracts\Pagination\CursorPaginator;
+use Project\Domains\Client\Favorite\Domain\Member\ValueObjects\MemberUuid;
 use Project\Shared\Application\Query\BaseQuery;
 
-interface FavoriteRepositoryInterface extends BaseModelRepositoryInterface
+interface FavoriteRepositoryInterface
 {
-    public function getClientFavoritesPaginate(Client $client, BaseQuery $queryData): LengthAwarePaginator;
+    public function favorite(Favorite $favorite): void;
+    
+    public function unfavorite(Favorite $favorite): void;
+
+    public function getClientFavoritesPaginate(BaseQuery $query, MemberUuid $memberUuid): CursorPaginator;
+
+    public function contains(Favorite $favorite): bool;
 }

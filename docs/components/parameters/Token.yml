@@ -1,0 +1,6 @@
+in: query
+required: true
+name: token
+schema:
+  type: string
+  example: '7b061f60843bda910ad0f9cb0a0495cf'

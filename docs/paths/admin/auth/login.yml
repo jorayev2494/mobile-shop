@@ -2,12 +2,10 @@ post:
   summary: 'Login'
   tags: 
     -  Authentication
-  parameters: 
+  parameters:
     -  $ref: ../../../components/parameters/deviceId.yml
   requestBody:
     $ref: ../../../components/requestBodies/admin/auth/Login.yml
   responses:
     200:
       $ref: ../../../components/responses/auth/LoginResponse.yml
-    default: 
-      description: 'test'

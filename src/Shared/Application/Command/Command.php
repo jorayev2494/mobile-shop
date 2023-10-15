@@ -2,9 +2,9 @@
 
 namespace Project\Shared\Application\Command;
 
-use Spatie\LaravelData\Data;
+use Project\Shared\Domain\Bus\Command\CommandInterface;
 
-abstract class Command extends Data
+abstract class Command
 {
 
 }

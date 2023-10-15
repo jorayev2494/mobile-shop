@@ -1,0 +1,5 @@
+type: object
+properties:
+  width:
+    type: integer
+    example: 1920

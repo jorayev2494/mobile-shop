@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Auth;
 
 use App\Models\Contracts\Device;
+use App\Models\Traits\Avatar;
 use App\Models\Traits\CodeTrait;
 use App\Models\Traits\DeviceTrait;
 use App\Models\Traits\RestorePasswordTrait;
@@ -24,13 +25,26 @@ abstract class AuthModel extends JWTAuth implements Device
     use DeviceTrait;
     use CodeTrait;
     use RestorePasswordTrait;
+    use Avatar;
 
     protected $primaryKey = 'uuid';
+
+    public function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->attributes['first_name'] . ' ' . $this->attributes['last_name'],
+        );
+    }
 
     public function password(): Attribute
     {
         return Attribute::make(
             set: static fn (string $value): string => Hash::make($value),
         );
+    }
+
+    public function updatePassword(string $password): void
+    {
+        $this->update(['password' => $password]);
     }
 }

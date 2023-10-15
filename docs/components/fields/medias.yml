@@ -1,0 +1,8 @@
+type: object
+properties:
+  medias:
+    type: array
+    items:
+      allOf: 
+        -  $ref: media.yml
+

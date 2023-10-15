@@ -51,6 +51,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereSum($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
  * @property-read int|null $products_count
+ * @property string $address_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereAddressUuid($value)
+ * @property string $card_uuid
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereCardUuid($value)
+ * @property int $number
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereNumber($value)
  */
 class Order extends Model
 {
@@ -61,9 +67,11 @@ class Order extends Model
 
     protected $fillable = [
         'uuid',
+        // 'number',
         'client_uuid',
         'email',
         'phone',
+        'card_uuid',
         'client_uuid',
         'description',
         'status',

@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Project\Utils\Auth;
 
 use App\Models\Admin;
-use App\Models\Auth\AuthModel;
 use App\Models\Client;
+use App\Models\Auth\AuthModel;
+use App\Models\Enums\AppGuardType;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class AuthManager implements AuthManagerInterface
@@ -19,33 +20,33 @@ final class AuthManager implements AuthManagerInterface
 
     }
 
-    // public function guard(?string $name = null) : \Illuminate\Contracts\Auth\StatefulGuard
-    // {
-
-    // }
-
-    public function auth(AuthGuard $guard = null): ?AuthModel
+    public function auth(AppGuardType $guard = null): ?AuthModel
     {
-        return $this->authManager->guard($guard ? $guard->value : AuthGuard::guard())->user();
+        return $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->user();
     }
 
     public function admin(): ?Admin
     {
-        return $this->authManager->admin();
+        return ($admin = $this->authManager->admin()) instanceof Admin ? $admin : null;
     }
 
     public function client(): ?Client
     {
-        return $this->authManager->user();
+        return ($client = $this->authManager->user()) instanceof Client ? $client : null;
     }
 
-    public function check(AuthGuard $guard = null): bool
+    public function uuid(AppGuardType $guard = null): ?string
     {
-        return $this->authManager->guard($guard ? $guard->value : AuthGuard::guard())->check();
+        return $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->id();
     }
 
-    public function guest(AuthGuard $guard = null): bool
+    public function check(AppGuardType $guard = null): bool
     {
-        return $this->authManager->guard($guard ? $guard->value : AuthGuard::guard())->guest();
+        return $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->check();
+    }
+
+    public function guest(AppGuardType $guard = null): bool
+    {
+        return $this->authManager->guard($guard ? $guard->value : AppGuardType::guard())->guest();
     }
 }

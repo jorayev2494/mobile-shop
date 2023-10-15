@@ -2,14 +2,17 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
 use App\Models\Client;
-use App\Models\Country;
 use App\Models\Enums\OrderStatus;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Collection;
 
+/**
+ * @template TKey of array-key
+ */
 class OrderSeeder extends Seeder
 {
     /**
@@ -22,23 +25,28 @@ class OrderSeeder extends Seeder
      */
     private readonly Collection $products;
 
+    /**
+     * @var Collection<TKey, Card> $cards;
+     */
+    private readonly Collection $cards;
+
     public function __construct()
     {
         $this->clients = Client::query()->get();
         $this->products = Product::query()->get();
+        $this->cards = Card::query()->get();
     }
 
     public function run(): void
     {
-        for ($i = 0; $i < 50; $i++) {
-
+        for ($i = 0; $i < 150; $i++) {
             $client = $this->clients->random(1)->first();
 
             /** @var Order $order */
             $order = Order::factory()->create([
                 'client_uuid' => $client->uuid,
+                'card_uuid' => $client->cards->random(1)->first()->uuid,
                 'address_uuid' => $client->addresses->random(1)->first()->uuid,
-                'status' => OrderStatus::PAID,
                 'quality' => 0,
                 'sum' => 0,
                 'discard_sum' => 0,

@@ -1,0 +1,5 @@
+type: object
+properties:
+  zip_code:
+    type: integer
+    example: 123456

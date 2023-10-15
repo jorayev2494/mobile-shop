@@ -13,7 +13,7 @@ class ChangePasswordRequest extends FormRequest
         return AppAuth::check(AppGuardType::ADMIN);
     }
 
-    protected function prepareForValidation()
+    protected function prepareForValidation(): void
     {
         $this->merge([
             'x-device-id' => $this->headers->get('x-device-id'),
