@@ -20,9 +20,8 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly ProfileRepositoryInterface $repository,
         private readonly AuthManagerInterface $authManager,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

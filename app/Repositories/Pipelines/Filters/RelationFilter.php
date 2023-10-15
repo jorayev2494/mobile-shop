@@ -13,7 +13,7 @@ class RelationFilter extends FilterAbstract
     public function filter(Builder $query, string $property, string $value): void
     {
         list($relation, $relationColum) = explode('.', $property);
-                    
+
         $query->whereHas($relation, static function (Builder $query) use ($relationColum, $value): void {
             if ($relationColum === 'full_name') {
                 $query->where('first_name', 'LIKE', "%$value%", 'or');

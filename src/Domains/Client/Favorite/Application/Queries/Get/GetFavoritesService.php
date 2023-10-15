@@ -16,9 +16,8 @@ final class GetFavoritesService
         private readonly MemberRepositoryInterface $memberRepository,
         private readonly ProductRepositoryInterface $productRepository,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function execute(GetFavoritesQuery $query): Paginator

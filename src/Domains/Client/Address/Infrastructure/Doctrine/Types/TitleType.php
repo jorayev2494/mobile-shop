@@ -23,7 +23,7 @@ final class TitleType extends Type
      */
     public function convertToDatabaseValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): string
     {
-       return $value->value; 
+        return $value->value;
     }
 
     public function convertToPHPValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): AddressTitle

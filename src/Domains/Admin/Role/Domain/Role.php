@@ -44,7 +44,7 @@ class Role extends AggregateRoot
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $createdAt;
-    
+
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $updatedAt;
 
@@ -52,8 +52,7 @@ class Role extends AggregateRoot
         RoleValue $value,
         array $permissions = [],
         bool $isActive = true,
-    )
-    {   
+    ) {
         $this->value = $value;
         $this->permissions = new ArrayCollection($permissions);
         $this->isActive = $isActive;
@@ -73,7 +72,7 @@ class Role extends AggregateRoot
             $permissions,
         );
     }
-    
+
     public function getPermissions(): Collection
     {
         return $this->permissions;
@@ -96,16 +95,17 @@ class Role extends AggregateRoot
         }
     }
 
-	public function getValue(): RoleValue {
-		return $this->value;
-	}
-	
-	public function changeValue(RoleValue $value): void
+    public function getValue(): RoleValue
+    {
+        return $this->value;
+    }
+
+    public function changeValue(RoleValue $value): void
     {
         if ($this->value->isNotEquals($value)) {
             $this->value = $value;
         }
-	}
+    }
 
     #[ORM\PrePersist]
     public function prePersisting(PrePersistEventArgs $event): void

@@ -10,7 +10,7 @@ use Project\Domains\Admin\Country\Domain\ValueObjects\CountryValue;
 
 class ValueType extends Type
 {
-    const TYPE = 'admin_domain_country_value';
+    public const TYPE = 'admin_domain_country_value';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {

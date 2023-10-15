@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Manager;
 
 use App\Http\Controllers\Controller;
@@ -16,11 +18,10 @@ class CreateManagerController extends Controller
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
         private readonly UuidGeneratorInterface $uuidGenerator,
-    )
-    {
-        
+    ) {
+
     }
-    
+
     public function __invoke(CreateManagerRequest $request): JsonResponse
     {
         $uuid = $this->uuidGenerator->generate();

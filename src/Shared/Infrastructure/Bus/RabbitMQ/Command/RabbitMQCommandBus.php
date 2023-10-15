@@ -28,8 +28,7 @@ final class RabbitMQCommandBus implements CommandBusInterface
 
     public function __construct(
         private readonly AMQPStreamConnection $amqpConnection,
-    )
-    {
+    ) {
         $this->channel = $amqpConnection->channel();
     }
 

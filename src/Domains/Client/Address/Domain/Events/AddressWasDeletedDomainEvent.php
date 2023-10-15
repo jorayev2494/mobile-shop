@@ -12,15 +12,14 @@ final class AddressWasDeletedDomainEvent extends DomainEvent
         public readonly string $uuid,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
     public static function fromPrimitives(string $id, array $body, string $eventId, string $occurredOn): DomainEvent
     {
         // [
-            
+
         // ] = $body;
 
         return new self($id, $eventId, $occurredOn);

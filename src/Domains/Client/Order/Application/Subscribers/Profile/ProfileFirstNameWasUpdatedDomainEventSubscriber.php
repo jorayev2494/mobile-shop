@@ -15,7 +15,7 @@ final class ProfileFirstNameWasUpdatedDomainEventSubscriber implements DomainEve
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository
     ) {
-        
+
     }
 
     public static function subscribedTo(): array

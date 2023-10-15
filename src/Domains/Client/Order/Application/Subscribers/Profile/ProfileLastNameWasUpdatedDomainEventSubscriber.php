@@ -16,7 +16,7 @@ final class ProfileLastNameWasUpdatedDomainEventSubscriber implements DomainEven
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository
     ) {
-        
+
     }
 
     public static function subscribedTo(): array

@@ -12,19 +12,19 @@ use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 trait QueueName
 {
     public function makeQueueName(string $value, object $handler): string
-    {        
+    {
         return $this->makeQueueNameClassName($value, class_basename($handler));
     }
 
     public function makeQueueNameClassName(string $value, string $handlerClassName): string
-    {        
+    {
         $ch = explode('.', $value);
         foreach ($ch as $key => $v) {
             if ($v === $handlerClassName) {
                 unset($ch[$key]);
             }
         }
-        
+
         return implode('.', $ch);
     }
 }

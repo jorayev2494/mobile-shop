@@ -54,8 +54,8 @@ final class Code extends AggregateRoot
 
     public function getAuthor(): Member
     {
-		return $this->author;
-	}
+        return $this->author;
+    }
 
     public function setAuthor(Member $author): void
     {
@@ -75,25 +75,25 @@ final class Code extends AggregateRoot
         $this->updatedAt = new DateTimeImmutable();
     }
 
-	public function getValue(): int
+    public function getValue(): int
     {
-		return $this->value;
-	}
-	
-	public function setValue(int $value): void
-    {
-		$this->value = $value;
-	}
+        return $this->value;
+    }
 
-	public function getExpiredAt(): DateTimeImmutable
+    public function setValue(int $value): void
     {
-		return $this->expiredAt;
-	}
-	
-	public function setExpiredAt(int $value): void
+        $this->value = $value;
+    }
+
+    public function getExpiredAt(): DateTimeImmutable
     {
-		$this->value = $value;
-	}
+        return $this->expiredAt;
+    }
+
+    public function setExpiredAt(int $value): void
+    {
+        $this->value = $value;
+    }
 
     public function toArray(): array
     {

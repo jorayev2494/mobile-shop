@@ -17,9 +17,8 @@ final class MemberWasRegisteredDomainEventSubscriber implements DomainEventSubsc
 {
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

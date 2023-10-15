@@ -19,9 +19,8 @@ class CommandHandler implements CommandHandlerInterface
         private readonly PasswordHasherInterface $passwordHasher,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command)
@@ -41,6 +40,6 @@ class CommandHandler implements CommandHandlerInterface
         );
 
         $this->repository->save($member);
-        $this->eventBus->publish(...$member->pullDomainEvents());        
+        $this->eventBus->publish(...$member->pullDomainEvents());
     }
 }

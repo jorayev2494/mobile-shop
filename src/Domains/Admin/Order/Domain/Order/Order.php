@@ -25,9 +25,8 @@ final class Order extends AggregateRoot
         public readonly float $sum,
         public readonly float $discardSum,
         public readonly bool $isActive,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function create(
@@ -39,11 +38,18 @@ final class Order extends AggregateRoot
         int $quality,
         float $sum,
         float $discardSum,
-    ): self
-    {
-        return new self($uuid, $email, $phone,
-        // $description,
-        $status, $quality, $sum, $discardSum, true);
+    ): self {
+        return new self(
+            $uuid,
+            $email,
+            $phone,
+            // $description,
+            $status,
+            $quality,
+            $sum,
+            $discardSum,
+            true
+        );
     }
 
     public static function fromPrimitives(
@@ -56,8 +62,7 @@ final class Order extends AggregateRoot
         float $sum,
         float $discardSum,
         bool $isActive,
-    ): self
-    {
+    ): self {
         return new self(
             UUID::fromValue($uuid),
             Email::fromValue($email),

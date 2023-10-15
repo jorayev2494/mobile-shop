@@ -14,9 +14,8 @@ class LogoutController
 {
     public function __construct(
         public readonly ResponseFactory $response,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(LogoutRequest $request, CommandHandler $handler): Response

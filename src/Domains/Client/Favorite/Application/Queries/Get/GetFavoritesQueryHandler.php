@@ -11,9 +11,8 @@ final class GetFavoritesQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly GetFavoritesService $service,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(GetFavoritesQuery $query): Paginator

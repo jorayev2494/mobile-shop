@@ -13,9 +13,8 @@ final class FindProductQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly ProductRepositoryInterface $repository
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(FindProductQuery $query): object

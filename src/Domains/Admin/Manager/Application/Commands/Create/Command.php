@@ -14,8 +14,7 @@ final class Command implements CommandInterface
         public readonly string $last_name,
         public readonly string $email,
         public readonly int $roleId,
-    )
-    {
-        
+    ) {
+
     }
 }

@@ -16,9 +16,8 @@ final class QueryHandler implements QueryHandlerInterface
     public function __construct(
         private readonly OrderRepositoryInterface $repository,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query): Paginator

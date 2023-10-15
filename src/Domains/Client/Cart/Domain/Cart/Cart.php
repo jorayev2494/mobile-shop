@@ -146,7 +146,7 @@ class Cart extends AggregateRoot
 
     private function calculateCart(int &$quantity, int &$sum, int &$sumDiscount): \Closure
     {
-        return static function (CartProduct $cartProduct) use(&$quantity, &$sum, &$sumDiscount): array {
+        return static function (CartProduct $cartProduct) use (&$quantity, &$sum, &$sumDiscount): array {
             $data = $cartProduct->toArray();
 
             ['quantity' => $q, 'sum' => $s, 'sum_discount' => $sDiscount] = $data;

@@ -12,8 +12,7 @@ final class Command implements CommandInterface
         public readonly string $productUuid,
         public readonly string $operator,
         public readonly string $operatorValue,
-    )
-    {
-        
+    ) {
+
     }
 }

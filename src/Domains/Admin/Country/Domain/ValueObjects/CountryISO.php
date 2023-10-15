@@ -9,5 +9,4 @@ use Doctrine\ORM\Mapping as ORM;
 
 final class CountryISO extends StringValueObject
 {
-    
 }

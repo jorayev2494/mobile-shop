@@ -14,9 +14,8 @@ final class ProfileEmailWasUpdatedDomainEventSubscriber implements DomainEventSu
 {
     public function __construct(
         private readonly ClientRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

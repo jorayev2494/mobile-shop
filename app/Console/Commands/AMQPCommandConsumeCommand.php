@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -10,8 +12,7 @@ class AMQPCommandConsumeCommand extends Command
 {
     public function __construct(
         private readonly CommandHandlerLocator $locator,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

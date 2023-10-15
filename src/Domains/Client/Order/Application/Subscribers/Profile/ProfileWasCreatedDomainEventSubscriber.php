@@ -14,9 +14,8 @@ final class ProfileWasCreatedDomainEventSubscriber implements DomainEventSubscri
 {
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -35,7 +34,7 @@ final class ProfileWasCreatedDomainEventSubscriber implements DomainEventSubscri
             $event->email,
             $event->phone,
         );
-        
+
         $this->clientRepository->save($client);
     }
 }

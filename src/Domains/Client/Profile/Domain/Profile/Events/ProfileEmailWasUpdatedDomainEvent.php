@@ -13,8 +13,7 @@ final class ProfileEmailWasUpdatedDomainEvent extends DomainEvent
         public readonly string $email,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

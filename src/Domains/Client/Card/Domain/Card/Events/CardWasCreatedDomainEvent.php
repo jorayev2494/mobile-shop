@@ -18,8 +18,7 @@ final class CardWasCreatedDomainEvent extends DomainEvent
         public readonly string $expirationDate,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

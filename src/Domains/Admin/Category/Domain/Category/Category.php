@@ -42,8 +42,7 @@ final class Category extends AggregateRoot
         CategoryUuid $uuid,
         CategoryValue $value,
         bool $isActive,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->value = $value;
         $this->isActive = $isActive;
@@ -68,42 +67,42 @@ final class Category extends AggregateRoot
 
     public function getUuid(): CategoryUuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getValue(): CategoryValue
+    public function getValue(): CategoryValue
     {
-		return $this->value;
-	}
+        return $this->value;
+    }
 
-	public function setValue(CategoryValue $value): void
+    public function setValue(CategoryValue $value): void
     {
-		$this->value = $value;
-	}
+        $this->value = $value;
+    }
 
     public function changeValue(CategoryValue $value): void
     {
         if ($this->value->isNotEquals($value)) {
             $this->value = $value;
         }
-	}
+    }
 
-	public function getIsActive(): bool
+    public function getIsActive(): bool
     {
-		return $this->isActive;
-	}
-	
-	public function setIsActive(bool $isActive): void
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
     {
-		$this->isActive = $isActive;
-	}
+        $this->isActive = $isActive;
+    }
 
     public function changeIsActive(bool $isActive): void
     {
         if ($this->isActive === $isActive) {
             $this->isActive = $isActive;
         }
-	}
+    }
 
     public function delete()
     {

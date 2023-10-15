@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Role;
 
 use App\Http\Controllers\Controller;
@@ -14,9 +16,8 @@ class CreateRoleController extends Controller
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(CreateRoleRequest $request): Response

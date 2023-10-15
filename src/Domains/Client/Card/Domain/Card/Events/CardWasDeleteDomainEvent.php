@@ -13,8 +13,7 @@ final class CardWasDeleteDomainEvent extends DomainEvent
         public readonly string $authorUuid,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

@@ -13,9 +13,8 @@ final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         public readonly CountryRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

@@ -15,9 +15,8 @@ final class QueryService
     public function __construct(
         private readonly AddressRepositoryInterface $repository,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function execute(Query $query): array

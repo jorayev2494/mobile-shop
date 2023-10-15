@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail\Admin\Auth;
 
 use App\Models\Admin;
@@ -15,7 +17,8 @@ use Illuminate\Queue\SerializesModels;
 
 class SendRestoreLinkEmail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     // public $queue = QueueType::MAIL;
 
@@ -29,7 +32,7 @@ class SendRestoreLinkEmail extends Mailable implements ShouldQueue
     ) {
         if ($authModel instanceof Admin) {
             $this->url = config('admin_dashboard.admin_url') . config('admin_dashboard.page_routers.reset_password');
-        } else if ($authModel instanceof Client) {
+        } elseif ($authModel instanceof Client) {
             // $this->url = config('admin_dashboard.admin_url');
         }
 

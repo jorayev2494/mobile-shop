@@ -9,5 +9,4 @@ use App\Repositories\Base\Doctrine\Contracts\ClientEntityManagerInterface;
 
 class EntityManager extends \Doctrine\ORM\EntityManager implements AdminEntityManagerInterface, ClientEntityManagerInterface
 {
-
 }

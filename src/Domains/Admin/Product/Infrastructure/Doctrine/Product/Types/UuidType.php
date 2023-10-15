@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types;
+
 use Doctrine\DBAL\Types\Type;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 

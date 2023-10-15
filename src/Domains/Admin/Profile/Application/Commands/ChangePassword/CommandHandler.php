@@ -15,15 +15,14 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly ProfileRepositoryInterface $repository,
         private readonly PasswordHasherInterface $passwordHasher,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void
     {
         $admin = $this->authManager->admin();
-        
+
         if (! $this->passwordHasher->check($command->currentPassword, $admin->password)) {
             return;
         }

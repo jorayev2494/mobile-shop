@@ -20,9 +20,8 @@ final class Query extends BaseQuery
         public readonly ?string $sortBy,
         public readonly ?bool $sortRule,
         public readonly ?array $filters,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function makeFromRequest(Request|FormRequest $request): static

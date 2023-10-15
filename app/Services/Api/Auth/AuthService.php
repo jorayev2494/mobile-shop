@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class AuthService implements ContractsAuthService
 {
-
     private readonly AuthModel $authModel;
 
     public function __construct(
@@ -38,7 +37,7 @@ class AuthService implements ContractsAuthService
 
         if ($guard === AppGuardType::ADMIN) {
             $data = array_merge($data, ['role_id' => 1]);
-        } else if ($guard === AppGuardType::CLIENT) {
+        } elseif ($guard === AppGuardType::CLIENT) {
             //
         }
 
@@ -91,8 +90,7 @@ class AuthService implements ContractsAuthService
         AuthModel $authModel,
         // Device $device,
         AppGuardType $guard = AppGuardType::ADMIN
-    ): array
-    {
+    ): array {
         return [
             'access_token' => $token,
             // 'refresh_token' => $device->refresh_token,

@@ -13,9 +13,8 @@ class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly ClientRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

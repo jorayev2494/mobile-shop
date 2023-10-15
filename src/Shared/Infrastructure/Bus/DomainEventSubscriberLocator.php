@@ -8,9 +8,10 @@ use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Shared\Infrastructure\Bus\Contracts\LocatorInterface;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 
-use function Lambdish\Phunctional\search;
 use RuntimeException;
 use Traversable;
+
+use function Lambdish\Phunctional\search;
 
 final class DomainEventSubscriberLocator implements LocatorInterface
 {

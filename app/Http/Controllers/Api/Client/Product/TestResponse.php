@@ -11,8 +11,7 @@ class TestResponse implements Arrayable
     public function __construct(
         public readonly string $firstName,
         public readonly string $lastName,
-    )
-    {
+    ) {
 
     }
 

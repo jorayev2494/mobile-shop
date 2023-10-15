@@ -10,23 +10,21 @@ use Project\Shared\Domain\FilesystemInterface;
 
 class ProductMediaWasAddedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
-
     public function __construct(
         private readonly FilesystemInterface $filesystem,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
     {
         return [
             ProductMediaWasAddedDomainEvent::class,
-        ];     
+        ];
     }
 
     public function __invoke(): void
     {
-        
+
     }
 }

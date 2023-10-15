@@ -8,5 +8,4 @@ use Project\Shared\Application\Query\BaseQuery;
 
 class Query extends BaseQuery
 {
-
 }

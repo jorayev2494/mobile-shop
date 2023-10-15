@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Client;
 
 use App\Http\Requests\Admin\Client\UpdateClientRequest;
@@ -13,9 +15,8 @@ class UpdateClientController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
 

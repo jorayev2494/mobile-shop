@@ -14,8 +14,7 @@ final class QueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         public readonly ProductRepositoryInterface $repository,
-    )
-    {
+    ) {
 
     }
 

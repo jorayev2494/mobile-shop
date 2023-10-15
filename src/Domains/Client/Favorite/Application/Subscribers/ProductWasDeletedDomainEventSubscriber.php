@@ -13,9 +13,8 @@ final class ProductWasDeletedDomainEventSubscriber implements DomainEventSubscri
 {
     public function __construct(
         private readonly ProductRepositoryInterface $productRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

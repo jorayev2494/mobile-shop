@@ -15,9 +15,8 @@ final class DeleteCategoryCommandHandler implements CommandHandlerInterface
     public function __construct(
         public readonly CategoryRepositoryInterface $repository,
         public readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(DeleteCategoryCommand $command): void

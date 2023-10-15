@@ -14,7 +14,6 @@ use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 
 final class MessengerEventBus implements EventBusInterface
 {
-
     private readonly MessageBus $bus;
 
     public function __construct(iterable $subscribers)

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Domain\Order\ValueObjects;
 
-enum StatusEnum : string
+enum StatusEnum: string
 {
     case PENDING = 'pending';
 

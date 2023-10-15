@@ -14,8 +14,7 @@ final class MemberWasAddedDeviceDomainEvent extends DomainEvent
         public string $deviceId,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

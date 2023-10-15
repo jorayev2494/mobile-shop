@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Product\Application\Commands\Update;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -23,8 +25,7 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly MediaRepositoryInterface $mediaRepository,
         private readonly FilesystemInterface $filesystem,
         private readonly EventBusInterface $eventBus,
-    )
-    {
+    ) {
 
     }
 

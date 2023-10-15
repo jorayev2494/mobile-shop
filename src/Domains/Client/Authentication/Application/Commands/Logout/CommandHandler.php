@@ -18,9 +18,8 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly DeviceRepositoryInterface $deviceRepository,
         private readonly AuthManagerInterface $authManager,
         private readonly AuthenticationServiceInterface $authenticationService,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void
@@ -31,7 +30,7 @@ final class CommandHandler implements CommandHandlerInterface
 
         $member = $this->repository->findByUuid($this->authManager->client()->uuid);
         $device = $this->deviceRepository->findByAuthorUuidAndDeviceId($this->authManager->client()->uuid, $command->deviceId);
-        
+
         if ($device === null) {
             return;
         }

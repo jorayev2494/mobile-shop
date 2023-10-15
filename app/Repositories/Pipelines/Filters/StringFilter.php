@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 class StringFilter extends FilterAbstract
 {
     public function filter(Builder $query, string $property, string $value): void
-    {                    
+    {
         $query->where($property, 'LIKE', "%$value%", 'and');
     }
 }

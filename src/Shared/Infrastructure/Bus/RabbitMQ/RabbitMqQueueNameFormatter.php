@@ -9,6 +9,7 @@ use Project\Shared\Domain\Bus\Command\CommandInterface;
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 use Project\Utils\Str;
+
 use function Lambdish\Phunctional\map;
 
 final class RabbitMqQueueNameFormatter

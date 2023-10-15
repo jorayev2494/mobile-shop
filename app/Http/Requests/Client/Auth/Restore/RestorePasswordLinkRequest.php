@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Client\Auth\Restore;
 
 use App\Models\Auth\AppAuth;

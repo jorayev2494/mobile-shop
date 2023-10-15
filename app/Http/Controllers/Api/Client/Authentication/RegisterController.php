@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Authentication;
 
 use App\Http\Requests\Client\Auth\RegisterRequest;
@@ -16,9 +18,8 @@ class RegisterController
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
         private readonly UuidGeneratorInterface $uuidGenerator,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(RegisterRequest $request): Response

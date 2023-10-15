@@ -12,9 +12,8 @@ final class DeleteOrderService
 {
     public function __construct(
         private readonly OrderRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function execute(OrderUUID $uuid): void

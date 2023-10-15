@@ -14,13 +14,11 @@ use Symfony\Component\Mime\Email;
 
 class OrderStatusWasChangedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
-
     public function __construct(
         private readonly OrderRepositoryInterface $repository,
         private readonly MailerInterface $mailer,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -37,7 +35,7 @@ class OrderStatusWasChangedDomainEventSubscriber implements DomainEventSubscribe
         $client = $order->getAuthor();
 
         $orderEmail = $order->getEmail()->value ?? $client->getEmail()->value;
-        
+
         $view = view('mail.client.order.order_status_was_changed', [
             'status' => $event->status,
         ])->render();

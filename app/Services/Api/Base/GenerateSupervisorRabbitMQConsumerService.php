@@ -19,9 +19,8 @@ abstract class GenerateSupervisorRabbitMQConsumerService
 
     public function __construct(
         private readonly Filesystem $filesystem,
-    )
-    {
-        
+    ) {
+
     }
 
     abstract protected function getConsumeCommandPrefix(): string;

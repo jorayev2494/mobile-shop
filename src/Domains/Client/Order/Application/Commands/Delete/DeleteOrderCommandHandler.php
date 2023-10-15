@@ -11,9 +11,8 @@ final class DeleteOrderCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly DeleteOrderService $service,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(DeleteOrderCommand $command): void

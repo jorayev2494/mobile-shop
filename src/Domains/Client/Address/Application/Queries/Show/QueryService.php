@@ -13,15 +13,14 @@ final class QueryService
 {
     public function __construct(
         private readonly AddressRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function execute(Query $query): Address
     {
         $address = $this->repository->findByUuid(AddressUuid::fromValue($query->uuid));
-        
+
         $address ?? throw new ModelNotFoundException();
 
         return $address;

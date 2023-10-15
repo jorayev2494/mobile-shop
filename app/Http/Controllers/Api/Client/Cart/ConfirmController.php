@@ -12,13 +12,11 @@ use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class ConfirmController
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(ConfirmRequest $request): Response
@@ -28,11 +26,9 @@ class ConfirmController
             new Command(
                 $request->get('card_uuid'),
                 $request->get('address_uuid'),
-
                 $request->get('currency_uuid'),
                 $request->get('email'),
                 $request->get('phone'),
-
                 $request->get('promo_code'),
                 $request->get('note'),
             )

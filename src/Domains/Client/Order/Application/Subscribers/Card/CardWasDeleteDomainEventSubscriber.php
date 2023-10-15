@@ -13,9 +13,8 @@ final class CardWasDeleteDomainEventSubscriber implements DomainEventSubscriberI
 {
     public function __construct(
         private readonly CardRepositoryInterface $cardRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

@@ -16,14 +16,11 @@ final class UpdateOrderCommand extends Command implements CommandInterface
         public readonly string $description,
         public readonly string $card_uuid,
         public readonly string $address_uuid,
-
         public readonly iterable $products,
-
         public readonly int $quality,
         public readonly float $sum,
         public readonly float $discard_sum,
-    )
-    {
-        
+    ) {
+
     }
 }

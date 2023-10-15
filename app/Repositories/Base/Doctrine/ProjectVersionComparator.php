@@ -16,7 +16,7 @@ class ProjectVersionComparator implements Comparator
 {
     private AlphabeticalComparator $defaultSorter;
     private array $dependencies;
-    
+
     public function __construct()
     {
         dd(__METHOD__);
@@ -25,7 +25,7 @@ class ProjectVersionComparator implements Comparator
     }
 
     private function buildDependencies(): array
-    {        
+    {
         $sorter = new ArraySort();
 
         $sorter->add('Project\Core');
@@ -38,19 +38,19 @@ class ProjectVersionComparator implements Comparator
 
     private function getNamespacePrefix(Version $version): string
     {
-        if (preg_match('~^App\[^\]+~', (string)$version, $mch)) {
+        if (preg_match('~^App\[^\]+~', (string) $version, $mch)) {
             return $mch[0];
-        }       
+        }
 
         throw new \Exception('Can not find the namespace prefix for the provide migration version.');
-    }   
+    }
 
     public function compare(Version $a, Version $b): int
     {
         $prefixA = $this->getNamespacePrefix($a);
         $prefixB = $this->getNamespacePrefix($b);
 
-        return $this->dependencies[$prefixA] <=> $this->dependencies[$prefixB] 
+        return $this->dependencies[$prefixA] <=> $this->dependencies[$prefixB]
             ?: $this->defaultSorter->compare($a, $b);
     }
 }

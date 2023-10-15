@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Product\Application\Commands\Update;
 
 use Project\Shared\Domain\Bus\Command\CommandInterface;
@@ -20,8 +22,7 @@ final class Command implements CommandInterface
         public readonly array $removeMediaIds,
         public readonly string $description,
         public readonly bool $isActive,
-    )
-    {
+    ) {
 
     }
 }

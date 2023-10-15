@@ -17,16 +17,15 @@ final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly ClientRepositoryInterface $repository
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void
     {
         $client = $this->repository->findByUuid(ClientUuid::fromValue($command->uuid));
 
-        $client ?? throw new ModelNotFoundException;
+        $client ?? throw new ModelNotFoundException();
 
         $client->setFirstName(ClientFirstName::fromValue($command->firstName));
         $client->setLastName(ClientLastName::fromValue($command->lastName));

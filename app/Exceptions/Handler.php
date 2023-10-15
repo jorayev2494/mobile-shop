@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
@@ -93,19 +95,23 @@ class Handler extends ExceptionHandler
         }
 
         if ($ex instanceof NotFoundHttpException) {
-            return response()->json([
-                'message' => 'Not found http exception',
-                'error' => $ex->getMessage(),
-            ],
-                Response::HTTP_NOT_FOUND);
+            return response()->json(
+                [
+                    'message' => 'Not found http exception',
+                    'error' => $ex->getMessage(),
+                ],
+                Response::HTTP_NOT_FOUND
+            );
         }
 
         if ($ex instanceof AuthenticationException) {
-            return response()->json([
-                'message' => 'Authentication exception',
-                'error' => str_replace(['.'], [''], $ex->getMessage()), // 'Unauthorized',
-            ],
-                Response::HTTP_UNAUTHORIZED);
+            return response()->json(
+                [
+                    'message' => 'Authentication exception',
+                    'error' => str_replace(['.'], [''], $ex->getMessage()), // 'Unauthorized',
+                ],
+                Response::HTTP_UNAUTHORIZED
+            );
         }
 
         // dd($ex);

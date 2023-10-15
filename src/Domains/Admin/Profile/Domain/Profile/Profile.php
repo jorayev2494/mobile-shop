@@ -53,8 +53,7 @@ class Profile extends AggregateRoot
         ProfileLastName $lastName,
         ProfileEmail $email,
         ProfilePhone $phone = null,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
@@ -68,8 +67,7 @@ class Profile extends AggregateRoot
         ProfileLastName $lastName,
         ProfileEmail $email,
         ProfilePhone $phone = null,
-    ): self
-    {
+    ): self {
         return new self($uuid, $firstName, $lastName, $email, $phone);
     }
 
@@ -95,29 +93,29 @@ class Profile extends AggregateRoot
     //     $this->devices->removeElement($device);
     // }
 
-	public function getFirstName(): ?ProfileFirstName
+    public function getFirstName(): ?ProfileFirstName
     {
-		return $this->firstName;
-	}
-	
-	public function setFirstName(ProfileFirstName $firstName): void
-    {
-		$this->firstName = $firstName;
-	}
+        return $this->firstName;
+    }
 
-	public function getLastName(): ?ProfileLastName
+    public function setFirstName(ProfileFirstName $firstName): void
     {
-		return $this->lastName;
-	}
-	
-	public function setLastName(ProfileLastName $lastName): void
-    {
-		$this->lastName = $lastName;
-	}
+        $this->firstName = $firstName;
+    }
 
-	public function getFullName(): ?string
+    public function getLastName(): ?ProfileLastName
     {
-		$result = null;
+        return $this->lastName;
+    }
+
+    public function setLastName(ProfileLastName $lastName): void
+    {
+        $this->lastName = $lastName;
+    }
+
+    public function getFullName(): ?string
+    {
+        $result = null;
 
         if ($this->firstName->isNotNull()) {
             $result .= $this->firstName->value . ' ';
@@ -128,27 +126,27 @@ class Profile extends AggregateRoot
         }
 
         return $result;
-	}
+    }
 
-	public function getEmail(): ProfileEmail
+    public function getEmail(): ProfileEmail
     {
-		return $this->email;
-	}
-	
-	public function setEmail(ProfileEmail $email): void
+        return $this->email;
+    }
+
+    public function setEmail(ProfileEmail $email): void
     {
-		$this->email = $email;
-	}
+        $this->email = $email;
+    }
 
     public function getAvatar(): ?Avatar
     {
-		return $this->avatar;
-	}
+        return $this->avatar;
+    }
 
-	public function getPhone(): ?ProfilePhone
+    public function getPhone(): ?ProfilePhone
     {
-		return $this->phone;
-	}
+        return $this->phone;
+    }
 
     public function changeFirstName(ProfileFirstName $firstName): void
     {
@@ -173,13 +171,13 @@ class Profile extends AggregateRoot
             // $this->record(new ProfileEmailWasUpdatedDomainEvent($this->uuid, $email->value));
         }
     }
-	
-	public function changeAvatar(?Avatar $avatar): void
+
+    public function changeAvatar(?Avatar $avatar): void
     {
         // if ($this->avatar->isNotEquals($avatar)) {
-            $this->avatar = $avatar;
+        $this->avatar = $avatar;
         // }
-	}
+    }
 
     public function changePhone(ProfilePhone $phone): void
     {

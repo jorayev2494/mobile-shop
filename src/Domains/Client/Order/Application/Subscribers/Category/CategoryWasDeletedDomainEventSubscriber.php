@@ -13,9 +13,8 @@ final class CategoryWasDeletedDomainEventSubscriber implements DomainEventSubscr
 {
     public function __construct(
         private readonly CategoryRepositoryInterface $categoryRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

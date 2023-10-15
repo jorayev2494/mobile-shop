@@ -17,9 +17,8 @@ class CommandHandler implements CommandHandlerInterface
         private readonly RoleRepositoryInterface $repository,
         private readonly PermissionRepositoryInterface $permissionRepository,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

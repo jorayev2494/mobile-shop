@@ -86,7 +86,7 @@ final class LaravelFilesystem implements FilesystemInterface
 
     public function changeDisk(string &$disk): void
     {
-        if (config('app.env') == 'local') {
+        if (config('app.env') === 'local') {
             $disk = 'public';
         }
     }

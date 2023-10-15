@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Client\Favorite\Infrastructure\Doctrine\Member;
+
 use App\Repositories\Base\Doctrine\BaseClientEntityRepository;
 use Project\Domains\Client\Favorite\Domain\Member\Member;
 use Project\Domains\Client\Favorite\Domain\Member\MemberRepositoryInterface;

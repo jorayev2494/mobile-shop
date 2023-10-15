@@ -142,7 +142,7 @@ abstract class BaseModelRepository implements BaseModelRepositoryInterface
 
         /** @var Pipeline $pipeline */
         $pipeline = resolve(Pipeline::class);
-    
+
         foreach ($dataDTO->filters as $key => ['type' => $type, 'value' => $value]) {
             $pipeline->send(compact('query', 'type', 'key', 'value'))
                 ->through([

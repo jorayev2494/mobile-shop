@@ -13,8 +13,7 @@ final class CurrencyValueWasChangedDomainEvent extends DomainEvent
         public readonly string $value,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

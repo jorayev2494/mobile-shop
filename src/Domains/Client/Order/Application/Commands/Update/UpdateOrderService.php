@@ -26,8 +26,7 @@ final class UpdateOrderService
         private readonly AuthManagerInterface $authManager,
         private readonly OrderRepositoryInterface $repository,
         private readonly OrderProductRepositoryInterface $orderProductRepository,
-    )
-    {
+    ) {
         $this->client = $this->authManager->client();
     }
 

@@ -16,7 +16,6 @@ use Symfony\Component\Messenger\Exception\NoHandlerForMessageException;
 
 final class MessengerCommandBus implements CommandBusInterface
 {
-
     private readonly MessageBus $bus;
 
     public function __construct(iterable $commandHandlers)

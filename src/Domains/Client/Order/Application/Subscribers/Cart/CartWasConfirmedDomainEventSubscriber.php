@@ -37,9 +37,8 @@ final class CartWasConfirmedDomainEventSubscriber implements DomainEventSubscrib
         private readonly ClientRepositoryInterface $clientRepository,
         private readonly CurrencyRepositoryInterface $currencyRepository,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
@@ -63,7 +62,7 @@ final class CartWasConfirmedDomainEventSubscriber implements DomainEventSubscrib
             Phone::fromValue($event->phone ?? $client->getPhone()->value),
             Note::fromValue($event->note),
         );
-        
+
         $quantity = $sum = 0;
         foreach ($cartProducts as $key => $cartProduct) {
             $product = $this->productRepository->findByUuid(ProductUuid::fromValue($cartProduct['product']['uuid']));

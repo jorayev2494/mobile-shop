@@ -25,9 +25,8 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly TokenGeneratorInterface $tokenGenerator,
         private readonly AuthenticationServiceInterface $authenticationService,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): array

@@ -12,9 +12,8 @@ class QueryHandler implements QueryInterface
 {
     public function __construct(
         private readonly CurrencyRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query)

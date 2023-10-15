@@ -8,5 +8,4 @@ use Project\Shared\Application\Query\BaseQuery;
 
 final class GetCategoriesQuery extends BaseQuery
 {
-    
 }

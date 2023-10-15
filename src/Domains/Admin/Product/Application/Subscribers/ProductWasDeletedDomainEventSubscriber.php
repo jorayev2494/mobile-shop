@@ -12,13 +12,11 @@ use Project\Shared\Domain\FilesystemInterface;
 
 final class ProductWasDeletedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
-
     public function __construct(
         private readonly FilesystemInterface $filesystem,
         private readonly MediaRepositoryInterface $fileRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

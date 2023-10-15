@@ -47,8 +47,7 @@ class Currency implements Arrayable
         Uuid $uuid,
         Value $value,
         bool $isActive,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->value = $value;
         $this->isActive = $isActive;
@@ -59,20 +58,19 @@ class Currency implements Arrayable
         string $uuid,
         string $value,
         bool $isActive,
-    ): self
-    {
+    ): self {
         return new self(Uuid::fromValue($uuid), Value::fromValue($value), $isActive);
     }
 
     public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
     public function getValue(): Value
     {
-		return $this->value;
-	}
+        return $this->value;
+    }
 
     public function setValue(Value $value): void
     {

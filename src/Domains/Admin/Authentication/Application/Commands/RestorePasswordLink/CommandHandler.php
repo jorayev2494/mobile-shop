@@ -19,9 +19,8 @@ class CommandHandler implements CommandHandlerInterface
         private readonly CodeRepositoryInterface $codeRepository,
         private readonly TokenGeneratorInterface $tokenGenerator,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

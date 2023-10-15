@@ -12,8 +12,7 @@ final class Command implements CommandInterface
         public readonly int $id,
         public readonly string $value,
         public readonly array $permissions,
-    )
-    {
-        
+    ) {
+
     }
 }

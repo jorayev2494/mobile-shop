@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Client\Authentication;
 
 use App\Http\Requests\Client\Auth\LoginRequest;
@@ -14,8 +16,7 @@ final class LoginController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
+    ) {
 
     }
 

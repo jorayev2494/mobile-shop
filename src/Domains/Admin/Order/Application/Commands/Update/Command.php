@@ -14,8 +14,7 @@ final class Command implements CommandInterface
         // public readonly ?string $phone,
         // public readonly string $description,
         public readonly string $status,
-    )
-    {
-        
+    ) {
+
     }
 }

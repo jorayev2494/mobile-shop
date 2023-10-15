@@ -12,12 +12,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService implements ProductServiceInterface
 {
-
     public function __construct(
         private readonly ProductRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function index(AuthModel $authModel, IndexRequestDTO $dataDTO): LengthAwarePaginator

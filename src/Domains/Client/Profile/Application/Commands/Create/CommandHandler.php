@@ -17,9 +17,8 @@ class CommandHandler implements CommandHandlerInterface
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

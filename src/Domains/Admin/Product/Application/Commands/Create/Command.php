@@ -21,8 +21,7 @@ final class Command implements CommandInterface
         public readonly iterable $medias,
         public readonly string $description,
         public readonly bool $isActive,
-    )
-    {
+    ) {
 
     }
 }

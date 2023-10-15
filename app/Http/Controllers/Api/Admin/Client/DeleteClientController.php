@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Client;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -12,9 +14,8 @@ class DeleteClientController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(string $uuid): Response
@@ -22,7 +23,7 @@ class DeleteClientController
         $this->commandBus->dispatch(
             new Command($uuid)
         );
-        
+
         return $this->response->noContent();
     }
 }

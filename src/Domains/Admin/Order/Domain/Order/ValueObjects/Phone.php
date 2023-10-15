@@ -8,5 +8,4 @@ use Project\Shared\Domain\ValueObject\StringValueObject;
 
 final class Phone extends StringValueObject
 {
-
 }

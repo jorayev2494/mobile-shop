@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Manager;
 
 use App\Http\Controllers\Controller;
@@ -13,11 +15,10 @@ class DeleteManagerController extends Controller
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
-    
+
     public function __invoke(string $uuid): Response
     {
         $this->commandBus->dispatch(

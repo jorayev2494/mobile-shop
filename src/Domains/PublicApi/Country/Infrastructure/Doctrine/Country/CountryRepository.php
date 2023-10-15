@@ -22,5 +22,5 @@ class CountryRepository extends BaseAdminEntityRepository implements CountryRepo
                                     ->where('c.isActive = true')
                                     ->getQuery()
                                     ->getResult();
-    }   
+    }
 }

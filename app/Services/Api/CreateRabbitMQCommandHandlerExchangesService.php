@@ -22,7 +22,7 @@ class CreateRabbitMQCommandHandlerExchangesService extends CreateRabbitMQExchang
             $name = RabbitMqQueueNameFormatter::format($handler);
             $queueName = $this->makeQueueName($name, $handler);
             $routeName = $this->makeRoutingKey($name, $handler);
-            
+
             $list[$queueName][$routeName] = $name;
         }
 

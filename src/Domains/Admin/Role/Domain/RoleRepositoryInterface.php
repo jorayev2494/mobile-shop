@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Domains\Admin\Role\Domain;
 
 use App\Repositories\Base\Doctrine\Paginator;

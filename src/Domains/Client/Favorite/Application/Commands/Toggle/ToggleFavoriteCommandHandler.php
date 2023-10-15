@@ -10,9 +10,8 @@ final class ToggleFavoriteCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         public readonly ToggleFavoriteCommandService $service,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(ToggleFavoriteCommand $command): void

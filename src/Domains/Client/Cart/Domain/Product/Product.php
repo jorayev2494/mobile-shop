@@ -77,8 +77,7 @@ class Product extends AggregateRoot
         Description $description,
         int $viewedCount = 0,
         bool $isActive = true,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->title = $title;
         $this->category = $category;
@@ -112,78 +111,77 @@ class Product extends AggregateRoot
         Price $price,
         Description $description,
         bool $isActive = true,
-    ): self
-    {
+    ): self {
         $product = new self($uuid, $title, $category, $price, $description, 0, $isActive);
 
         return $product;
     }
 
-	public function getUuid(): Uuid
+    public function getUuid(): Uuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getTitle(): Title
+    public function getTitle(): Title
     {
-		return $this->title;
-	}
-	
-	public function setTitle(Title $title): void
+        return $this->title;
+    }
+
+    public function setTitle(Title $title): void
     {
-		$this->title = $title;
-	}
+        $this->title = $title;
+    }
 
     public function changeTitle(Title $title): void
     {
         if ($this->title->isNotEquals($title)) {
             $this->title = $title;
         }
-	}
+    }
 
-	// public function getCategoryUuid(): CategoryUuid
+    // public function getCategoryUuid(): CategoryUuid
     // {
-	// 	return $this->categoryUuid;
-	// }
-	
-	// public function setCategoryUuid(CategoryUuid $categoryUuid): void
-    // {
-	// 	$this->categoryUuid = $categoryUuid;
-	// }
+    // 	return $this->categoryUuid;
+    // }
 
-	public function getPrice(): Price
+    // public function setCategoryUuid(CategoryUuid $categoryUuid): void
+    // {
+    // 	$this->categoryUuid = $categoryUuid;
+    // }
+
+    public function getPrice(): Price
     {
-		return $this->price;
-	}
-	
-	public function setPrice(Price $price): void
+        return $this->price;
+    }
+
+    public function setPrice(Price $price): void
     {
-		$this->price = $price;
-	}
+        $this->price = $price;
+    }
 
     public function changePrice(Price $price): void
     {
         if ($this->price->isNotEquals($price)) {
             $this->price = $price;
         }
-	}
+    }
 
-	public function getDescription(): Description
+    public function getDescription(): Description
     {
-		return $this->description;
-	}
-	
+        return $this->description;
+    }
+
     public function setDescription(Description $description): void
     {
         $this->description = $description;
-	}
+    }
 
-	public function changeDescription(Description $description): void
+    public function changeDescription(Description $description): void
     {
         if ($this->description->isNotEquals($description)) {
             $this->description = $description;
         }
-	}
+    }
 
     public function getMedias(): iterable
     {

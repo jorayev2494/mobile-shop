@@ -10,7 +10,6 @@ use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\ManagerReposit
 
 class ManagerServiceProvider extends AdminDomainServiceProvider
 {
-
     protected const SERVICES = [
         ManagerRepositoryInterface::class => [self::SERVICE_BIND, ManagerRepository::class]
     ];

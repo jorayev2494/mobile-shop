@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Project\Domains\Admin\Role\Infrastructure\Doctrine\Types;
+
 use Doctrine\DBAL\Types\Type;
 use Project\Domains\Admin\Role\Domain\ValueObjects\RoleValue;
 

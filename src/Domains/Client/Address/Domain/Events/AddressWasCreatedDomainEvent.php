@@ -21,8 +21,7 @@ final class AddressWasCreatedDomainEvent extends DomainEvent
         public readonly string $district,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

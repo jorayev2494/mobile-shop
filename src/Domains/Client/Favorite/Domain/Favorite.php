@@ -12,8 +12,7 @@ final class Favorite
     public function __construct(
         public readonly MemberUuid $memberUuid,
         public readonly ProductUuid $productUuid,
-    )
-    {
-        
+    ) {
+
     }
 }

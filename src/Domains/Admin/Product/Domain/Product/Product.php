@@ -70,8 +70,7 @@ class Product extends AggregateRoot
         ProductDescription $description,
         int $viewedCount = 0,
         bool $isActive = true,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->title = $title;
         $this->categoryUuid = $categoryUuid;
@@ -105,8 +104,7 @@ class Product extends AggregateRoot
         ProductPrice $price,
         ProductDescription $description,
         bool $isActive = true,
-    ): self
-    {
+    ): self {
         $product = new self($uuid, $title, $categoryUuid, $price, $description, 0, $isActive);
 
         $event = new ProductWasCreatedDomainEvent(
@@ -124,78 +122,78 @@ class Product extends AggregateRoot
         return $product;
     }
 
-	public function getUuid(): ProductUuid
+    public function getUuid(): ProductUuid
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
-	public function getTitle(): ProductTitle
+    public function getTitle(): ProductTitle
     {
-		return $this->title;
-	}
-	
-	public function setTitle(ProductTitle $title): void
+        return $this->title;
+    }
+
+    public function setTitle(ProductTitle $title): void
     {
-		$this->title = $title;
-	}
+        $this->title = $title;
+    }
 
     public function changeTitle(ProductTitle $title): void
     {
         if ($this->title->isNotEquals($title)) {
             $this->title = $title;
         }
-	}
+    }
 
-	public function getCategoryUuid(): ProductCategoryUuid
+    public function getCategoryUuid(): ProductCategoryUuid
     {
-		return $this->categoryUuid;
-	}
-	
-	public function setCategoryUuid(ProductCategoryUuid $categoryUuid): void
+        return $this->categoryUuid;
+    }
+
+    public function setCategoryUuid(ProductCategoryUuid $categoryUuid): void
     {
-		$this->categoryUuid = $categoryUuid;
-	}
+        $this->categoryUuid = $categoryUuid;
+    }
 
     public function changeCategoryUuid(ProductCategoryUuid $categoryUuid): void
     {
         if ($this->categoryUuid->isNotEquals($categoryUuid)) {
             $this->categoryUuid = $categoryUuid;
         }
-	}
+    }
 
-	public function getPrice(): ProductPrice
+    public function getPrice(): ProductPrice
     {
-		return $this->price;
-	}
-	
-	public function setPrice(ProductPrice $price): void
+        return $this->price;
+    }
+
+    public function setPrice(ProductPrice $price): void
     {
-		$this->price = $price;
-	}
+        $this->price = $price;
+    }
 
     public function changePrice(ProductPrice $price): void
     {
         if ($this->price->isNotEquals($price)) {
             $this->price = $price;
         }
-	}
+    }
 
-	public function getDescription(): ProductDescription
+    public function getDescription(): ProductDescription
     {
-		return $this->description;
-	}
-	
+        return $this->description;
+    }
+
     public function setDescription(ProductDescription $description): void
     {
         $this->description = $description;
-	}
+    }
 
-	public function changeDescription(ProductDescription $description): void
+    public function changeDescription(ProductDescription $description): void
     {
         if ($this->description->isNotEquals($description)) {
             $this->description = $description;
         }
-	}
+    }
 
     public function delete(): void
     {

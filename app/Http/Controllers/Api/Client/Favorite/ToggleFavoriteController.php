@@ -16,9 +16,8 @@ class ToggleFavoriteController
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
         private readonly AuthManagerInterface $authManager,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(string $productUuid): Response

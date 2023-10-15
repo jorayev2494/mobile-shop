@@ -9,9 +9,8 @@ use Project\Shared\Domain\Bus\Query\QueryInterface;
 final class Query implements QueryInterface
 {
     public function __construct(
-        
-    )
-    {
-        
+
+    ) {
+
     }
 }

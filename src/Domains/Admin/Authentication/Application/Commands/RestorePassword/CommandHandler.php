@@ -16,9 +16,8 @@ class CommandHandler implements CommandHandlerInterface
         private readonly MemberRepositoryInterface $repository,
         private readonly CodeRepositoryInterface $codeRepository,
         private readonly PasswordHasherInterface $passwordHasher,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

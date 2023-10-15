@@ -14,9 +14,8 @@ class LoginController
 {
     public function __construct(
         private readonly ResponseFactory $response,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(LoginRequest $request, CommandHandler $handler): JsonResponse

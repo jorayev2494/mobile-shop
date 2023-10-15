@@ -8,7 +8,7 @@ use App\Services\Api\Base\CreateRabbitMQExchangesService;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 
 class CreateRabbitMQDomainEventHandlerExchangesService extends CreateRabbitMQExchangesService
-{    
+{
     public function getExchangeName(): string
     {
         return 'EventExchange';
@@ -23,7 +23,7 @@ class CreateRabbitMQDomainEventHandlerExchangesService extends CreateRabbitMQExc
                 $name = RabbitMqQueueNameFormatter::formatFromClassName($handler);
                 $queueName = $this->makeQueueNameClassName($name, $name);
                 // $routingKey = $handler::eventName();
-                
+
                 $list[$queueName][$routingKey] = $name;
             }
         }

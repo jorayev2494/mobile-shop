@@ -62,8 +62,7 @@ class Card extends AggregateRoot
         Number $number,
         CVV $cvv,
         ExpirationDate $expirationDate,
-    )
-    {
+    ) {
         $this->uuid = $uuid;
         $this->type = $type;
         $this->holderName = $holderName;
@@ -79,8 +78,7 @@ class Card extends AggregateRoot
         string $number,
         int $cvv,
         string $expirationDate,
-    ): self
-    {
+    ): self {
         return new self(
             Uuid::fromValue($uuid),
             Type::fromValue($type),
@@ -98,15 +96,14 @@ class Card extends AggregateRoot
         Number $number,
         CVV $cvv,
         ExpirationDate $expirationDate,
-    ): self
-    {
+    ): self {
         return new self($uuid, $type, $holderName, $number, $cvv, $expirationDate);
     }
 
-	public function setAuthor(Client $author): void
+    public function setAuthor(Client $author): void
     {
-		$this->author = $author;
-	}
+        $this->author = $author;
+    }
 
     public function toArray(): array
     {

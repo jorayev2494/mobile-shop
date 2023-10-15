@@ -6,5 +6,4 @@ namespace Project\Domains\Admin\Profile\Domain\Avatar;
 
 interface AvatarRepositoryInterface
 {
-
 }

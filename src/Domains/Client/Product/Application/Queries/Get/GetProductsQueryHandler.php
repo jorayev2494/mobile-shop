@@ -12,9 +12,8 @@ final class GetProductsQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly ProductRepositoryInterface $repository
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(GetProductsQuery $query): Paginator

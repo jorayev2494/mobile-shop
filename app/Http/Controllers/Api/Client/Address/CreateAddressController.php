@@ -17,9 +17,8 @@ class CreateAddressController
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
         private readonly UuidGeneratorInterface $uuidGenerator,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(StoreAddressRequest $request): Response

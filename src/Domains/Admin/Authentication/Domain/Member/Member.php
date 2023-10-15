@@ -84,15 +84,15 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         $this->record(new MemberRestorePasswordLinkWasAddedDomainEvent($this->uuid, $code->getValue(), $this->email));
     }
 
-	public function getUuid(): string
+    public function getUuid(): string
     {
-		return $this->uuid;
-	}
+        return $this->uuid;
+    }
 
     public function changePassword(string $password): void
     {
-		$this->password = $password;
-	}
+        $this->password = $password;
+    }
 
     #[PrePersist]
     public function prePersist(PrePersistEventArgs $event): void

@@ -27,15 +27,15 @@ final class Price implements Arrayable
         $this->currencyUuid = $currencyUuid;
     }
 
-	public function getValue(): float
+    public function getValue(): float
     {
-		return $this->value;
-	}
+        return $this->value;
+    }
 
-	public function getDiscountPercentage(): ?int
+    public function getDiscountPercentage(): ?int
     {
-		return $this->discountPercentage;
-	}
+        return $this->discountPercentage;
+    }
 
     public function getDiscountPrice(): float
     {

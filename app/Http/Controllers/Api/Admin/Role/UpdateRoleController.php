@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Role;
 
 use App\Http\Controllers\Controller;
@@ -12,13 +14,11 @@ use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateRoleController extends Controller
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(UpdateRoleRequest $request, int $id): Response

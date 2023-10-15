@@ -12,8 +12,7 @@ final class CategoryWasDeletedDomainEvent extends DomainEvent
         public readonly string $uuid,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 
@@ -32,7 +31,7 @@ final class CategoryWasDeletedDomainEvent extends DomainEvent
         return [
             'id' => $this->aggregateId(),
             'body' => [
-                
+
             ],
             'event_id' => $this->eventId(),
             'occurred_on' => $this->occurredOn(),

@@ -25,9 +25,8 @@ final class CommandHandler implements CommandHandlerInterface
         private readonly FilesystemInterface $filesystem,
         private readonly AuthManagerInterface $authManager,
         private readonly EventBusInterface $eventBus,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Command $command): void

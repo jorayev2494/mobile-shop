@@ -10,13 +10,13 @@ use Project\Shared\Infrastructure\Bus\RabbitMQ\RabbitMqQueueNameFormatter;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\QueueName;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Traits\RoutingKey;
 
-use function Lambdish\Phunctional\search;
 use RuntimeException;
 use Traversable;
 
+use function Lambdish\Phunctional\search;
+
 final class CommandHandlerLocator implements LocatorInterface
 {
-
     use QueueName;
     use RoutingKey;
 

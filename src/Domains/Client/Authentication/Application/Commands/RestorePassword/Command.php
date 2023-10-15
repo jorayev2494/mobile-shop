@@ -11,8 +11,7 @@ final class Command implements CommandInterface
     public function __construct(
         public readonly int $code,
         public readonly string $password,
-    )
-    {
-        
+    ) {
+
     }
 }

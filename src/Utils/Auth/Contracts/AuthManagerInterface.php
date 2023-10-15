@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Project\Utils\Auth\Contracts;
 
 use App\Models\Admin;

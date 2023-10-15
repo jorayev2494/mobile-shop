@@ -14,9 +14,8 @@ class QueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private readonly ClientRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public function __invoke(Query $query): Client

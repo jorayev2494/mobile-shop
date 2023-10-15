@@ -13,8 +13,7 @@ final class CreateCategoryCommand extends Command implements CommandInterface
         public readonly string $uuid,
         public readonly string $value,
         public readonly bool $isActive,
-    )
-    {
-        
+    ) {
+
     }
 }

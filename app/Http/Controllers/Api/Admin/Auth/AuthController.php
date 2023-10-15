@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\Admin\Auth;
 
 use App\Data\Auth\AuthCredentialsData;
