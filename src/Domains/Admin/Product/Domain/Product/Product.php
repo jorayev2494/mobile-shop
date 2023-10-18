@@ -11,17 +11,16 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\{PrePersistEventArgs, PreUpdateEventArgs};
 use Illuminate\Contracts\Support\Arrayable;
+use Project\Domains\Admin\Product\Domain\Category\Category;
 use Project\Domains\Admin\Product\Domain\Media\Media;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasAddedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasDeletedDomainEvent;
-use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductCategoryUuid;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductDescription;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductPrice;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductTitle;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
-use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\CategoryUuidType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\DescriptionType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\TitleType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\UuidType;
@@ -39,10 +38,15 @@ class Product extends AggregateRoot
     #[ORM\Column(type: TitleType::NAME)]
     private ProductTitle $title;
 
-    #[ORM\Column(name: 'category_uuid', type: CategoryUuidType::NAME)]
-    private ProductCategoryUuid $categoryUuid;
+    // #[ORM\Column(name: 'category_uuid', type: CategoryUuidType::NAME)]
+    // private ProductCategoryUuid $categoryUuid;
+
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
+    #[ORM\JoinColumn(name: 'category_uuid', referencedColumnName: 'uuid')]
+    private Category $category;
 
     #[ORM\Embedded(class: ProductPrice::class, columnPrefix: 'price_')]
+
     private ProductPrice $price;
 
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
@@ -65,7 +69,7 @@ class Product extends AggregateRoot
     private function __construct(
         ProductUuid $uuid,
         ProductTitle $title,
-        ProductCategoryUuid $categoryUuid,
+        Category $category,
         ProductPrice $price,
         ProductDescription $description,
         int $viewedCount = 0,
@@ -73,7 +77,7 @@ class Product extends AggregateRoot
     ) {
         $this->uuid = $uuid;
         $this->title = $title;
-        $this->categoryUuid = $categoryUuid;
+        $this->category = $category;
         $this->price = $price;
         $this->description = $description;
         $this->viewedCount = $viewedCount;
@@ -84,12 +88,12 @@ class Product extends AggregateRoot
         $this->updatedAt = new DateTimeImmutable();
     }
 
-    public static function fromPrimitives(string $uuid, string $title, string $categoryUuid, ProductPrice $price, string $description, int $viewedCount, bool $isActive): self
+    public static function fromPrimitives(string $uuid, string $title, Category $category, ProductPrice $price, string $description, int $viewedCount, bool $isActive): self
     {
         return new self(
             ProductUUID::fromValue($uuid),
             ProductTitle::fromValue($title),
-            ProductCategoryUuid::fromValue($categoryUuid),
+            $category,
             $price,
             ProductDescription::fromValue($description),
             $viewedCount,
@@ -100,17 +104,17 @@ class Product extends AggregateRoot
     public static function create(
         ProductUuid $uuid,
         ProductTitle $title,
-        ProductCategoryUuid $categoryUuid,
+        Category $category,
         ProductPrice $price,
         ProductDescription $description,
         bool $isActive = true,
     ): self {
-        $product = new self($uuid, $title, $categoryUuid, $price, $description, 0, $isActive);
+        $product = new self($uuid, $title, $category, $price, $description, 0, $isActive);
 
         $event = new ProductWasCreatedDomainEvent(
             $product->uuid->value,
             $product->title->value,
-            $product->categoryUuid->value,
+            $product->category->getUuid()->value,
             $product->price->toArray(),
             $product->viewedCount,
             $product->description->value,
@@ -144,20 +148,15 @@ class Product extends AggregateRoot
         }
     }
 
-    public function getCategoryUuid(): ProductCategoryUuid
+    public function getCategory(): Category
     {
-        return $this->categoryUuid;
+        return $this->category;
     }
 
-    public function setCategoryUuid(ProductCategoryUuid $categoryUuid): void
+    public function changeCategory(Category $category): void
     {
-        $this->categoryUuid = $categoryUuid;
-    }
-
-    public function changeCategoryUuid(ProductCategoryUuid $categoryUuid): void
-    {
-        if ($this->categoryUuid->isNotEquals($categoryUuid)) {
-            $this->categoryUuid = $categoryUuid;
+        if ($this->category->getValue()->value !== $category->getValue()->value) {
+            $this->category = $category;
         }
     }
 
@@ -242,7 +241,7 @@ class Product extends AggregateRoot
         return [
             'uuid' => $this->uuid->value,
             'title' => $this->title->value,
-            'category_uuid' => $this->categoryUuid->value,
+            'category' => $this->category->toArray(),
             'price' => $this->price->toArray(),
             'cover' => $cover,
             'medias' => $medias,

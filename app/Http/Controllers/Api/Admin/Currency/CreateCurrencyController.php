@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Admin\Currency;
 
 use App\Http\Requests\Admin\Currency\CreateCurrencyRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Project\Domains\Admin\Currency\Application\Commands\Create\Command;
+use Project\Domains\Admin\Product\Application\Commands\Categories\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

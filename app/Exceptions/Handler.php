@@ -114,7 +114,7 @@ class Handler extends ExceptionHandler
             );
         }
 
-        // dd($ex);
+        // dd($ex->getTrace());
         // dd($ex->getPrevious());
 
         return response()->json([

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Application\Subscribers\Category;
 
-use Project\Domains\Admin\Category\Domain\Category\Events\CategoryWasDeletedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasDeletedDomainEvent;
 use Project\Domains\Client\Order\Domain\Category\CategoryRepositoryInterface;
 use Project\Domains\Client\Order\Domain\Category\ValueObjects\Uuid;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;

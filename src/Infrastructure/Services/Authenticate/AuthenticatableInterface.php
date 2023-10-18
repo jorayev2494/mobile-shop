@@ -8,4 +8,5 @@ use Illuminate\Contracts\Support\Arrayable;
 
 interface AuthenticatableInterface extends Arrayable
 {
+    public function getUuid(): string;
 }

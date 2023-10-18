@@ -9,8 +9,10 @@ use Project\Domains\Admin\Product\Domain\Media\MediaRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Product\Product;
 use Project\Domains\Admin\Product\Domain\Product\ProductRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
+use Project\Shared\Domain\AbstractFlasher;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\FilesystemInterface;
+use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class DeleteProductService
 {
@@ -19,6 +21,8 @@ final class DeleteProductService
         private readonly MediaRepositoryInterface $mediaRepository,
         private readonly FilesystemInterface $filesystem,
         private readonly EventBusInterface $eventBus,
+        private readonly AbstractFlasher $flasher,
+        private readonly AuthManagerInterface $authManager,
     ) {
 
     }
@@ -36,6 +40,9 @@ final class DeleteProductService
         $product->delete();
         $this->repository->delete($product);
         $this->eventBus->publish(...$product->pullDomainEvents());
+        $this->flasher->publish('alerts#' . $this->authManager->admin()->uuid, [
+            'message' => 'Product was deleted: ' . $product->getUuid(),
+        ]);
     }
 
     private function removeMedias(Product $product): void

@@ -6,7 +6,6 @@ namespace App\Http\Controllers\Api\Client\Profile;
 
 use App\Http\Requests\Client\Profile\UpdateProfileRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Project\Domains\Client\Profile\Application\Commands\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;

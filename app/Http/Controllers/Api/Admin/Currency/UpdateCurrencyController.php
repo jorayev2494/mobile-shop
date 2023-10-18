@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Admin\Currency;
 
 use App\Http\Requests\Admin\Currency\UpdateCurrencyRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Project\Domains\Admin\Currency\Application\Commands\Update\Command;
+use Project\Domains\Admin\Product\Application\Commands\Categories\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Symfony\Component\HttpFoundation\Response;
 

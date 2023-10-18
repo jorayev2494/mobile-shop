@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Admin\Currency;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Project\Domains\Admin\Currency\Application\Commands\Delete\Command;
+use Project\Domains\Admin\Product\Application\Commands\Categories\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Symfony\Component\HttpFoundation\Response;
 

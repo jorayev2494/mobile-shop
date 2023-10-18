@@ -308,6 +308,23 @@ services:
     networks:
         - shop-network
 
+  centrifugo:
+    image: centrifugo/centrifugo
+    restart: unless-stopped
+    container_name: ${COMPOSE_PROJECT_NAME}-centrifugo
+    ports:
+      - 8041:8000
+    volumes:
+      - ./centrifugo/configs:/centrifugo
+    command: centrifugo -c config.json --admin_insecure # --client_insecure
+    ulimits:
+      nproc: 65536
+      nofile:
+        soft: 65536
+        hard: 65536
+    networks:
+        - shop-network
+
 networks:
   shop-network:
       driver: bridge

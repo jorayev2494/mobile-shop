@@ -12,6 +12,4 @@ interface FilesystemInterface
     public function uploadFile(string $fileClassName, UploadedFile $uploadedFile): File;
 
     public function deleteFile(?File $file): bool;
-
-    public function changeDisk(string &$disk): void;
 }
