@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\Admin\Currency\ShowCurrencyController;
 use App\Http\Controllers\Api\Admin\Currency\UpdateCurrencyController;
 use App\Http\Controllers\Api\Admin\Manager\{DeleteManagerController, ShowManagerController, UpdateManagerController, CreateManagerController, IndexManagerController,};
 use App\Http\Controllers\Api\Admin\Product\{GetProductController, CreateProductController, ShowProductController, UpdateProductController, DeleteProductController,};
+use App\Http\Controllers\Api\Admin\Profile\TokenController;
 use App\Http\Controllers\Api\Admin\Role\{CreateRoleController, DeleteRoleController, IndexPermissionController, IndexRoleController, ShowRoleController, UpdateRoleController,};
 
 Route::prefix('auth')->name('auth.')->group(static function (Router $router): void {
@@ -35,6 +36,7 @@ Route::group(['middleware' => 'auth:admin'], static function (Router $router): v
         $router->get('/', 'show')->name('show');
         $router->post('/', 'update')->name('update');
         $router->put('/change-password', 'changePassword')->name('change_password');
+        $router->get('/token', TokenController::class);
     });
 
     $router->group(['prefix' => 'managers', 'as' => 'admins.'], static function (Router $router): void {

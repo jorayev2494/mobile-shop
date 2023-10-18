@@ -1,0 +1,35 @@
+{
+    "api_key": "api_key_f_shop",
+    "secret": "secret_f_shop",
+    "admin": true,
+    "admin_password": "admin",
+    "admin_secret": "admin",
+    "log_level": "debug",
+    "debug": true,
+    "allowed_origins": [
+        "*"
+    ],
+    "engine": "memory",
+    "presence": true,
+    "history_size": 10,
+    "history_ttl": "30s",
+    "namespaces": [
+        {
+            "name": "alerts",
+            "history_size": 10,
+            "history_lifetime": 30,
+
+            "watch": true,
+
+            "force_recovery": true,
+            "allow_subscribe_for_client": false,
+            "allow_subscribe_for_anonymous": false,
+            "allow_publish_for_subscriber": false,
+            "allow_publish_for_anonymous": false,
+            "allow_history_for_subscriber": false,
+            "allow_history_for_anonymous": false,
+            "allow_presence_for_subscriber": false,
+            "allow_presence_for_anonymous": false
+        }
+    ]
+}

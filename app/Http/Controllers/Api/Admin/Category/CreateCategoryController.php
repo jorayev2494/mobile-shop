@@ -9,7 +9,7 @@ use App\Http\Requests\Admin\Category\CreateCategoryRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Category\Application\Commands\Create\CreateCategoryCommand;
+use Project\Domains\Admin\Product\Application\Commands\Categories\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 
@@ -28,7 +28,7 @@ class CreateCategoryController extends Controller
         $uuid = $this->uuidGenerator->generate();
 
         $this->commandBus->dispatch(
-            new CreateCategoryCommand(
+            new Command(
                 $uuid,
                 $request->get('value'),
                 $request->boolean('is_active', true)

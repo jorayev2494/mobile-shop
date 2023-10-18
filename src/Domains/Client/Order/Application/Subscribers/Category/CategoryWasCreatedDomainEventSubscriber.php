@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Application\Subscribers\Category;
 
-use Project\Domains\Admin\Category\Domain\Category\Events\CategoryWasCreatedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasCreatedDomainEvent;
 use Project\Domains\Client\Order\Domain\Category\Category;
 use Project\Domains\Client\Order\Domain\Category\CategoryRepositoryInterface;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;

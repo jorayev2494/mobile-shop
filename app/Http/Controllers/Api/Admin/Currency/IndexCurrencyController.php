@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Admin\Currency;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Project\Domains\Admin\Currency\Application\Queries\Index\Query;
+use Project\Domains\Admin\Product\Application\Queries\Currencies\Index\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
-class IndexCurrencyController extends Controller
+class IndexCurrencyController
 {
     public function __construct(
         private readonly ResponseFactory $response,

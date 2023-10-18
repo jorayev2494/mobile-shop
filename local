@@ -18,7 +18,7 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
     status ${BLUE}............................................................................${GREEN} Print status of containers
     start ${BLUE}.............................................................................${GREEN} Start the containers
     stop ${BLUE}..............................................................................${GREEN} Stop the containers
-    restart ${BLUE}...........................................................................${GREEN} Restart the container
+    restart [services] ${BLUE}................................................................${GREEN} Restart the container
     pull ${BLUE}..............................................................................${GREEN} Pull the containers
     build [--no-cache] ${BLUE}................................................................${GREEN} Build containers
                                                                                           Options:
@@ -48,7 +48,7 @@ case "$1" in
         stop
     ;;
     restart)
-        restart
+        restart ${@:2}
     ;;
     pull)
         pull

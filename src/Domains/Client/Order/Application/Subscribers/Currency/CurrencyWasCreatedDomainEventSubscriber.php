@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Order\Application\Subscribers\Currency;
 
-use Project\Domains\Admin\Currency\Domain\Currency\Events\CurrencyWasCreatedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Currency\Events\CurrencyWasCreatedDomainEvent;
 use Project\Domains\Client\Order\Domain\Currency\Currency;
 use Project\Domains\Client\Order\Domain\Currency\CurrencyRepositoryInterface;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;

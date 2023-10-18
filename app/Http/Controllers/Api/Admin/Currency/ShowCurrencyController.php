@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Admin\Currency;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
-use Project\Domains\Admin\Currency\Application\Queries\Show\Query;
+use Project\Domains\Admin\Product\Application\Queries\Currencies\Show\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 

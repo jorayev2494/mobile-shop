@@ -205,11 +205,9 @@ return [
         Project\Domains\Admin\Profile\Infrastructure\ProfileServiceProvider::class,
         Project\Domains\Admin\Manager\Infrastructure\ManagerServiceProvider::class,
         Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
-        Project\Domains\Admin\Category\Infrastructure\CategoryServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,
-        Project\Domains\Admin\Currency\Infrastructure\CurrencyServiceProvider::class,
         Project\Domains\Admin\Client\Infrastructure\ClientServerProvider::class,
 
         // Client ServiceProviders
@@ -223,7 +221,7 @@ return [
         // Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
         Project\Domains\Client\Profile\Infrastructure\ProfileServiceProvider::class,
 
-        Project\Domains\PublicApi\Currency\Infrastructure\CurrencyServiceProvider::class,
+        // Project\Domains\PublicApi\Currency\Infrastructure\CurrencyServiceProvider::class,
         Project\Domains\PublicApi\Country\Infrastructure\CountryServiceProvider::class,
 
         App\Providers\DoctrineServiceProvider::class,

@@ -19,8 +19,8 @@ function start()
 {
     docker-compose --file $SERVER_COMPOSE_FILE_PATH up -d --force-recreate --remove-orphans
     status
-    sleep 10
-    restart-message-broker
+    # sleep 10
+    # restart-message-broker
 }
 
 # Stop the containers
@@ -31,8 +31,14 @@ function stop()
 
 function restart()
 {
-    stop
-    start
+    if [[ ! -z "$1" ]]; then
+        # docker-compose --file $SERVER_COMPOSE_FILE_PATH restart ${@:1}
+        docker-compose --file $SERVER_COMPOSE_FILE_PATH down ${@:1}
+        docker-compose --file $SERVER_COMPOSE_FILE_PATH up --build -d ${@:1}
+    else
+        stop
+        start
+    fi
 }
 
 function pull()
