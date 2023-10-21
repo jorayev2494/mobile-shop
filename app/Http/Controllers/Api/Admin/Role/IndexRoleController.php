@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Project\Domains\Admin\Role\Application\Queries\GetRoles\Query;
+use Project\Domains\Admin\Authentication\Application\Queries\Roles\GetRoles\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class IndexRoleController extends Controller

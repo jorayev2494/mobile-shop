@@ -39,8 +39,6 @@ final class CommandHandler implements CommandHandlerInterface
 
         $this->uploadAvatar($profile, $command->avatar);
 
-        // dd($profile);
-
         $profile->changeFirstName(ProfileFirstName::fromValue($command->firstName));
         $profile->changeLastName(ProfileLastName::fromValue($command->lastName));
         $profile->changeEmail(ProfileEmail::fromValue($command->email));
@@ -57,6 +55,7 @@ final class CommandHandler implements CommandHandlerInterface
         if ($avatar !== null) {
             $this->filesystem->deleteFile($profile->getAvatar());
             $uploadedAvatar = $this->filesystem->uploadFile(Avatar::class, $avatar);
+            $profile->deleteAvatar();
             $profile->changeAvatar($uploadedAvatar);
         }
     }

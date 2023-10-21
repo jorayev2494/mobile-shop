@@ -27,6 +27,12 @@ final class ProductMediaWasAddedDomainEventSubscriber implements DomainEventSubs
 
     public function __invoke(ProductMediaWasAddedDomainEvent $event): void
     {
+        $product = $this->productRepository->findByUuid(Uuid::fromValue($event->uuid));
+
+        if ($product === null) {
+            return;
+        }
+
         [
             'uuid' => $uuid,
             'mime_type' => $mimeType,
@@ -45,7 +51,6 @@ final class ProductMediaWasAddedDomainEventSubscriber implements DomainEventSubs
 
         $media = Media::make($uuid, $mimeType, $width, $height, $extension, $size, $path, $fullPath, $fileName, $fileOriginalName, $url, $downloadedCount, $urlPattern);
 
-        $product = $this->productRepository->findByUuid(Uuid::fromValue($event->uuid));
         $product->addMedia($media);
 
         $this->productRepository->save($product);

@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Admin\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Admin\Role\Application\Commands\Delete\Command;
+use Project\Domains\Admin\Authentication\Application\Commands\Roles\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class DeleteRoleController extends Controller

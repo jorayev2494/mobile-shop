@@ -13,7 +13,7 @@ class ProfileWasCreatedDomainEvent extends DomainEvent
         public readonly string $firstName,
         public readonly string $lastName,
         public readonly string $email,
-        public readonly string $phone,
+        public readonly ?string $phone,
         string $eventId = null,
         string $occurredOn = null,
     ) {

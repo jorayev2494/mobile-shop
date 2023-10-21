@@ -110,6 +110,11 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         $this->record(new RestorePasswordCodeWasCreatedDomainEvent($this->uuid, $this->email, $this->code->getValue()));
     }
 
+    public function getClaims(): array
+    {
+        return [];
+    }
+
     public function toArray(): array
     {
         return [

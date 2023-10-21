@@ -21,7 +21,7 @@ use Project\Domains\Admin\Product\Infrastructure\Doctrine\Category\Types\ValueTy
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
-#[ORM\Table(name: 'category_categories')]
+#[ORM\Table(name: 'product_categories')]
 #[ORM\HasLifecycleCallbacks]
 class Category extends AggregateRoot
 {

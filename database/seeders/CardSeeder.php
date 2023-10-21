@@ -44,7 +44,7 @@ class CardSeeder extends Seeder
                     Uuid::fromValue($this->uuidGenerator->generate()),
                     AuthorUuid::fromValue($client->uuid),
                     Type::fromValue($cardType = $this->fakeGenerator->randomElement(['visa', 'mastercard'])),
-                    HolderName::fromValue($client->full_name),
+                    HolderName::fromValue($this->fakeGenerator->firstName() . '_' . $this->fakeGenerator->lastName()),
                     Number::fromValue($this->fakeGenerator->creditCardNumber($cardType === 'visa' ? 'Visa' : 'MasterCard')),
                     CVV::fromValue(random_int(000, 999)),
                     ExpirationDate::fromValue($this->fakeGenerator->creditCardExpirationDateString()),

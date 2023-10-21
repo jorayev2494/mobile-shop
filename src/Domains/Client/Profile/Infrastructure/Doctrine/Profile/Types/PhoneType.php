@@ -10,7 +10,7 @@ use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfilePhone;
 
 class PhoneType extends Type
 {
-    public const TYPE = 'profile_domain_profile_phone';
+    public const NAME = 'profile_domain_profile_phone';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -34,6 +34,6 @@ class PhoneType extends Type
 
     public function getName(): string
     {
-        return self::TYPE;
+        return self::NAME;
     }
 }

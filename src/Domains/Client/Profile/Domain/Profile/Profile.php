@@ -31,16 +31,16 @@ class Profile extends AggregateRoot
     #[ORM\Column(type: Types::STRING)]
     private string $uuid;
 
-    #[ORM\Column(name: 'first_name', type: FirstNameType::TYPE, nullable: true)]
+    #[ORM\Column(name: 'first_name', type: FirstNameType::NAME, nullable: true)]
     private ?ProfileFirstName $firstName;
 
-    #[ORM\Column(name: 'last_name', type: LastNameType::TYPE, nullable: true)]
+    #[ORM\Column(name: 'last_name', type: LastNameType::NAME, nullable: true)]
     private ?ProfileLastName $lastName;
 
-    #[ORM\Column(type: EmailType::TYPE, unique: true)]
+    #[ORM\Column(type: EmailType::NAME, unique: true)]
     private ProfileEmail $email;
 
-    #[ORM\Column(type: PhoneType::TYPE, nullable: true)]
+    #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?ProfilePhone $phone;
 
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'author', orphanRemoval: true, cascade: ['persist', 'remove'])]
@@ -74,7 +74,7 @@ class Profile extends AggregateRoot
                 $profile->firstName->value,
                 $profile->lastName->value,
                 $profile->email->value,
-                $profile->phone->value,
+                $profile->phone?->value,
             )
         );
 

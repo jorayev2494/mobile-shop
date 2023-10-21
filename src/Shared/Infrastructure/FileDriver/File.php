@@ -107,7 +107,7 @@ abstract class File implements Arrayable
         int $downloadedCount = 0,
         string $urlPattern = null,
     ): static {
-        $media = new static(
+        return new static(
             $uuid,
             $mimeType,
             $width,
@@ -122,8 +122,6 @@ abstract class File implements Arrayable
             $downloadedCount,
             $urlPattern,
         );
-
-        return $media;
     }
 
     protected function makeUrlPattern(File $file): string
@@ -177,6 +175,16 @@ abstract class File implements Arrayable
     {
 		return $this->mimeType;
 	}
+
+    public function isEquals(self $other): bool
+    {
+        return $this->uuid === $other->uuid;
+    }
+
+    public function isNotEquals(self $other): bool
+    {
+        return $this->uuid !== $other->uuid;
+    }
 
     public function toArray(): array
     {

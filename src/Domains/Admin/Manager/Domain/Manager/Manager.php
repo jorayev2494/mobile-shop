@@ -9,13 +9,17 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Project\Domains\Admin\Manager\Domain\Avatar\Avatar;
+use Project\Domains\Admin\Manager\Domain\Manager\Events\ManagerRoleWasChangedDomainEvent;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerEmail;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerFirstName;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerLastName;
+use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerPhone;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerUuid;
 use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\Types\EmailType;
 use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\Types\FirstNameType;
 use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\Types\LastNameType;
+use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\Types\PhoneType;
 use Project\Domains\Admin\Manager\Infrastructure\Doctrine\Manager\Types\UuidType;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
@@ -37,6 +41,13 @@ class Manager extends AggregateRoot
     #[ORM\Column(name: 'email', type: EmailType::NAME)]
     private ManagerEmail $email;
 
+    #[ORM\Column(name: 'phone', type: PhoneType::NAME, nullable: true)]
+    private ?ManagerPhone $phone;
+
+    #[ORM\OneToOne(targetEntity: Avatar::class, inversedBy: 'author', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'avatar_uuid', referencedColumnName: 'uuid')]
+    private ?Avatar $avatar;
+
     #[ORM\Column(name: 'role_id', nullable: true)]
     private ?int $roleId;
 
@@ -56,7 +67,7 @@ class Manager extends AggregateRoot
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
-        // $this->roleId = null;
+        $this->roleId = null;
     }
 
     public static function create(
@@ -90,6 +101,16 @@ class Manager extends AggregateRoot
     public function setFirstName(ManagerFirstName $firstName): void
     {
         $this->firstName = $firstName;
+    }
+
+    public function getAvatar(): ?Avatar
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Avatar $avatar): void
+    {
+        $this->avatar = $avatar;
     }
 
     public function changeFirstName(ManagerFirstName $firstName): void
@@ -133,6 +154,16 @@ class Manager extends AggregateRoot
         }
     }
 
+	public function getPhone(): ManagerPhone
+    {
+		return $this->phone;
+	}
+	
+	public function setPhone(ManagerPhone $phone): void
+    {
+		$this->phone = $phone;
+	}
+
     public function setRoleId(?int $roleId): void
     {
         $this->roleId = $roleId;
@@ -147,6 +178,7 @@ class Manager extends AggregateRoot
     {
         if ($this->roleId !== $roleId) {
             $this->roleId = $roleId;
+            $this->record(new ManagerRoleWasChangedDomainEvent($this->uuid->value, $this->roleId));
         }
     }
 
@@ -170,7 +202,11 @@ class Manager extends AggregateRoot
             'first_name' => $this->firstName->value,
             'last_name' => $this->lastName->value,
             'email' => $this->email->value,
-            // 'role_id' => $this->roleId,
+            'avatar' => $this->avatar?->toArray(),
+            'role_id' => $this->roleId,
+            'phone' => $this->phone->value,
+            'created_at' => $this->createdAt?->getTimestamp(),
+            'updated_at' => $this->updatedAt?->getTimestamp(),
         ];
     }
 }

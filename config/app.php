@@ -204,7 +204,6 @@ return [
         Project\Domains\Admin\Authentication\Infrastructure\AuthenticationServiceProvider::class,
         Project\Domains\Admin\Profile\Infrastructure\ProfileServiceProvider::class,
         Project\Domains\Admin\Manager\Infrastructure\ManagerServiceProvider::class,
-        Project\Domains\Admin\Role\Infrastructure\RoleServiceProvider::class,
         Project\Domains\Admin\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Admin\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Admin\Country\Infrastructure\CountryServiceProvider::class,

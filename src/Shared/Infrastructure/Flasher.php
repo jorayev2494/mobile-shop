@@ -15,8 +15,9 @@ class Flasher extends AbstractFlasher
         
     }
 
-    public function publish(string $channel, array $data): mixed
+    public function publish(string $channel, array $data, string $type = 'success'): mixed
     {
+        // return $this->client->publish($channel, [ ...$data, ...compact('type') ]);
         return $this->client->publish($channel, $data);
     }
 }

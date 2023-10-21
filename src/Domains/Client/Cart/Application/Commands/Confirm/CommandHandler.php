@@ -31,9 +31,9 @@ final class CommandHandler implements CommandHandlerInterface
 
         $cart ?? throw new ModelNotFoundException();
 
-        if ($cart->getStatus()->isEquals(StatusEnum::CONFIRM)) {
-            throw new DomainException('This cart already confirmed');
-        }
+        // if ($cart->getStatus()->isEquals(StatusEnum::CONFIRM)) {
+        //     throw new DomainException('This cart already confirmed');
+        // }
 
         $orderConfirmData = new OrderConfirmData(
             $command->cardUuid,
@@ -48,6 +48,7 @@ final class CommandHandler implements CommandHandlerInterface
         $cart->confirm($orderConfirmData);
 
         $this->cartRepository->save($cart);
+        // dd($this->eventBus, $cart);
         $this->eventBus->publish(...$cart->pullDomainEvents());
     }
 }

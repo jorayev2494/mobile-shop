@@ -4,48 +4,53 @@ declare(strict_types=1);
 
 namespace Project\Domains\Client\Profile\Infrastructure;
 
-use Doctrine\DBAL\Types\Type;
-use Illuminate\Support\ServiceProvider;
-use Project\Domains\Client\Profile\Application\Commands\Update\CommandHandler as UpdateCommandHandler;
-use Project\Domains\Client\Profile\Application\Queries\Show\QueryHandler as ShowQueryHandler;
-use Project\Domains\Client\Profile\Application\Subscribers\MemberWasAddedDeviceDomainEventSubscriber;
-use Project\Domains\Client\Profile\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber;
+use App\Providers\ClientDomainServiceProvider;
 use Project\Domains\Client\Profile\Domain\Device\DeviceRepositoryInterface;
 use Project\Domains\Client\Profile\Domain\Profile\ProfileRepositoryInterface;
 use Project\Domains\Client\Profile\Infrastructure\Doctrine\Device\DeviceRepository;
 use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\ProfileRepository;
-use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\EmailType;
-use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\FirstNameType;
-use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\LastNameType;
-use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\PhoneType;
 
-final class ProfileServiceProvider extends ServiceProvider
+final class ProfileServiceProvider extends ClientDomainServiceProvider
 {
-    public function register(): void
-    {
-        Type::addType(FirstNameType::TYPE, FirstNameType::class);
-        Type::addType(LastNameType::TYPE, LastNameType::class);
-        Type::addType(EmailType::TYPE, EmailType::class);
-        Type::addType(PhoneType::TYPE, PhoneType::class);
+    /** @var array<string, string> */
+    protected const SERVICES = [
+        ProfileRepositoryInterface::class => [self::SERVICE_BIND, ProfileRepository::class],
+        DeviceRepositoryInterface::class => [self::SERVICE_BIND, DeviceRepository::class],
+    ];
 
-        $this->app->bind(ProfileRepositoryInterface::class, ProfileRepository::class);
-        $this->app->bind(DeviceRepositoryInterface::class, DeviceRepository::class);
+    /** @var array<array-key, string> */
+    protected const QUERY_HANDLERS = [
+        \Project\Domains\Client\Profile\Application\Queries\Show\QueryHandler::class,
+    ];
 
-        $this->app->addClientEntityPaths([
-            __DIR__ . '/../Domain/Device',
-            __DIR__ . '/../Domain/Profile',
-        ]);
+    /** @var array<array-key, string> */
+    protected const COMMAND_HANDLERS = [
+        \Project\Domains\Client\Profile\Application\Commands\Update\CommandHandler::class,
+        \Project\Domains\Client\Profile\Application\Commands\Create\CommandHandler::class,
+    ];
 
-        $this->app->addClientMigrationPaths([
-            'Project\Domains\Client\Profile\Infrastructure\Doctrine\Device\Migrations' => __DIR__ . '/Doctrine/Device/Migrations',
-            'Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Migrations' => __DIR__ . '/Doctrine/Profile/Migrations',
-        ]);
+    /** @var array<array-key, string> */
+    protected const DOMAIN_EVENT_SUBSCRIBERS = [
+        \Project\Domains\Client\Profile\Application\Subscribers\MemberWasAddedDeviceDomainEventSubscriber::class,
+        \Project\Domains\Client\Profile\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber::class,
+    ];
 
-        $this->app->tag(UpdateCommandHandler::class, 'command_handler');
+    /** @var array<string, string> */
+    protected const ENTITY_TYPES = [
+        \Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\EmailType::class,
+        \Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\FirstNameType::class,
+        \Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\LastNameType::class,
+        \Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\PhoneType::class,
+    ];
 
-        $this->app->tag(ShowQueryHandler::class, 'query_handler');
+    /** @var array<array-key, string> */
+    protected const MIGRATION_PATHS = [
+        'Project\Domains\Client\Profile\Infrastructure\Doctrine\Device\Migrations' => __DIR__ . '/Doctrine/Device/Migrations',
+    ];
 
-        $this->app->tag(MemberWasRegisteredDomainEventSubscriber::class, 'domain_event_subscriber');
-        $this->app->tag(MemberWasAddedDeviceDomainEventSubscriber::class, 'domain_event_subscriber');
-    }
+    /** @var array<string, string> */
+    protected const ENTITY_PATHS = [
+        __DIR__ . '/../Domain/Device',
+        __DIR__ . '/../Domain/Profile',
+    ];
 }

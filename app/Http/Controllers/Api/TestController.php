@@ -36,6 +36,8 @@ class TestController
         
         $result = $this->flasher->publish($channel, $data);
 
-        return $this->response->json($result);
+        // dd($result);
+
+        return $this->response->json([$result, $channel]);
     }
 }

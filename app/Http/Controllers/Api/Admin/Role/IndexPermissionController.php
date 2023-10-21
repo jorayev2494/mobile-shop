@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Admin\Role;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Project\Domains\Admin\Role\Application\Queries\GetPermissions\Query;
+use Project\Domains\Admin\Authentication\Application\Queries\Roles\GetPermissions\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class IndexPermissionController
