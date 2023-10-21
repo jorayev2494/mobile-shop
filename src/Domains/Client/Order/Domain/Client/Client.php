@@ -38,7 +38,7 @@ class Client
     private Email $email;
 
     #[ORM\Column(type: PhoneType::NAME)]
-    private Phone $phone;
+    private ?Phone $phone;
 
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'author', cascade: ['persist', 'remove'])]
     private Collection $orders;
@@ -67,7 +67,7 @@ class Client
         string $firstName,
         string $lastName,
         string $email,
-        string $phone,
+        ?string $phone,
     ): self {
         return new self(
             Uuid::fromValue($uuid),

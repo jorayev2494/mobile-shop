@@ -10,7 +10,7 @@ use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileFirstName;
 
 class FirstNameType extends Type
 {
-    public const TYPE = 'profile_domain_profile_first_name';
+    public const NAME = 'profile_domain_profile_first_name';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -34,6 +34,6 @@ class FirstNameType extends Type
 
     public function getName(): string
     {
-        return self::TYPE;
+        return self::NAME;
     }
 }

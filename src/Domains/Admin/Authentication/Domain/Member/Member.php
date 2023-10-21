@@ -16,6 +16,7 @@ use Project\Domains\Admin\Authentication\Domain\Code\Code;
 use Project\Domains\Admin\Authentication\Domain\Device\Device;
 use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberRestorePasswordLinkWasAddedDomainEvent;
 use Project\Domains\Admin\Authentication\Domain\Member\Events\MemberWasRegisteredDomainEvent;
+use Project\Domains\Admin\Authentication\Domain\Role\Role;
 use Project\Infrastructure\Services\Authenticate\AuthenticatableInterface;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
@@ -34,8 +35,9 @@ class Member extends AggregateRoot implements AuthenticatableInterface
     #[ORM\Column(type: Types::STRING)]
     private string $password;
 
-    #[ORM\Column(name: 'role_id', nullable: true)]
-    private ?int $roleId;
+    #[ORM\ManyToOne(targetEntity: Role::class, inversedBy: 'members', cascade: ['persist'])]
+    #[ORM\JoinColumn(name: 'role_id', referencedColumnName: 'id', nullable: true)]
+    private ?Role $role;
 
     #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'author', cascade: ['persist', 'remove'])]
     private Collection $devices;
@@ -54,7 +56,7 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         $this->uuid = $uuid;
         $this->email = $email;
         $this->password = $password;
-        $this->roleId = null;
+        $this->role = null;
     }
 
     public static function create(string $uuid, string $firstName, string $lastName, string $email, string $password): self
@@ -89,9 +91,19 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         return $this->uuid;
     }
 
+    public function setRole(Role $role): void
+    {
+        $this->role = $role;
+    }
+
     public function changePassword(string $password): void
     {
         $this->password = $password;
+    }
+
+    public function getClaims(): array
+    {
+        return ! is_null($role = $this->role) ? ['role' => $role->toArray()] : [];
     }
 
     #[PrePersist]
@@ -112,6 +124,7 @@ class Member extends AggregateRoot implements AuthenticatableInterface
         return [
             'uuid' => $this->uuid,
             'email' => $this->email,
+            // 'role' => $this->role?->toArray(),
         ];
     }
 }

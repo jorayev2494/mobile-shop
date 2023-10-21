@@ -53,8 +53,8 @@ class Order extends AggregateRoot
     #[ORM\Column(type: EmailType::NAME)]
     private Email $email;
 
-    #[ORM\Column(type: PhoneType::NAME)]
-    private Phone $phone;
+    #[ORM\Column(type: PhoneType::NAME, nullable: true)]
+    private ?Phone $phone;
 
     #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'order', cascade: ['persist', 'remove'])]
     private Collection $orderProducts;

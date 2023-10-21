@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Project\Domains\Admin\Product\Domain\Currency;
 
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
@@ -20,7 +22,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Table(name: 'currency_currencies')]
+#[ORM\Table(name: 'product_currencies')]
 class Currency extends AggregateRoot
 {
     #[ORM\Id]
@@ -29,6 +31,9 @@ class Currency extends AggregateRoot
 
     #[ORM\Column(type: ValueType::NAME)]
     private Value $value;
+
+    #[ORM\OneToMany(targetEntity: Currency::class, mappedBy: 'currency')]
+    private Collection $products;
 
     #[ORM\Column(name: 'is_active', type: Types::BOOLEAN)]
     private bool $isActive;
@@ -48,6 +53,7 @@ class Currency extends AggregateRoot
         $this->uuid = $uuid;
         $this->value = $value;
         $this->isActive = $isActive;
+        $this->products = new ArrayCollection();
     }
 
     public static function create(

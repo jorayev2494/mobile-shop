@@ -22,7 +22,7 @@ final class PhoneType extends Type
      * @param AbstractPlatform $platform
      * @return void
      */
-    public function convertToDatabaseValue($value, AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         return $value->value;
     }

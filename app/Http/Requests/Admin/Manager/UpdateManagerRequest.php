@@ -32,7 +32,7 @@ class UpdateManagerRequest extends FormRequest
             'role_id' => [
                 'required',
                 'integer',
-                Rule::exists('admin_pgsql.role_roles', 'id'),
+                Rule::exists('admin_pgsql.auth_roles', 'id'),
                 'max:255',
             ],
         ];

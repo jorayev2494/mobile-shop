@@ -43,6 +43,7 @@ class ProfileServiceProvider extends AdminDomainServiceProvider
     ];
 
     protected const DOMAIN_EVENT_SUBSCRIBERS = [
-        \Project\Domains\Admin\Profile\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber::class
+        \Project\Domains\Admin\Profile\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber::class,
+        \Project\Domains\Admin\Profile\Application\Subscribers\Manager\ManagerRoleWasChangedDomainEventSubscriber::class,
     ];
 }

@@ -10,7 +10,7 @@ use App\Models\Product;
 use App\Models\User;
 use Database\Seeders\Traits\PermissionSeederTrait;
 use Illuminate\Database\Seeder;
-use Project\Domains\Admin\Role\Application\Commands\Create\Command;
+use Project\Domains\Admin\Authentication\Application\Commands\Roles\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class RoleSeeder extends Seeder
@@ -20,6 +20,7 @@ class RoleSeeder extends Seeder
     private array $defaultRoles = [
         'admin',
         'moderator',
+        'courier',
     ];
 
     public function __construct(

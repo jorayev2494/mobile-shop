@@ -37,7 +37,7 @@ final class CommandHandler implements CommandHandlerInterface
             throw new ModelNotFoundException();
         }
 
-        $token = $this->authenticationService->authenticate(new AuthenticationCredentialsDTO($command->email, $command->password), AppGuardType::ADMIN);
+        $token = $this->authenticationService->authenticate(new AuthenticationCredentialsDTO($command->email, $command->password), AppGuardType::ADMIN, $foundMember->getClaims());
 
         $foundDevice = $this->deviceRepository->findByAuthorUuidAndDeviceId($foundMember->getUuid(), $command->deviceId);
 

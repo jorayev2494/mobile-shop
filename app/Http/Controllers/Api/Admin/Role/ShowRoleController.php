@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Admin\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Project\Domains\Admin\Role\Application\Queries\ShowRole\Query;
+use Project\Domains\Admin\Authentication\Application\Queries\Roles\ShowRole\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class ShowRoleController extends Controller

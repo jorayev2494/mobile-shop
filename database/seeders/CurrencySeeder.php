@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Project\Domains\Admin\Currency\Application\Commands\Create\Command;
+use Project\Domains\Admin\Product\Application\Commands\Currencies\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 

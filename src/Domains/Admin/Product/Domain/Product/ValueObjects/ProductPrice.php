@@ -18,18 +18,19 @@ final class ProductPrice implements Arrayable
     #[ORM\Column('discount_percentage', type: Types::INTEGER, nullable: true)]
     private ?int $discountPercentage;
 
-    // #[ORM\Column('currency_uuid', type: Types::STRING)]
-    // private string $currencyUuid;
+    #[ORM\Column('currency_uuid', type: Types::STRING)]
+    private string $currencyUuid;
 
-    #[ORM\ManyToOne(targetEntity: Currency::class, inversedBy: 'products')]
-    #[ORM\JoinColumn(name: 'currency_uuid', referencedColumnName: 'uuid')]
-    private Currency $currency;
+    // #[ORM\ManyToOne(targetEntity: Currency::class, inversedBy: 'products')]
+    // #[ORM\JoinColumn(name: 'currency_uuid', referencedColumnName: 'uuid')]
+    // private Currency $currency;
 
     public function __construct(float $value, ?int $discountPercentage, Currency $currency)
     {
         $this->value = $value;
         $this->discountPercentage = $discountPercentage;
-        $this->currency = $currency;
+        $this->currencyUuid = $currency->getUuid()->value;
+        // $this->currency = $currency;
     }
 
     public function getDiscountPrice(): float
@@ -39,12 +40,12 @@ final class ProductPrice implements Arrayable
 
     public function isEquals(self $productPrice): bool
     {
-        return $this->value === $productPrice->value && $this->discountPercentage === $productPrice->discountPercentage && $this->currency->getValue()->value === $productPrice->currency->getValue()->value;
+        return $this->value === $productPrice->value && $this->discountPercentage === $productPrice->discountPercentage && $this->currencyUuid === $productPrice->currencyUuid;
     }
 
     public function isNotEquals(self $productPrice): bool
     {
-        return $this->value !== $productPrice->value && $this->discountPercentage !== $productPrice->discountPercentage && $this->currency->getValue()->value !== $productPrice->currency->getValue()->value;
+        return $this->value !== $productPrice->value && $this->discountPercentage !== $productPrice->discountPercentage && $this->currencyUuid !== $productPrice->currencyUuid;
     }
 
     public function toArray(): array
@@ -52,6 +53,7 @@ final class ProductPrice implements Arrayable
         return [
             'value' => $this->value,
             'discount_percentage' => $this->discountPercentage,
+            'currency_uuid' => $this->currencyUuid,
             // 'currency' => $this->currency->toArray(),
         ];
     }

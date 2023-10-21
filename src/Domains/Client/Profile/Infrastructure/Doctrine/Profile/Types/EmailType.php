@@ -10,7 +10,7 @@ use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileEmail;
 
 class EmailType extends Type
 {
-    public const TYPE = 'profile_domain_profile_email';
+    public const NAME = 'profile_domain_profile_email';
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
@@ -34,6 +34,6 @@ class EmailType extends Type
 
     public function getName(): string
     {
-        return self::TYPE;
+        return self::NAME;
     }
 }

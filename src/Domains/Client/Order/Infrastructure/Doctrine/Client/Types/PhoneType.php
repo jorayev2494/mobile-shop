@@ -21,9 +21,9 @@ final class PhoneType extends Type
      * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
      * @return string
      */
-    public function convertToDatabaseValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): string
+    public function convertToDatabaseValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): ?string
     {
-        return $value->value;
+        return $value?->value;
     }
 
     public function convertToPHPValue($value, \Doctrine\DBAL\Platforms\AbstractPlatform $platform): Phone

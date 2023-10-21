@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders\Traits;
 
 use App\Models\Role;
-use Project\Domains\Admin\Role\Application\Commands\CreatePermission\Command;
+use Project\Domains\Admin\Authentication\Application\Commands\Roles\CreatePermission\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 trait PermissionSeederTrait

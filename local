@@ -21,10 +21,12 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
     restart [services] ${BLUE}................................................................${GREEN} Restart the container
     pull ${BLUE}..............................................................................${GREEN} Pull the containers
     build [--no-cache] ${BLUE}................................................................${GREEN} Build containers
-                                                                                          Options:
+                                                                                        Options:
                                                                                             --no-cache ${BLUE}..................................${GREEN} Build no cache
     logs ${BLUE}..............................................................................${GREEN} Print logs of containers
-    restart-message-broker ${BLUE}............................................................${GREEN} Restart message broker
+    message-broker [command] ${BLUE}..........................................................${GREEN} Message broker
+                                                                                        Options:
+                                                                                            restart ${BLUE}.....................................${GREEN} Restart
     bash ${BLUE}..............................................................................${GREEN} Containter interactive terminal bash
     cc ${BLUE}................................................................................${GREEN} Clear cache
     database [admin, client] [[seed], fresh, diff, migrate] ${BLUE}...........................${GREEN} Database
@@ -59,8 +61,8 @@ case "$1" in
     logs)
         logs ${@:2}
     ;;
-    restart-message-broker)
-        restart-message-broker
+    message-broker)
+        message-broker ${@:2}
     ;;
     bash)
         bash

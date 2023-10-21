@@ -12,11 +12,13 @@ use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerFirstName;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerLastName;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerUuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\Bus\Event\EventBusInterface;
 
 final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly ManagerRepositoryInterface $repository,
+        private readonly EventBusInterface $eventBus,
     ) {
 
     }
@@ -32,8 +34,9 @@ final class CommandHandler implements CommandHandlerInterface
         $manager->changeEmail(ManagerEmail::fromValue($command->email));
         $manager->changeFirstName(ManagerFirstName::fromValue($command->firstName));
         $manager->changeLastName(ManagerLastName::fromValue($command->lastName));
-        // $manager->changeRoleId($command->roleId);
+        $manager->changeRoleId($command->roleId);
 
         $this->repository->save($manager);
+        $this->eventBus->publish(...$manager->pullDomainEvents());
     }
 }

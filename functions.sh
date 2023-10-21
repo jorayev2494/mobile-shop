@@ -17,7 +17,7 @@ function status()
 # Start the containers
 function start()
 {
-    docker-compose --file $SERVER_COMPOSE_FILE_PATH up -d --force-recreate --remove-orphans
+    docker-compose --file $SERVER_COMPOSE_FILE_PATH up --build -d --force-recreate --remove-orphans
     status
     # sleep 10
     # restart-message-broker
@@ -50,9 +50,25 @@ function build() {
 	docker-compose --file ${SERVER_COMPOSE_FILE_PATH} build ${@:1}
 }
 
-function restart-message-broker()
+function message-broker()
 {
-    make server-restart-message-broker
+    case "$1" in
+        'restart')
+            make server-restart-message-broker
+        ;;
+        *)
+            echo -e "
+${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    message-broker <command>
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    restart ${BLUE}..........................................................................${GREEN} Restart
+"
+            exit 1
+        ;;
+    esac
 }
 
 function bash()
@@ -114,6 +130,8 @@ function database()
         COMMAND="-${COMMAND}";
     fi
     #endregion End Second argument
+
+    echo "server${ENTITY}-database${COMMAND}"
 
     docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli make "server${ENTITY}-database${COMMAND}"
 }

@@ -7,6 +7,12 @@ namespace Project\Domains\Admin\Profile\Domain\Profile;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Admin\Profile\Domain\Avatar\Avatar;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfileAvatarWasChangedDomainEvent;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfileAvatarWasDeletedDomainEvent;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfileEmailWasChangedDomainEvent;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfileFirstNameWasChangedDomainEvent;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfileLastNameWasChangedDomainEvent;
+use Project\Domains\Admin\Profile\Domain\Profile\Events\ProfilePhoneWasChangedDomainEvent;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileEmail;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileFirstName;
 use Project\Domains\Admin\Profile\Domain\Profile\ValueObjects\ProfileLastName;
@@ -34,8 +40,8 @@ class Profile extends AggregateRoot
     #[ORM\Column(type: EmailType::NAME, unique: true)]
     private ProfileEmail $email;
 
-    #[ORM\Column(name: 'avatar_uuid', type: Types::STRING, nullable: true)]
-    private ?string $avatarUuid;
+    // #[ORM\Column(name: 'avatar_uuid', type: Types::STRING, nullable: true)]
+    // private ?string $avatarUuid;
 
     #[ORM\OneToOne(targetEntity: Avatar::class, inversedBy: 'profile', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'avatar_uuid', referencedColumnName: 'uuid')]
@@ -43,6 +49,9 @@ class Profile extends AggregateRoot
 
     #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?ProfilePhone $phone;
+
+    #[ORM\Column(name: 'role_id', nullable: true)]
+    private ?int $roleId;
 
     // #[ORM\OneToMany(targetEntity: Device::class, mappedBy: 'author', orphanRemoval: true, cascade: ['persist', 'remove'])]
     // private Collection $devices;
@@ -59,6 +68,7 @@ class Profile extends AggregateRoot
         $this->lastName = $lastName;
         $this->email = $email;
         $this->phone = $phone;
+        $this->roleId = null;
     }
 
     public static function create(
@@ -148,11 +158,16 @@ class Profile extends AggregateRoot
         return $this->phone;
     }
 
+    public function setRoleId(?int $roleId): void
+    {
+        $this->roleId = $roleId;
+    }
+
     public function changeFirstName(ProfileFirstName $firstName): void
     {
         if ($this->firstName->isNotEquals($firstName)) {
             $this->firstName = $firstName;
-            // $this->record(new ProfileFirstNameWasUpdatedDomainEvent($this->uuid, $firstName->value));
+            $this->record(new ProfileFirstNameWasChangedDomainEvent($this->uuid, $firstName->value));
         }
     }
 
@@ -160,7 +175,7 @@ class Profile extends AggregateRoot
     {
         if ($this->lastName->isNotEquals($lastName)) {
             $this->lastName = $lastName;
-            // $this->record(new ProfileLastNameWasUpdatedDomainEvent($this->uuid, $lastName->value));
+            $this->record(new ProfileLastNameWasChangedDomainEvent($this->uuid, $lastName->value));
         }
     }
 
@@ -168,22 +183,30 @@ class Profile extends AggregateRoot
     {
         if ($this->email->isNotEquals($email)) {
             $this->email = $email;
-            // $this->record(new ProfileEmailWasUpdatedDomainEvent($this->uuid, $email->value));
+            $this->record(new ProfileEmailWasChangedDomainEvent($this->uuid, $email->value));
         }
     }
 
     public function changeAvatar(?Avatar $avatar): void
     {
-        // if ($this->avatar->isNotEquals($avatar)) {
-        $this->avatar = $avatar;
-        // }
+        if ($this->avatar->isNotEquals($avatar)) {
+            $this->avatar = $avatar;
+            $this->record(new ProfileAvatarWasChangedDomainEvent($this->uuid, $this->avatar->toArray()));
+        }
+    }
+
+    public function deleteAvatar()
+    {
+        if ($this->avatar !== null) {
+            $this->record(new ProfileAvatarWasDeletedDomainEvent($this->uuid, $this->avatar->getUuid()));
+        }
     }
 
     public function changePhone(ProfilePhone $phone): void
     {
         if ($this->phone->isNotEquals($phone)) {
             $this->phone = $phone;
-            // $this->record(new ProfilePhoneWasUpdatedDomainEvent($this->uuid, $phone->value));
+            $this->record(new ProfilePhoneWasChangedDomainEvent($this->uuid, $phone->value));
         }
     }
 
