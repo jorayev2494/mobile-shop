@@ -56,7 +56,7 @@ final class AuthenticationServiceProvider extends AdminDomainServiceProvider
     protected const DOMAIN_EVENT_SUBSCRIBERS = [
         // Authentication
         \Project\Domains\Admin\Authentication\Application\Subscribers\MemberRestorePasswordLinkWasAddedDomainEventSubscriber::class,
-        
+
         // Role
         \Project\Domains\Admin\Authentication\Application\Subscribers\MemberRestorePasswordLinkWasAddedDomainEventSubscriber::class,
         \Project\Domains\Admin\Authentication\Application\Subscribers\ManagerRoleWasChangedDomainEventSubscriber::class,
@@ -64,7 +64,7 @@ final class AuthenticationServiceProvider extends AdminDomainServiceProvider
 
     /** @var array<string, string> */
     protected const ENTITY_TYPES = [
-        // Authentication        
+        // Authentication
 
         // Role
         \Project\Domains\Admin\Authentication\Infrastructure\Doctrine\Role\Types\ValueType::class,

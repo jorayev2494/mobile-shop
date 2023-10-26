@@ -22,7 +22,6 @@ use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 class ProfileController extends Controller
 {
-
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly ProfileService $service,
@@ -30,7 +29,7 @@ class ProfileController extends Controller
         private readonly AuthManagerInterface $authManager,
         private readonly CommandBusInterface $commandBus,
     ) {
-        
+
     }
 
     public function show(): JsonResponse

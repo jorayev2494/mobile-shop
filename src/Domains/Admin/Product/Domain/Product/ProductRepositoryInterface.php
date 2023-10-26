@@ -15,6 +15,6 @@ interface ProductRepositoryInterface
     public function findByUuid(ProductUuid $uuid): ?Product;
 
     public function save(Product $product): void;
-    
+
     public function delete(Product $product): void;
 }

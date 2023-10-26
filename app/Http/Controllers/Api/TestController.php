@@ -15,12 +15,12 @@ class TestController
         private readonly ResponseFactory $response,
         private readonly Flasher $flasher,
     ) {
-        
+
     }
 
     public function __invoke(string $method): JsonResponse
     {
-        $result = method_exists($this, $method) ? $this->$method(): throw new DomainException('The method wasn\'t found!' );
+        $result = method_exists($this, $method) ? $this->$method() : throw new DomainException('The method wasn\'t found!');
 
         return $this->response->json($result);
     }
@@ -33,7 +33,7 @@ class TestController
         ];
 
         $channel .= '#bf378ef9-a54e-40e5-bf24-62ee5081728e';
-        
+
         $result = $this->flasher->publish($channel, $data);
 
         return $this->response->json([$result, $channel]);

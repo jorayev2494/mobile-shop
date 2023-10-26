@@ -8,11 +8,10 @@ use Project\Shared\Domain\FlasherInterface;
 
 class Flasher implements FlasherInterface
 {
-    
     public function __construct(
         private readonly CentrifugoClient $client,
     ) {
-        
+
     }
 
     public function publish(string $channel, array $data, string $type = 'success'): mixed

@@ -12,9 +12,8 @@ class MemberWasRegisteredDomainEventSubscriber implements DomainEventSubscriberI
 {
     public function __construct(
         private readonly FlasherInterface $flasher,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

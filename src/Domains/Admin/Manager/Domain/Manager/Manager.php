@@ -154,22 +154,22 @@ class Manager extends AggregateRoot
         }
     }
 
-	public function getPhone(): ManagerPhone
+    public function getPhone(): ManagerPhone
     {
-		return $this->phone;
-	}
-	
-	public function setPhone(ManagerPhone $phone): void
+        return $this->phone;
+    }
+
+    public function setPhone(ManagerPhone $phone): void
     {
-		$this->phone = $phone;
-	}
+        $this->phone = $phone;
+    }
 
     public function changePhone(ManagerPhone $phone): void
     {
         if ($this->phone->isNotEquals($phone)) {
-		    $this->phone = $phone;
+            $this->phone = $phone;
         }
-	}
+    }
 
     public function setRoleId(?int $roleId): void
     {

@@ -12,9 +12,8 @@ class ManagerRoleWasChangedDomainEventSubscriber implements DomainEventSubscribe
 {
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
