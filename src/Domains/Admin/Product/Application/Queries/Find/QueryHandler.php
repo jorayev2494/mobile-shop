@@ -9,6 +9,7 @@ use Project\Domains\Admin\Product\Domain\Product\Product;
 use Project\Domains\Admin\Product\Domain\Product\ProductRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
+use Project\Shared\Domain\DomainException;
 
 final class QueryHandler implements QueryHandlerInterface
 {
@@ -26,7 +27,7 @@ final class QueryHandler implements QueryHandlerInterface
         $product = $this->repository->findByUuid(ProductUuid::fromValue($query->uuid));
 
         if ($product === null) {
-            throw new ModelNotFoundException();
+            throw new DomainException('Product not found', 404);
         }
 
         return $product;

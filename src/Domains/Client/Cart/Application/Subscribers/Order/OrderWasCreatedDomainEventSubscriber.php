@@ -8,11 +8,13 @@ use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\Uuid;
 use Project\Domains\Client\Order\Domain\Order\Events\OrderWasCreatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
+use Project\Shared\Domain\FlasherInterface;
 
 final class OrderWasCreatedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
     public function __construct(
         private readonly CartRepositoryInterface $cartRepository,
+        private readonly FlasherInterface $flasher,
     ) {
 
     }
@@ -33,5 +35,6 @@ final class OrderWasCreatedDomainEventSubscriber implements DomainEventSubscribe
         }
 
         $this->cartRepository->delete($cart);
+        $this->flasher->publish('alerts', ['message' => 'Order was created!']);
     }
 }

@@ -28,6 +28,7 @@ class UpdateManagerController extends Controller
                 $request->get('first_name'),
                 $request->get('last_name'),
                 $request->get('email'),
+                $request->get('phone'),
                 $request->integer('role_id'),
             )
         );

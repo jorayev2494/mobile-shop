@@ -32,7 +32,6 @@ function stop()
 function restart()
 {
     if [[ ! -z "$1" ]]; then
-        # docker-compose --file $SERVER_COMPOSE_FILE_PATH restart ${@:1}
         docker-compose --file $SERVER_COMPOSE_FILE_PATH down ${@:1}
         docker-compose --file $SERVER_COMPOSE_FILE_PATH up --build -d ${@:1}
     else
@@ -163,7 +162,8 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
 }
 
 # https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/blob/master/doc/config.rst
-function php-cs-fixer() {
+function php-cs-fixer()
+{
     case "$1" in
         'check')
             ./vendor/bin/php-cs-fixer check --config=.php-cs-fixer.php --verbose -vvv --diff --allow-risky=yes --using-cache=no app
@@ -188,4 +188,23 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
             exit 1
         ;;
     esac
+}
+
+function test()
+{
+    if [[ "$1" != '-h' ]]; then
+        docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./artisan test
+    else
+        echo -e "
+${CYAN}Server command line interface for the Docker-based web development environment demo.
+
+${YELLOW} Usage:${ENDCOLOR}
+    test <command>
+
+${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
+    -h ${BLUE}............................................................................${GREEN} Help
+"
+
+        exit 1
+    fi
 }

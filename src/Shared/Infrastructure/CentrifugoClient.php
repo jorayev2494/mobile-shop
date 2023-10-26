@@ -14,8 +14,22 @@ class CentrifugoClient
     public function __construct(
         
     ) {
-        $this->client = new Client(getenv('CENTRIFUGO_API_HOST'));
-        $this->client->setApiKey(getenv('CENTRIFUGO_API_KEY'));
+        // $this->client = new Client(
+        //     getenv('CENTRIFUGO_API_HOST'),
+        //     getenv('CENTRIFUGO_API_KEY'),
+        //     getenv('CENTRIFUGO_SECRET')
+        // );
+
+        // dd(
+        //     getenv('CENTRIFUGO_API_HOST'),
+        //     getenv('CENTRIFUGO_API_KEY'),
+        //     getenv('CENTRIFUGO_SECRET')
+        // );
+        // $this->client->setApiKey(getenv('CENTRIFUGO_API_KEY'));
+
+        $this->client = app()->make('centrifugo');
+        // $this->client->setApiKey(getenv('CENTRIFUGO_API_KEY'));
+        // $this->client->setSecret(getenv('CENTRIFUGO_SECRET'));
     }
 
     public function publish(string $channel, array $data): mixed

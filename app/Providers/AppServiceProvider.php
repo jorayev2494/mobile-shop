@@ -5,18 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Enums\AppGuardType;
-use App\Repositories\CategoryRepository;
-use App\Repositories\Contracts\CategoryRepositoryInterface;
-use App\Repositories\Contracts\ProductRepositoryInterface;
-use App\Repositories\Contracts\RoleRepositoryInterface;
-use App\Repositories\ProductRepository;
-use App\Repositories\RoleRepository;
-use App\Services\Api\Admin\CategoryService;
-use App\Services\Api\Admin\Contracts\CategoryServiceInterface;
-use App\Services\Api\Admin\Contracts\ProductServiceInterface;
-use App\Services\Api\Admin\Contracts\RoleServiceInterface;
-use App\Services\Api\Admin\ProductService;
-use App\Services\Api\Admin\RoleService;
 use App\Services\Api\Auth\AuthService;
 use App\Services\Api\Contracts\AuthService as ContractAuthService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,9 +16,7 @@ use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 use Project\Shared\Infrastructure\Bus\DomainEventSubscriberLocator;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerQueryBus;
 use Project\Shared\Infrastructure\Bus\Messenger\MessengerCommandBus;
-use Project\Shared\Infrastructure\Bus\Messenger\MessengerEventBus;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\CommandHandlerLocator;
-use Project\Shared\Infrastructure\Bus\RabbitMQ\Command\RabbitMQCommandBus;
 use Project\Shared\Infrastructure\Bus\RabbitMQ\Event\RabbitMQEventBus;
 
 class AppServiceProvider extends ServiceProvider
@@ -50,6 +36,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ContractAuthService::class, AuthService::class);
 
         $this->app->bind(\App\Services\Api\Contracts\ProfileService::class, \App\Services\Api\ProfileService::class);
+
+        $this->app->singleton('centrifugo', static fn () => new \phpcent\Client(
+            getenv('CENTRIFUGO_API_HOST'),
+            getenv('CENTRIFUGO_API_KEY'),
+            getenv('CENTRIFUGO_SECRET')
+        ));
 
         // // Services
         // $this->app->bind(RoleServiceInterface::class, RoleService::class);

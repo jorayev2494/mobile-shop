@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Order\Domain\Order;
 
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderAddressUuid;
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderCardUuid;
-// use Project\Domains\Client\Order\Domain\Order\ValueObjects\OrderClientUuid;
-use Project\Domains\Client\Order\Domain\Order\ValueObjects\Description;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Email;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Phone;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Uuid;

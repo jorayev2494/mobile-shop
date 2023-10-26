@@ -9,6 +9,7 @@ use Project\Domains\Admin\Manager\Domain\Manager\Manager;
 use Project\Domains\Admin\Manager\Domain\Manager\ManagerRepositoryInterface;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerUuid;
 use Project\Shared\Domain\Bus\Query\QueryHandlerInterface;
+use Project\Shared\Domain\DomainException;
 
 final class QueryHandler implements QueryHandlerInterface
 {
@@ -23,7 +24,7 @@ final class QueryHandler implements QueryHandlerInterface
         $manager = $this->repository->findByUuid(ManagerUuid::fromValue($query->uuid));
 
         if ($manager === null) {
-            throw new ModelNotFoundException();
+            throw new DomainException('Manager not found', 404);
         }
 
         return $manager;

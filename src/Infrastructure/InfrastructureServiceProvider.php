@@ -7,7 +7,7 @@ namespace Project\Infrastructure;
 use Illuminate\Support\ServiceProvider;
 use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
 use Project\Shared\Application\AuthorizationInterface;
-use Project\Shared\Domain\AbstractFlasher;
+use Project\Shared\Domain\FlasherInterface;
 use Project\Shared\Domain\CodeGeneratorInterface;
 use Project\Shared\Domain\FilesystemInterface;
 use Project\Shared\Domain\LoggerInterface;
@@ -40,6 +40,6 @@ final class InfrastructureServiceProvider extends ServiceProvider
         $this->app->bind(MailerInterface::class, static fn () => new Mailer(Transport::fromDsn(env('MAILER_DSN'))));
         $this->app->bind(FilesystemInterface::class, LaravelFilesystem::class);
         $this->app->singleton(PasswordHasherInterface::class, PasswordHasher::class);
-        $this->app->singleton(AbstractFlasher::class, Flasher::class);
+        $this->app->singleton(FlasherInterface::class, Flasher::class);
     }
 }

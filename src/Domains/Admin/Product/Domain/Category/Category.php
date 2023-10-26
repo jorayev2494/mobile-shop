@@ -111,7 +111,7 @@ class Category extends AggregateRoot
 
     public function changeIsActive(bool $isActive): void
     {
-        if ($this->isActive === $isActive) {
+        if ($this->isActive !== $isActive) {
             $this->isActive = $isActive;
         }
     }

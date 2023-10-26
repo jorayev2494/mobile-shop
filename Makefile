@@ -18,9 +18,9 @@ server-init-docker:									## Init Docker
 server-install:										## Install project
 	@make -s server-init
 
-server-test:										## Run test
-	DB_HOST=test-postgres
-	DB_PORT=54322
+test:												## Run test
+	# DB_HOST=test-postgres
+	# DB_PORT=54322
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan test
 
 server-admin-database-diff:							## Run Admin database diff

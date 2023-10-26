@@ -37,7 +37,7 @@ class Client
     #[ORM\Column(type: EmailType::NAME)]
     private Email $email;
 
-    #[ORM\Column(type: PhoneType::NAME)]
+    #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?Phone $phone;
 
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'author', cascade: ['persist', 'remove'])]

@@ -13,6 +13,7 @@ final class Command implements CommandInterface
         public readonly string $firstName,
         public readonly string $lastName,
         public readonly string $email,
+        public readonly ?string $phone,
         public readonly int $roleId,
     ) {
 

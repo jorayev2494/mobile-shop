@@ -73,6 +73,15 @@ class Currency extends AggregateRoot
         return $currency;
     }
 
+    public static function fromPrimitives(string $uuid, string $value, bool $isActive): self
+    {
+        return new self(
+            Uuid::fromValue($uuid),
+            Value::fromValue($value),
+            $isActive
+        );
+    }
+
     public function getUuid(): Uuid
     {
         return $this->uuid;

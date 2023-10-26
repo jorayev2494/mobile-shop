@@ -6,13 +6,6 @@ namespace Project\Domains\Client\Authentication\Infrastructure;
 
 use App\Http\Controllers\Api\Client\Authentication\RegisterController;
 use App\Providers\ClientDomainServiceProvider;
-use Illuminate\Support\ServiceProvider;
-use Project\Domains\Client\Authentication\Application\Commands\Login\CommandHandler as LoginCommandHandler;
-use Project\Domains\Client\Authentication\Application\Commands\Register\CommandHandler as RegisterCommandHandler;
-use Project\Domains\Client\Authentication\Application\Commands\RestorePasswordCode\CommandHandler as RestoreCodeCommandHandler;
-use Project\Domains\Client\Authentication\Application\Commands\RestorePassword\CommandHandler as RestorePasswordCommandHandler;
-use Project\Domains\Client\Authentication\Application\Subscribers\ProfileEmailWasUpdatedDomainEventSubscriber;
-use Project\Domains\Client\Authentication\Application\Subscribers\RestorePasswordCodeWasCreatedDomainEventSubscriber;
 use Project\Domains\Client\Authentication\Domain\Code\CodeRepositoryInterface;
 use Project\Domains\Client\Authentication\Domain\Device\DeviceRepositoryInterface;
 use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
@@ -36,17 +29,17 @@ final class AuthenticationServiceProvider extends ClientDomainServiceProvider
 
     /** @var array<array-key, string> */
     protected const COMMAND_HANDLERS = [
-        RegisterCommandHandler::class,
-        LoginCommandHandler::class,
-        // Restore
-        RestoreCodeCommandHandler::class,
-        RestorePasswordCommandHandler::class,
+        \Project\Domains\Client\Authentication\Application\Commands\Register\CommandHandler::class,
+        \Project\Domains\Client\Authentication\Application\Commands\Login\CommandHandler::class,
+        \Project\Domains\Client\Authentication\Application\Commands\RestorePasswordCode\CommandHandler::class,
+        \Project\Domains\Client\Authentication\Application\Commands\RestorePassword\CommandHandler::class,
     ];
 
     /** @var array<array-key, string> */
     protected const DOMAIN_EVENT_SUBSCRIBERS = [
-        RestorePasswordCodeWasCreatedDomainEventSubscriber::class,
-        ProfileEmailWasUpdatedDomainEventSubscriber::class,
+        \Project\Domains\Client\Authentication\Application\Subscribers\MemberWasRegisteredDomainEventSubscriber::class,
+        \Project\Domains\Client\Authentication\Application\Subscribers\ProfileEmailWasUpdatedDomainEventSubscriber::class,
+        \Project\Domains\Client\Authentication\Application\Subscribers\RestorePasswordCodeWasCreatedDomainEventSubscriber::class,
     ];
 
     /** @var array<string, string> */
@@ -75,14 +68,5 @@ final class AuthenticationServiceProvider extends ClientDomainServiceProvider
         ])
         ->needs(CommandBusInterface::class)
         ->give(RabbitMQCommandBus::class);
-
-        // $this->app->tag(RegisterCommandHandler::class, 'command_handler');
-        // $this->app->tag(LoginCommandHandler::class, 'command_handler');
-        // Restore
-        // $this->app->tag(RestoreCodeCommandHandler::class, 'command_handler');
-        // $this->app->tag(RestorePasswordCommandHandler::class, 'command_handler');
-
-        // $this->app->tag(RestorePasswordCodeWasCreatedDomainEventSubscriber::class, 'domain_event_subscriber');
-        // $this->app->tag(ProfileEmailWasUpdatedDomainEventSubscriber::class, 'domain_event_subscriber');
     }
 }

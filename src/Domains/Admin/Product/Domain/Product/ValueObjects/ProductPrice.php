@@ -38,6 +38,21 @@ final class ProductPrice implements Arrayable
         return (! is_null($this->discountPercentage) && $discount = $this->discountPercentage) > 0 ? ($this->value / 100) * $discount : 0;
     }
 
+    public function getValue(): float
+    {
+        return $this->value;
+    }
+
+    public function getDiscountPercentage(): ?int
+    {
+        return $this->discountPercentage;
+    }
+
+    public function getCurrencyUuid(): string
+    {
+        return $this->currencyUuid;
+    }
+
     public function isEquals(self $productPrice): bool
     {
         return $this->value === $productPrice->value && $this->discountPercentage === $productPrice->discountPercentage && $this->currencyUuid === $productPrice->currencyUuid;

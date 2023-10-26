@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Domain\Product;
 
+use App\Models\Currency;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,10 +62,10 @@ class Product extends AggregateRoot
     private bool $isActive;
 
     #[ORM\Column(name: 'created_at', type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $createdAt;
+    private ?DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
-    private DateTimeImmutable $updatedAt;
+    private ?DateTimeImmutable $updatedAt = null;
 
     private function __construct(
         ProductUuid $uuid,
@@ -74,6 +75,8 @@ class Product extends AggregateRoot
         ProductDescription $description,
         int $viewedCount = 0,
         bool $isActive = true,
+        DateTimeImmutable $createdAt = null,
+        DateTimeImmutable $updatedAt = null
     ) {
         $this->uuid = $uuid;
         $this->title = $title;
@@ -84,11 +87,11 @@ class Product extends AggregateRoot
         $this->isActive = $isActive;
         $this->medias = new ArrayCollection();
 
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        // $this->createdAt = $createdAt;
+        // $this->updatedAt = $updatedAt;
     }
 
-    public static function fromPrimitives(string $uuid, string $title, Category $category, ProductPrice $price, string $description, int $viewedCount, bool $isActive): self
+    public static function fromPrimitives(string $uuid, string $title, Category $category, ProductPrice $price, string $description, int $viewedCount, bool $isActive, DateTimeImmutable $createdAt = null, DateTimeImmutable $updatedAt = null): self
     {
         return new self(
             ProductUUID::fromValue($uuid),
@@ -98,6 +101,8 @@ class Product extends AggregateRoot
             ProductDescription::fromValue($description),
             $viewedCount,
             $isActive,
+            $createdAt,
+            $updatedAt,
         );
     }
 
@@ -108,8 +113,10 @@ class Product extends AggregateRoot
         ProductPrice $price,
         ProductDescription $description,
         bool $isActive = true,
+        DateTimeImmutable $createdAt = null,
+        DateTimeImmutable $updatedAt = null
     ): self {
-        $product = new self($uuid, $title, $category, $price, $description, 0, $isActive);
+        $product = new self($uuid, $title, $category, $price, $description, 0, $isActive, $createdAt, $updatedAt);
 
         $event = new ProductWasCreatedDomainEvent(
             $product->uuid->value,
@@ -194,14 +201,19 @@ class Product extends AggregateRoot
         }
     }
 
+    public function getViewedCount(): int
+    {
+        return $this->viewedCount;
+    }
+
     public function delete(): void
     {
         $this->record(new ProductWasDeletedDomainEvent($this->uuid->value));
     }
 
-    public function getMedias(): iterable
+    public function getMedias(): array
     {
-        return $this->medias->getIterator();
+        return $this->medias->toArray();
     }
 
     public function addMedia(Media $media): void
@@ -220,17 +232,27 @@ class Product extends AggregateRoot
         $eventHandler($event);
     }
 
+    public function setCreatedAt(DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
     #[ORM\PrePersist]
     public function prePersist(PrePersistEventArgs $event): void
     {
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->createdAt ??= new DateTimeImmutable();
+        $this->updatedAt ??= new DateTimeImmutable();
     }
 
     #[ORM\PreUpdate]
     public function preUpdate(PreUpdateEventArgs $event): void
     {
-        $this->updatedAt = new DateTimeImmutable();
+        $this->updatedAt ??= new DateTimeImmutable();
     }
 
     public function toArray(): array
