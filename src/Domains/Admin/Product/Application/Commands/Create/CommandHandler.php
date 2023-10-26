@@ -56,6 +56,7 @@ final class CommandHandler implements CommandHandlerInterface
         );
 
         $this->uploadMedias($product, $command->medias);
+        // dd($product);
         $this->repository->save($product);
         $this->eventBus->publish(...$product->pullDomainEvents());
     }

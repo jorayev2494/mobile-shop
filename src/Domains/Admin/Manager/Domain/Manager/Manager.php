@@ -164,6 +164,13 @@ class Manager extends AggregateRoot
 		$this->phone = $phone;
 	}
 
+    public function changePhone(ManagerPhone $phone): void
+    {
+        if ($this->phone->isNotEquals($phone)) {
+		    $this->phone = $phone;
+        }
+	}
+
     public function setRoleId(?int $roleId): void
     {
         $this->roleId = $roleId;

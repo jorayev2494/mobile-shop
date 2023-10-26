@@ -24,7 +24,7 @@ final class PhoneType extends Type
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
-        return $value->value;
+        return $value?->value;
     }
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ManagerPhone

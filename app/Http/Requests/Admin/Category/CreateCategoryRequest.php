@@ -18,7 +18,7 @@ class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'value' => ['required', 'string', 'unique:admin_pgsql.category_categories,value'],
+            'value' => ['required', 'string', 'unique:admin_pgsql.product_categories,value'],
             'is_active' => ['boolean'],
         ];
     }

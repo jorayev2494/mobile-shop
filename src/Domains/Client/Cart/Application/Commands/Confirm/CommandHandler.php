@@ -8,10 +8,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Cart\Domain\Cart\CartRepositoryInterface;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\AuthorUuid;
 use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\OrderConfirmData;
-use Project\Domains\Client\Cart\Domain\Cart\ValueObjects\StatusEnum;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
-use Project\Shared\Domain\DomainException;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -26,7 +24,6 @@ final class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        // dd($command);
         $cart = $this->cartRepository->findCartByAuthorUuid(AuthorUuid::fromValue($this->authManager->uuid()));
 
         $cart ?? throw new ModelNotFoundException();

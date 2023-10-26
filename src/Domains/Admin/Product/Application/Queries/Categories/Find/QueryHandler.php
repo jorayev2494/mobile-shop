@@ -22,7 +22,7 @@ final class QueryHandler implements QueryHandlerInterface
         $category = $this->repository->findByUuid(Uuid::fromValue($query->uuid));
 
         if ($category === null) {
-            throw new DomainException('Category not found');
+            throw new DomainException('Category not found', 404);
         }
 
         return $category;

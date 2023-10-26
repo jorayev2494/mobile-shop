@@ -23,7 +23,7 @@ class UpdateCategoryRequest extends FormRequest
             'value' => [
                 'required',
                 'string',
-                Rule::unique('admin_pgsql.category_categories', 'value')->ignore($this->route()->parameter('uuid'), 'uuid'),
+                Rule::unique('admin_pgsql.product_categories', 'value')->ignore($this->route()->parameter('uuid'), 'uuid'),
             ],
             'is_active' => ['boolean'],
         ];

@@ -32,11 +32,9 @@ class TestController
             'message' => 'Hello world! from PHP',
         ];
 
-        $channel .= '#fc5175e5-c066-4b52-a10b-148baee83365';
+        $channel .= '#bf378ef9-a54e-40e5-bf24-62ee5081728e';
         
         $result = $this->flasher->publish($channel, $data);
-
-        // dd($result);
 
         return $this->response->json([$result, $channel]);
     }

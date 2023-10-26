@@ -23,7 +23,6 @@ final class CommandHandler implements CommandHandlerInterface
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
         private readonly FilesystemInterface $filesystem,
-        private readonly AuthManagerInterface $authManager,
         private readonly EventBusInterface $eventBus,
     ) {
 
@@ -31,7 +30,7 @@ final class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $profile = $this->repository->findByUuid($this->authManager->uuid());
+        $profile = $this->repository->findByUuid($command->uuid);
 
         if ($profile === null) {
             throw new ModelNotFoundException();
@@ -43,8 +42,6 @@ final class CommandHandler implements CommandHandlerInterface
         $profile->changeLastName(ProfileLastName::fromValue($command->lastName));
         $profile->changeEmail(ProfileEmail::fromValue($command->email));
         $profile->changePhone(ProfilePhone::fromValue($command->phone));
-
-        // $profile->changeAvatar(ProfileAvatar::fromValue($command->avatar));
 
         $this->repository->save($profile);
         $this->eventBus->publish(...$profile->pullDomainEvents());

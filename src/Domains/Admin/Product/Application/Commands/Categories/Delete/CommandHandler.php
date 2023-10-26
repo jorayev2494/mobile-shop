@@ -9,6 +9,7 @@ use Project\Domains\Admin\Product\Domain\Category\CategoryRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Category\ValueObjects\Uuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
+use Project\Shared\Domain\DomainException;
 
 final class CommandHandler implements CommandHandlerInterface
 {
@@ -24,7 +25,7 @@ final class CommandHandler implements CommandHandlerInterface
         $category = $this->repository->findByUuid(Uuid::fromValue($command->uuid));
 
         if ($category === null) {
-            throw new ModelNotFoundException();
+            throw new DomainException('Category not found', 404);
         }
 
         $category->delete();

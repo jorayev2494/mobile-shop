@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Project\Shared\Infrastructure;
 
-use Project\Shared\Domain\AbstractFlasher;
+use Project\Shared\Domain\FlasherInterface;
 
-class Flasher extends AbstractFlasher
+class Flasher implements FlasherInterface
 {
     
     public function __construct(
@@ -17,7 +17,6 @@ class Flasher extends AbstractFlasher
 
     public function publish(string $channel, array $data, string $type = 'success'): mixed
     {
-        // return $this->client->publish($channel, [ ...$data, ...compact('type') ]);
-        return $this->client->publish($channel, $data);
+        return $this->client->publish($channel, [ ...$data, ...compact('type') ]);
     }
 }

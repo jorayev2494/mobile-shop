@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Project\Domains\Admin\Product\Application\Queries\Currencies\Show;
 
-use DomainException;
 use Project\Domains\Admin\Product\Domain\Currency\Currency;
 use Project\Domains\Admin\Product\Domain\Currency\CurrencyRepositoryInterface;
 use Project\Domains\Admin\Product\Domain\Currency\ValueObjects\Uuid;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
-use Project\Shared\Domain\Bus\Event\EventBusInterface;
+use Project\Shared\Domain\DomainException;
 
 final class QueryHandler implements CommandHandlerInterface
 {
@@ -24,7 +23,7 @@ final class QueryHandler implements CommandHandlerInterface
         $currency = $this->currencyRepository->findByUuid(Uuid::fromValue($query->uuid));
 
         if ($currency === null) {
-            throw new DomainException('Currency not found');
+            throw new DomainException('Currency not found', 404);
         }
 
         return $currency;

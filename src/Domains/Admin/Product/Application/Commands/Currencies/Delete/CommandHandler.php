@@ -24,7 +24,7 @@ final class CommandHandler implements CommandHandlerInterface
         $currency = $this->currencyRepository->findByUuid(Uuid::fromValue($command->uuid));
 
         if ($currency === null) {
-            throw new DomainException('Currency not found');
+            throw new DomainException('Currency not found', 404);
         }
 
         $currency->delete();
