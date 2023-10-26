@@ -16,6 +16,6 @@ final class UpdateOrderCommandHandler implements CommandHandlerInterface
 
     public function __invoke(UpdateOrderCommand $command): void
     {
-        
+
     }
 }

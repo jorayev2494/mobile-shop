@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types= 1);
+declare(strict_types=1);
 
 namespace Project\Domains\Admin\Profile\Domain\Profile\Events;
 
@@ -13,8 +13,7 @@ class ProfileLastNameWasChangedDomainEvent extends DomainEvent
         public readonly string $lastName,
         string $eventId = null,
         string $occurredOn = null
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

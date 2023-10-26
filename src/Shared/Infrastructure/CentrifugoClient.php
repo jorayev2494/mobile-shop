@@ -12,7 +12,7 @@ class CentrifugoClient
     private readonly Client $client;
 
     public function __construct(
-        
+
     ) {
         // $this->client = new Client(
         //     getenv('CENTRIFUGO_API_HOST'),

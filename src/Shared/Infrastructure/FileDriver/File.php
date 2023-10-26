@@ -171,10 +171,10 @@ abstract class File implements Arrayable
         $this->updatedAt = new DateTimeImmutable();
     }
 
-	public function getMimeType(): string
+    public function getMimeType(): string
     {
-		return $this->mimeType;
-	}
+        return $this->mimeType;
+    }
 
     public function isEquals(self $other): bool
     {

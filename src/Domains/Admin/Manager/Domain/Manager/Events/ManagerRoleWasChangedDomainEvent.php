@@ -13,8 +13,7 @@ final class ManagerRoleWasChangedDomainEvent extends DomainEvent
         public readonly ?int $roleId,
         string $eventId = null,
         string $occurredOn = null,
-    )
-    {
+    ) {
         parent::__construct($uuid, $eventId, $occurredOn);
     }
 

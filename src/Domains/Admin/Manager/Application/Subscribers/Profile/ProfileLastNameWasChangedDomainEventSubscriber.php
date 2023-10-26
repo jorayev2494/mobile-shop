@@ -15,9 +15,8 @@ class ProfileLastNameWasChangedDomainEventSubscriber implements DomainEventSubsc
 {
     public function __construct(
         private readonly ManagerRepositoryInterface $repository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array

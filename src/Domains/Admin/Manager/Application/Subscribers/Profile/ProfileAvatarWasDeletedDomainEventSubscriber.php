@@ -15,9 +15,8 @@ class ProfileAvatarWasDeletedDomainEventSubscriber implements DomainEventSubscri
     public function __construct(
         private readonly ManagerRepositoryInterface $repository,
         private readonly AvatarRepositoryInterface $avatarRepository,
-    )
-    {
-        
+    ) {
+
     }
 
     public static function subscribedTo(): array
