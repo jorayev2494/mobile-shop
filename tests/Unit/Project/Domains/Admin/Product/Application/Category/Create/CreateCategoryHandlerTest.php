@@ -8,16 +8,16 @@ use PHPUnit\Framework\TestCase;
 use Project\Domains\Admin\Product\Application\Commands\Categories\Create\Command;
 use Project\Domains\Admin\Product\Application\Commands\Categories\Create\CommandHandler;
 use Project\Domains\Admin\Product\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasCreatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Category\CategoryFactory;
 
+/**
+ * @group category
+ * @group category-application
+ */
 class CreateCategoryHandlerTest extends TestCase
 {
-    public function setUp(): void
-    {
-
-    }
-
     public function testCreateCategory(): void
     {
         $handler = new CommandHandler(
@@ -29,7 +29,15 @@ class CreateCategoryHandlerTest extends TestCase
                         ->method('save');
 
         $eventBus->expects($this->once())
-                ->method('publish');
+                ->method('publish')
+                // ->with($this->isInstanceOf(CategoryWasCreatedDomainEvent::class));
+                ->with(
+                    new CategoryWasCreatedDomainEvent(
+                        CategoryFactory::UUID,
+                        CategoryFactory::CATEGORY,
+                        CategoryFactory::IS_ACTIVE,
+                    )
+                );
     
         $handler(
             new Command(

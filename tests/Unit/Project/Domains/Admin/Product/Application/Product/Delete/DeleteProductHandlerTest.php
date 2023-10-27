@@ -17,6 +17,10 @@ use Project\Shared\Domain\FilesystemInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Product\ProductFactory;
 
+/**
+ * @group product
+ * @group product-application
+ */
 class DeleteProductHandlerTest extends TestCase
 {
     public function setUp(): void

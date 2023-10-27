@@ -20,6 +20,10 @@ use Tests\Unit\Project\Domains\Admin\Product\Application\Category\CategoryFactor
 use Tests\Unit\Project\Domains\Admin\Product\Application\Currency\CurrencyFactory;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Product\ProductFactory;
 
+/**
+ * @group product
+ * @group product-application
+ */
 class UpdateProductHandlerTest extends TestCase
 {
     private const CATEGORY_UUID = '5524eedd-ff50-4287-a006-b86a20b6f87a';

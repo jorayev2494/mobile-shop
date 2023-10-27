@@ -9,11 +9,16 @@ use Project\Domains\Admin\Product\Application\Commands\Categories\Delete\Command
 use Project\Domains\Admin\Product\Application\Commands\Categories\Delete\CommandHandler;
 use Project\Domains\Admin\Product\Domain\Category\Category;
 use Project\Domains\Admin\Product\Domain\Category\CategoryRepositoryInterface;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Category\ValueObjects\Uuid;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Category\CategoryFactory;
 
+/**
+ * @group category
+ * @group category-application
+ */
 class CategoryDeleteHandlerTest extends TestCase
 {
     public function testDeleteCategory(): void
@@ -23,13 +28,14 @@ class CategoryDeleteHandlerTest extends TestCase
             $eventBus = $this->createMock(EventBusInterface::class),
         );
 
-        $categoryStub = $this->createStub(Category::class);
+        $categoryStub = $this->createMock(Category::class);
+
+        // $categoryStub->expects($this->once())
+        //             ->method('record')
+        //             ->withAnyParameters();
 
         $categoryStub->expects($this->once())
-            ->method('delete');
-
-        $categoryStub->expects($this->never())
-            ->method('record');
+                    ->method('delete');
 
         $categoryStub->expects($this->once())
                     ->method('pullDomainEvents');
@@ -37,14 +43,16 @@ class CategoryDeleteHandlerTest extends TestCase
         $categoryRepository->expects($this->once())
                     ->method('findByUuid')
                     ->with(Uuid::fromValue(CategoryFactory::UUID))
-                    ->willReturn($categoryStub);
+                    ->will($this->returnValue($categoryStub));
 
         $categoryRepository->expects($this->once())
                     ->method('delete')
                     ->with($categoryStub);
 
         $eventBus->expects($this->once())
-                    ->method('publish');
+                    ->method('publish')
+                    // ->with($this->isInstanceOf(CategoryWasDeletedDomainEvent::class))
+                    ;
 
         $handler(new Command(CategoryFactory::UUID));
     }

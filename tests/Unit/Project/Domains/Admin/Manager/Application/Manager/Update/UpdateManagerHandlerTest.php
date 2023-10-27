@@ -18,6 +18,10 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Manager\Application\Manager\ManagerFactory;
 
+/**
+ * @group manager
+ * @group manager-application
+ */
 class UpdateManagerHandlerTest extends TestCase
 {
     public function testUpdateManager(): void

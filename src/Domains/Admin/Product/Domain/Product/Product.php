@@ -14,8 +14,12 @@ use Doctrine\ORM\Event\{PrePersistEventArgs, PreUpdateEventArgs};
 use Illuminate\Contracts\Support\Arrayable;
 use Project\Domains\Admin\Product\Domain\Category\Category;
 use Project\Domains\Admin\Product\Domain\Media\Media;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductCategoryWasChangedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductDescriptionWasChangedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasAddedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductMediaWasDeletedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductPriceWasChangedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\Events\ProductTitleWasChangedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductDescription;
@@ -47,7 +51,6 @@ class Product extends AggregateRoot
     private Category $category;
 
     #[ORM\Embedded(class: ProductPrice::class, columnPrefix: 'price_')]
-
     private ProductPrice $price;
 
     #[ORM\OneToMany(targetEntity: Media::class, mappedBy: 'product', cascade: ['persist', 'remove'])]
@@ -87,8 +90,8 @@ class Product extends AggregateRoot
         $this->isActive = $isActive;
         $this->medias = new ArrayCollection();
 
-        // $this->createdAt = $createdAt;
-        // $this->updatedAt = $updatedAt;
+        $this->createdAt = $createdAt;
+        $this->updatedAt = $updatedAt;
     }
 
     public static function fromPrimitives(string $uuid, string $title, Category $category, ProductPrice $price, string $description, int $viewedCount, bool $isActive, DateTimeImmutable $createdAt = null, DateTimeImmutable $updatedAt = null): self
@@ -151,7 +154,8 @@ class Product extends AggregateRoot
     public function changeTitle(ProductTitle $title): void
     {
         if ($this->title->isNotEquals($title)) {
-            $this->title = $title;
+            $this->setTitle($title);
+            $this->record(new ProductTitleWasChangedDomainEvent($this->getUuid()->value, $this->getTitle()->value));
         }
     }
 
@@ -160,10 +164,16 @@ class Product extends AggregateRoot
         return $this->category;
     }
 
+    public function setCategory(Category $category): void
+    {
+        $this->category = $category;
+    }
+
     public function changeCategory(Category $category): void
     {
         if ($this->category->getValue()->value !== $category->getValue()->value) {
-            $this->category = $category;
+            $this->setCategory($category);
+            $this->record(new ProductCategoryWasChangedDomainEvent($this->uuid->value, $this->category->getUuid()->value));
         }
     }
 
@@ -180,7 +190,8 @@ class Product extends AggregateRoot
     public function changePrice(ProductPrice $price): void
     {
         if ($this->price->isNotEquals($price)) {
-            $this->price = $price;
+            $this->setPrice($price);
+            $this->record(new ProductPriceWasChangedDomainEvent($this->uuid->value, $this->price->getValue()));
         }
     }
 
@@ -197,7 +208,8 @@ class Product extends AggregateRoot
     public function changeDescription(ProductDescription $description): void
     {
         if ($this->description->isNotEquals($description)) {
-            $this->description = $description;
+            $this->setDescription($description);
+            $this->record(new ProductDescriptionWasChangedDomainEvent($this->uuid->value, $this->description->value));
         }
     }
 
@@ -226,15 +238,32 @@ class Product extends AggregateRoot
     public function removeMedia(Media $media): void
     {
         $this->medias->removeElement($media);
-        $this->record($event = new ProductMediaWasDeletedDomainEvent($this->uuid->value, $media->getUuid()));
+        $this->record(new ProductMediaWasDeletedDomainEvent($this->uuid->value, $media->getUuid()));
+    }
 
-        $eventHandler = app()->make(\Project\Domains\Client\Order\Application\Subscribers\Product\Media\ProductMediaWasDeletedDomainEventSubscriber::class);
-        $eventHandler($event);
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
     public function setCreatedAt(DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): DateTimeImmutable
+    {
+        return $this->updatedAt;
     }
 
     public function setUpdatedAt(DateTimeImmutable $updatedAt): void

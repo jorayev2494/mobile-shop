@@ -10,6 +10,10 @@ use Project\Domains\Admin\Manager\Application\Commands\Create\CommandHandler;
 use Project\Domains\Admin\Manager\Domain\Manager\ManagerRepositoryInterface;
 use Tests\Unit\Project\Domains\Admin\Manager\Application\Manager\ManagerFactory;
 
+/**
+ * @group manager
+ * @group manager-application
+ */
 class CreateManagerHandlerTest extends TestCase
 {
     public function testCreateManager(): void

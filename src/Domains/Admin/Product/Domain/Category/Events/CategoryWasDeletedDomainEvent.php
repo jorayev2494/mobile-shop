@@ -23,7 +23,7 @@ final class CategoryWasDeletedDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'admin.category.was.deleted';
+        return 'admin_category.was.deleted';
     }
 
     public function toArray(): array

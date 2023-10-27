@@ -11,6 +11,7 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Project\Domains\Admin\Manager\Domain\Avatar\Avatar;
 use Project\Domains\Admin\Manager\Domain\Manager\Events\ManagerRoleWasChangedDomainEvent;
+use Project\Domains\Admin\Manager\Domain\Manager\Events\ManagerWasCreatedDomainEvent;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerEmail;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerFirstName;
 use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerLastName;
@@ -57,16 +58,18 @@ class Manager extends AggregateRoot
     #[ORM\Column(name: 'updated_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $updatedAt;
 
-    public function __construct(
+    private function __construct(
         ManagerUuid $uuid,
         ManagerFirstName $firstName,
         ManagerLastName $lastName,
         ManagerEmail $email,
+        ManagerPhone $phone = null,
     ) {
         $this->uuid = $uuid;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->email = $email;
+        $this->phone = $phone;
         $this->roleId = null;
     }
 
@@ -77,6 +80,16 @@ class Manager extends AggregateRoot
         ManagerEmail $email,
     ) {
         $manager = new self($uuid, $firstName, $lastName, $email);
+        $manager->record(
+            new ManagerWasCreatedDomainEvent(
+                $manager->uuid->value,
+                $manager->lastName->value,
+                $manager->firstName->value,
+                $manager->email->value,
+                $manager->phone?->value,
+                $manager->roleId,
+            )
+        );
 
         return $manager;
     }
@@ -91,6 +104,11 @@ class Manager extends AggregateRoot
         );
 
         return $manager;
+    }
+
+    public function getUuid(): ManagerUuid
+    {
+        return $this->uuid;
     }
 
     public function getFirstName(): ManagerFirstName
