@@ -12,6 +12,10 @@ use Project\Domains\Admin\Product\Domain\Currency\ValueObjects\Uuid;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Currency\CurrencyFactory;
 
+/**
+ * @group currency
+ * @group currency-application
+ */
 class ShowCurrencyHandlerTest extends TestCase
 {
     public function testShowCurrency(): void

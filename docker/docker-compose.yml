@@ -82,8 +82,9 @@ services:
     <<: *php-cli
     container_name: ${COMPOSE_PROJECT_NAME}-php-cli
     restart: 'no'
-    # depends_on:
-        # - test-postgres
+    links:
+        - postgres
+        - rabbitmq
     networks:
         - shop-network
         - test-shop-network

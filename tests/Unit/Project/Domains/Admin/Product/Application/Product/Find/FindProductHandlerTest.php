@@ -12,6 +12,10 @@ use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Product\ProductFactory;
 
+/**
+ * @group product
+ * @group product-application
+ */
 class FindProductHandlerTest extends TestCase
 {
     public function testFind(): void

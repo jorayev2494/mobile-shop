@@ -11,6 +11,10 @@ use Project\Domains\Admin\Product\Domain\Currency\CurrencyRepositoryInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Currency\CurrencyFactory;
 
+/**
+ * @group currency
+ * @group currency-application
+ */
 class CreateCurrencyHandlerTest extends TestCase
 {
     public function testCreateCurrency(): void

@@ -12,6 +12,10 @@ use Project\Domains\Admin\Product\Domain\Category\ValueObjects\Uuid;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Category\CategoryFactory;
 
+/**
+ * @group category
+ * @group category-application
+ */
 class UpdateCategoryHandlerTest extends TestCase
 {
     public function testUpdateCategory(): void

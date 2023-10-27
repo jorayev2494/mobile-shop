@@ -8,15 +8,15 @@ use Project\Shared\Domain\ValueObject\UuidValueObject;
 
 abstract class DomainEvent implements Event
 {
-    private string $aggregateId;
-    private string $eventId;
-    private string $occurredOn;
+    private readonly string $eventId;
 
-    public function __construct(string $aggregateId, string $eventId = null, string $occurredOn = null)
+    private readonly string $occurredOn;
+
+    public function __construct(private readonly string $aggregateId, string $eventId = null, string $occurredOn = null)
     {
-        $this->aggregateId = $aggregateId;
         $this->eventId = $eventId ?: UuidValueObject::generate()->value;
         $this->occurredOn = $occurredOn ?: (new \DateTimeImmutable())->format('Y-m-d H:i:s.u T');
+        // $this->occurredOn = $occurredOn ?: (new \DateTimeImmutable())->format(\DateTimeInterface::ATOM);
     }
 
     abstract public static function fromPrimitives(
@@ -28,17 +28,17 @@ abstract class DomainEvent implements Event
 
     abstract public static function eventName(): string;
 
-    public function aggregateId(): string
+    final public function aggregateId(): string
     {
         return $this->aggregateId;
     }
 
-    public function eventId(): string
+    final public function eventId(): string
     {
         return $this->eventId;
     }
 
-    public function occurredOn(): string
+    final public function occurredOn(): string
     {
         return $this->occurredOn;
     }

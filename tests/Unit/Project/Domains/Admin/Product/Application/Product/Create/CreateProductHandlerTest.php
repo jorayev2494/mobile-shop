@@ -20,6 +20,10 @@ use Tests\Unit\Project\Domains\Admin\Product\Application\Category\CategoryFactor
 use Tests\Unit\Project\Domains\Admin\Product\Application\Currency\CurrencyFactory;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Product\ProductFactory;
 
+/**
+ * @group product
+ * @group product-application
+ */
 class CreateProductHandlerTest extends TestCase
 {
 

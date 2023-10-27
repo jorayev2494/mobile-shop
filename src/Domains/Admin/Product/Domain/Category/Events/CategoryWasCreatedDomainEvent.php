@@ -30,7 +30,7 @@ final class CategoryWasCreatedDomainEvent extends DomainEvent
 
     public static function eventName(): string
     {
-        return 'admin.category.was.created';
+        return 'admin_category.was.created';
     }
 
     public function toArray(): array

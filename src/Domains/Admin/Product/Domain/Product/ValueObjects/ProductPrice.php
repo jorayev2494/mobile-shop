@@ -60,7 +60,7 @@ final class ProductPrice implements Arrayable
 
     public function isNotEquals(self $productPrice): bool
     {
-        return $this->value !== $productPrice->value && $this->discountPercentage !== $productPrice->discountPercentage && $this->currencyUuid !== $productPrice->currencyUuid;
+        return $this->value !== $productPrice->value && $this->discountPercentage !== $productPrice->discountPercentage; // && $this->currencyUuid !== $productPrice->currencyUuid;
     }
 
     public function toArray(): array

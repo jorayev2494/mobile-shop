@@ -12,6 +12,10 @@ use Project\Domains\Admin\Manager\Domain\Manager\ValueObjects\ManagerUuid;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Manager\Application\Manager\ManagerFactory;
 
+/**
+ * @group manager
+ * @group manager-application
+ */
 class ShowManagerHandlerTest extends TestCase
 {
     public function testShowManager(): void

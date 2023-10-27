@@ -13,6 +13,10 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\DomainException;
 use Tests\Unit\Project\Domains\Admin\Product\Application\Currency\CurrencyFactory;
 
+/**
+ * @group currency
+ * @group currency-application
+ */
 class DeleteCurrencyHandlerTest extends TestCase
 {
     public function testDeleteCurrency(): void

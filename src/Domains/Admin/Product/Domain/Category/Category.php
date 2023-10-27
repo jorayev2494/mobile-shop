@@ -11,6 +11,8 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryIsActiveWasChangedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Category\Events\CategoryValueWasChangedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Category\Events\CategoryWasDeletedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Category\ValueObjects\Uuid;
@@ -91,6 +93,7 @@ class Category extends AggregateRoot
     {
         if ($this->value->isNotEquals($value)) {
             $this->value = $value;
+            $this->record(new CategoryValueWasChangedDomainEvent($this->uuid->value, $this->value->value));
         }
     }
 
@@ -113,6 +116,7 @@ class Category extends AggregateRoot
     {
         if ($this->isActive !== $isActive) {
             $this->isActive = $isActive;
+            $this->record(new CategoryIsActiveWasChangedDomainEvent($this->uuid->value, $this->isActive));
         }
     }
 

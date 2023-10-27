@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\Admin\Manager\Domain\Manager\Events;
+namespace Project\Domains\Admin\Product\Domain\Category\Events;
 
 use Project\Shared\Domain\Bus\Event\DomainEvent;
 
-final class ManagerRoleWasChangedDomainEvent extends DomainEvent
+final class CategoryValueWasChangedDomainEvent extends DomainEvent
 {
     public function __construct(
         public readonly string $uuid,
-        public readonly ?int $roleId,
+        public readonly string $value,
         string $eventId = null,
         string $occurredOn = null,
     ) {
@@ -20,26 +20,26 @@ final class ManagerRoleWasChangedDomainEvent extends DomainEvent
     public static function fromPrimitives(string $id, array $body, string $eventId, string $occurredOn): self
     {
         [
-            'role_id' => $roleId,
+            'value' => $value,
         ] = $body;
 
-        return new self($id, $roleId, $eventId, $occurredOn);
+        return new self($id, $value, $eventId, $occurredOn);
     }
 
     public static function eventName(): string
     {
-        return 'admin_manager.role_id.was.changed';
+        return 'admin_category.value.was.changed';
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
-            'id' => $this->uuid,
+            'id' => $this->aggregateId(),
             'body' => [
-                'role_id' => $this->roleId,
+                'value' => $this->value,
             ],
             'event_id' => $this->eventId(),
-            'occurred_on' => $this->occurredOn()
+            'occurred_on' => $this->occurredOn(),
         ];
     }
 }

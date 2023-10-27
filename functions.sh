@@ -193,7 +193,10 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
 function test()
 {
     if [[ "$1" != '-h' ]]; then
-        docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./artisan test
+        docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./artisan test ${@:1}
+        # docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./vendor/bin/phpunit --colors=always ${@:1}
+    # else if [[ "$1" == 'phpunit' ]]; then
+    #     docker-compose --file $SERVER_COMPOSE_FILE_PATH run --rm php-cli ./vendor/bin/phpunit ${@:1}
     else
         echo -e "
 ${CYAN}Server command line interface for the Docker-based web development environment demo.
