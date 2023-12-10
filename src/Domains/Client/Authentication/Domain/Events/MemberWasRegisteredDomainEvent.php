@@ -10,8 +10,6 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
 {
     public function __construct(
         public readonly string $uuid,
-        public readonly string $firstName,
-        public readonly string $lastName,
         public readonly string $email,
         string $eventId = null,
         string $occurredOn = null
@@ -27,17 +25,15 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
     ): self {
         [
             'uuid' => $uuid,
-            'firstName' => $firstName,
-            'lastName' => $lastName,
             'email' => $email,
         ] = $body;
 
-        return new self($uuid, $firstName, $lastName, $email, $eventId, $occurredOn);
+        return new self($uuid, $email, $eventId, $occurredOn);
     }
 
     public static function eventName(): string
     {
-        return 'client.member.was.registered';
+        return 'client.was.registered';
     }
 
     public function toArray(): array
@@ -46,8 +42,6 @@ final class MemberWasRegisteredDomainEvent extends DomainEvent
             'id' => $this->uuid,
             'body' => [
                 'uuid' => $this->uuid,
-                'firstName' => $this->firstName,
-                'lastName' => $this->lastName,
                 'email' => $this->email,
             ],
             'event_id' => $this->eventId(),

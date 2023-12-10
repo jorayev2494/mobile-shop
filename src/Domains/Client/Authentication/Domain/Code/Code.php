@@ -9,13 +9,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Client\Authentication\Domain\Code\Events\RestorePasswordCodeWasCreatedDomainEvent;
 use Project\Domains\Client\Authentication\Domain\Member;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\Table('auth_codes')]
 #[ORM\HasLifecycleCallbacks]
-final class Code extends AggregateRoot
+class Code
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -27,7 +28,7 @@ final class Code extends AggregateRoot
 
     #[ORM\OneToOne(targetEntity: Member::class, inversedBy: 'code')]
     #[ORM\JoinColumn(name: 'author_uuid', referencedColumnName: 'uuid', unique: true)]
-    private Member $author;
+    private ?Member $author;
 
     #[ORM\Column(name: 'expired_at', type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiredAt;
@@ -42,17 +43,20 @@ final class Code extends AggregateRoot
     {
         $this->value = $value;
         $this->expiredAt = $expiredAt;
+        $this->author = null;
     }
 
-    public static function create(int $value, DateTimeImmutable $expiredAt): self
+    public static function fromPrimitives(int $value, DateTimeImmutable $expiredAt): self
     {
-        $code = new self($value, $expiredAt);
-        // $code->record(new RestorePasswordCodeWasCreatedDomainEvent($member->getUuid(), $member->getEmail(), $code->value));
-
-        return $code;
+        return new self($value, $expiredAt);
     }
 
-    public function getAuthor(): Member
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getAuthor(): ?Member
     {
         return $this->author;
     }
@@ -90,9 +94,9 @@ final class Code extends AggregateRoot
         return $this->expiredAt;
     }
 
-    public function setExpiredAt(int $value): void
+    public function setExpiredAt(DateTimeImmutable $expiredAt): void
     {
-        $this->value = $value;
+        $this->expiredAt = $expiredAt;
     }
 
     public function toArray(): array

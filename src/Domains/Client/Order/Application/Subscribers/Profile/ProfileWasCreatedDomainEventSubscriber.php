@@ -10,7 +10,7 @@ use Project\Domains\Client\Order\Domain\Client\ValueObjects\Uuid;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileWasCreatedDomainEvent;
 use Project\Shared\Domain\Bus\Event\DomainEventSubscriberInterface;
 
-final class ProfileWasCreatedDomainEventSubscriber implements DomainEventSubscriberInterface
+class ProfileWasCreatedDomainEventSubscriber implements DomainEventSubscriberInterface
 {
     public function __construct(
         private readonly ClientRepositoryInterface $clientRepository,

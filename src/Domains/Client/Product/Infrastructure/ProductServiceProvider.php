@@ -18,5 +18,6 @@ final class ProductServiceProvider extends ServiceProvider
 
         $this->app->tag(GetProductsQueryHandler::class, 'query_handler');
         $this->app->tag(FindProductQueryHandler::class, 'query_handler');
+        $this->app->tag(\Project\Domains\Client\Product\Application\Queries\GetCategoryProducts\QueryHandler::class, 'query_handler');
     }
 }

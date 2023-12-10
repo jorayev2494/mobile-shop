@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 use App\Http\Requests\Client\Address\UpdateAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Address\Application\Commands\Update\Command;
+use Project\Domains\Client\Order\Application\Commands\Address\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateAddressController

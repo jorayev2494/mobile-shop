@@ -32,7 +32,6 @@ final class OrderRepository extends BaseClientEntityRepository implements OrderR
 
     public function paginateByAuthorUuid(AuthorUuid $authorUuid, BaseQuery $queryDTO, StatusEnum $status): Paginator
     {
-        // dd($status);
         $query = $this->entityRepository->createQueryBuilder('o')
                                         ->where('o.authorUuid = :authorUuid')
                                         ->andWhere('o.status = :status')

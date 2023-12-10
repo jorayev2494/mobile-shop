@@ -10,6 +10,7 @@ use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileEmail;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileFirstName;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfileLastName;
 use Project\Domains\Client\Profile\Domain\Profile\ValueObjects\ProfilePhone;
+use Project\Infrastructure\Services\Avatar\AvatarServiceInterface;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
 use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
@@ -18,6 +19,7 @@ final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly ProfileRepositoryInterface $repository,
+        Private readonly AvatarServiceInterface $avatarService,
         private readonly AuthManagerInterface $authManager,
         private readonly EventBusInterface $eventBus,
     ) {
@@ -26,12 +28,13 @@ final class CommandHandler implements CommandHandlerInterface
 
     public function __invoke(Command $command): void
     {
-        $profile = $this->repository->findByUuid($this->authManager->client()->uuid);
+        $profile = $this->repository->findByUuid($this->authManager->client()->getUuid());
 
         if ($profile === null) {
             throw new ModelNotFoundException();
         }
 
+        $this->avatarService->update($profile, $command->avatar);
         $profile->changeFirstName(ProfileFirstName::fromValue($command->firstName));
         $profile->changeLastName(ProfileLastName::fromValue($command->lastName));
         $profile->changeEmail(ProfileEmail::fromValue($command->email));

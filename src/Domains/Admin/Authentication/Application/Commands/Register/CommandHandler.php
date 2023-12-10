@@ -23,7 +23,7 @@ final class CommandHandler implements CommandHandlerInterface
 
     }
 
-    public function __invoke(Command $command)
+    public function __invoke(Command $command): void
     {
         $foundMember = $this->repository->findByEmail($command->email);
 

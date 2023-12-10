@@ -64,7 +64,7 @@ Route::prefix('auth')->name('auth.')->group(static function (Router $router): vo
 Route::group(['middleware' => 'auth:client'], static function (Router $router): void {
     $router->group(['prefix' => 'profile', 'as' => 'profile.'], static function (Router $router): void {
         $router->get('/', ShowProfileController::class);
-        $router->put('/', UpdateProfileController::class);
+        $router->post('/', UpdateProfileController::class);
     });
 
     $router->group(['prefix' => 'cards', 'as' => 'cards.'], static function (Router $router): void {
@@ -86,7 +86,7 @@ Route::group(['middleware' => 'auth:client'], static function (Router $router): 
     $router->group(['prefix' => 'carts', 'as' => 'carts.'], static function (Router $router): void {
         $router->get('/', IndexCartController::class);
         $router->post('/confirm', ConfirmController::class);
-        
+
         $router->group(['prefix' => 'products', 'as' => 'products.'], static function (Router $router): void {
             $router->post('/', AddProductController::class);
             $router->put('/{product_uuid}', OperatorCartProductController::class);

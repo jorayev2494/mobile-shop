@@ -21,12 +21,6 @@ final class QueryHandler implements QueryHandlerInterface
 
     public function __invoke(Query $query): Profile
     {
-        $profile = $this->repository->findByUuid($this->authManager->client()->uuid);
-
-        if ($profile === null) {
-            throw new ModelNotFoundException();
-        }
-
-        return $profile;
+        return $this->repository->findByUuid($this->authManager->client()->getUuid());
     }
 }

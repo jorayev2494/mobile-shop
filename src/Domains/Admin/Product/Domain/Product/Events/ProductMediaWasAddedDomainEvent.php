@@ -18,12 +18,12 @@ class ProductMediaWasAddedDomainEvent extends DomainEvent
     }
 
     public static function fromPrimitives(
-        string $uuid,
+        string $id,
         array $body,
         string $eventId,
         string $occurredOn,
     ): self {
-        return new self($uuid, $body, $eventId, $occurredOn);
+        return new self($id, $body, $eventId, $occurredOn);
     }
 
     public static function eventName(): string

@@ -8,6 +8,7 @@ use App\Models\Admin;
 use App\Models\Auth\AuthModel;
 use App\Models\Client;
 use App\Models\Enums\AppGuardType;
+use Project\Domains\Client\Authentication\Domain\Member;
 
 interface AuthManagerInterface
 {
@@ -15,7 +16,7 @@ interface AuthManagerInterface
 
     public function admin(): ?Admin;
 
-    public function client(): ?Client;
+    public function client(): ?Member;
 
     public function uuid(AppGuardType $guard = null): ?string;
 

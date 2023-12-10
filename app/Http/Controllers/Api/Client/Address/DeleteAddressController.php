@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Address\Application\Commands\Delete\Command;
+use Project\Domains\Client\Order\Application\Commands\Address\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class DeleteAddressController

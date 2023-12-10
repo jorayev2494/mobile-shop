@@ -52,13 +52,13 @@ tags:
 
   - name: Restore password
     description: Operations about users
-  
+
   - name: Roles
     description: Permissions description
 
   - name: Profile
     description: This is Profile description
-  
+
   - name: Managers
     description: Managers description
 
@@ -67,16 +67,16 @@ tags:
 
   - name: Currencies
     description: Currencies description
-  
+
   - name: Products
     description: Products description
 
   - name: Orders
     description: Orders description
 
-x-tagGroups: 
+x-tagGroups:
   - name: Authentication
-    tags: 
+    tags:
       - Authentication
       - Restore password
 
@@ -86,27 +86,27 @@ x-tagGroups:
       - Permissions
 
   - name: Profile
-    tags: 
+    tags:
       -  Profile
 
   - name: Managers
-    tags: 
+    tags:
       -  Managers
 
   - name: Categories
-    tags: 
+    tags:
       -  Categories
 
   - name: Currencies
-    tags: 
+    tags:
       -  Currencies
-  
+
   - name: Products
-    tags: 
+    tags:
       -  Products
 
   - name: Orders
-    tags: 
+    tags:
       -  Orders
 
 security:
@@ -114,44 +114,44 @@ security:
 
 paths:
   # Authentication
-  /admin/auth/register:
+  /auth/register:
     $ref: paths/admin/auth/register.yml
 
-  /admin/auth/login:
+  /auth/login:
     $ref: paths/admin/auth/login.yml
 
-  /admin/auth/refresh-token:
+  /auth/refresh-token:
     $ref: paths/admin/auth/refreshToken.yml
 
-  /admin/auth/logout:
+  /auth/logout:
     $ref: paths/admin/auth/logout.yml
   # End Authentication
 
   # Restore password
-  /admin/auth/restore-password/link:
+  /auth/restore-password/link:
     $ref: paths/admin/auth/restore-password/link.yml
 
-  /admin/auth/restore-password/restore:
+  /auth/restore-password/restore:
     $ref: paths/admin/auth/restore-password/restore.yml
 
   # Roles
-  /admin/roles:
+  /roles:
     $ref: paths/admin/roles/Role.yml
 
-  /admin/roles/{id}:
+  /roles/{id}:
     $ref: paths/admin/roles/RoleId.yml
 
   # Permission
-  /admin/permissions:
+  /permissions:
     $ref: paths/admin/permissions/Index.yml
 
   # Profile
-  /admin/profile:
+  /profile:
     $ref: paths/admin/profile/Profile.yml
 
-  /admin/profile/change-password:
+  /profile/change-password:
     $ref: paths/admin/profile/ChangePassword.yml
-  
+
   # Managers
   /managers:
     $ref: paths/admin/managers/Index.yml
@@ -160,28 +160,28 @@ paths:
     $ref: paths/admin/managers/ManagerUUID.yml
 
   # Categories
-  /admin/categories:
+  /categories:
     $ref: paths/admin/categories/GetCategory.yml
-  
-  /admin/categories/{uuid}:
+
+  /categories/{uuid}:
     $ref: paths/admin/categories/Category.yml
 
   # Currencies
-  /admin/currencies:
+  /currencies:
     $ref: paths/admin/currencies/IndexCurrency.yml
 
   # Products
-  /admin/products:
+  /products:
     $ref: paths/admin/products/getProducts.yml
 
-  /admin/products/{uuid}:
+  /products/{uuid}:
     $ref: paths/admin/products/Product.yml
-  
+
   # Orders
-  /admin/orders:
+  /orders:
     $ref: paths/admin/orders/getOrders.yml
 
-  /admin/orders/{uuid}:
+  /orders/{uuid}:
     $ref: paths/admin/orders/Order.yml
 
 components:

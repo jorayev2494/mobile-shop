@@ -7,6 +7,7 @@ namespace Project\Domains\Client\Product\Infrastructure\Eloquent;
 use App\Repositories\Base\Doctrine\Paginator;
 use App\Repositories\Base\Doctrine\BaseAdminEntityRepository;
 use Project\Domains\Admin\Product\Domain\Product\Product;
+use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductCategoryUuid;
 use Project\Domains\Client\Product\Domain\ProductRepositoryInterface;
 use Project\Domains\Client\Product\Domain\ValueObjects\ProductUuid;
 use Project\Shared\Application\Query\BaseQuery;
@@ -22,6 +23,16 @@ final class ProductRepository extends BaseAdminEntityRepository implements Produ
     {
         $query = $this->entityRepository->createQueryBuilder('p')
                                         ->getQuery();
+
+        return $this->paginator($query, $queryData);
+    }
+
+    public function getProductsByCategoryUuid(BaseQuery $queryData, ProductCategoryUuid $categoryUuid): Paginator
+    {
+        $query = $this->entityRepository->createQueryBuilder('p')
+            ->where('p.categoryUuid = :categoryUuid')
+            ->setParameter('categoryUuid', $categoryUuid)
+            ->getQuery();
 
         return $this->paginator($query, $queryData);
     }

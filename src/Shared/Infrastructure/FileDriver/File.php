@@ -143,9 +143,24 @@ abstract class File implements Arrayable
         return $this->uuid;
     }
 
-    public function getFileName(): string
+    public function getWidth(): ?int
     {
-        return $this->fileName;
+        return $this->width;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function getExtension(): string
+    {
+        return $this->extension;
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
     }
 
     public function getPath(): string
@@ -156,6 +171,31 @@ abstract class File implements Arrayable
     public function getFullPath(): string
     {
         return $this->fullPath;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function getFileOriginalName(): string
+    {
+        return $this->fileOriginalName;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function getDownloadedCount(): int
+    {
+        return $this->downloadedCount;
+    }
+
+    public function getUrlPattern(): string
+    {
+        return $this->urlPattern;
     }
 
     #[ORM\PrePersist]

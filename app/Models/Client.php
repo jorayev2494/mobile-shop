@@ -65,6 +65,9 @@ class Client extends AuthModel
 
     protected $table = 'auth_members';
 
+    /**
+     * @var string[] $fillable
+     */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -91,6 +94,11 @@ class Client extends AuthModel
             'testKey' => 'testValue',
             'model' => self::class,
         ];
+    }
+
+    public function getUuid(): string
+    {
+        return $this->getRawOriginal('uuid');
     }
 
     public function country(): BelongsTo

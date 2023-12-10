@@ -26,6 +26,7 @@ class UpdateProfileController
                 $request->get('first_name'),
                 $request->get('last_name'),
                 $request->get('email'),
+                $request->file('avatar'),
                 $request->get('phone'),
             )
         );

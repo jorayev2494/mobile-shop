@@ -35,7 +35,7 @@ final class ProductMediaWasDeletedDomainEventSubscriber implements DomainEventSu
         }
 
         foreach ($product->getMedias() as $media) {
-            if ($media->getUuid() === $event->mediaId) {
+            if ($media->getUuid() === $event->mediaUuid) {
                 $product->removeMedia($media);
                 $this->mediaRepository->delete($media);
             }

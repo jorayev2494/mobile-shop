@@ -7,7 +7,10 @@ namespace Project\Domains\Client\Profile\Domain\Profile;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Client\Profile\Domain\Avatar\Avatar;
 use Project\Domains\Client\Profile\Domain\Device\Device;
+use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileAvatarWasChangedDomainEvent;
+use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileAvatarWasDeletedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileEmailWasUpdatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileFirstNameWasUpdatedDomainEvent;
 use Project\Domains\Client\Profile\Domain\Profile\Events\ProfileLastNameWasUpdatedDomainEvent;
@@ -21,11 +24,13 @@ use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\EmailTy
 use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\FirstNameType;
 use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\LastNameType;
 use Project\Domains\Client\Profile\Infrastructure\Doctrine\Profile\Types\PhoneType;
+use Project\Infrastructure\Services\Avatar\AvatarableInterface;
+use Project\Infrastructure\Services\Avatar\AvatarInterface;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'profile_profiles')]
-class Profile extends AggregateRoot
+class Profile extends AggregateRoot implements AvatarableInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::STRING)]
@@ -39,6 +44,10 @@ class Profile extends AggregateRoot
 
     #[ORM\Column(type: EmailType::NAME, unique: true)]
     private ProfileEmail $email;
+
+    #[ORM\OneToOne(targetEntity: Avatar::class, inversedBy: 'profile', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(name: 'avatar_uuid', referencedColumnName: 'uuid')]
+    private ?Avatar $avatar;
 
     #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?ProfilePhone $phone;
@@ -182,6 +191,21 @@ class Profile extends AggregateRoot
         }
     }
 
+    public function changeAvatar(?AvatarInterface $avatar): void
+    {
+        if ($this->avatar !== $avatar) {
+            $this->avatar = $avatar;
+            $this->record(new ProfileAvatarWasChangedDomainEvent($this->uuid, $this->avatar?->toArray()));
+        }
+    }
+
+    public function deleteAvatar(): void
+    {
+        if ($this->avatar !== null) {
+            $this->record(new ProfileAvatarWasDeletedDomainEvent($this->uuid, $this->avatar->getUuid()));
+        }
+    }
+
     public function changePhone(ProfilePhone $phone): void
     {
         if ($this->phone->isNotEquals($phone)) {
@@ -197,7 +221,8 @@ class Profile extends AggregateRoot
             'first_name' => $this->firstName?->value,
             'last_name' => $this->lastName?->value,
             'full_name' => $this->getFullName(),
-            'email' => $this->email?->value,
+            'email' => $this->email->value,
+            'avatar' => $this->avatar?->toArray(),
             'phone' => $this->phone?->value,
         ];
     }

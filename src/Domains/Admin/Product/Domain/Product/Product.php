@@ -22,10 +22,12 @@ use Project\Domains\Admin\Product\Domain\Product\Events\ProductPriceWasChangedDo
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductTitleWasChangedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasCreatedDomainEvent;
 use Project\Domains\Admin\Product\Domain\Product\Events\ProductWasDeletedDomainEvent;
+use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductCategoryUuid;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductDescription;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductPrice;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductTitle;
 use Project\Domains\Admin\Product\Domain\Product\ValueObjects\ProductUuid;
+use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\CategoryUuidType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\DescriptionType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\TitleType;
 use Project\Domains\Admin\Product\Infrastructure\Doctrine\Product\Types\UuidType;
@@ -43,8 +45,8 @@ class Product extends AggregateRoot
     #[ORM\Column(type: TitleType::NAME)]
     private ProductTitle $title;
 
-    // #[ORM\Column(name: 'category_uuid', type: CategoryUuidType::NAME)]
-    // private ProductCategoryUuid $categoryUuid;
+     #[ORM\Column(name: 'category_uuid', type: CategoryUuidType::NAME)]
+     private ProductCategoryUuid $categoryUuid;
 
     #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'products')]
     #[ORM\JoinColumn(name: 'category_uuid', referencedColumnName: 'uuid')]

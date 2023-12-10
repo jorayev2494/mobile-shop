@@ -22,7 +22,12 @@ class Media extends File
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'medias', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'product_uuid', referencedColumnName: 'uuid', nullable: false)]
-    private ?Product $product;
+    private ?Product $product = null;
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
 
     public function setProduct(Product $product = null): void
     {

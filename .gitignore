@@ -3,6 +3,7 @@
 /public/hot
 /public/storage
 /docker/postgres/data
+/docker/test_postgres/
 /docker/minio/data
 /docker/postgres-learn/data
 /storage/*.key

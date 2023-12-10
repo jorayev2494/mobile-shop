@@ -23,7 +23,7 @@ class CommandHandler implements CommandHandlerInterface
 
     }
 
-    public function __invoke(Command $command)
+    public function __invoke(Command $command): void
     {
         $foundMember = $this->repository->findByEmail($command->email);
 
@@ -33,8 +33,6 @@ class CommandHandler implements CommandHandlerInterface
 
         $member = Member::create(
             $this->uuidGenerator->generate(),
-            $command->firstName,
-            $command->lastName,
             $command->email,
             $this->passwordHasher->hash($command->password)
         );

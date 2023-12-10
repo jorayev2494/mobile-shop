@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Card;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Delete\Command;
+use Project\Domains\Client\Order\Application\Commands\Card\Delete\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class DeleteCardController

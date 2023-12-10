@@ -6,12 +6,13 @@ namespace Project\Domains\Admin\Profile\Domain\Avatar;
 
 use Doctrine\ORM\Mapping as ORM;
 use Project\Domains\Admin\Profile\Domain\Profile\Profile;
+use Project\Infrastructure\Services\Avatar\AvatarInterface;
 use Project\Shared\Infrastructure\FileDriver\File;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'profile_avatars')]
-class Avatar extends File
+class Avatar extends File implements AvatarInterface
 {
     public const PATH = '/avatar';
 

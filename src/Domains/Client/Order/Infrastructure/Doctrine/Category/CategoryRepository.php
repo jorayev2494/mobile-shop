@@ -8,12 +8,20 @@ use App\Repositories\Base\Doctrine\BaseClientEntityRepository;
 use Project\Domains\Client\Order\Domain\Category\Category;
 use Project\Domains\Client\Order\Domain\Category\CategoryRepositoryInterface;
 use Project\Domains\Client\Order\Domain\Category\ValueObjects\Uuid;
+use Project\Shared\Application\Query\BaseQuery;
 
 final class CategoryRepository extends BaseClientEntityRepository implements CategoryRepositoryInterface
 {
     protected function getEntity(): string
     {
         return Category::class;
+    }
+
+    public function get(BaseQuery $baseQuery): array
+    {
+        return $this->entityRepository->createQueryBuilder('c')
+                                        ->getQuery()
+                                        ->getResult();
     }
 
     public function findByUuid(Uuid $uuid): ?Category

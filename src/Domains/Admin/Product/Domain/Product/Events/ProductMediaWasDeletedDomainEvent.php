@@ -10,7 +10,7 @@ class ProductMediaWasDeletedDomainEvent extends DomainEvent
 {
     public function __construct(
         public readonly string $uuid,
-        public readonly string $mediaId,
+        public readonly string $mediaUuid,
         string $eventId = null,
         string $occurredOn = null
     ) {
@@ -18,17 +18,16 @@ class ProductMediaWasDeletedDomainEvent extends DomainEvent
     }
 
     public static function fromPrimitives(
-        string $uuid,
+        string $id,
         array $body,
         string $eventId,
         string $occurredOn,
     ): self {
         [
-            'product_uuid' => $uuid,
-            'media_id' => $mediaId,
+            'media_uuid' => $mediaUuid,
         ] = $body;
 
-        return new self($uuid, $mediaId, $eventId, $occurredOn);
+        return new self($id, $mediaUuid, $eventId, $occurredOn);
     }
 
     public static function eventName(): string
@@ -41,8 +40,7 @@ class ProductMediaWasDeletedDomainEvent extends DomainEvent
         return [
             'id' => $this->aggregateId(),
             'body' => [
-                'product_uuid' => $this->uuid,
-                'media_id' => $this->mediaId,
+                'media_uuid' => $this->mediaUuid,
             ],
             'event_id' => $this->eventId(),
             'occurred_on' => $this->occurredOn(),

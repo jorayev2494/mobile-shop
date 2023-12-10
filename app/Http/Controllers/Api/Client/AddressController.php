@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Client;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Client\Address\StoreAddressRequest;
 use App\Http\Requests\Client\Address\UpdateAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Address\Application\Queries\GetAddresses\Query;
-use Project\Domains\Client\Address\Application\Queries\GetAddresses\QueryHandler;
-use Project\Domains\Client\Address\Application\Commands\Create\CreateCommand;
-use Project\Domains\Client\Address\Application\Commands\Create\CreateCommandHandler;
 use Project\Domains\Client\Address\Application\Commands\Delete\DeleteCommand;
 use Project\Domains\Client\Address\Application\Commands\Delete\DeleteCommandHandler;
 use Project\Domains\Client\Address\Application\Commands\Update\UpdateCommand;

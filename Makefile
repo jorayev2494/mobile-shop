@@ -53,25 +53,25 @@ server-pint-check:									## Run Pint Test
 server-pint-fix:									## Run Pint Fix
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./vendor/bin/pint -v
 
-server-create-rabbitmq-exchanges:					## Create RrabbitMQ Exchanges
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:command-handler-exchanges
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:domain-event-handler-exchanges
+# server-create-rabbitmq-exchanges:					## Create RrabbitMQ Exchanges
+# 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:command-handler-exchanges
+# 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan create-rabbitmq:domain-event-handler-exchanges
 
-server-generate-supervisor-rabbitmq:				## Generate Supervisor RabbitMQ
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:commands-consumer
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:domain-events-consumer
+# server-generate-supervisor-rabbitmq:				## Generate Supervisor RabbitMQ
+# 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:commands-consumer
+# 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli php artisan generate-supervisor-rabbitmq:domain-events-consumer
 
-server-supervisor-restart:
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up --build -d supervisor
+# server-supervisor-restart:
+# 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} up --build -d supervisor
 
-server-refresh-rabbitmq-and-restart-supervisor:
-	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} rm -s -f -v supervisor
-	@make server-create-rabbitmq-exchanges
-	@make server-generate-supervisor-rabbitmq
-	@make server-supervisor-restart
+# server-refresh-rabbitmq-and-restart-supervisor:
+	# @docker-compose --file ${SERVER_COMPOSE_FILE_PATH} rm -s -f -v supervisor
+	# @make server-create-rabbitmq-exchanges
+	# @make server-generate-supervisor-rabbitmq
+	# @make server-supervisor-restart
 
-server-restart-message-broker:
-	@make server-refresh-rabbitmq-and-restart-supervisor
+# server-restart-message-broker:
+# 	@make server-refresh-rabbitmq-and-restart-supervisor
 
 server-seed-class:									## Run Class Seeder
 	@docker-compose --file ${SERVER_COMPOSE_FILE_PATH} run --rm php-cli ./artisan db:seed --class=$(class)

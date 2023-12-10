@@ -17,7 +17,6 @@ class RegisterController
     public function __construct(
         private readonly ResponseFactory $response,
         private readonly CommandBusInterface $commandBus,
-        private readonly UuidGeneratorInterface $uuidGenerator,
     ) {
 
     }
@@ -26,8 +25,6 @@ class RegisterController
     {
         $this->commandBus->dispatch(
             new Command(
-                $request->get('first_name'),
-                $request->get('last_name'),
                 $request->get('email'),
                 $request->get('password')
             )

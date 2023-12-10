@@ -18,24 +18,35 @@ ${YELLOW} Available commands: ${ENDCOLOR}${GREEN}
     status ${BLUE}............................................................................${GREEN} Print status of containers
     start ${BLUE}.............................................................................${GREEN} Start the containers
     stop ${BLUE}..............................................................................${GREEN} Stop the containers
-    restart [services] ${BLUE}................................................................${GREEN} Restart the container
+    restart [options] ${BLUE}.................................................................${GREEN} Restart the container
     pull ${BLUE}..............................................................................${GREEN} Pull the containers
-    build [--no-cache] ${BLUE}................................................................${GREEN} Build containers
+    build [options] ${BLUE}...................................................................${GREEN} Build containers
                                                                                         Options:
-                                                                                            --no-cache ${BLUE}..................................${GREEN} Build no cache
+                                                                                            --no-cache ${BLUE}................................${GREEN} Build no cache
+
     logs ${BLUE}..............................................................................${GREEN} Print logs of containers
     message-broker [command] ${BLUE}..........................................................${GREEN} Message broker
                                                                                         Options:
-                                                                                            restart ${BLUE}.....................................${GREEN} Restart
+                                                                                            init ${BLUE}......................................${GREEN} Init
+                                                                                            restart ${BLUE}...................................${GREEN} Restart
+                                                                                            create-exchange [options] ${BLUE}.................${GREEN} Create RrabbitMQ Exchanges
+                                                                                                                                        Options:
+                                                                                                                                            command-handler ${BLUE}......................${GREEN} Command handler
+                                                                                                                                            domain-event-handler ${BLUE}.................${GREEN} Domain Event handler
+
     bash ${BLUE}..............................................................................${GREEN} Containter interactive terminal bash
     cc ${BLUE}................................................................................${GREEN} Clear cache
     database [admin, client] [[seed], fresh, diff, migrate] ${BLUE}...........................${GREEN} Database
                                                                                         Options:
-                                                                                            type ${BLUE}........................................${GREEN} Many actions
+                                                                                            type ${BLUE}......................................${GREEN} Many actions
+
     artisan ${BLUE}...........................................................................${GREEN} Laravel Artisan commands
     composer ${BLUE}..........................................................................${GREEN} Composerz commands
     php-cs-fixer ${BLUE}......................................................................${GREEN} Php CS Fixer
-    test ${BLUE}..............................................................................${GREEN} Run Test
+    test [options] [arguments] ${BLUE}........................................................${GREEN} Run Test
+                                                                                        Options:
+                                                                                            -g, --group ${BLUE}...............................${GREEN} Filter by Group
+
     ${ENDCOLOR}
 "
 }
@@ -45,7 +56,7 @@ case "$1" in
         status
     ;;
     start)
-        start
+        start ${@:2}
     ;;
     stop)
         stop
@@ -88,6 +99,9 @@ case "$1" in
     ;;
     test)
         test ${@:2}
+    ;;
+    supervisor)
+        supervisor ${@:2}
     ;;
     *)
         printServerLstOfCommands
