@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 use App\Http\Requests\Client\Address\StoreAddressRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Address\Application\Commands\Create\CreateCommand;
+use Project\Domains\Client\Order\Application\Commands\Address\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 
@@ -26,7 +26,7 @@ class CreateAddressController
         $uuid = $this->uuidGenerator->generate();
 
         $this->commandBus->dispatch(
-            new CreateCommand(
+            new Command(
                 $uuid,
                 $request->get('title'),
                 $request->get('full_name'),

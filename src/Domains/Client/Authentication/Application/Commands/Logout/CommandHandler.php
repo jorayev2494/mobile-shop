@@ -28,8 +28,8 @@ final class CommandHandler implements CommandHandlerInterface
             return;
         }
 
-        $member = $this->repository->findByUuid($this->authManager->client()->uuid);
-        $device = $this->deviceRepository->findByAuthorUuidAndDeviceId($this->authManager->client()->uuid, $command->deviceId);
+        $member = $this->authManager->client();
+        $device = $this->deviceRepository->findByAuthorUuidAndDeviceId($member->getUuid(), $command->deviceId);
 
         if ($device === null) {
             return;

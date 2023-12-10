@@ -67,7 +67,7 @@ class Client
         string $firstName,
         string $lastName,
         string $email,
-        ?string $phone,
+        ?string $phone = null,
     ): self {
         return new self(
             Uuid::fromValue($uuid),
@@ -76,6 +76,11 @@ class Client
             Email::fromValue($email),
             Phone::fromValue($phone),
         );
+    }
+
+    public function getUuid(): Uuid
+    {
+        return $this->uuid;
     }
 
     public function getEmail(): Email

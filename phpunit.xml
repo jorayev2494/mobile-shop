@@ -10,10 +10,18 @@
     <testsuites>
         <testsuite name="Unit">
             <directory suffix="Test.php">./tests/Unit</directory>
+            <!-- Admin -->
+            <directory suffix="Test.php">./src/Domains/Admin/Profile/Test/Unit</directory>
+            <directory suffix="Test.php">./src/Domains/Admin/Manager/Test/Unit</directory>
+            <directory suffix="Test.php">./src/Domains/Admin/Product/Test/Unit</directory>
+
+            <!-- Client -->
+            <directory suffix="Test.php">./src/Domains/Client/Authentication/Test/Unit</directory>
+            <directory suffix="Test.php">./src/Domains/Client/Order/Test/Unit</directory>
         </testsuite>
-        <!-- <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite> -->
+<!--        <testsuite name="Feature">-->
+<!--            <directory suffix="Test.php">./tests/Feature</directory>-->
+<!--        </testsuite>-->
     </testsuites>
     <!-- <coverage processUncoveredFiles="true">
         <include>
@@ -24,12 +32,11 @@
         <env name="APP_ENV" value="testing"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
         <env name="CACHE_DRIVER" value="array"/>
-        <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
-        <!-- <env name="DB_DATABASE" value=":memory:"/> -->
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
-        <env name="TELESCOPE_ENABLED" value="false"/>
-        <!-- <env name="STORAGE_PATH" value="./"/> -->
+<!--        <env name="TELESCOPE_ENABLED" value="false"/>-->
     </php>
 </phpunit>

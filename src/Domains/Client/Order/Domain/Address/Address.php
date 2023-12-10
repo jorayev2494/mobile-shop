@@ -7,6 +7,8 @@ namespace Project\Domains\Client\Order\Domain\Address;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Project\Domains\Client\Order\Domain\Address\Events\AddressWasCreatedDomainEvent;
+use Project\Domains\Client\Order\Domain\Address\Events\AddressWasDeletedDomainEvent;
 use Project\Domains\Client\Order\Domain\Address\ValueObjects\AuthorUuid;
 use Project\Domains\Client\Order\Domain\Address\ValueObjects\CityUuid;
 use Project\Domains\Client\Order\Domain\Address\ValueObjects\CountryUuid;
@@ -135,17 +137,11 @@ class Address extends AggregateRoot
         );
     }
 
-    /**
-     * @return Uuid
-     */
     public function getUuid(): Uuid
     {
         return $this->uuid;
     }
 
-    /**
-     * @return Title
-     */
     public function getTitle(): Title
     {
         return $this->title;
@@ -173,13 +169,6 @@ class Address extends AggregateRoot
     public function getAuthorUuid(): AuthorUuid
     {
         return $this->authorUuid;
-    }
-
-    public function changeAuthorUuid(AuthorUuid $authorUuid): void
-    {
-        if ($this->authorUuid->isNotEquals($authorUuid)) {
-            $this->authorUuid = $authorUuid;
-        }
     }
 
     public function getFirstAddress(): FirstAddress
@@ -252,6 +241,11 @@ class Address extends AggregateRoot
         if ($this->district->isNotEquals($district)) {
             $this->district = $district;
         }
+    }
+
+    public function delete(): void
+    {
+        $this->record(new AddressWasDeletedDomainEvent($this->uuid->value));
     }
 
     public function toArray(): array

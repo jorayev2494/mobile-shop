@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Project\Domains\Client\Address\Application\Queries\Show\Query;
+use Project\Domains\Client\Order\Application\Queries\Address\Show\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class ShowAddressController

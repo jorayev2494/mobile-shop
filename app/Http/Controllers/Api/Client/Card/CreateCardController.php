@@ -8,7 +8,7 @@ use App\Http\Requests\Client\Card\StoreCardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Create\Command;
+use Project\Domains\Client\Order\Application\Commands\Card\Create\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 

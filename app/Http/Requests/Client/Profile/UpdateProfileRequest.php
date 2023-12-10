@@ -26,7 +26,7 @@ class UpdateProfileRequest extends FormRequest
                 'required',
                 'string',
                 'email',
-                Rule::unique(Client::class, 'email')->ignore(AppAuth::model(AppGuardType::CLIENT)->uuid, 'uuid'),
+                 Rule::unique('client_pgsql.auth_members', 'email')->ignore(AppAuth::model(AppGuardType::CLIENT)->uuid, 'uuid'),
                 'max:255',
             ],
             'phone' => ['nullable', 'string', 'max:255'],

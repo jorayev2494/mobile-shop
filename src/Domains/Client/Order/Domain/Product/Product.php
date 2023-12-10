@@ -28,7 +28,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'order_products')]
-class Product extends AggregateRoot
+class Product implements Arrayable
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
@@ -84,11 +84,11 @@ class Product extends AggregateRoot
         $this->viewedCount = $viewedCount;
         $this->isActive = $isActive;
 
-        // $this->medias = new ArrayCollection();
+        $this->medias = new ArrayCollection();
         // $this->carts = new ArrayCollection();
 
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+//        $this->createdAt = new DateTimeImmutable();
+//        $this->updatedAt = new DateTimeImmutable();
     }
 
     public static function fromPrimitives(string $uuid, string $title, Category $category, Price $price, string $description, int $viewedCount, bool $isActive): self
@@ -102,19 +102,6 @@ class Product extends AggregateRoot
             $viewedCount,
             $isActive,
         );
-    }
-
-    public static function create(
-        Uuid $uuid,
-        Title $title,
-        Category $category,
-        Price $price,
-        Description $description,
-        bool $isActive = true,
-    ): self {
-        $product = new self($uuid, $title, $category, $price, $description, 0, $isActive);
-
-        return $product;
     }
 
     public function getUuid(): Uuid
@@ -132,11 +119,9 @@ class Product extends AggregateRoot
         $this->title = $title;
     }
 
-    public function changeTitle(Title $title): void
+    public function getCategory(): Category
     {
-        if ($this->title->isNotEquals($title)) {
-            $this->title = $title;
-        }
+        return $this->category;
     }
 
     public function getPrice(): Price
@@ -149,11 +134,14 @@ class Product extends AggregateRoot
         $this->price = $price;
     }
 
-    public function changePrice(Price $price): void
+    public function getViewedCount(): int
     {
-        if ($this->price->isNotEquals($price)) {
-            $this->price = $price;
-        }
+        return $this->viewedCount;
+    }
+
+    public function setViewedCount(int $viewedCount): void
+    {
+        $this->viewedCount = $viewedCount;
     }
 
     public function getDescription(): Description
@@ -166,11 +154,9 @@ class Product extends AggregateRoot
         $this->description = $description;
     }
 
-    public function changeDescription(Description $description): void
+    public function getIsActive(): bool
     {
-        if ($this->description->isNotEquals($description)) {
-            $this->description = $description;
-        }
+        return $this->isActive;
     }
 
     /**
@@ -197,29 +183,6 @@ class Product extends AggregateRoot
     {
         return $this->medias->first() ?: null;
     }
-
-    // public function getMembers(): Collection
-    // {
-    //     return $this->members;
-    // }
-
-    // public function addMember(Member $member): void
-    // {
-    //     if ($this->members->contains($member)) {
-    //         return;
-    //     }
-
-    //     $this->members->add($member);
-    // }
-
-    // public function removeMember(Member $member): void
-    // {
-    //     if (! $this->members->contains($member)) {
-    //         return;
-    //     }
-
-    //     $this->members->removeElement($member);
-    // }
 
     public function delete(): void
     {

@@ -21,11 +21,13 @@ use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\EmailTyp
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\FirstNameType;
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\LastNameType;
 use Project\Domains\Admin\Profile\Infrastructure\Doctrine\Profile\Types\PhoneType;
+use Project\Infrastructure\Services\Avatar\AvatarableInterface;
+use Project\Infrastructure\Services\Avatar\AvatarInterface;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
 
 #[ORM\Entity]
 #[ORM\Table('profile_profiles')]
-class Profile extends AggregateRoot
+class Profile extends AggregateRoot implements AvatarableInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::STRING)]
@@ -187,15 +189,15 @@ class Profile extends AggregateRoot
         }
     }
 
-    public function changeAvatar(?Avatar $avatar): void
+    public function changeAvatar(?AvatarInterface $avatar): void
     {
-        if ($this->avatar->isNotEquals($avatar)) {
+        if ($this->avatar !== $avatar) {
             $this->avatar = $avatar;
-            $this->record(new ProfileAvatarWasChangedDomainEvent($this->uuid, $this->avatar->toArray()));
+            $this->record(new ProfileAvatarWasChangedDomainEvent($this->uuid, $this->avatar?->toArray()));
         }
     }
 
-    public function deleteAvatar()
+    public function deleteAvatar(): void
     {
         if ($this->avatar !== null) {
             $this->record(new ProfileAvatarWasDeletedDomainEvent($this->uuid, $this->avatar->getUuid()));

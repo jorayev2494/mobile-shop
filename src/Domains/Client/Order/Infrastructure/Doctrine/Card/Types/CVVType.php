@@ -20,7 +20,7 @@ final class CVVType extends Type
     /**
      * @param CVV $value
      * @param AbstractPlatform $platform
-     * @return string
+     * @return int
      */
     public function convertToDatabaseValue($value, AbstractPlatform $platform): int
     {

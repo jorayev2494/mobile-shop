@@ -6,6 +6,7 @@ namespace Project\Infrastructure;
 
 use Illuminate\Support\ServiceProvider;
 use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
+use Project\Infrastructure\Services\Avatar\AvatarServiceInterface;
 use Project\Shared\Application\AuthorizationInterface;
 use Project\Shared\Domain\FlasherInterface;
 use Project\Shared\Domain\CodeGeneratorInterface;
@@ -21,6 +22,7 @@ use Project\Shared\Infrastructure\Flasher;
 use Project\Shared\Infrastructure\Logger\LaravelLogger;
 use Project\Shared\Infrastructure\PasswordHasher;
 use Project\Shared\Infrastructure\Services\AuthenticateService\AuthenticationService;
+use Project\Shared\Infrastructure\Services\Avatar\AvatarService;
 use Project\Shared\Infrastructure\TokenGenerator;
 use Project\Shared\Infrastructure\UuidGenerator;
 use Symfony\Component\Mailer\Mailer;
@@ -41,5 +43,6 @@ final class InfrastructureServiceProvider extends ServiceProvider
         $this->app->bind(FilesystemInterface::class, LaravelFilesystem::class);
         $this->app->singleton(PasswordHasherInterface::class, PasswordHasher::class);
         $this->app->singleton(FlasherInterface::class, Flasher::class);
+        $this->app->singleton(AvatarServiceInterface::class, AvatarService::class);
     }
 }

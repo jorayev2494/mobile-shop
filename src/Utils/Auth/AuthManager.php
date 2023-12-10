@@ -8,6 +8,8 @@ use App\Models\Admin;
 use App\Models\Client;
 use App\Models\Auth\AuthModel;
 use App\Models\Enums\AppGuardType;
+use Project\Domains\Client\Authentication\Domain\Member;
+use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
 use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class AuthManager implements AuthManagerInterface
@@ -28,9 +30,17 @@ final class AuthManager implements AuthManagerInterface
         return ($admin = $this->authManager->admin()) instanceof Admin ? $admin : null;
     }
 
-    public function client(): ?Client
+    public function client(): ?Member
     {
-        return ($client = $this->authManager->user()) instanceof Client ? $client : null;
+        // return ($client = $this->authManager->user()) instanceof Client ? $client : null;
+        /** @var Client $client */
+        if (($client = $this->authManager->user()) instanceof Client) {
+            $memberRepository = app()->make(MemberRepositoryInterface::class);
+
+            return $memberRepository->findByUuid($client->getUuid());
+        }
+
+        return null;
     }
 
     public function uuid(AppGuardType $guard = null): ?string

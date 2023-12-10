@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Project\Domains\Client\Authentication\Domain\Code\CodeRepositoryInterface;
 use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\DomainException;
 use Project\Shared\Domain\PasswordHasherInterface;
 
 class CommandHandler implements CommandHandlerInterface
@@ -24,15 +25,9 @@ class CommandHandler implements CommandHandlerInterface
     {
         $code = $this->codeRepository->findByCode($command->code);
 
-        if ($code === null) {
-            throw new ModelNotFoundException();
-        }
+        $code ?? throw new DomainException('Code not found', 404);
 
         $member = $code->getAuthor();
-
-        if ($member === null) {
-            throw new ModelNotFoundException();
-        }
 
         $member->changePassword($this->passwordHasher->hash($command->password));
         $this->repository->save($member);

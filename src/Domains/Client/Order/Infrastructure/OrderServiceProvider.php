@@ -19,8 +19,8 @@ use Project\Domains\Client\Order\Infrastructure\Doctrine\Category\CategoryReposi
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Client\ClientRepository;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Currency\CurrencyRepository;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Media\MediaRepository;
-use Project\Domains\Client\Order\Infrastructure\Doctrine\Product\ProductRepository;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\OrderRepository;
+use Project\Domains\Client\Order\Infrastructure\Doctrine\Product\ProductRepository;
 
 final class OrderServiceProvider extends ClientDomainServiceProvider
 {
@@ -38,13 +38,38 @@ final class OrderServiceProvider extends ClientDomainServiceProvider
 
     /** @var array<array-key, string> */
     protected const QUERY_HANDLERS = [
-        \Project\Domains\Client\Order\Application\Queries\Get\QueryHandler::class,
-        \Project\Domains\Client\Order\Application\Queries\Show\QueryHandler::class,
+        // Order
+        \Project\Domains\Client\Order\Application\Queries\Order\Get\QueryHandler::class,
+        \Project\Domains\Client\Order\Application\Queries\Order\Show\QueryHandler::class,
+
+        // Card
+        \Project\Domains\Client\Order\Application\Queries\Card\GetCards\QueryHandler::class,
+        \Project\Domains\Client\Order\Application\Queries\Card\Show\QueryHandler::class,
+
+        // Address
+        \Project\Domains\Client\Order\Application\Queries\Address\GetAddresses\QueryHandler::class,
+        \Project\Domains\Client\Order\Application\Queries\Address\Show\QueryHandler::class,
+
+        // Category
+        \Project\Domains\Client\Order\Application\Queries\Category\Index\QueryHandler::class,
     ];
 
     /** @var array<array-key, string> */
     protected const COMMAND_HANDLERS = [
+        // Order
+        \Project\Domains\Client\Order\Application\Commands\Order\Create\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Order\Update\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Order\Delete\CommandHandler::class,
 
+        // Card
+        \Project\Domains\Client\Order\Application\Commands\Card\Create\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Card\Update\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Card\Delete\CommandHandler::class,
+
+        // Addresses
+        \Project\Domains\Client\Order\Application\Commands\Address\Create\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Address\Update\CommandHandler::class,
+        \Project\Domains\Client\Order\Application\Commands\Address\Delete\CommandHandler::class,
     ];
 
     /** @var array<array-key, string> */
@@ -53,17 +78,11 @@ final class OrderServiceProvider extends ClientDomainServiceProvider
 
         \Project\Domains\Client\Order\Application\Subscribers\Cart\CartWasConfirmedDomainEventSubscriber::class,
 
-        \Project\Domains\Client\Order\Application\Subscribers\Address\AddressWasDeletedDomainEventSubscriber::class,
-        \Project\Domains\Client\Order\Application\Subscribers\Address\AddressWasCreatedDomainEventSubscriber::class,
-
         \Project\Domains\Client\Order\Application\Subscribers\Profile\ProfileWasCreatedDomainEventSubscriber::class,
         \Project\Domains\Client\Order\Application\Subscribers\Profile\ProfileFirstNameWasUpdatedDomainEventSubscriber::class,
         \Project\Domains\Client\Order\Application\Subscribers\Profile\ProfileLastNameWasUpdatedDomainEventSubscriber::class,
         \Project\Domains\Client\Order\Application\Subscribers\Profile\ProfileEmailWasUpdatedDomainEventSubscriber::class,
         \Project\Domains\Client\Order\Application\Subscribers\Profile\ProfilePhoneWasUpdatedDomainEventSubscriber::class,
-
-        \Project\Domains\Client\Order\Application\Subscribers\Card\CardWasCreatedDomainEventSubscriber::class,
-        \Project\Domains\Client\Order\Application\Subscribers\Card\CardWasDeleteDomainEventSubscriber::class,
 
         \Project\Domains\Client\Order\Application\Subscribers\Product\ProductWasCreatedDomainEventSubscriber::class,
         \Project\Domains\Client\Order\Application\Subscribers\Product\ProductWasDeletedDomainEventSubscriber::class,
@@ -101,6 +120,7 @@ final class OrderServiceProvider extends ClientDomainServiceProvider
         // Order
         // \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\AddressUuidType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\UuidType::class,
+        \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\NumberType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\AuthorUuidType::class,
         // \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\CardUuidType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\NoteType::class,
@@ -120,6 +140,7 @@ final class OrderServiceProvider extends ClientDomainServiceProvider
 
         // Card
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Card\Types\UuidType::class,
+        \Project\Domains\Client\Order\Infrastructure\Doctrine\Card\Types\ClientUuidType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Card\Types\CVVType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Card\Types\ExpirationDateType::class,
         \Project\Domains\Client\Order\Infrastructure\Doctrine\Card\Types\HolderNameType::class,
@@ -152,9 +173,4 @@ final class OrderServiceProvider extends ClientDomainServiceProvider
         __DIR__ . '/../Domain/Currency',
         __DIR__ . '/../Domain/Category',
     ];
-
-    public function register(): void
-    {
-        parent::register();
-    }
 }

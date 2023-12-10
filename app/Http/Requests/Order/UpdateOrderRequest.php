@@ -23,26 +23,21 @@ class UpdateOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['nullable', 'email'],
-            'phone'  => ['nullable', 'string'],
-            'description'  => ['nullable', 'string'],
-            'card_uuid'  => ['required', 'string', Rule::exists(Card::class, 'uuid')],
-            'address_uuid'  => ['required', 'string', Rule::exists(Address::class, 'uuid')],
+            'card_uuid'  => ['required', 'string', Rule::exists('client_pgsql.order_cards', 'uuid')],
+            'address_uuid'  => ['required', 'string', Rule::exists('client_pgsql.order_addresses', 'uuid')],
+            'currency_uuid'  => ['required', 'string', Rule::exists('client_pgsql.order_currencies', 'uuid')],
 
             'products'  => ['required', 'array'],
             'products.*' => Rule::forEach(
                 static fn (array $value, string $attribute): array => [
-                    'uuid' => ['required', 'uuid', Rule::exists(OrderProduct::class, 'uuid')],
-                    'product_uuid' => ['required', 'uuid', Rule::exists(Product::class, 'uuid')],
-                    'quality' => ['required', 'integer', 'min:1'],
-                    'sum' => ['required', 'string'],
-                    'discard_sum' => ['required', 'string'],
+                    'uuid' => ['required', 'uuid', Rule::exists('client_pgsql.order_products', 'uuid')],
+                    'quantity' => ['required', 'integer', 'min:1'],
                 ]
             ),
 
-            'quality'  => ['required', 'integer'],
-            'sum'  => ['required', 'integer'],
-            'discard_sum'  => ['required', 'integer'],
+            'email' => ['nullable', 'email'],
+            'phone'  => ['nullable', 'string'],
+            'note'  => ['nullable', 'string'],
         ];
     }
 }

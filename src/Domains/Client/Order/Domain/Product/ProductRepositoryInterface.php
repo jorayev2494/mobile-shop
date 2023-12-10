@@ -16,6 +16,8 @@ interface ProductRepositoryInterface
      * @return Collection<int, Product>
      */
     public function findManyByUuids(array $uuids): Collection;
+
     public function save(Product $product): void;
+
     public function delete(Product $product): void;
 }

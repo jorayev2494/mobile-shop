@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
+use Illuminate\Contracts\Support\Arrayable;
 use Project\Domains\Client\Order\Domain\Category\ValueObjects\Uuid;
 use Project\Domains\Client\Order\Domain\Category\ValueObjects\Value;
 use Project\Domains\Client\Order\Domain\Product\Product;
@@ -20,7 +21,7 @@ use Project\Shared\Domain\Aggregate\AggregateRoot;
 #[ORM\Entity]
 #[ORM\Table(name: 'order_categories')]
 #[ORM\HasLifecycleCallbacks]
-class Category extends AggregateRoot
+class Category implements Arrayable
 {
     #[ORM\Id]
     #[ORM\Column(type: UuidType::NAME)]
@@ -60,11 +61,6 @@ class Category extends AggregateRoot
         );
     }
 
-    public static function create(Uuid $uuid, Value $value, bool $isActive): self
-    {
-        return new self($uuid, $value, $isActive);
-    }
-
     public function getUuid(): Uuid
     {
         return $this->uuid;
@@ -80,13 +76,6 @@ class Category extends AggregateRoot
         $this->value = $value;
     }
 
-    public function changeValue(Value $value): void
-    {
-        if ($this->value->isNotEquals($value)) {
-            $this->value = $value;
-        }
-    }
-
     public function getIsActive(): bool
     {
         return $this->isActive;
@@ -95,13 +84,6 @@ class Category extends AggregateRoot
     public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;
-    }
-
-    public function changeIsActive(bool $isActive): void
-    {
-        if ($this->isActive === $isActive) {
-            $this->isActive = $isActive;
-        }
     }
 
     #[ORM\PrePersist]

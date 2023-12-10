@@ -25,8 +25,8 @@ RUN apt-get update \
     && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
 
 # Xdebug
-RUN pecl install xdebug
-RUN docker-php-ext-enable xdebug
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
 
 RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
 

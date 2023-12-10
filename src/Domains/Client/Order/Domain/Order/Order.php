@@ -12,12 +12,15 @@ use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 use Illuminate\Contracts\Support\Arrayable;
+use Project\Domains\Client\Delivery\Domain\Customer\Customer;
 use Project\Domains\Client\Order\Domain\Address\Address;
 use Project\Domains\Client\Order\Domain\Card\Card;
 use Project\Domains\Client\Order\Domain\Client\Client;
 use Project\Domains\Client\Order\Domain\Currency\Currency;
+use Project\Domains\Client\Order\Domain\Order\Events\OrderProductWasAddedDomainEvent;
 use Project\Domains\Client\Order\Domain\Order\Events\OrderStatusWasChangedDomainEvent;
 use Project\Domains\Client\Order\Domain\Order\Events\OrderWasCreatedDomainEvent;
+use Project\Domains\Client\Order\Domain\Order\ValueObjects\Number;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Uuid;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\AuthorUuid;
 use Project\Domains\Client\Order\Domain\Order\ValueObjects\Note;
@@ -28,11 +31,13 @@ use Project\Domains\Client\Order\Domain\Order\ValueObjects\StatusEnum;
 use Project\Domains\Client\Order\Domain\OrderProduct\OrderProduct;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\NoteType;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\EmailType;
+use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\NumberType;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\PhoneType;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\StatusType;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\UuidType;
 use Project\Domains\Client\Order\Infrastructure\Doctrine\Order\Types\AuthorUuidType;
 use Project\Shared\Domain\Aggregate\AggregateRoot;
+use function Sodium\add;
 
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
@@ -43,10 +48,13 @@ class Order extends AggregateRoot
     #[ORM\Column(type: UuidType::NAME)]
     private Uuid $uuid;
 
+    // #[ORM\Column(type: NumberType::NAME, unique: true)]
+    // private Number $number;
+
     #[ORM\Column(name: 'author_uuid', type: AuthorUuidType::NAME)]
     private AuthorUuid $authorUuid;
 
-    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'orders', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'orders', fetch: 'EAGER', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn('author_uuid', referencedColumnName: 'uuid', nullable: false)]
     private Client $author;
 
@@ -56,7 +64,7 @@ class Order extends AggregateRoot
     #[ORM\Column(type: PhoneType::NAME, nullable: true)]
     private ?Phone $phone;
 
-    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'order', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'order', fetch: 'EAGER', cascade: ['persist', 'remove'])]
     private Collection $orderProducts;
 
     #[ORM\Column(type: NoteType::NAME, nullable: true)]
@@ -65,18 +73,18 @@ class Order extends AggregateRoot
     // #[ORM\Column(type: CardUuidType::NAME)]
     // private CardUuid $cardUuid;
 
-    #[ORM\ManyToOne(targetEntity: Card::class, inversedBy: 'orders', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Card::class, inversedBy: 'orders', fetch: 'EAGER', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'card_uuid', referencedColumnName: 'uuid')]
     private Card $card;
 
     // #[ORM\Column(type: AddressUuidType::NAME)]
     // private AddressUuid $addressUuid;
 
-    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'orders', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Address::class, inversedBy: 'orders', fetch: 'EAGER', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'address_uuid', referencedColumnName: 'uuid')]
     private Address $address;
 
-    #[ORM\ManyToOne(targetEntity: Currency::class, inversedBy: 'orders', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Currency::class, inversedBy: 'orders', fetch: 'EAGER', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'currency_uuid', referencedColumnName: 'uuid')]
     private Currency $currency;
 
@@ -96,6 +104,10 @@ class Order extends AggregateRoot
 
     private function __construct(
         Uuid $uuid,
+        Client $author,
+        Card $card,
+        Address $address,
+        Currency $currency,
         Email $email,
         Phone $phone,
         Note $note,
@@ -104,26 +116,36 @@ class Order extends AggregateRoot
         // bool $isActive = true,
     ) {
         $this->uuid = $uuid;
+        $this->author = $author;
+
+        $this->card = $card;
+        $this->address = $address;
+        $this->currency = $currency;
+
         $this->email = $email;
         $this->phone = $phone;
         $this->note = $note;
-        $this->meta = $meta;
 
         $this->meta = $meta;
-        $this->orderProducts = new ArrayCollection($orderProducts);
+        $this->orderProducts = new ArrayCollection();
+        $this->addOrderProducts($orderProducts);
         $this->status = StatusEnum::PENDING;
         // $this->isActive = $isActive;
     }
 
     public static function create(
         Uuid $uuid,
+        Client $author,
+        Card $card,
+        Address $address,
+        Currency $currency,
         Email $email,
         Phone $phone,
         Note $note,
         array $orderProducts = [],
         Meta $meta = null,
     ): self {
-        $order = new self($uuid, $email, $phone, $note, $orderProducts, $meta);
+        $order = new self($uuid, $author, $card, $address, $currency, $email, $phone, $note, $orderProducts, $meta);
         $order->record(
             new OrderWasCreatedDomainEvent(
                 $order->getUuid()->value,
@@ -136,6 +158,43 @@ class Order extends AggregateRoot
         return $order;
     }
 
+    public static function fromPrimitives(
+        string $uuid,
+        Client $author,
+        Card $card,
+        Address $address,
+        Currency $currency,
+        string $email,
+        string $phone,
+        string $note,
+        array $orderProducts = [],
+        Meta $meta = null,
+    ): self {
+        return new self(
+            Uuid::fromValue($uuid),
+            $author,
+            $card,
+            $address,
+            $currency,
+            Email::fromValue($email),
+            Phone::fromValue($phone),
+            Note::fromValue($note),
+            $orderProducts,
+            $meta,
+        );
+    }
+
+    /**
+     * @param OrderProduct[] $orderProducts
+     * @return void
+     */
+    public function addOrderProducts(array $orderProducts): void
+    {
+        foreach ($orderProducts as $orderProduct) {
+            $this->addOrderProduct($orderProduct);
+        }
+    }
+
     public function addOrderProduct(OrderProduct $orderProduct): void
     {
         if ($this->orderProducts->contains($orderProduct)) {
@@ -144,6 +203,13 @@ class Order extends AggregateRoot
 
         $orderProduct->setOrder($this);
         $this->orderProducts->add($orderProduct);
+        $this->record(
+            new OrderProductWasAddedDomainEvent(
+                $this->uuid->value,
+                $orderProduct->getProduct()->getUuid()->value,
+                $orderProduct->getQuantity()->value,
+            )
+        );
     }
 
     public function getUuid(): Uuid
@@ -162,6 +228,16 @@ class Order extends AggregateRoot
             $this->status = $status;
             $this->record(new OrderStatusWasChangedDomainEvent($this->uuid->value, $this->status->value));
         }
+    }
+
+    public function changeAddress(Address $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function changeCurrency(Currency $currency): void
+    {
+        $this->currency = $currency;
     }
 
     public function getMeta(): Meta
@@ -209,6 +285,11 @@ class Order extends AggregateRoot
         $this->currency = $currency;
     }
 
+    public function getCurrency(): Currency
+    {
+         return $this->currency;
+    }
+
     #[ORM\PrePersist]
     public function prePersisting(PrePersistEventArgs $eventArgs): void
     {
@@ -225,6 +306,28 @@ class Order extends AggregateRoot
     public function getEmail(): Email
     {
         return $this->email;
+    }
+
+    public function getPhone(): ?Phone
+    {
+        return $this->phone;
+    }
+
+    public function getNote(): Note
+    {
+        return $this->note;
+    }
+
+    public function changeNote(Note $note): void
+    {
+        if ($this->note->isNotEquals($note)) {
+            $this->note = $note;
+        }
+    }
+
+    public function getOrderProducts(): array
+    {
+        return $this->orderProducts->toArray();
     }
 
     public function toArray(): array

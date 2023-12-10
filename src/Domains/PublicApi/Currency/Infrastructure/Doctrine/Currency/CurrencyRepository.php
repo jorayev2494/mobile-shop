@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Project\Domains\PublicApi\Currency\Infrastructure\Doctrine\Currency;
 
 use App\Repositories\Base\Doctrine\BaseAdminEntityRepository;
-use Project\Domains\Admin\Currency\Domain\Currency\Currency;
+use Project\Domains\Admin\Product\Domain\Currency\Currency;
 use Project\Domains\PublicApi\Currency\Domain\Currency\CurrencyRepositoryInterface;
 use Project\Shared\Application\Query\BaseQuery;
 

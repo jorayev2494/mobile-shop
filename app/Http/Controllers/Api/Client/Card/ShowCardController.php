@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\Client\Card;
 
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
-use Project\Domains\Client\Card\Application\Queries\Show\Query;
+use Project\Domains\Client\Order\Application\Queries\Card\Show\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class ShowCardController

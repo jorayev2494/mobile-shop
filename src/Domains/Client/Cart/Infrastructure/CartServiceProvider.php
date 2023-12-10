@@ -85,9 +85,4 @@ final class CartServiceProvider extends ClientDomainServiceProvider
         __DIR__ . '/../Domain/Media',
         __DIR__ . '/../Domain/Category',
     ];
-
-    public function register(): void
-    {
-        parent::register();
-    }
 }

@@ -77,6 +77,11 @@ class Currency implements Arrayable
         $this->value = $value;
     }
 
+    public function getIsActive(): bool
+    {
+        return $this->isActive;
+    }
+
     public function setIsActive(bool $isActive): void
     {
         $this->isActive = $isActive;

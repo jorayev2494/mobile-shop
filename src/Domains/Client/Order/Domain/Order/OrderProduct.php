@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Project\Domains\Client\Order\Domain;
+namespace Project\Domains\Client\Order\Domain\Order;
 
 final class OrderProduct
 {
@@ -10,16 +10,16 @@ final class OrderProduct
         public readonly string $uuid,
         public readonly string $order_uuid,
         public readonly string $product_uuid,
-        public readonly int $quality,
+        public readonly int $quantity,
         public readonly float $sum,
-        public readonly float $discard_sum,
+        public readonly float $discardSum,
     ) {
 
     }
 
-    public static function fromPrimitives(string $uuid, string $orderUUID, string $productUUID, int $quality, float $sum, float $discardSum): self
+    public static function fromPrimitives(string $uuid, string $orderUUID, string $productUUID, int $quantity, float $sum, float $discardSum): self
     {
-        return new self($uuid, $orderUUID, $productUUID, $quality, $sum, $discardSum);
+        return new self($uuid, $orderUUID, $productUUID, $quantity, $sum, $discardSum);
     }
 
     public static function createFromArray(array $data): self
@@ -28,12 +28,12 @@ final class OrderProduct
             'uuid' => $uuid,
             'order_uuid' => $orderUUID,
             'product_uuid' => $productUUID,
-            'quality' => $quality,
+            '$quantity' => $quantity,
             'sum' => $sum,
             'discard_sum' => $discardSum
         ) = $data;
 
-        return new self($uuid, $orderUUID, $productUUID, $quality, (float) $sum, (float) $discardSum);
+        return new self($uuid, $orderUUID, $productUUID, $quantity, (float) $sum, (float) $discardSum);
     }
 
     public function toArray(): array
@@ -42,9 +42,9 @@ final class OrderProduct
             'uuid' => $this->uuid,
             'order_uuid' => $this->order_uuid,
             'product_uuid' => $this->product_uuid,
-            'quality' => $this->quality,
+            'quality' => $this->quantity,
             'sum' => $this->sum,
-            'discard_sum' => $this->discard_sum,
+            'discard_sum' => $this->discardSum,
         ];
     }
 }

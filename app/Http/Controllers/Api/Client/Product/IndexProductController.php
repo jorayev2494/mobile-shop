@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Client\Product;
 
-use App\Http\Resources\Collection\ProductCollectionResource;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
@@ -26,7 +25,6 @@ class IndexProductController
         /** @var LengthAwarePaginator $result */
         $result = $this->queryBus->ask(GetProductsQuery::makeFromRequest($request));
 
-        // return $this->response->json(ProductCollectionResource::make($result));
         return $this->response->json($result);
     }
 }

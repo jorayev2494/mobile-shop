@@ -10,6 +10,7 @@ use Project\Domains\Client\Authentication\Domain\MemberRepositoryInterface;
 use Project\Domains\Client\Authentication\Domain\Device\DeviceRepositoryInterface;
 use Project\Infrastructure\Services\Authenticate\AuthenticationServiceInterface;
 use Project\Shared\Domain\Bus\Command\CommandHandlerInterface;
+use Project\Shared\Domain\DomainException;
 use Project\Shared\Domain\TokenGeneratorInterface;
 
 final class CommandHandler implements CommandHandlerInterface
@@ -28,23 +29,15 @@ final class CommandHandler implements CommandHandlerInterface
         $this->authenticationService->invalidate(AppGuardType::CLIENT);
         $foundDevice = $this->deviceRepository->findByRefreshToken($command->refreshToken);
 
-        if ($foundDevice === null) {
-            throw new ModelNotFoundException();
-        }
+        $foundDevice ?? throw new DomainException('Refresh token is invalid');
 
-        $member = $this->repository->findByUuid($foundDevice->getAuthor()->getUuid());
-
-        if ($member === null) {
-            throw new ModelNotFoundException();
-        }
-
-        $token = $this->authenticationService->authenticateByUuid($member->getUuid(), AppGuardType::CLIENT);
+        $token = $this->authenticationService->authenticateByUuid($foundDevice->getAuthor()->getUuid(), AppGuardType::CLIENT);
 
         $foundDevice->setRefreshToken($this->tokenGenerator->generate());
-        $member->addDevice($foundDevice);
+        $foundDevice->getAuthor()->addDevice($foundDevice);
 
-        $this->repository->save($member);
+        $this->repository->save($foundDevice->getAuthor());
 
-        return $this->authenticationService->authToken($token, $member, $foundDevice);
+        return $this->authenticationService->authToken($token, $foundDevice->getAuthor(), $foundDevice);
     }
 }

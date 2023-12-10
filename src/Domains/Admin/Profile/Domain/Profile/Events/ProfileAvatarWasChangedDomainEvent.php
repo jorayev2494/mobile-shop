@@ -10,7 +10,7 @@ class ProfileAvatarWasChangedDomainEvent extends DomainEvent
 {
     public function __construct(
         public readonly string $uuid,
-        public readonly array $avatar,
+        public readonly ?array $avatar,
         string $eventId = null,
         string $occurredOn = null
     ) {
@@ -31,7 +31,7 @@ class ProfileAvatarWasChangedDomainEvent extends DomainEvent
         return 'admin_profile.avatar.was.changed';
     }
 
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'id' => $this->aggregateId(),

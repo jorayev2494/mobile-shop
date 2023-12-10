@@ -14,13 +14,11 @@ use Project\Shared\Domain\Bus\Event\EventBusInterface;
 use Project\Shared\Domain\TokenGeneratorInterface;
 use Project\Shared\Domain\UuidGeneratorInterface;
 use Project\Shared\Infrastructure\Services\AuthenticateService\AuthenticationCredentialsDTO;
-use Project\Utils\Auth\Contracts\AuthManagerInterface;
 
 final class CommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private readonly MemberRepositoryInterface $repository,
-        private readonly AuthManagerInterface $authManager,
         private readonly UuidGeneratorInterface $uuidGenerator,
         private readonly TokenGeneratorInterface $tokenGenerator,
         private readonly AuthenticationServiceInterface $authenticationService,

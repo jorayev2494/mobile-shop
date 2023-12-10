@@ -21,11 +21,11 @@ class OrderProduct implements Arrayable
     #[ORM\Column(type: Types::INTEGER)]
     private int $id;
 
-    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderProduct', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderProduct', fetch: 'EAGER', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'order_uuid', referencedColumnName: 'uuid', nullable: false)]
     private Order $order;
 
-    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'cartProduct', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'cartProduct', fetch: 'EAGER', cascade: ['persist'])]
     #[ORM\JoinColumn(name: 'product_uuid', referencedColumnName: 'uuid', nullable: false)]
     private Product $product;
 
@@ -38,7 +38,12 @@ class OrderProduct implements Arrayable
         $this->quantity = $quantity;
     }
 
-    public static function create(Product $product, Quantity $quantity): self
+//    public static function create(Product $product, Quantity $quantity): self
+//    {
+//        return new self($product, $quantity);
+//    }
+
+    public static function make(Product $product, Quantity $quantity): self
     {
         return new self($product, $quantity);
     }
@@ -61,6 +66,11 @@ class OrderProduct implements Arrayable
     public function setQuantity(Quantity $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    public function getQuantity(): Quantity
+    {
+        return $this->quantity;
     }
 
     public function toArray(): array

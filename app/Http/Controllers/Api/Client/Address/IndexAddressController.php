@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Address;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Project\Domains\Client\Address\Application\Queries\GetAddresses\Query;
+use Project\Domains\Client\Order\Application\Queries\Address\GetAddresses\Query;
 use Project\Shared\Domain\Bus\Query\QueryBusInterface;
 
 class IndexAddressController

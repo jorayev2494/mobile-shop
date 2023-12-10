@@ -14,4 +14,15 @@ final class AvatarRepository extends BaseAdminEntityRepository implements Avatar
     {
         return Avatar::class;
     }
+
+    public function findByUuid(string $uuid): ?Avatar
+    {
+        return $this->entityRepository->find($uuid);
+    }
+
+    public function delete(Avatar $avatar): void
+    {
+        $this->entityRepository->getEntityManager()->remove($avatar);
+        $this->entityRepository->getEntityManager()->flush();
+    }
 }

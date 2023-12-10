@@ -214,14 +214,11 @@ return [
         Project\Domains\Client\Product\Infrastructure\ProductServiceProvider::class,
         Project\Domains\Client\Order\Infrastructure\OrderServiceProvider::class,
         Project\Domains\Client\Favorite\Infrastructure\FavoriteServiceProvider::class,
-        Project\Domains\Client\Address\Infrastructure\AddressServiceProvider::class,
-        Project\Domains\Client\Card\Infrastructure\CardServiceProvider::class,
         Project\Domains\Client\Cart\Infrastructure\CartServiceProvider::class,
         // Project\Domains\Client\Country\Infrastructure\CountryServiceProvider::class,
         Project\Domains\Client\Profile\Infrastructure\ProfileServiceProvider::class,
-        Project\Domains\Client\Delivery\Infrastructure\DeliveryServiceProvider::class,
 
-        // Project\Domains\PublicApi\Currency\Infrastructure\CurrencyServiceProvider::class,
+        Project\Domains\PublicApi\Currency\Infrastructure\CurrencyServiceProvider::class,
         Project\Domains\PublicApi\Country\Infrastructure\CountryServiceProvider::class,
 
         App\Providers\DoctrineServiceProvider::class,

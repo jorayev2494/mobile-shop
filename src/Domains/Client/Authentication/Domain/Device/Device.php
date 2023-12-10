@@ -15,7 +15,7 @@ use Project\Infrastructure\Services\Authenticate\DeviceInterface;
 #[ORM\Entity]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Table(name: 'auth_device')]
-final class Device implements DeviceInterface
+class Device implements DeviceInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: Types::STRING)]
@@ -67,9 +67,12 @@ final class Device implements DeviceInterface
         string $refreshToken,
         string $deviceId,
     ): self {
-        $code = new self($uuid, $refreshToken, $deviceId);
+        return new self($uuid, $refreshToken, $deviceId);
+    }
 
-        return $code;
+    public static function fromPrimitives(string $uuid, string $refreshToken, string $deviceId): self
+    {
+        return new self($uuid, $refreshToken, $deviceId);
     }
 
     public function delete(): void
@@ -103,11 +106,6 @@ final class Device implements DeviceInterface
     public function preUpdating(PreUpdateEventArgs $event): void
     {
         $this->updatedAt = new DateTimeImmutable();
-    }
-
-    public function getAuthorUuid(): string
-    {
-        return $this->authorUuid;
     }
 
     public function getRefreshToken(): string

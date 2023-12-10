@@ -51,6 +51,7 @@ final class ProfileServiceProvider extends ClientDomainServiceProvider
     /** @var array<string, string> */
     protected const ENTITY_PATHS = [
         __DIR__ . '/../Domain/Device',
+        __DIR__ . '/../Domain/Avatar',
         __DIR__ . '/../Domain/Profile',
     ];
 }

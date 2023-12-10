@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Api\Client\Card;
 use App\Http\Requests\Client\Card\UpdateCardRequest;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\Response;
-use Project\Domains\Client\Card\Application\Commands\Update\Command;
+use Project\Domains\Client\Order\Application\Commands\Card\Update\Command;
 use Project\Shared\Domain\Bus\Command\CommandBusInterface;
 
 class UpdateCardController
